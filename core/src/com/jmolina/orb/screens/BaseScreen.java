@@ -3,7 +3,6 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,12 +12,12 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 
-public class BaseScreen implements Screen {
+public class BaseScreen implements Screen, Cloneable {
 
-    protected Texture backgroundTexture;
-    protected Image background;
-    protected Viewport viewport;
-    protected Stage stage;
+    private Texture backgroundTexture;
+    private Image background;
+    private Viewport viewport;
+    private Stage stage;
 
     public BaseScreen() {
         viewport = new FitViewport(768.0f, 1184.0f);
@@ -27,7 +26,6 @@ public class BaseScreen implements Screen {
         background = new Image(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
         stage.addActor(background);
     }
-
 
     @Override
     public void show() {
@@ -38,7 +36,6 @@ public class BaseScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
         stage.draw();
     }
@@ -67,5 +64,21 @@ public class BaseScreen implements Screen {
     public void dispose() {
         backgroundTexture.dispose();
         stage.dispose();
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Object clone() {
+        Object clone = null;
+
+        try {
+            clone = super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        return clone;
     }
 }

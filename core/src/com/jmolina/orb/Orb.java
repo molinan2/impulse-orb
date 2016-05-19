@@ -1,6 +1,7 @@
 package com.jmolina.orb;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.MainScreen;
 
@@ -12,7 +13,9 @@ public class Orb extends Game {
 	public void create () {
 		baseScreen = new BaseScreen();
 		mainScreen = new MainScreen();
-		setScreen(mainScreen);
+
+		MainScreen mainScreenClone = (MainScreen) mainScreen.clone();
+		setScreen(mainScreenClone);
 	}
 
 }
