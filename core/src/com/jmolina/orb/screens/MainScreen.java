@@ -1,33 +1,36 @@
 package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class MainScreen extends BaseScreen {
 
-    private Texture logoTexture;
-    private Image logo;
-    private Table table;
-    private Table container;
+    // private MainButton playButton;
+    // private MainButton optionsButton;
+    // private MainButton statsButton;
+    // private MainButton creditsButton;
+    // private MainButton exitButton;
+
+    private Texture headerTexture;
+    private Image header;
+    private String author;
+    private String version;
 
     public MainScreen() {
         super();
 
-        logoTexture = new Texture(Gdx.files.internal("badlogic.jpg"));
-        logo = new Image(new TextureRegionDrawable(new TextureRegion(logoTexture)));
-
-        getStage().addActor(logo);
+        headerTexture = new Texture(Gdx.files.internal("header.png"));
+        header = new Image(new TextureRegionDrawable(new TextureRegion(headerTexture)));
+        setPositionRelative(0.5f, 0.95f, header);
+        getStage().addActor(header);
     }
 
     @Override
     public void dispose() {
-        logoTexture.dispose();
+        headerTexture.dispose();
         super.dispose();
     }
 

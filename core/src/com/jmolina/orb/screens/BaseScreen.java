@@ -4,17 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jmolina.orb.var.Vars;
 
 
-public class BaseScreen implements Screen, Cloneable {
+public class BaseScreen implements Screen {
 
-    private Texture backgroundTexture;
+    Texture backgroundTexture;
     private Image background;
     private Viewport viewport;
     private Stage stage;
@@ -23,7 +22,7 @@ public class BaseScreen implements Screen, Cloneable {
         viewport = new FitViewport(768.0f, 1184.0f);
         stage = new Stage(viewport);
         backgroundTexture = new Texture(Gdx.files.internal("background.png"));
-        background = new Image(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
+        background = new Image(backgroundTexture);
         stage.addActor(background);
     }
 
@@ -70,15 +69,12 @@ public class BaseScreen implements Screen, Cloneable {
         return stage;
     }
 
-    public Object clone() {
-        Object clone = null;
-
-        try {
-            clone = super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-
-        return clone;
+    // TODO Mover a utility class
+    public void setPositionRelative(float x, float y, Image image) {
+        image.setPosition(
+                x * (Vars.VIEWPORT_WIDTH - image.getWidth()),
+                y * (Vars.VIEWPORT_HEIGHT - image.getHeight())
+        );
     }
+
 }
