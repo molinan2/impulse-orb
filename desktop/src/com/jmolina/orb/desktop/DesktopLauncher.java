@@ -10,10 +10,11 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
 		// TODO Coordenadas reales: 1184x768
+		// TODO Coordenadas reduccion 1: 1110x720
 
 		config.fullscreen = false;
-		config.height = 1110;
-		config.width = 720;
+		config.height = 1184;
+		config.width = 768;
 		config.title = "Orb Desktop";
 		config.addIcon("icon.png", Files.FileType.Internal);
 

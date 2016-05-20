@@ -3,10 +3,10 @@ package com.jmolina.orb;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.CreditsScreen;
+import com.jmolina.orb.screens.ScrollScreen;
 import com.jmolina.orb.screens.LevelLaunchScreen;
 import com.jmolina.orb.screens.LevelSelectScreen;
 import com.jmolina.orb.screens.LoadScreen;
@@ -14,9 +14,9 @@ import com.jmolina.orb.screens.MainScreen;
 import com.jmolina.orb.screens.MenuScreen;
 import com.jmolina.orb.screens.OptionsScreen;
 import com.jmolina.orb.screens.StatsScreen;
+import com.jmolina.orb.screens.TableTestScreen;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Orb extends Game {
 
@@ -29,6 +29,8 @@ public class Orb extends Game {
 	CreditsScreen creditsScreen;
 	LevelSelectScreen levelSelectScreen;
 	LevelLaunchScreen levelLaunchScreen;
+	ScrollScreen scrollScreen;
+	TableTestScreen tableTestScreen;
 
 	private Logger logger;
 	private ArrayList<Screen> screens;
@@ -47,6 +49,8 @@ public class Orb extends Game {
 		creditsScreen = new CreditsScreen();
 		levelSelectScreen = new LevelSelectScreen();
 		levelLaunchScreen = new LevelLaunchScreen();
+		scrollScreen = new ScrollScreen();
+		tableTestScreen = new TableTestScreen();
 
 		screens = new ArrayList<Screen>();
 
@@ -59,18 +63,19 @@ public class Orb extends Game {
 		screens.add(creditsScreen);
 		screens.add(levelSelectScreen);
 		screens.add(levelLaunchScreen);
+		screens.add(scrollScreen);
+		screens.add(tableTestScreen);
 
-		setScreen(baseScreen);
+		setScreen(scrollScreen);
 	}
 
 	@Override
 	public void render () {
-		if (Gdx.input.justTouched()) {
+		if (Gdx.input.justTouched() && false) {
 			i++;
 			setScreen(screens.get(i % screens.size()));
 			logger.info("Screen change: " + screens.get(i % screens.size()).getClass());
 		}
-
 
 		if (screen != null) {
 			screen.render(Gdx.graphics.getDeltaTime());
