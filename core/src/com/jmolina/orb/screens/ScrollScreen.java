@@ -39,8 +39,8 @@ public class ScrollScreen extends BaseScreen {
 
         scrollPane = new ScrollPane(ladder, sps);
         scrollPane.debug();
-        scrollPane.setWidth(300f);
-        scrollPane.setHeight(scrollPane.getHeight());
+        scrollPane.setWidth(200f);
+        scrollPane.setHeight(100f);
         scrollPane.setPosition(200f, 200f);
 
         getStage().addActor(scrollPane);

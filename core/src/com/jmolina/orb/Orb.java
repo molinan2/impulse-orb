@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Logger;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.CreditsScreen;
+import com.jmolina.orb.screens.Scroll2Screen;
 import com.jmolina.orb.screens.ScrollScreen;
 import com.jmolina.orb.screens.LevelLaunchScreen;
 import com.jmolina.orb.screens.LevelSelectScreen;
@@ -31,6 +32,7 @@ public class Orb extends Game {
 	LevelLaunchScreen levelLaunchScreen;
 	ScrollScreen scrollScreen;
 	TableTestScreen tableTestScreen;
+	Scroll2Screen scroll2Screen;
 
 	private Logger logger;
 	private ArrayList<Screen> screens;
@@ -51,6 +53,7 @@ public class Orb extends Game {
 		levelLaunchScreen = new LevelLaunchScreen();
 		scrollScreen = new ScrollScreen();
 		tableTestScreen = new TableTestScreen();
+		scroll2Screen = new Scroll2Screen();
 
 		screens = new ArrayList<Screen>();
 
@@ -65,8 +68,9 @@ public class Orb extends Game {
 		screens.add(levelLaunchScreen);
 		screens.add(scrollScreen);
 		screens.add(tableTestScreen);
+		screens.add(scroll2Screen);
 
-		setScreen(scrollScreen);
+		setScreen(scroll2Screen);
 	}
 
 	@Override
