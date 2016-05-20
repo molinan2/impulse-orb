@@ -8,12 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.actors.LadderActor;
 
-public class Scroll2Screen extends MenuScreen {
+public class ScrollScreen extends MenuScreen {
 
-    private ScrollPane scrollPane;
-    Texture knob_scroll, tfBackground, scroll_horizontal;
+    private ScrollPane scrollPane, scrollPane2;
+    Texture knob_scroll, tfBackground, scroll_horizontal, ladderTexture;
 
-    public Scroll2Screen() {
+    public ScrollScreen() {
         super();
 
         // Gdx.input.setInputProcessor(getStage());
@@ -29,7 +29,7 @@ public class Scroll2Screen extends MenuScreen {
 
         LadderActor ladder = new LadderActor();
 
-        Texture ladderTexture = new Texture(Gdx.files.internal("ladder.png"));
+        ladderTexture = new Texture(Gdx.files.internal("ladder.png"));
         Image ladderImage = new Image(ladderTexture);
 
         scrollPane = new ScrollPane(ladderImage, sps);
@@ -38,13 +38,24 @@ public class Scroll2Screen extends MenuScreen {
         scrollPane.setPosition(100f, 100f);
 
         getStage().addActor(scrollPane);
+
+        /*
+        scrollPane2 = new ScrollPane(ladder, sps);
+        scrollPane2.setWidth(scrollPane2.getWidth() * 0.5f);
+        scrollPane2.setHeight(scrollPane2.getHeight() * 0.5f);
+        scrollPane2.setPosition(100f, 300f);
+
+        getStage().addActor(scrollPane2);
+        */
     }
 
     @Override
     public void dispose() {
         //font.dispose();
-        //knob_scroll.dispose();
-        //tfBackground.dispose();
+        knob_scroll.dispose();
+        tfBackground.dispose();
+        scroll_horizontal.dispose();
+        ladderTexture.dispose();
 
         super.dispose();
     }

@@ -29,7 +29,7 @@ public class Scroll1Screen extends MenuScreen {
 
         LadderActor ladder = new LadderActor();
 
-        Texture ladderTexture = new Texture(Gdx.files.internal("ladder.png"));
+        Texture ladderTexture = new Texture(Gdx.files.internal("ladder2.png"));
         Image ladderImage = new Image(ladderTexture);
 
         scrollPane = new ScrollPane(ladderImage, sps);

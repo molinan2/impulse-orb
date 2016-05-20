@@ -7,8 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Logger;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.CreditsScreen;
-import com.jmolina.orb.screens.Scroll1Screen;
-import com.jmolina.orb.screens.Scroll2Screen;
+import com.jmolina.orb.screens.ScrollScreen;
 import com.jmolina.orb.screens.LevelLaunchScreen;
 import com.jmolina.orb.screens.LevelSelectScreen;
 import com.jmolina.orb.screens.LoadScreen;
@@ -22,18 +21,18 @@ import java.util.ArrayList;
 
 public class Orb extends Game {
 
-	BaseScreen baseScreen;
-	LoadScreen loadScreen;
-	MainScreen mainScreen;
-	MenuScreen menuScreen;
-	OptionsScreen optionsScreen;
-	StatsScreen statsScreen;
-	CreditsScreen creditsScreen;
-	LevelSelectScreen levelSelectScreen;
-	LevelLaunchScreen levelLaunchScreen;
-	Scroll1Screen scroll1Screen;
-	Scroll2Screen scroll2Screen;
-	TableTestScreen tableTestScreen;
+	private BaseScreen baseScreen;
+	private LoadScreen loadScreen;
+	private MainScreen mainScreen;
+	private MenuScreen menuScreen;
+	private OptionsScreen optionsScreen;
+	private StatsScreen statsScreen;
+	private CreditsScreen creditsScreen;
+	private LevelSelectScreen levelSelectScreen;
+	private LevelLaunchScreen levelLaunchScreen;
+	private ScrollScreen scrollScreen1;
+	private ScrollScreen scrollScreen2;
+	private TableTestScreen tableTestScreen;
 
 	private Logger logger;
 	private ArrayList<Screen> screens;
@@ -52,9 +51,10 @@ public class Orb extends Game {
 		creditsScreen = new CreditsScreen();
 		levelSelectScreen = new LevelSelectScreen();
 		levelLaunchScreen = new LevelLaunchScreen();
-		scroll1Screen = new Scroll1Screen();
 		tableTestScreen = new TableTestScreen();
-		scroll2Screen = new Scroll2Screen();
+
+		scrollScreen1 = new ScrollScreen();
+		scrollScreen2 = new ScrollScreen();
 
 		screens = new ArrayList<Screen>();
 
@@ -67,11 +67,11 @@ public class Orb extends Game {
 		screens.add(creditsScreen);
 		screens.add(levelSelectScreen);
 		screens.add(levelLaunchScreen);
-		screens.add(scroll1Screen);
-		screens.add(scroll2Screen);
+		screens.add(scrollScreen1);
+		screens.add(scrollScreen2);
 		screens.add(tableTestScreen);
 
-		setScreen(scroll2Screen);
+		setScreen(baseScreen);
 	}
 
 	@Override
@@ -93,6 +93,16 @@ public class Orb extends Game {
 
 		baseScreen.dispose();
 		mainScreen.dispose();
+		loadScreen.dispose();
+		menuScreen.dispose();
+		optionsScreen.dispose();
+		statsScreen.dispose();
+		creditsScreen.dispose();
+		levelSelectScreen.dispose();
+		levelLaunchScreen.dispose();
+		scrollScreen1.dispose();
+		scrollScreen2.dispose();
+		tableTestScreen.dispose();
 	}
 
 }

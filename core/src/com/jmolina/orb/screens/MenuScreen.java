@@ -23,11 +23,13 @@ public class MenuScreen extends BaseScreen {
         setPositionRelative(0.5f, 0.95f, backTitle);
         getStage().addActor(backTitle);
 
+        /*
         scrollPane = new ScrollPane(null);
         scrollPane.setWidth(Vars.VIEWPORT_WIDTH);
         scrollPane.setHeight(0.7f * Vars.VIEWPORT_HEIGHT);
         scrollPane.setPosition(0f, 0f);
         getStage().addActor(scrollPane);
+        */
     }
 
     @Override

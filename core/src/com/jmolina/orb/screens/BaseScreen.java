@@ -21,10 +21,11 @@ public class BaseScreen implements Screen {
     public BaseScreen() {
         viewport = new FitViewport(768.0f, 1184.0f);
         stage = new Stage(viewport);
+        Gdx.input.setInputProcessor(stage);
+
         backgroundTexture = new Texture(Gdx.files.internal("background.png"));
         background = new Image(backgroundTexture);
         stage.addActor(background);
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
