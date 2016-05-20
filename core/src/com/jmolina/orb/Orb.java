@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.CreditsScreen;
@@ -35,7 +36,7 @@ public class Orb extends Game {
 	private TableTestScreen tableTestScreen;
 
 	private Logger logger;
-	private ArrayList<Screen> screens;
+	private ArrayList<BaseScreen> screens;
 	int i = 0;
 
 	@Override
@@ -56,7 +57,7 @@ public class Orb extends Game {
 		scrollScreen1 = new ScrollScreen();
 		scrollScreen2 = new ScrollScreen();
 
-		screens = new ArrayList<Screen>();
+		screens = new ArrayList<BaseScreen>();
 
 		screens.add(baseScreen);
 		screens.add(loadScreen);
@@ -78,7 +79,9 @@ public class Orb extends Game {
 	public void render () {
 		if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && Gdx.input.justTouched()) {
 			i++;
-			setScreen(screens.get(i % screens.size()));
+			int index = i % screens.size();
+			setScreen(screens.get(index));
+			Gdx.input.setInputProcessor(screens.get(index).getStage());
 			logger.info("Screen change: " + screens.get(i % screens.size()).getClass());
 		}
 
