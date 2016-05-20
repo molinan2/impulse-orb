@@ -2,29 +2,21 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.actors.LadderActor;
 
-/**
- * Test class
- */
-public class ScrollScreen extends BaseScreen {
+public class Scroll1Screen extends MenuScreen {
 
-    //private BitmapFont font;
     private ScrollPane scrollPane;
-    Texture knob_scroll;
-    Texture tfBackground;
-    Texture scroll_horizontal;
+    Texture knob_scroll, tfBackground, scroll_horizontal;
 
-    public ScrollScreen() {
+    public Scroll1Screen() {
         super();
 
         // Gdx.input.setInputProcessor(getStage());
 
-        //font = new BitmapFont(Gdx.files.internal("layout/font.fnt")); // TODO Crear con Hiero
         tfBackground = new Texture(Gdx.files.internal("layout/tfbackground.png"));
         scroll_horizontal = new Texture(Gdx.files.internal("layout/scroll_horizontal.png"));
         knob_scroll = new Texture(Gdx.files.internal("layout/knob_scroll.png"));
@@ -35,13 +27,11 @@ public class ScrollScreen extends BaseScreen {
         sps.vScrollKnob = new TextureRegionDrawable(new TextureRegion(knob_scroll));
 
         LadderActor ladder = new LadderActor();
-        // ladder.setSize(500f, 500f);
 
         scrollPane = new ScrollPane(ladder, sps);
-        scrollPane.debug();
-        scrollPane.setWidth(200f);
-        scrollPane.setHeight(100f);
-        scrollPane.setPosition(200f, 200f);
+        scrollPane.setWidth(scrollPane.getWidth() * 0.5f);
+        scrollPane.setHeight(scrollPane.getHeight() * 0.5f);
+        scrollPane.setPosition(100f, 100f);
 
         getStage().addActor(scrollPane);
     }
@@ -54,4 +44,5 @@ public class ScrollScreen extends BaseScreen {
 
         super.dispose();
     }
+
 }

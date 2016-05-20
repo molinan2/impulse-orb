@@ -2,12 +2,13 @@ package com.jmolina.orb;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.Logger;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.CreditsScreen;
+import com.jmolina.orb.screens.Scroll1Screen;
 import com.jmolina.orb.screens.Scroll2Screen;
-import com.jmolina.orb.screens.ScrollScreen;
 import com.jmolina.orb.screens.LevelLaunchScreen;
 import com.jmolina.orb.screens.LevelSelectScreen;
 import com.jmolina.orb.screens.LoadScreen;
@@ -30,9 +31,9 @@ public class Orb extends Game {
 	CreditsScreen creditsScreen;
 	LevelSelectScreen levelSelectScreen;
 	LevelLaunchScreen levelLaunchScreen;
-	ScrollScreen scrollScreen;
-	TableTestScreen tableTestScreen;
+	Scroll1Screen scroll1Screen;
 	Scroll2Screen scroll2Screen;
+	TableTestScreen tableTestScreen;
 
 	private Logger logger;
 	private ArrayList<Screen> screens;
@@ -51,7 +52,7 @@ public class Orb extends Game {
 		creditsScreen = new CreditsScreen();
 		levelSelectScreen = new LevelSelectScreen();
 		levelLaunchScreen = new LevelLaunchScreen();
-		scrollScreen = new ScrollScreen();
+		scroll1Screen = new Scroll1Screen();
 		tableTestScreen = new TableTestScreen();
 		scroll2Screen = new Scroll2Screen();
 
@@ -66,16 +67,16 @@ public class Orb extends Game {
 		screens.add(creditsScreen);
 		screens.add(levelSelectScreen);
 		screens.add(levelLaunchScreen);
-		screens.add(scrollScreen);
-		screens.add(tableTestScreen);
+		screens.add(scroll1Screen);
 		screens.add(scroll2Screen);
+		screens.add(tableTestScreen);
 
 		setScreen(scroll2Screen);
 	}
 
 	@Override
 	public void render () {
-		if (Gdx.input.justTouched() && false) {
+		if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && Gdx.input.justTouched()) {
 			i++;
 			setScreen(screens.get(i % screens.size()));
 			logger.info("Screen change: " + screens.get(i % screens.size()).getClass());
