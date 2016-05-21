@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.var.Vars;
 
@@ -13,6 +14,7 @@ public class MenuScreen extends BaseScreen {
     private Texture backTitleTexture;
     private Image backTitle;
     private ScrollPane scrollPane;
+    private Table table;
 
     // private BackTitle backTitle;
 
@@ -23,18 +25,26 @@ public class MenuScreen extends BaseScreen {
         setPositionRelative(0.5f, 0.95f, backTitle);
         getStage().addActor(backTitle);
 
-        /*
-        scrollPane = new ScrollPane(null);
+        table = new Table();
+        table.debug();
+        table.setPosition(0f, 0f);
+        table.setWidth(Vars.VIEWPORT_WIDTH);
+
+        scrollPane = new ScrollPane(table);
         scrollPane.setWidth(Vars.VIEWPORT_WIDTH);
         scrollPane.setHeight(0.7f * Vars.VIEWPORT_HEIGHT);
         scrollPane.setPosition(0f, 0f);
+
         getStage().addActor(scrollPane);
-        */
     }
 
     @Override
     public void dispose() {
         backTitleTexture.dispose();
         super.dispose();
+    }
+
+    public Table getTable() {
+        return table;
     }
 }

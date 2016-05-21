@@ -3,8 +3,6 @@ package com.jmolina.orb;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.CreditsScreen;
@@ -17,6 +15,7 @@ import com.jmolina.orb.screens.MenuScreen;
 import com.jmolina.orb.screens.OptionsScreen;
 import com.jmolina.orb.screens.StatsScreen;
 import com.jmolina.orb.screens.TableTestScreen;
+import com.jmolina.orb.screens.TestScreen;
 
 import java.util.ArrayList;
 
@@ -31,9 +30,9 @@ public class Orb extends Game {
 	private CreditsScreen creditsScreen;
 	private LevelSelectScreen levelSelectScreen;
 	private LevelLaunchScreen levelLaunchScreen;
-	private ScrollScreen scrollScreen1;
-	private ScrollScreen scrollScreen2;
-	private TableTestScreen tableTestScreen;
+	private ScrollScreen scrollScreen1, scrollScreen2;
+	private TableTestScreen tableScreen;
+	private TestScreen testScreen;
 
 	private Logger logger;
 	private ArrayList<BaseScreen> screens;
@@ -52,10 +51,10 @@ public class Orb extends Game {
 		creditsScreen = new CreditsScreen();
 		levelSelectScreen = new LevelSelectScreen();
 		levelLaunchScreen = new LevelLaunchScreen();
-		tableTestScreen = new TableTestScreen();
-
 		scrollScreen1 = new ScrollScreen();
 		scrollScreen2 = new ScrollScreen();
+		tableScreen = new TableTestScreen();
+		testScreen = new TestScreen();
 
 		screens = new ArrayList<BaseScreen>();
 
@@ -70,9 +69,10 @@ public class Orb extends Game {
 		screens.add(levelLaunchScreen);
 		screens.add(scrollScreen1);
 		screens.add(scrollScreen2);
-		screens.add(tableTestScreen);
+		screens.add(tableScreen);
+		screens.add(testScreen);
 
-		setScreen(baseScreen);
+		setScreen(testScreen);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class Orb extends Game {
 		levelLaunchScreen.dispose();
 		scrollScreen1.dispose();
 		scrollScreen2.dispose();
-		tableTestScreen.dispose();
+		tableScreen.dispose();
 	}
 
 }

@@ -24,17 +24,25 @@ public class CreditsScreen extends MenuScreen {
         super();
 
         applicationTexture = new Texture(Gdx.files.internal("section.png"));
+
         application = new Image(new TextureRegionDrawable(new TextureRegion(applicationTexture)));
-        setPositionRelative(0.5f, 0.65f, application);
-        getStage().addActor(application);
+        //setPositionRelative(0.5f, 0.65f, application);
+        //getStage().addActor(application);
 
         authors = new Image(new TextureRegionDrawable(new TextureRegion(applicationTexture)));
-        setPositionRelative(0.5f, 0.25f, authors);
-        getStage().addActor(authors);
+        //setPositionRelative(0.5f, 0.25f, authors);
+        //getStage().addActor(authors);
 
         license = new Image(new TextureRegionDrawable(new TextureRegion(applicationTexture)));
-        setPositionRelative(0.5f, -0.15f, license);
-        getStage().addActor(license);
+        //setPositionRelative(0.5f, -0.15f, license);
+        //getStage().addActor(license);
+
+        getTable().row();
+        getTable().add(application).height(400f).width(600f).pad(30f).expand();
+        getTable().row();
+        getTable().add(authors).height(400f).width(600f).pad(30f).expand();
+        getTable().row();
+        getTable().add(license).height(400f).width(600f).pad(30f).expand();
     }
 
     @Override
