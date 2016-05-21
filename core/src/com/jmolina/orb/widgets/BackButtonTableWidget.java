@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.jmolina.orb.var.Vars;
 
-public class BackButtonWidget extends Table {
+public class BackButtonTableWidget extends Table {
 
     private Button button;
     private Label label;
@@ -22,7 +22,7 @@ public class BackButtonWidget extends Table {
 
     // todo Se le debe pasar una referencia a la pantalla anterior, y el texto del titulo
 
-    public BackButtonWidget(String text) {
+    public BackButtonTableWidget(String text) {
         super();
 
         button = new Button();

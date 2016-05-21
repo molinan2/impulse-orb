@@ -9,11 +9,4 @@ public class Vars {
         return VIEWPORT_WIDTH * (float) span / 12.0f;
     }
 
-    public static float gridx(int unit) {
-        return (float) unit * 64.0f;
-    }
-
-    public static float gridy(int unit) {
-        return VIEWPORT_HEIGHT - (float) unit * 64.0f;
-    }
 }

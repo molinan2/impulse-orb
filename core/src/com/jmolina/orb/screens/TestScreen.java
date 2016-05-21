@@ -2,49 +2,42 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.jmolina.orb.var.Vars;
-import com.jmolina.orb.widgets.BackButtonWidget;
+import com.jmolina.orb.var.Utils;
+import com.jmolina.orb.widgets.BackButtonTableWidget;
+import com.jmolina.orb.widgets.BackTitleGroup;
 
 public class TestScreen extends MenuScreen {
 
-    private BackButtonWidget backButtonWidget;
+    private BackButtonTableWidget backButtonTableWidget;
     private Image image;
-    private Group group;
+    private BackTitleGroup backTitleGroup;
 
     public TestScreen() {
         super();
 
         image = new Image(new Texture(Gdx.files.internal("splash.png")));
 
-        backButtonWidget = new BackButtonWidget("Titulo que se lee");
+        backButtonTableWidget = new BackButtonTableWidget("Titulo que se lee");
 
         // getTable().row();
-        // getTable().add(backButtonWidget);
+        // getTable().add(backButtonTableWidget);
 
-        // getStage().addActor(backButtonWidget);
+        // getStage().addActor(backButtonTableWidget);
         // getStage().addActor(image);
 
         Image back = new Image(new Texture(Gdx.files.internal("game_backbutton.png")));
         Image section = new Image(new Texture(Gdx.files.internal("game_section.png")));
 
-        group = new Group();
-        getStage().addActor(group);
-
-        group.addActor(back);
-        group.addActor(section);
-        back.setPosition(0f, 0f);
-        //back.setSize(100f, 100f);
-        section.setPosition(Vars.gridx(3), 0f);
-        //back.setSize(100f, 100f);
-
-        group.setPosition(Vars.gridx(1), Vars.gridy(3));
+        backTitleGroup = new BackTitleGroup();
+        backTitleGroup.setPosition(Utils.xGrid(1), Utils.yGrid(3));
+        getStage().addActor(backTitleGroup);
     }
 
     @Override
     public void dispose() {
         super.dispose();
+        backTitleGroup.dispose();
     }
 
 }

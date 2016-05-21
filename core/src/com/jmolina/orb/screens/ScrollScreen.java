@@ -3,6 +3,7 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -24,7 +25,7 @@ public class ScrollScreen extends MenuScreen {
         Image ladderImage = new Image(ladderTexture);
         ladderImage.setWidth(1000f * (float) Math.random());
 
-        LadderActor ladder = new LadderActor(ladderTexture);
+        Actor ladder = new LadderActor(ladderTexture);
 
         scrollPane = new ScrollPane(ladderImage, sps);
         scrollPane.setWidth(scrollPane.getWidth() * 0.5f);

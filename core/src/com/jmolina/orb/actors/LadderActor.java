@@ -27,4 +27,6 @@ public class LadderActor extends Actor {
         batch.draw(this.texture, this.getX(), this.getY());
     }
 
+
+
 }
