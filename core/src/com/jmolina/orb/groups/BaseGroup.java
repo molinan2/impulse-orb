@@ -1,5 +1,6 @@
-package com.jmolina.orb.widgets;
+package com.jmolina.orb.groups;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Disposable;
@@ -22,6 +23,10 @@ public class BaseGroup extends Group {
     }
 
     public void setGridPosition(int xGrid, int yGrid) {
+        this.setPosition(Utils.xGrid(xGrid), Utils.yGrid(yGrid));
+    }
+
+    public void setGridPosition(float xGrid, float yGrid) {
         this.setPosition(Utils.xGrid(xGrid), Utils.yGrid(yGrid));
     }
 }

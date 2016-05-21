@@ -37,12 +37,18 @@ public class CreditsScreen extends MenuScreen {
         //setPositionRelative(0.5f, -0.15f, license);
         //getStage().addActor(license);
 
+        /*
         getTable().row();
         getTable().add(application).height(400f).width(600f).pad(30f).expand();
         getTable().row();
         getTable().add(authors).height(400f).width(600f).pad(30f).expand();
         getTable().row();
         getTable().add(license).height(400f).width(600f).pad(30f).expand();
+        */
+
+        addRow(application);
+        addRow(authors);
+        addRow(license);
     }
 
     @Override

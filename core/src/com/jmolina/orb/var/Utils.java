@@ -10,4 +10,12 @@ public class Utils {
         return Vars.VIEWPORT_HEIGHT - (float) unit * 64.0f;
     }
 
+    public static float xGrid(float unit) {
+        return unit * 64.0f;
+    }
+
+    public static float yGrid(float unit) {
+        return Vars.VIEWPORT_HEIGHT - unit * 64.0f;
+    }
+
 }

@@ -49,7 +49,7 @@ public class TableTestScreen extends MenuScreen {
 
         table.setPosition(0f, 0f);
         table.setWidth(Vars.VIEWPORT_WIDTH);
-        table.setHeight(0.4f * Vars.VIEWPORT_HEIGHT);
+        table.setHeight(1f * Vars.VIEWPORT_HEIGHT);
         // table.setFillParent(true);
         // table.pack();
 

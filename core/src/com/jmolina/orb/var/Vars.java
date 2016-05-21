@@ -9,4 +9,6 @@ public class Vars {
         return VIEWPORT_WIDTH * (float) span / 12.0f;
     }
 
+    public static float GRID_UNIT = 64.0f;
+
 }

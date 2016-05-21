@@ -1,9 +1,7 @@
-package com.jmolina.orb.widgets;
+package com.jmolina.orb.groups;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.var.Utils;
@@ -11,14 +9,14 @@ import com.jmolina.orb.var.Utils;
 /**
  * TODO Convertir el title a texto con distance-field
  */
-public class BackTitleGroup extends BaseGroup implements Disposable {
+public class SectionTitleGroup extends com.jmolina.orb.groups.BaseGroup implements Disposable {
 
     private Image button;
     private Texture buttonTexture;
     private Image title;
     private Texture titleTexture;
 
-    public BackTitleGroup() {
+    public SectionTitleGroup() {
         buttonTexture = new Texture(Gdx.files.internal("back.png"));
         titleTexture = new Texture(Gdx.files.internal("title.png"));
         button = new Image(buttonTexture);

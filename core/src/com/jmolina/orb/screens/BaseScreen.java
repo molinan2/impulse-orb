@@ -70,7 +70,7 @@ public class BaseScreen implements Screen {
      * TODO Cuando esté claro qué se usa de Stage, eliminarla y crear una API
      * @return Stage
      */
-    public Stage getStage() {
+    protected Stage getStage() {
         return stage;
     }
 
@@ -80,6 +80,10 @@ public class BaseScreen implements Screen {
                 x * (Vars.VIEWPORT_WIDTH - image.getWidth()),
                 y * (Vars.VIEWPORT_HEIGHT - image.getHeight())
         );
+    }
+
+    public void setAsInputProcessor() {
+        Gdx.input.setInputProcessor(this.stage);
     }
 
 }

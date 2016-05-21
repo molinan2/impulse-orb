@@ -2,9 +2,10 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.jmolina.orb.var.Vars;
+import com.jmolina.orb.widgets.CheckWidget;
 
 public class OptionsScreen extends MenuScreen {
 
@@ -14,36 +15,38 @@ public class OptionsScreen extends MenuScreen {
     // private CheckOption online;
     // private SelectOption zoom;
 
+    private CheckWidget music;
+    private CheckWidget sound;
+    private CheckWidget vibration;
+    private CheckWidget online;
     private Texture musicTexture;
-    private Image music;
-    private Image sound;
-    private Image vibration;
-    private Image online;
+    private Texture soundTexture;
+    private Texture vibrationTexture;
+    private Texture onlineTexture;
+    // private MultiCheckWidget zoom;
 
     public OptionsScreen() {
         super();
 
-        musicTexture = new Texture(Gdx.files.internal("check.png"));
-        music = new Image(new TextureRegionDrawable(new TextureRegion(musicTexture)));
-        setPositionRelative(0.5f, 0.65f, music);
-        getStage().addActor(music);
+        musicTexture = new Texture(Gdx.files.internal("option_music.png"));
+        soundTexture = new Texture(Gdx.files.internal("option_sound.png"));
+        vibrationTexture = new Texture(Gdx.files.internal("option_vibration.png"));
+        onlineTexture = new Texture(Gdx.files.internal("option_online.png"));
 
-        sound = new Image(new TextureRegionDrawable(new TextureRegion(musicTexture)));
-        setPositionRelative(0.5f, 0.55f, sound);
-        getStage().addActor(sound);
+        music = new CheckWidget(musicTexture);
+        sound = new CheckWidget(soundTexture);
+        vibration = new CheckWidget(vibrationTexture);
+        online = new CheckWidget(onlineTexture);
 
-        vibration = new Image(new TextureRegionDrawable(new TextureRegion(musicTexture)));
-        setPositionRelative(0.5f, 0.45f, vibration);
-        getStage().addActor(vibration);
+        addRow(music);
+        addRow(sound);
+        addRow(vibration);
+        addRow(online);
 
-        online = new Image(new TextureRegionDrawable(new TextureRegion(musicTexture)));
-        setPositionRelative(0.5f, 0.45f, online);
-        getStage().addActor(online);
     }
 
     @Override
     public void dispose() {
-        musicTexture.dispose();
         super.dispose();
     }
 }
