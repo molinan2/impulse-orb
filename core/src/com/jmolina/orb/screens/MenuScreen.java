@@ -25,6 +25,7 @@ public class MenuScreen extends BaseScreen {
         table.top();
         table.setPosition(Vars.GRID_UNIT, 0f);
         table.setWidth(Vars.VIEWPORT_WIDTH - 2 * Vars.GRID_UNIT);
+        // table.setFillParent(true);
         // table.pack();
 
         scrollPane = new ScrollPane(table);

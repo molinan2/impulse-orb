@@ -3,6 +3,7 @@ package com.jmolina.orb;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Logger;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.CreditsScreen;
@@ -18,44 +19,45 @@ import java.util.ArrayList;
 
 public class Orb extends Game {
 
-	private LoadScreen loadScreen;
+	private LoadScreen gameLoadScreen;
 	private MainScreen mainScreen;
 	private OptionsScreen optionsScreen;
 	private StatsScreen statsScreen;
 	private CreditsScreen creditsScreen;
 	private LevelSelectScreen levelSelectScreen;
 	private LevelLaunchScreen levelLaunchScreen;
-	private TestScreen testScreen;
 
 	private Logger logger;
 	private ArrayList<BaseScreen> screens;
-	int i = 0;
+	private int i = 0;
+
+	private Texture splashTexture;
 
 	@Override
 	public void create () {
 		logger = new Logger("Game", Logger.INFO);
 
-		loadScreen = new LoadScreen();
+		splashTexture = new Texture(Gdx.files.internal("splash.png"));
+
+		gameLoadScreen = new LoadScreen(splashTexture);
 		mainScreen = new MainScreen();
 		optionsScreen = new OptionsScreen();
 		statsScreen = new StatsScreen();
 		creditsScreen = new CreditsScreen();
 		levelSelectScreen = new LevelSelectScreen();
 		levelLaunchScreen = new LevelLaunchScreen();
-		testScreen = new TestScreen();
 
 		screens = new ArrayList<BaseScreen>();
 
-		screens.add(loadScreen);
+		screens.add(gameLoadScreen);
 		screens.add(mainScreen);
 		screens.add(optionsScreen);
 		screens.add(statsScreen);
 		screens.add(creditsScreen);
 		screens.add(levelSelectScreen);
 		screens.add(levelLaunchScreen);
-		screens.add(testScreen);
 
-		setScreen(loadScreen);
+		setScreen(gameLoadScreen);
 	}
 
 	@Override
@@ -78,14 +80,15 @@ public class Orb extends Game {
 	public void dispose () {
 		if (screen != null) screen.hide();
 
+		splashTexture.dispose();
+
 		mainScreen.dispose();
-		loadScreen.dispose();
+		gameLoadScreen.dispose();
 		optionsScreen.dispose();
 		statsScreen.dispose();
 		creditsScreen.dispose();
 		levelSelectScreen.dispose();
 		levelLaunchScreen.dispose();
-		testScreen.dispose();
 	}
 
 }

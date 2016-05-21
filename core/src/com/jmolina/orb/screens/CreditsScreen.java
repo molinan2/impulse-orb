@@ -5,55 +5,45 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.jmolina.orb.widgets.TextSectionWidget;
 
 public class CreditsScreen extends MenuScreen {
 
-    // private TextSection application;
-    // private TextSection authors;
-    // private TextSection license;
-    // private TextSection libraries;
-    // private TextSection resources;
-    // private TextSection thanks;
+    private TextSectionWidget application;
+    private TextSectionWidget authors;
+    private TextSectionWidget license;
+    private TextSectionWidget libraries;
+    private TextSectionWidget resources;
+    private TextSectionWidget thanks;
 
-    private Texture applicationTexture;
-    private Image application;
-    private Image authors;
-    private Image license;
+    private Texture headerTexture;
+    private Texture bodyTexture;
 
     public CreditsScreen() {
         super();
 
-        applicationTexture = new Texture(Gdx.files.internal("section.png"));
+        headerTexture = new Texture(Gdx.files.internal("credits_header.png"));
+        bodyTexture = new Texture(Gdx.files.internal("credits_body.png"));
 
-        application = new Image(new TextureRegionDrawable(new TextureRegion(applicationTexture)));
-        //setPositionRelative(0.5f, 0.65f, application);
-        //getStage().addActor(application);
-
-        authors = new Image(new TextureRegionDrawable(new TextureRegion(applicationTexture)));
-        //setPositionRelative(0.5f, 0.25f, authors);
-        //getStage().addActor(authors);
-
-        license = new Image(new TextureRegionDrawable(new TextureRegion(applicationTexture)));
-        //setPositionRelative(0.5f, -0.15f, license);
-        //getStage().addActor(license);
-
-        /*
-        getTable().row();
-        getTable().add(application).height(400f).width(600f).pad(30f).expand();
-        getTable().row();
-        getTable().add(authors).height(400f).width(600f).pad(30f).expand();
-        getTable().row();
-        getTable().add(license).height(400f).width(600f).pad(30f).expand();
-        */
+        application = new TextSectionWidget(headerTexture, bodyTexture);
+        authors = new TextSectionWidget(headerTexture, bodyTexture);
+        license = new TextSectionWidget(headerTexture, bodyTexture);
+        libraries = new TextSectionWidget(headerTexture, bodyTexture);
+        resources = new TextSectionWidget(headerTexture, bodyTexture);
+        thanks = new TextSectionWidget(headerTexture, bodyTexture);
 
         addRow(application);
         addRow(authors);
         addRow(license);
+        addRow(libraries);
+        addRow(resources);
+        addRow(thanks);
     }
 
     @Override
     public void dispose() {
-        applicationTexture.dispose();
+        headerTexture.dispose();
+        bodyTexture.dispose();
         super.dispose();
     }
 
