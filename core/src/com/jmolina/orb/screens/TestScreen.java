@@ -26,9 +26,6 @@ public class TestScreen extends MenuScreen {
         // getStage().addActor(backButtonTableWidget);
         // getStage().addActor(image);
 
-        Image back = new Image(new Texture(Gdx.files.internal("game_backbutton.png")));
-        Image section = new Image(new Texture(Gdx.files.internal("game_section.png")));
-
         backTitleGroup = new BackTitleGroup();
         backTitleGroup.setPosition(Utils.xGrid(1), Utils.yGrid(3));
         getStage().addActor(backTitleGroup);

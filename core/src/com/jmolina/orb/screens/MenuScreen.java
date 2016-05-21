@@ -8,25 +8,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.var.Vars;
+import com.jmolina.orb.widgets.BackTitleGroup;
 
 public class MenuScreen extends BaseScreen {
 
-    private Texture backTitleTexture;
-    private Image backTitle;
-    private ScrollPane scrollPane;
+    private BackTitleGroup backTitleGroup;
     private Table table;
-
-    // private BackTitle backTitle;
+    private ScrollPane scrollPane;
 
     public MenuScreen() {
         super();
-        backTitleTexture = new Texture(Gdx.files.internal("backtitle.png"));
-        backTitle = new Image(new TextureRegionDrawable(new TextureRegion(backTitleTexture)));
-        setPositionRelative(0.5f, 0.95f, backTitle);
-        getStage().addActor(backTitle);
+
+        backTitleGroup = new BackTitleGroup();
+        backTitleGroup.setGridPosition(1, 3);
+        getStage().addActor(backTitleGroup);
 
         table = new Table();
-        table.debug();
         table.setPosition(0f, 0f);
         table.setWidth(Vars.VIEWPORT_WIDTH);
 
@@ -40,10 +37,14 @@ public class MenuScreen extends BaseScreen {
 
     @Override
     public void dispose() {
-        backTitleTexture.dispose();
+        backTitleGroup.dispose();
         super.dispose();
     }
 
+    /**
+     * TODO Cuando estén claras las funcionalidades que se usan de Table, crear una API simple
+     * @return Table
+     */
     public Table getTable() {
         return table;
     }

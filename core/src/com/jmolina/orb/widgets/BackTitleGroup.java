@@ -8,7 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.var.Utils;
 
-public class BackTitleGroup extends Group implements Disposable {
+/**
+ * TODO Convertir el title a texto con distance-field
+ */
+public class BackTitleGroup extends BaseGroup implements Disposable {
 
     private Image button;
     private Texture buttonTexture;
@@ -32,13 +35,4 @@ public class BackTitleGroup extends Group implements Disposable {
         titleTexture.dispose();
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        // batch.draw(this.texture, this.getX(), this.getY());
-
-        // button.draw(batch, parentAlpha);
-        // title.draw(batch, parentAlpha);
-
-        super.draw(batch, parentAlpha);
-    }
 }

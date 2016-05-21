@@ -66,11 +66,15 @@ public class BaseScreen implements Screen {
         stage.dispose();
     }
 
+    /**
+     * TODO Cuando esté claro qué se usa de Stage, eliminarla y crear una API
+     * @return Stage
+     */
     public Stage getStage() {
         return stage;
     }
 
-    // TODO Mover a utility class
+    // TODO Sustituir y eliminar
     public void setPositionRelative(float x, float y, Image image) {
         image.setPosition(
                 x * (Vars.VIEWPORT_WIDTH - image.getWidth()),
