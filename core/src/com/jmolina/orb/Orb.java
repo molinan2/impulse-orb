@@ -36,6 +36,7 @@ public class Orb extends Game {
 	@Override
 	public void create () {
 		logger = new Logger("Game", Logger.INFO);
+		Gdx.input.setCatchBackKey(true); // Android
 
 		splashTexture = new Texture(Gdx.files.internal("splash.png"));
 
@@ -62,7 +63,7 @@ public class Orb extends Game {
 
 	@Override
 	public void render () {
-		if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && Gdx.input.justTouched()) {
+		if ((Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && Gdx.input.justTouched()) || Gdx.input.isKeyPressed(Input.Keys.BACK)) {
 			i++;
 			int index = i % screens.size();
 			setScreen(screens.get(index));

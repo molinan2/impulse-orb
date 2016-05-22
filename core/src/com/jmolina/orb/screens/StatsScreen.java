@@ -39,15 +39,15 @@ public class StatsScreen extends MenuScreen {
         minDistanceAlive = new StatWidget(statName);
         maxDistanceAlive = new StatWidget(statName);
 
-        addRow(played);
-        addRow(distance);
-        addRow(fails);
-        addRow(avgTimeBetweenFails);
-        addRow(avgDistanceBetweenFails);
-        addRow(minTimeAlive);
-        addRow(maxTimeAlive);
-        addRow(minDistanceAlive);
-        addRow(maxDistanceAlive);
+        addRow(played, 0);
+        addRow(distance, 0);
+        addRow(fails, 0.5f);
+        addRow(avgTimeBetweenFails, 0);
+        addRow(avgDistanceBetweenFails, 0.5f);
+        addRow(minTimeAlive, 0);
+        addRow(maxTimeAlive, 0);
+        addRow(minDistanceAlive, 0);
+        addRow(maxDistanceAlive, 0);
     }
 
     @Override

@@ -7,6 +7,9 @@ import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Vars;
 import com.jmolina.orb.groups.SectionTitleGroup;
 
+/**
+ * TODO Cuando se pierde el focus, hay que cancelar de alguna manera el movimientoo de scroll
+ */
 public class MenuScreen extends BaseScreen {
 
     private SectionTitleGroup sectionTitleGroup;
@@ -51,7 +54,11 @@ public class MenuScreen extends BaseScreen {
     }
 
     public <T extends Actor> void addRow(T actor) {
+        addRow(actor, 0.5f);
+    }
+
+    public <T extends Actor> void addRow(T actor, float bottomPadding) {
         getTable().row();
-        getTable().add(actor).width(Vars.VIEWPORT_WIDTH - 2 * Vars.GRID_UNIT).expandX().padBottom(0.5f * Vars.GRID_UNIT);
+        getTable().add(actor).width(Vars.VIEWPORT_WIDTH - 2 * Vars.GRID_UNIT).expandX().padBottom(bottomPadding * Vars.GRID_UNIT);
     }
 }
