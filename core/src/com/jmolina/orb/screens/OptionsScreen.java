@@ -20,6 +20,7 @@ public class OptionsScreen extends MenuScreen {
     private Texture vibrationTexture;
     private Texture onlineTexture;
     private Texture zoomTexture;
+    // TODO: 22/05/2016 Mi username. Por defecto, el que coja del movil
 
     public OptionsScreen() {
         super();

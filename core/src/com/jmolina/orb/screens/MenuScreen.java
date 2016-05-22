@@ -3,6 +3,7 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Vars;
 import com.jmolina.orb.groups.SectionTitleGroup;
@@ -54,11 +55,15 @@ public class MenuScreen extends BaseScreen {
     }
 
     public <T extends Actor> void addRow(T actor) {
-        addRow(actor, 0.5f);
+        addRow(actor, 0.5f, 10f);
     }
 
     public <T extends Actor> void addRow(T actor, float bottomPadding) {
+        addRow(actor, bottomPadding, 10f);
+    }
+
+    public <T extends Actor> void addRow(T actor, float bottomPadding, float width) {
         getTable().row();
-        getTable().add(actor).width(Vars.VIEWPORT_WIDTH - 2 * Vars.GRID_UNIT).expandX().padBottom(bottomPadding * Vars.GRID_UNIT);
+        getTable().add(actor).width(width * Vars.GRID_UNIT).expandX().padBottom(bottomPadding * Vars.GRID_UNIT);
     }
 }

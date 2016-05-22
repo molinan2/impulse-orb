@@ -5,50 +5,55 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.jmolina.orb.widgets.LadderWidget;
+import com.jmolina.orb.widgets.LevelCoverWidget;
+import com.jmolina.orb.widgets.LevelTitleWidget;
+import com.jmolina.orb.widgets.MainButtonWidget;
 
 public class LevelLaunchScreen extends MenuScreen {
 
-    // private LevelCover cover;
-    // private Ladder ladderLocal;
-    // private Ladder ladderOnline;
-    // private MainButton start;
+    private LevelTitleWidget title;
+    private LevelCoverWidget cover;
+    private MainButtonWidget button;
+    private LadderWidget ladderPersonal;
+    private LadderWidget ladderOnline;
 
+    private Texture titleTexture;
     private Texture coverTexture;
-    private Image cover;
-    private Texture ladderLocalTexture;
-    private Image ladderLocal;
-    private Image ladderOnline;
-    private Texture startTexture;
-    private Image start;
+    private Texture buttonTexture;
+    private Texture ladderPersonalTexture;
+    private Texture ladderOnlineTexture;
 
     public LevelLaunchScreen() {
         super();
 
-        coverTexture = new Texture(Gdx.files.internal("levelcover.png"));
-        cover = new Image(new TextureRegionDrawable(new TextureRegion(coverTexture)));
-        setPositionRelative(0.5f, 0.75f, cover);
-        getStage().addActor(cover);
+        titleTexture = new Texture(Gdx.files.internal("launch_title.png"));
+        coverTexture = new Texture(Gdx.files.internal("launch_cover.png"));
+        buttonTexture = new Texture(Gdx.files.internal("launch_button.png"));
+        ladderPersonalTexture = new Texture(Gdx.files.internal("launch_personal.png"));
+        ladderOnlineTexture = new Texture(Gdx.files.internal("launch_online.png"));
 
-        ladderLocalTexture = new Texture(Gdx.files.internal("ladder.png"));
-        ladderLocal = new Image(new TextureRegionDrawable(new TextureRegion(ladderLocalTexture)));
-        setPositionRelative(0.1f, 0.45f, ladderLocal);
-        getStage().addActor(ladderLocal);
+        title = new LevelTitleWidget(titleTexture);
+        cover = new LevelCoverWidget(coverTexture);
+        button = new MainButtonWidget(buttonTexture);
+        ladderPersonal = new LadderWidget(ladderPersonalTexture);
+        ladderOnline = new LadderWidget(ladderOnlineTexture);
 
-        ladderOnline = new Image(new TextureRegionDrawable(new TextureRegion(ladderLocalTexture)));
-        setPositionRelative(0.9f, 0.45f, ladderOnline);
-        getStage().addActor(ladderOnline);
-
-        startTexture = new Texture(Gdx.files.internal("mainbutton.png"));
-        start = new Image(new TextureRegionDrawable(new TextureRegion(startTexture)));
-        setPositionRelative(0.5f, 0.15f, start);
-        getStage().addActor(start);
+        addRow(title);
+        addRow(cover);
+        addRow(button, 1f, 8f);
+        addRow(ladderPersonal);
+        addRow(ladderOnline);
     }
 
     @Override
     public void dispose() {
-        coverTexture.dispose();
-        ladderLocalTexture.dispose();
-        startTexture.dispose();
         super.dispose();
+
+        titleTexture.dispose();
+        coverTexture.dispose();
+        buttonTexture.dispose();
+        ladderPersonalTexture.dispose();
+        ladderOnlineTexture.dispose();
     }
 }
