@@ -1,8 +1,12 @@
 package com.jmolina.orb.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Vars;
@@ -16,6 +20,7 @@ public class MenuScreen extends BaseScreen {
     private SectionTitleGroup sectionTitleGroup;
     private Table table;
     private ScrollPane scrollPane;
+    private Texture scrollerTexture;
 
     public MenuScreen() {
         super();
@@ -28,11 +33,16 @@ public class MenuScreen extends BaseScreen {
         table.debug();
         table.top();
         table.setPosition(Vars.GRID_UNIT, 0f);
-        table.setWidth(Vars.VIEWPORT_WIDTH - 2 * Vars.GRID_UNIT);
+        // table.setWidth(Vars.VIEWPORT_WIDTH - 2 * Vars.GRID_UNIT);
         // table.setFillParent(true);
         // table.pack();
 
+        ScrollPane.ScrollPaneStyle scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
+        scrollerTexture = new Texture(Gdx.files.internal("scroll_knob.png"));
+        scrollPaneStyle.vScrollKnob = new TextureRegionDrawable(new TextureRegion(scrollerTexture));
+
         scrollPane = new ScrollPane(table);
+        scrollPane.setStyle(scrollPaneStyle);
         scrollPane.setWidth(Vars.VIEWPORT_WIDTH);
         scrollPane.setHeight(Utils.yGrid(4.5f));
         scrollPane.setPosition(0f, 0f);
@@ -43,6 +53,7 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void dispose() {
         sectionTitleGroup.dispose();
+        scrollerTexture.dispose();
         super.dispose();
     }
 
