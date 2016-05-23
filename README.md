@@ -1,8 +1,34 @@
-# README #
+# Anotaciones #
 
-En lugar de explicar los pasos necesarios para instalar y ejecutar mi aplicación, voy a ir anotando por ahora las curiosidades que me estoy encontrando.
+### Creación de .jar ejecutable ###
 
-### Sobre eventos drag y click en actores ###
+Desde la línea de comandos, moverse a la carpeta del proyecto y ejecutar (en Windows):
+
+```
+gradlew desktop:dist
+```
+
+El ejecutable colgará de `desktop\build\libs\`. Ejemplo de salida:
+
+```
+c:\ProgramsDev\cygwin64\home\Juanma\orb2>gradlew desktop:dist
+Starting a new Gradle Daemon for this build (subsequent builds will be faster).
+Configuration on demand is an incubating feature.
+:core:compileJava UP-TO-DATE
+:core:processResources UP-TO-DATE
+:core:classes UP-TO-DATE
+:core:jar UP-TO-DATE
+:desktop:compileJava UP-TO-DATE
+:desktop:processResources UP-TO-DATE
+:desktop:classes UP-TO-DATE
+:desktop:dist
+
+BUILD SUCCESSFUL
+
+Total time: 7.378 secs
+```
+
+### Eventos drag y click en actores ###
 
 Es preferible utilizar DragListener antes que InputListener, ya que tiene métodos más específicos. DragListener ofrece más control al disponer de drag() y dragStart(). He tenido problemas para recolocar la posición del actor al usar touchDragged tanto en DragListener como en InputListener.
 
@@ -36,6 +62,6 @@ public void drag(InputEvent event, float x, float y, int pointer) {
 }
 ```
 
-### Particularidades de Box2D ###
+### Box2D ###
 
 [Existe una velocidad máxima](http://www.iforce2d.net/b2dtut/gotchas). Hay que ajustar las medidas del entorno para trabajar en metros. Si utilizamos las dimensiones naturales del dispositivo, Box2D tiende a simular objetos enormes moviéndose a velocidades también enormes, lo que incurre en limitaciones de simulación y físicas.
