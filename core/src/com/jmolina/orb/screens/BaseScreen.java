@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jmolina.orb.var.Vars;
 
 
 public class BaseScreen implements Screen {
@@ -72,14 +71,6 @@ public class BaseScreen implements Screen {
      */
     protected Stage getStage() {
         return stage;
-    }
-
-    // TODO Sustituir y eliminar
-    public void setPositionRelative(float x, float y, Image image) {
-        image.setPosition(
-                x * (Vars.VIEWPORT_WIDTH - image.getWidth()),
-                y * (Vars.VIEWPORT_HEIGHT - image.getHeight())
-        );
     }
 
     public void setAsInputProcessor() {
