@@ -124,6 +124,13 @@ public class OrbGame extends Game {
 	public void setScreenByKey(Vars.ScreenNames key) {
 		if (this.screen != null) this.screen.hide();
 
+		// TODO: 24/05/2016 Sustituir por una Screen Factory
+
+		// Disposar screen antigua
+		// Remove de ArrayMap. Igual ya no es útil el ArrayMap...
+		// Instanciar nueva screen del tipo solicitado
+		// Añadir al ArrayMap
+
 		screens.get(key).setAsInputProcessor();
 		this.screen = screens.get(key);
 

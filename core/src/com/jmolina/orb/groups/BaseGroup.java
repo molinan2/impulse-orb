@@ -9,7 +9,8 @@ import com.jmolina.orb.var.Utils;
 public class BaseGroup extends Group {
 
     public BaseGroup() {
-
+        setScale(1.0f, 1.0f);
+        setOrigin(0f, 0f);
     }
 
     @Override

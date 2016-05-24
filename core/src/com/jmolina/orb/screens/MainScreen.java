@@ -2,6 +2,7 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.groups.NoticeGroup;
@@ -9,6 +10,7 @@ import com.jmolina.orb.widgets.MainButtonWidget;
 import com.jmolina.orb.groups.MainTitleGroup;
 
 import static com.jmolina.orb.var.Vars.ScreenNames.*;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class MainScreen extends BaseScreen {
 
@@ -83,7 +85,19 @@ public class MainScreen extends BaseScreen {
         exitWidget.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                exitWidget.clearActions();
+                exitWidget.addAction(fadeOut(0.3f));
+                exitWidget.addAction(sequence(
+                        parallel(fadeOut(0.2f, Interpolation.linear), scaleTo(1.25f, 1.25f, 0.2f)),
+                        delay(0.2f),
+                        run(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Gdx.app.exit();
+                                }
+                            })
+                        )
+                );
             }
         });
 
