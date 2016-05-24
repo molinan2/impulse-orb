@@ -3,7 +3,7 @@ package com.jmolina.orb.desktop;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.jmolina.orb.Orb;
+import com.jmolina.orb.OrbGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -15,9 +15,9 @@ public class DesktopLauncher {
 		config.fullscreen = false;
 		config.height = 1184;
 		config.width = 768;
-		config.title = "Orb Desktop";
+		config.title = "OrbGame Desktop";
 		config.addIcon("icon.png", Files.FileType.Internal);
 
-		new LwjglApplication(new Orb(), config);
+		new LwjglApplication(new OrbGame(), config);
 	}
 }

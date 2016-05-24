@@ -2,9 +2,13 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.groups.NoticeGroup;
 import com.jmolina.orb.widgets.MainButtonWidget;
 import com.jmolina.orb.groups.MainTitleGroup;
+
+import static com.jmolina.orb.var.Vars.ScreenNames.*;
 
 public class MainScreen extends BaseScreen {
 
@@ -37,15 +41,51 @@ public class MainScreen extends BaseScreen {
         exitTexture = new Texture(Gdx.files.internal("button_exit.png"));
 
         playWidget = new MainButtonWidget(playTexture);
-        playWidget.setGridPosition(2, 7.5f);
         optionsWidget = new MainButtonWidget(optionsTexture);
-        optionsWidget.setGridPosition(2, 9.5f);
         statsWidget = new MainButtonWidget(statsTexture);
-        statsWidget.setGridPosition(2, 11.5f);
         creditsWidget = new MainButtonWidget(creditsTexture);
-        creditsWidget.setGridPosition(2, 13.5f);
         exitWidget = new MainButtonWidget(exitTexture);
+
+        playWidget.setGridPosition(2, 7.5f);
+        optionsWidget.setGridPosition(2, 9.5f);
+        statsWidget.setGridPosition(2, 11.5f);
+        creditsWidget.setGridPosition(2, 13.5f);
         exitWidget.setGridPosition(2, 15.5f);
+
+        playWidget.addListener(new ClickListener(){
+            @Override
+            public void clicked (InputEvent event, float x, float y) {
+                screenManager.setScreenByKey(SCREEN_LEVEL_SELECT);
+            }
+        });
+
+        optionsWidget.addListener(new ClickListener(){
+            @Override
+            public void clicked (InputEvent event, float x, float y) {
+                screenManager.setScreenByKey(SCREEN_OPTIONS);
+            }
+        });
+
+        statsWidget.addListener(new ClickListener(){
+            @Override
+            public void clicked (InputEvent event, float x, float y) {
+                screenManager.setScreenByKey(SCREEN_STATS);
+            }
+        });
+
+        creditsWidget.addListener(new ClickListener(){
+            @Override
+            public void clicked (InputEvent event, float x, float y) {
+                screenManager.setScreenByKey(SCREEN_CREDITS);
+            }
+        });
+
+        exitWidget.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
 
         getStage().addActor(mainTitleGroup);
         getStage().addActor(playWidget);

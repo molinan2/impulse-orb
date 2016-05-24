@@ -1,5 +1,13 @@
 # Anotaciones #
 
+### ApplicationListener ###
+
+Se puede acceder al ApplicationListener desde cualquier punto de la aplicación, llamando a `Gdx.app.getApplicationListener()`. Como sólo hay un `ApplicationListener`, en el caso de que sea `Game` se puede llamar a sus métodos también desde cualquier punto. Por ejemplo, para cambiar a una nueva pantalla:
+
+```
+((Game)Gdx.app.getApplicationListener()).setScreen(new OptionsScreen());
+```
+
 ### Creación de .jar ejecutable ###
 
 Desde la línea de comandos, moverse a la carpeta del proyecto y ejecutar (en Windows):

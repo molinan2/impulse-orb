@@ -3,13 +3,20 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.widgets.LadderWidget;
 import com.jmolina.orb.widgets.LevelCoverWidget;
 import com.jmolina.orb.widgets.LevelTitleWidget;
 import com.jmolina.orb.widgets.MainButtonWidget;
 
+import static com.jmolina.orb.var.Vars.ScreenNames.SCREEN_LEVEL_SELECT;
+
+/**
+ * TODO Debe ser parametrizable para poder crear 1 por nivel
+ */
 public class LevelLaunchScreen extends MenuScreen {
 
     private LevelTitleWidget title;
@@ -26,6 +33,13 @@ public class LevelLaunchScreen extends MenuScreen {
 
     public LevelLaunchScreen() {
         super();
+
+        setBackListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                screenManager.setScreenByKey(SCREEN_LEVEL_SELECT);
+            }
+        });
 
         titleTexture = new Texture(Gdx.files.internal("launch_title.png"));
         coverTexture = new Texture(Gdx.files.internal("launch_cover.png"));
