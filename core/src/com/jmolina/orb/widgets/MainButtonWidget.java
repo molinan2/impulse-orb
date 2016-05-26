@@ -14,7 +14,7 @@ public class MainButtonWidget extends BaseGroup {
     public MainButtonWidget(Texture texture) {
         button = new Image(texture);
         button.setPosition(0f, 0f);
-        //button.setSize(texture.getWidth(), texture.getHeight());
+        // button.setSize(texture.getWidth(), texture.getHeight());
         addActor(button);
         setHeight(1.5f * Vars.GRID_UNIT);
         setOrigin(texture.getWidth() * 0.5f, texture.getHeight() * 0.5f);

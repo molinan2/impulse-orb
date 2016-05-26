@@ -4,12 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.OrbGame;
+import com.jmolina.orb.var.Vars;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 
 public class BaseScreen implements Screen {
@@ -19,25 +24,51 @@ public class BaseScreen implements Screen {
     private Image background;
     private Viewport viewport;
     private Stage stage;
+    private Stage backgroundStage;
 
     public BaseScreen() {
-        viewport = new FitViewport(768.0f, 1184.0f);
+        viewport = new FitViewport(Vars.VIEWPORT_WIDTH, Vars.VIEWPORT_HEIGHT);
         stage = new Stage(viewport);
+        stage.getRoot().setOrigin(Vars.VIEWPORT_WIDTH * 0.5f, Vars.VIEWPORT_HEIGHT * 0.5f);
+        // stage.getRoot().setScale(1f, 1f);
+        // stage.getRoot().setSize(Vars.VIEWPORT_WIDTH, Vars.VIEWPORT_HEIGHT);
+        // stage.getRoot().setPosition(0, 0);
 
+        backgroundStage = new Stage(viewport);
         backgroundTexture = new Texture(Gdx.files.internal("background.png"));
         background = new Image(backgroundTexture);
-        stage.addActor(background);
+        backgroundStage.addActor(background);
     }
 
     @Override
     public void show() {
         System.out.println("Screen: Show: " + this.getClass());
+        stage.getRoot().setTouchable(Touchable.disabled);
+        stage.getRoot().clearActions();
+        stage.getRoot().setScale(0.8f, 0.8f);
+        stage.getRoot().addAction(fadeOut(0f));
+        stage.getRoot().addAction(sequence(
+                parallel(
+                    scaleTo(1f, 1f, 0.5f),
+                    fadeIn(0.5f, Interpolation.pow2)),
+                run(new Runnable() {
+                    @Override
+                    public void run() {
+                        stage.getRoot().setTouchable(Touchable.enabled);
+                    }
+                })
+        ));
+
+        // TODO: 26/05/2016 Resetear las posiciones de todo (o crear pantalla desde cero)
+        // TODO: 26/05/2016 Setear parametro para indicar si la animacion SE VA o VIENE (pantalla entra o sale), o DISABLED
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        backgroundStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
+        backgroundStage.draw();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
         stage.draw();
     }

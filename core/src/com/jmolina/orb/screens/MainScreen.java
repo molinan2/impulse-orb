@@ -31,9 +31,9 @@ public class MainScreen extends BaseScreen {
         super();
 
         mainTitleGroup = new MainTitleGroup();
-        mainTitleGroup.setGridPosition(1, 4);
-
         noticeGroup = new NoticeGroup();
+
+        mainTitleGroup.setGridPosition(1, 4);
         noticeGroup.setGridPosition(1, 18);
 
         playTexture = new Texture(Gdx.files.internal("button_play.png"));
@@ -86,18 +86,20 @@ public class MainScreen extends BaseScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 exitWidget.clearActions();
-                exitWidget.addAction(fadeOut(0.3f));
                 exitWidget.addAction(sequence(
-                        parallel(fadeOut(0.2f, Interpolation.linear), scaleTo(1.25f, 1.25f, 0.2f)),
+                        parallel(
+                                fadeOut(0.2f,Interpolation.linear),
+                                scaleTo(1.15f, 1.15f, 0.2f))
+                        ));
+                getStage().addAction(sequence(
                         delay(0.2f),
+                        parallel(fadeOut(0.2f, Interpolation.linear), scaleTo(0.75f, 0.75f, 0.2f)),
                         run(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Gdx.app.exit();
-                                }
-                            })
-                        )
-                );
+                            @Override
+                            public void run() {
+                                Gdx.app.exit();
+                            }
+                        })));
             }
         });
 
@@ -108,6 +110,8 @@ public class MainScreen extends BaseScreen {
         getStage().addActor(creditsWidget);
         getStage().addActor(exitWidget);
         getStage().addActor(noticeGroup);
+
+
     }
 
     @Override

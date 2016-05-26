@@ -3,9 +3,12 @@ package com.jmolina.orb;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.Logger;
+import com.jmolina.orb.screens.BackgroundScreen;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.CreditsScreen;
 import com.jmolina.orb.screens.LevelLaunchScreen;
@@ -18,7 +21,26 @@ import com.jmolina.orb.var.Vars;
 
 
 /**
- * TODO: 23/05/2016 Implementar algun tipo de ScreenManager, que decida el flujo de pantallas
+ * TODO
+ * Algun tipo de ScreenManager, que decida el flujo de pantallas y las disposee e instancie
+ * Sería una especie de ScreenFactory, o incluiría una ScreenFactory
+ * Info: http://www.tutorialspoint.com/design_pattern/factory_pattern.htm
+ */
+
+/**
+ * TODO
+ * Background que no esté implementado en ninguna Screen
+ * Que se renderize por debajo de todas las Screens
+ * Y sacar el background de las Screens
+ * Esto permitiría que no haya "salto aparente" cuando se disposeen y creen las pantallas
+ * Y daría sensación de continuidad cuando aplique efectos a las Stages de pantalla
+ * Idealmente, móvil
+ */
+
+/**
+ * TODO
+ * En GameScreen
+ * Cuando has muerto o entra en pausa, la musica baja de pitch y vuelve a 1x cuando se reanuda el juego
  */
 public class OrbGame extends Game {
 
@@ -29,6 +51,8 @@ public class OrbGame extends Game {
 	private CreditsScreen creditsScreen;
 	private LevelSelectScreen levelSelectScreen;
 	private LevelLaunchScreen levelLaunchScreen;
+
+	// private BackgroundScreen backgroundScreen;
 
 	private Logger logger;
 	private ArrayMap<Vars.ScreenNames, BaseScreen> screens;
@@ -41,6 +65,8 @@ public class OrbGame extends Game {
 		Gdx.input.setCatchBackKey(true); // Android
 
 		splashTexture = new Texture(Gdx.files.internal("splash.png"));
+
+		// backgroundScreen = new BackgroundScreen();
 
 		/**
 		 * Todos los parámetros de pantallas se setean a través de métodos. No se pasan al constructor
@@ -102,6 +128,7 @@ public class OrbGame extends Game {
 		}
 
 		if (screen != null) {
+			// backgroundScreen.render(Gdx.graphics.getDeltaTime());
 			screen.render(Gdx.graphics.getDeltaTime());
 		}
 	}
@@ -119,6 +146,7 @@ public class OrbGame extends Game {
 		creditsScreen.dispose();
 		levelSelectScreen.dispose();
 		levelLaunchScreen.dispose();
+		// backgroundScreen.dispose();
 	}
 
 	public void setScreenByKey(Vars.ScreenNames key) {

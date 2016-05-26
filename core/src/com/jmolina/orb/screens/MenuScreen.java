@@ -48,7 +48,7 @@ public class MenuScreen extends BaseScreen {
         });
 
         table = new Table();
-        table.debug();
+        // table.debug();
         table.top();
         table.setPosition(Vars.GRID_UNIT, 0f);
         // table.setWidth(Vars.VIEWPORT_WIDTH - 2 * Vars.GRID_UNIT);
