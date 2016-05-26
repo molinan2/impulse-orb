@@ -4,9 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.var.Utils;
-import com.jmolina.orb.var.Vars;
 
-import static com.jmolina.orb.var.Vars.ScreenNames.SCREEN_MAIN;
+import static com.jmolina.orb.var.Vars.ScreenName.SCREEN_MAIN;
 
 /**
  * Descartada la barra de progreso
@@ -16,11 +15,13 @@ public class LoadScreen extends BaseScreen {
     private Image splash;
     private Texture defaultSplashTexture;
     private float elapsed;
+    private boolean acting;
 
     public LoadScreen() {
         defaultSplashTexture = new Texture(Gdx.files.internal("splash.png"));
         setSplash(defaultSplashTexture);
         elapsed = 0.0f;
+        acting = false;
     }
 
     public void setSplash(Texture splashTexture) {
@@ -41,8 +42,16 @@ public class LoadScreen extends BaseScreen {
 
         elapsed = elapsed + delta;
 
-        if (elapsed > 1.5f) {
-            screenManager.setScreenByKey(SCREEN_MAIN);
+        if (elapsed > 1.5f && !acting) {
+            acting = true;
+            goToScreen(SCREEN_MAIN, Flow.INNER);
         }
+    }
+
+    /**
+     * Override de show para evitar la animacion de entrada
+     */
+    @Override
+    public void show() {
     }
 }

@@ -2,15 +2,13 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.groups.NoticeGroup;
 import com.jmolina.orb.widgets.MainButtonWidget;
 import com.jmolina.orb.groups.MainTitleGroup;
 
-import static com.jmolina.orb.var.Vars.ScreenNames.*;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import static com.jmolina.orb.var.Vars.ScreenName.*;
 
 public class MainScreen extends BaseScreen {
 
@@ -57,49 +55,35 @@ public class MainScreen extends BaseScreen {
         playWidget.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                screenManager.setScreenByKey(SCREEN_LEVEL_SELECT);
+                goToScreen(SCREEN_LEVEL_SELECT, Flow.INNER);
             }
         });
 
         optionsWidget.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                screenManager.setScreenByKey(SCREEN_OPTIONS);
+                goToScreen(SCREEN_OPTIONS, Flow.INNER);
             }
         });
 
         statsWidget.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                screenManager.setScreenByKey(SCREEN_STATS);
+                goToScreen(SCREEN_STATS, Flow.INNER);
             }
         });
 
         creditsWidget.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                screenManager.setScreenByKey(SCREEN_CREDITS);
+                goToScreen(SCREEN_CREDITS, Flow.INNER);
             }
         });
 
         exitWidget.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                exitWidget.clearActions();
-                exitWidget.addAction(sequence(
-                        parallel(
-                                fadeOut(0.2f,Interpolation.linear),
-                                scaleTo(1.15f, 1.15f, 0.2f))
-                        ));
-                getStage().addAction(sequence(
-                        delay(0.2f),
-                        parallel(fadeOut(0.2f, Interpolation.linear), scaleTo(0.75f, 0.75f, 0.2f)),
-                        run(new Runnable() {
-                            @Override
-                            public void run() {
-                                Gdx.app.exit();
-                            }
-                        })));
+                exitApplication();
             }
         });
 
@@ -110,8 +94,6 @@ public class MainScreen extends BaseScreen {
         getStage().addActor(creditsWidget);
         getStage().addActor(exitWidget);
         getStage().addActor(noticeGroup);
-
-
     }
 
     @Override

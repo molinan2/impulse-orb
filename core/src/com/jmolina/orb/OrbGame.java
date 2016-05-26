@@ -3,12 +3,10 @@ package com.jmolina.orb;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.Logger;
-import com.jmolina.orb.screens.BackgroundScreen;
+import com.badlogic.gdx.utils.compression.lzma.Base;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.CreditsScreen;
 import com.jmolina.orb.screens.LevelLaunchScreen;
@@ -55,7 +53,7 @@ public class OrbGame extends Game {
 	// private BackgroundScreen backgroundScreen;
 
 	private Logger logger;
-	private ArrayMap<Vars.ScreenNames, BaseScreen> screens;
+	private ArrayMap<Vars.ScreenName, BaseScreen> screens;
 
 	private Texture splashTexture;
 
@@ -109,16 +107,17 @@ public class OrbGame extends Game {
 		 *    -Guardar los objetos intermedios a preferencias al finalizar
 		 */
 
-		screens = new ArrayMap<Vars.ScreenNames, BaseScreen>();
-		screens.put(Vars.ScreenNames.SCREEN_LOAD, gameLoadScreen);
-		screens.put(Vars.ScreenNames.SCREEN_MAIN, mainScreen);
-		screens.put(Vars.ScreenNames.SCREEN_OPTIONS, optionsScreen);
-		screens.put(Vars.ScreenNames.SCREEN_STATS, statsScreen);
-		screens.put(Vars.ScreenNames.SCREEN_CREDITS, creditsScreen);
-		screens.put(Vars.ScreenNames.SCREEN_LEVEL_SELECT, levelSelectScreen);
-		screens.put(Vars.ScreenNames.SCREEN_LEVEL_LAUNCH, levelLaunchScreen);
+		screens = new ArrayMap<Vars.ScreenName, BaseScreen>();
+		screens.put(Vars.ScreenName.SCREEN_LOAD, gameLoadScreen);
+		screens.put(Vars.ScreenName.SCREEN_MAIN, mainScreen);
+		screens.put(Vars.ScreenName.SCREEN_OPTIONS, optionsScreen);
+		screens.put(Vars.ScreenName.SCREEN_STATS, statsScreen);
+		screens.put(Vars.ScreenName.SCREEN_CREDITS, creditsScreen);
+		screens.put(Vars.ScreenName.SCREEN_LEVEL_SELECT, levelSelectScreen);
+		screens.put(Vars.ScreenName.SCREEN_LEVEL_LAUNCH, levelLaunchScreen);
 
-		setScreen(gameLoadScreen);
+		// setScreen(gameLoadScreen);
+		setScreenByKey(Vars.ScreenName.SCREEN_LOAD);
 	}
 
 	@Override
@@ -149,7 +148,15 @@ public class OrbGame extends Game {
 		// backgroundScreen.dispose();
 	}
 
-	public void setScreenByKey(Vars.ScreenNames key) {
+	/**
+	 * Metodo temporal mientras refactorizo el resto de las llamadas
+	 * @param key
+     */
+	public void setScreenByKey(Vars.ScreenName key) {
+		setScreenByKey(key, BaseScreen.Flow.INNER);
+	}
+
+	public void setScreenByKey(Vars.ScreenName key, BaseScreen.Flow flow) {
 		if (this.screen != null) this.screen.hide();
 
 		// TODO: 24/05/2016 Sustituir por una Screen Factory
@@ -159,8 +166,9 @@ public class OrbGame extends Game {
 		// Instanciar nueva screen del tipo solicitado
 		// Añadir al ArrayMap
 
-		screens.get(key).setAsInputProcessor();
 		this.screen = screens.get(key);
+		((BaseScreen) this.screen).setAsInputProcessor(); // TODO Extender la clase Game para que use BaseScreen, no Screen
+		((BaseScreen) this.screen).setFlow(flow);
 
 		if (this.screen != null) {
 			this.screen.show();

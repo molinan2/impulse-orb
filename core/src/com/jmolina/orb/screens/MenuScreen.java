@@ -6,18 +6,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Vars;
 import com.jmolina.orb.groups.SectionTitleGroup;
-import com.sun.javafx.property.adapter.PropertyDescriptor;
 
-import static com.jmolina.orb.var.Vars.ScreenNames.*;
+import static com.jmolina.orb.var.Vars.ScreenName.*;
 
 /**
  * TODO
@@ -43,7 +40,7 @@ public class MenuScreen extends BaseScreen {
         sectionTitleGroup.setBackListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screenManager.setScreenByKey(SCREEN_MAIN);
+                goToScreen(SCREEN_MAIN, Flow.OUTER);
             }
         });
 
@@ -97,9 +94,14 @@ public class MenuScreen extends BaseScreen {
         getTable().add(actor).width(width * Vars.GRID_UNIT).expandX().padBottom(bottomPadding * Vars.GRID_UNIT);
     }
 
-    protected void setBackListener (EventListener listener) {
+    protected void setBackScreen (final Vars.ScreenName screenName) {
         sectionTitleGroup.clearListeners();
-        sectionTitleGroup.addListener(listener);
+        sectionTitleGroup.setBackListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                goToScreen(screenName, Flow.OUTER);
+            }
+        });
     }
 
 }

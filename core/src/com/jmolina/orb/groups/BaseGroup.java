@@ -1,10 +1,12 @@
 package com.jmolina.orb.groups;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.utils.Disposable;
+import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.var.Utils;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class BaseGroup extends Group {
 
@@ -29,5 +31,15 @@ public class BaseGroup extends Group {
 
     public void setGridPosition(float xGrid, float yGrid) {
         this.setPosition(Utils.xGrid(xGrid), Utils.yGrid(yGrid));
+    }
+
+    public void animateOutside() {
+        clearActions();
+        addAction(UIAction.toOutside());
+    }
+
+    public void animateBounce() {
+        clearActions();
+        addAction(UIAction.bounce());
     }
 }

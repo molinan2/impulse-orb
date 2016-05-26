@@ -2,16 +2,12 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.widgets.LevelCardWidget;
 
-import static com.jmolina.orb.var.Vars.ScreenNames.SCREEN_LEVEL_LAUNCH;
-import static com.jmolina.orb.var.Vars.ScreenNames.SCREEN_LEVEL_SELECT;
-import static com.jmolina.orb.var.Vars.ScreenNames.SCREEN_MAIN;
+import static com.jmolina.orb.var.Vars.ScreenName.SCREEN_LEVEL_LAUNCH;
+import static com.jmolina.orb.var.Vars.ScreenName.SCREEN_MAIN;
 
 public class LevelSelectScreen extends MenuScreen {
 
@@ -39,28 +35,28 @@ public class LevelSelectScreen extends MenuScreen {
         level1.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screenManager.setScreenByKey(SCREEN_LEVEL_LAUNCH);
+                goToScreen(SCREEN_LEVEL_LAUNCH, Flow.INNER);
             }
         });
 
         level2.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screenManager.setScreenByKey(SCREEN_LEVEL_LAUNCH);
+                goToScreen(SCREEN_LEVEL_LAUNCH, Flow.INNER);
             }
         });
 
         level3.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screenManager.setScreenByKey(SCREEN_LEVEL_LAUNCH);
+                goToScreen(SCREEN_LEVEL_LAUNCH, Flow.INNER);
             }
         });
 
         level4.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screenManager.setScreenByKey(SCREEN_LEVEL_LAUNCH);
+                goToScreen(SCREEN_LEVEL_LAUNCH, Flow.INNER);
             }
         });
 
