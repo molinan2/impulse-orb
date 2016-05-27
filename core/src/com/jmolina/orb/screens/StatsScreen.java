@@ -5,11 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.jmolina.orb.OrbGame;
 import com.jmolina.orb.widgets.StatWidget;
 
-/**
- * TODO Widget Número, capaz de representar: enteros, decimales, tiempo y unidades
- */
 public class StatsScreen extends MenuScreen {
 
     private StatWidget played;
@@ -26,6 +24,8 @@ public class StatsScreen extends MenuScreen {
 
     public StatsScreen() {
         super();
+
+        setReturningScreen(OrbGame.Name.MAIN);
 
         statName = new Texture(Gdx.files.internal("stats_name.png"));
 

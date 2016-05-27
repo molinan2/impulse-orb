@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.jmolina.orb.OrbGame;
 import com.jmolina.orb.widgets.LevelCardWidget;
 
 import static com.jmolina.orb.OrbGame.Name.LEVEL_LAUNCH;
@@ -21,6 +22,8 @@ public class LevelSelectScreen extends MenuScreen {
 
     public LevelSelectScreen() {
         super();
+
+        setReturningScreen(OrbGame.Name.MAIN);
 
         level1CoverTexture = new Texture(Gdx.files.internal("card_cover.png"));
         level1TitleTexture = new Texture(Gdx.files.internal("card_title.png"));

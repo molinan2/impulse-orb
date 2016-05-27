@@ -2,10 +2,9 @@ package com.jmolina.orb.widgets;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.groups.BaseGroup;
-import com.jmolina.orb.var.Vars;
+import com.jmolina.orb.var.Var;
 
 public class MainButtonWidget extends BaseGroup {
 
@@ -16,7 +15,7 @@ public class MainButtonWidget extends BaseGroup {
         button.setPosition(0f, 0f);
         // button.setSize(texture.getWidth(), texture.getHeight());
         addActor(button);
-        setHeight(1.5f * Vars.GRID_UNIT);
+        setHeight(1.5f * Var.GRID_UNIT);
         setOrigin(texture.getWidth() * 0.5f, texture.getHeight() * 0.5f);
     }
 

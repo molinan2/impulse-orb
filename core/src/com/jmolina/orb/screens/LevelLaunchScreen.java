@@ -9,9 +9,6 @@ import com.jmolina.orb.widgets.MainButtonWidget;
 
 import static com.jmolina.orb.OrbGame.Name.LEVEL_SELECT;
 
-/**
- * TODO Debe ser parametrizable para poder crear 1 por nivel
- */
 public class LevelLaunchScreen extends MenuScreen {
 
     private LevelTitleWidget title;
@@ -29,7 +26,7 @@ public class LevelLaunchScreen extends MenuScreen {
     public LevelLaunchScreen() {
         super();
 
-        setBackScreen(LEVEL_SELECT);
+        setReturningScreen(LEVEL_SELECT);
 
         titleTexture = new Texture(Gdx.files.internal("launch_title.png"));
         coverTexture = new Texture(Gdx.files.internal("launch_cover.png"));

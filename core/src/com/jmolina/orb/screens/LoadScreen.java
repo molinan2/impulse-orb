@@ -3,13 +3,10 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.jmolina.orb.var.Utils;
+import com.jmolina.orb.var.Util;
 
 import static com.jmolina.orb.OrbGame.Name.MAIN;
 
-/**
- * Descartada la barra de progreso
- */
 public class LoadScreen extends BaseScreen {
 
     private Image splash;
@@ -26,8 +23,8 @@ public class LoadScreen extends BaseScreen {
 
     public void setSplash(Texture splashTexture) {
         splash = new Image(splashTexture);
-        splash.setPosition(Utils.xGrid(2), Utils.yGrid(11));
-        getMainStage().addActor(splash);
+        splash.setPosition(Util.xGrid(2), Util.yGrid(11));
+        addMainActor(splash);
     }
 
     @Override
@@ -48,10 +45,8 @@ public class LoadScreen extends BaseScreen {
         }
     }
 
-    /**
-     * Override de show para evitar la animacion de entrada
-     */
     @Override
     public void show() {
     }
+
 }

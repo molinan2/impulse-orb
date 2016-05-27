@@ -45,18 +45,6 @@ public abstract class UIRunnable {
         };
     }
 
-    /**
-     * TODO
-     * Esto parece incomodo
-     * ¿Es bueno tanto final?
-     * El manager debe ser una clase aparte (Singleton?)
-     * Name deberia estar en una clase mas relacionada (ScreenManager)
-     *
-     * @param manager
-     * @param name
-     * @param hierarchy
-     * @return
-     */
     static public Runnable setScreen(final OrbGame manager, final OrbGame.Name name, final BaseScreen.Hierarchy hierarchy) {
         return new Runnable() {
             @Override

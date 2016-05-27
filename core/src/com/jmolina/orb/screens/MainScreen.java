@@ -87,13 +87,13 @@ public class MainScreen extends BaseScreen {
             }
         });
 
-        getMainStage().addActor(mainTitleGroup);
-        getMainStage().addActor(playWidget);
-        getMainStage().addActor(optionsWidget);
-        getMainStage().addActor(statsWidget);
-        getMainStage().addActor(creditsWidget);
-        getMainStage().addActor(exitWidget);
-        getMainStage().addActor(noticeGroup);
+        addMainActor(mainTitleGroup);
+        addMainActor(playWidget);
+        addMainActor(optionsWidget);
+        addMainActor(statsWidget);
+        addMainActor(creditsWidget);
+        addMainActor(exitWidget);
+        addMainActor(noticeGroup);
     }
 
     @Override

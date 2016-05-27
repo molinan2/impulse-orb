@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -13,30 +14,30 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.OrbGame;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.runnables.UIRunnable;
-import com.jmolina.orb.var.Vars;
+import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
-
 
 public class BaseScreen implements Screen {
 
     /**
-     * Jerarquía de esta pantalla respecto la siguiente
-     * LOWER: inferior. HIGHER: superior.
+     * Jerarquía de esta pantalla respecto de la siguiente
      */
     public enum Hierarchy {
         LOWER, HIGHER
     }
 
+    /**
+     * Flujo de navegación de la pantalla
+     */
     public enum Flow {
         ENTERING, LEAVING
     }
 
-    // TODO: No me gusta que cualquier pantalla acceda a los metodos de OrbGame, pero aceptamos barco por ahora
     protected OrbGame manager;
 
     private Texture bgTexture;
-    private Image background;
+    private Image bg;
     private Viewport viewport;
     private Stage mainStage;
     private Stage bgStage;
@@ -48,32 +49,23 @@ public class BaseScreen implements Screen {
      */
     public BaseScreen() {
         hierarchy = Hierarchy.LOWER;
-        viewport = new FitViewport(Vars.VIEWPORT_WIDTH, Vars.VIEWPORT_HEIGHT);
+        viewport = new FitViewport(Var.VIEWPORT_WIDTH, Var.VIEWPORT_HEIGHT);
         mainStage = new Stage(viewport);
-        getRoot().setOrigin(Vars.VIEWPORT_WIDTH * 0.5f, Vars.VIEWPORT_HEIGHT * 0.5f);
-        // mainStage.getRoot().setScale(1f, 1f);
-        // mainStage.getRoot().setSize(Vars.VIEWPORT_WIDTH, Vars.VIEWPORT_HEIGHT);
-        // mainStage.getRoot().setPosition(0, 0);
+        getRoot().setOrigin(Var.VIEWPORT_WIDTH * 0.5f, Var.VIEWPORT_HEIGHT * 0.5f);
+        getRoot().setScale(1f, 1f);
+        getRoot().setSize(Var.VIEWPORT_WIDTH, Var.VIEWPORT_HEIGHT);
+        getRoot().setPosition(0, 0);
 
         bgStage = new Stage(viewport);
         bgTexture = new Texture(Gdx.files.internal("background.png"));
-        background = new Image(bgTexture);
-        bgStage.addActor(background);
+        bg = new Image(bgTexture);
+        bgStage.addActor(bg);
     }
 
-    /**
-     * Animaciones de entrada
-     * Dependen por el parametro hierarchy de switchToScreen, segun indicara la pantalla que pidio cambiar hacia ésta
-     *
-     * TODO
-     * Resetear las posiciones y estados de los elementos
-     * O instanciar la pantalla de nuevo (descartado por ahora e implica dispose)
-     */
     @Override
     public void show() {
         clearActions();
         unsetInputProcessor();
-
         addRootAction(sequence(
                 transition(Flow.ENTERING, hierarchy),
                 run(UIRunnable.setInputProcessor(mainStage))
@@ -86,7 +78,6 @@ public class BaseScreen implements Screen {
 
         bgStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
         bgStage.draw();
-
         mainStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
         mainStage.draw();
     }
@@ -104,14 +95,6 @@ public class BaseScreen implements Screen {
     public void resume() {
     }
 
-    /**
-     * TODO
-     * ¿Por que no meter aqui las animaciones de salida?
-     * Porque al final estamos en las mismas: la action es asincrona y el cambio de pantalla ocurre de golpe
-     * Para poder animar al salir, es la pantalla la que debe ejecutar el cambio de pantalla despues de haberse animado
-     *
-     * Aqui sí se podrían meter los reseteos de los elementos
-     */
     @Override
     public void hide() {
     }
@@ -122,14 +105,6 @@ public class BaseScreen implements Screen {
         mainStage.dispose();
     }
 
-    /**
-     * TODO Cuando esté claro qué se usa de Stage, eliminarla y crear una API
-     * @return Stage
-     */
-    protected Stage getMainStage() {
-        return mainStage;
-    }
-
     public void setAsInputProcessor() {
         Gdx.input.setInputProcessor(this.mainStage);
     }
@@ -138,22 +113,13 @@ public class BaseScreen implements Screen {
         Gdx.input.setInputProcessor(null);
     }
 
-    /**
-     * TODO
-     * La idea es que el parametro sea una clase ScreenManager especifica
-     *
-     * @param game OrbGame
-     */
     public void setManager(OrbGame game) {
         this.manager = game;
     }
 
     /**
-     * TODO
-     * Definir un CustomRunnable que implemente Runnable
-     *
-     * Ejecuta la animacion de salida de pantalla, y cambia a otra pantalla
-     * @param name Name
+     * Ejecuta la animacion de salida y cambia a otra pantalla
+     * @param name Name Nombre de la siguiente pantalla
      * @param hierarchy Hierarchy Jerarquía de la siguiente pantalla respecto de la actual
      */
     public void switchToScreen(final OrbGame.Name name, final Hierarchy hierarchy) {
@@ -165,6 +131,9 @@ public class BaseScreen implements Screen {
         ));
     }
 
+    /**
+     * Ejecuta la animacion de salida y termina la aplicacion
+     */
     public void exitApplication() {
         clearActions();
         addRootAction(sequence(
@@ -178,11 +147,11 @@ public class BaseScreen implements Screen {
     }
 
     /**
-     * Devuelve el actor raíz (grupo) de la Stage principal
+     * Devuelve el Actor raíz de la Stage principal
      * @return Group
      */
     public Group getRoot() {
-        return getMainStage().getRoot();
+        return mainStage.getRoot();
     }
 
     public void clearActions() {
@@ -190,8 +159,7 @@ public class BaseScreen implements Screen {
     }
 
     /**
-     * TODO
-     * ¿Es confuso el parametro hierarchy?
+     * Ejecuta una animacion de transicion
      *
      * @param flow Flow Flujo de la pantalla actual
      * @param hierarchy Hierarchy Jerarquía de la siguiente pantalla respecto de la actual
@@ -216,23 +184,6 @@ public class BaseScreen implements Screen {
         return action;
     }
 
-    private Action transitionLeaving(Hierarchy hierarchy) {
-        Action action;
-
-        switch (hierarchy) {
-            case LOWER:
-                action = UIAction.toOutside();
-                break;
-            case HIGHER:
-                action = UIAction.toInside();
-                break;
-            default:
-                action = UIAction.disappear();
-        }
-
-        return action;
-    }
-
     private Action transitionEntering(Hierarchy hierarchy) {
         Action action;
 
@@ -250,6 +201,23 @@ public class BaseScreen implements Screen {
         return action;
     }
 
+    private Action transitionLeaving(Hierarchy hierarchy) {
+        Action action;
+
+        switch (hierarchy) {
+            case LOWER:
+                action = UIAction.toOutside();
+                break;
+            case HIGHER:
+                action = UIAction.toInside();
+                break;
+            default:
+                action = UIAction.disappear();
+        }
+
+        return action;
+    }
+
     public void addRootAction(Action action) {
         getRoot().addAction(action);
     }
@@ -257,6 +225,13 @@ public class BaseScreen implements Screen {
     private void clearColor() {
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    }
+
+    /**
+     * Añade un Actor a la Stage principal
+     */
+    public void addMainActor(Actor actor) {
+        mainStage.addActor(actor);
     }
 
 }

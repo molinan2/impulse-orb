@@ -1,13 +1,13 @@
 package com.jmolina.orb.var;
 
-public class Utils {
+public class Util {
 
     public static float xGrid(int unit) {
         return (float) unit * 64.0f;
     }
 
     public static float yGrid(int unit) {
-        return Vars.VIEWPORT_HEIGHT - (float) unit * 64.0f;
+        return Var.VIEWPORT_HEIGHT - (float) unit * 64.0f;
     }
 
     public static float xGrid(float unit) {
@@ -15,7 +15,7 @@ public class Utils {
     }
 
     public static float yGrid(float unit) {
-        return Vars.VIEWPORT_HEIGHT - unit * 64.0f;
+        return Var.VIEWPORT_HEIGHT - unit * 64.0f;
     }
 
 }

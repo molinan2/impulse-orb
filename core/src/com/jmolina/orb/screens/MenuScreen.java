@@ -10,20 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.OrbGame;
-import com.jmolina.orb.var.Utils;
-import com.jmolina.orb.var.Vars;
-import com.jmolina.orb.groups.SectionTitleGroup;
+import com.jmolina.orb.var.Util;
+import com.jmolina.orb.var.Var;
+import com.jmolina.orb.groups.ReturningTitleGroup;
 
-import static com.jmolina.orb.OrbGame.Name.*;
-
-/**
- * TODO
- * Cuando se pierde el focus, hay que cancelar de alguna manera el movimientoo de scroll
- * Pues disposeando la pantalla, por ejemplo. A no ser que quiera dejarlas todas en memoria
- */
 public class MenuScreen extends BaseScreen {
 
-    private SectionTitleGroup sectionTitleGroup;
+    private ReturningTitleGroup returningTitleGroup;
     private Table table;
     private ScrollPane scrollPane;
     private Texture scrollerTexture;
@@ -31,26 +24,12 @@ public class MenuScreen extends BaseScreen {
     public MenuScreen() {
         super();
 
-        sectionTitleGroup = new SectionTitleGroup();
-        sectionTitleGroup.setGridPosition(1, 3);
-
-        // Default listener
-        // TODO: 24/05/2016 Esto es confuso porque no todas las pantallas que heredan de MenuScreen vuelven a MainScreen.
-
-        sectionTitleGroup.setBackListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                switchToScreen(MAIN, Hierarchy.HIGHER);
-            }
-        });
+        returningTitleGroup = new ReturningTitleGroup();
+        returningTitleGroup.setGridPosition(1, 3);
 
         table = new Table();
-        // table.debug();
         table.top();
-        table.setPosition(Vars.GRID_UNIT, 0f);
-        // table.setWidth(Vars.VIEWPORT_WIDTH - 2 * Vars.GRID_UNIT);
-        // table.setFillParent(true);
-        // table.pack();
+        table.setPosition(Var.GRID_UNIT, 0f);
 
         ScrollPane.ScrollPaneStyle scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
         scrollerTexture = new Texture(Gdx.files.internal("scroll_knob.png"));
@@ -58,25 +37,21 @@ public class MenuScreen extends BaseScreen {
 
         scrollPane = new ScrollPane(table);
         scrollPane.setStyle(scrollPaneStyle);
-        scrollPane.setWidth(Vars.VIEWPORT_WIDTH);
-        scrollPane.setHeight(Utils.yGrid(4.5f));
+        scrollPane.setWidth(Var.VIEWPORT_WIDTH);
+        scrollPane.setHeight(Util.yGrid(4.5f));
         scrollPane.setPosition(0f, 0f);
 
-        getMainStage().addActor(sectionTitleGroup);
-        getMainStage().addActor(scrollPane);
+        addMainActor(returningTitleGroup);
+        addMainActor(scrollPane);
     }
 
     @Override
     public void dispose() {
-        sectionTitleGroup.dispose();
+        returningTitleGroup.dispose();
         scrollerTexture.dispose();
         super.dispose();
     }
 
-    /**
-     * TODO Cuando estén claras las funcionalidades que se usan de Table, crear una API simple
-     * @return Table
-     */
     private Table getTable() {
         return table;
     }
@@ -91,12 +66,12 @@ public class MenuScreen extends BaseScreen {
 
     public <T extends Actor> void addRow(T actor, float bottomPadding, float width) {
         getTable().row();
-        getTable().add(actor).width(width * Vars.GRID_UNIT).expandX().padBottom(bottomPadding * Vars.GRID_UNIT);
+        getTable().add(actor).width(width * Var.GRID_UNIT).expandX().padBottom(bottomPadding * Var.GRID_UNIT);
     }
 
-    protected void setBackScreen (final OrbGame.Name name) {
-        sectionTitleGroup.clearListeners();
-        sectionTitleGroup.setBackListener(new ClickListener(){
+    protected void setReturningScreen(final OrbGame.Name name) {
+        returningTitleGroup.clearListeners();
+        returningTitleGroup.setListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 switchToScreen(name, Hierarchy.HIGHER);

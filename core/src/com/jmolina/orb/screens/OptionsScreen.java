@@ -2,9 +2,7 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Align;
-import com.jmolina.orb.var.Vars;
+import com.jmolina.orb.OrbGame;
 import com.jmolina.orb.widgets.CheckWidget;
 import com.jmolina.orb.widgets.MultiCheckWidget;
 
@@ -20,10 +18,18 @@ public class OptionsScreen extends MenuScreen {
     private Texture vibrationTexture;
     private Texture onlineTexture;
     private Texture zoomTexture;
-    // TODO: 22/05/2016 Mi username. Por defecto, el que coja del movil
+    // private String username;
+
+    /**
+     * TODO
+     * Debe permitir introducir, modificar el Username
+     * Por defecto, leerlo del móvil o del perfil del SO
+     */
 
     public OptionsScreen() {
         super();
+
+        setReturningScreen(OrbGame.Name.MAIN);
 
         musicTexture = new Texture(Gdx.files.internal("option_music.png"));
         soundTexture = new Texture(Gdx.files.internal("option_sound.png"));

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.groups.BaseGroup;
-import com.jmolina.orb.var.Vars;
+import com.jmolina.orb.var.Var;
 
 /**
  * TODO Implementar con 3 actores en el check
@@ -23,10 +23,10 @@ public class MultiCheckWidget extends BaseGroup implements Disposable {
         multicheck = new Image(multiCheckTexture);
 
         text.setPosition(0f, 0f);
-        multicheck.setPosition(5.5f * Vars.GRID_UNIT, 0f);
+        multicheck.setPosition(5.5f * Var.GRID_UNIT, 0f);
         addActor(text);
         addActor(multicheck);
-        setHeight(1.5f * Vars.GRID_UNIT);
+        setHeight(1.5f * Var.GRID_UNIT);
     }
 
     @Override

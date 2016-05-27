@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.jmolina.orb.OrbGame;
 import com.jmolina.orb.widgets.TextSectionWidget;
 
 public class CreditsScreen extends MenuScreen {
@@ -21,6 +22,8 @@ public class CreditsScreen extends MenuScreen {
 
     public CreditsScreen() {
         super();
+
+        setReturningScreen(OrbGame.Name.MAIN);
 
         headerTexture = new Texture(Gdx.files.internal("credits_header.png"));
         bodyTexture = new Texture(Gdx.files.internal("credits_body.png"));

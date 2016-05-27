@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.groups.BaseGroup;
-import com.jmolina.orb.var.Vars;
+import com.jmolina.orb.var.Var;
 
 public class LevelCardWidget extends BaseGroup implements Disposable {
 
@@ -32,9 +32,9 @@ public class LevelCardWidget extends BaseGroup implements Disposable {
 
         background.setPosition(0f, 0f);
         cover.setPosition(0f, 0F);
-        title.setPosition(5.0f * Vars.GRID_UNIT, 3.0f * Vars.GRID_UNIT);
-        best.setPosition(5.0f * Vars.GRID_UNIT, 0.75f * Vars.GRID_UNIT);
-        world.setPosition(5.0f * Vars.GRID_UNIT, 0.0f);
+        title.setPosition(5.0f * Var.GRID_UNIT, 3.0f * Var.GRID_UNIT);
+        best.setPosition(5.0f * Var.GRID_UNIT, 0.75f * Var.GRID_UNIT);
+        world.setPosition(5.0f * Var.GRID_UNIT, 0.0f);
 
         addActor(background);
         addActor(cover);
@@ -42,7 +42,7 @@ public class LevelCardWidget extends BaseGroup implements Disposable {
         addActor(best);
         addActor(world);
 
-        setHeight(4.0f * Vars.GRID_UNIT);
+        setHeight(4.0f * Var.GRID_UNIT);
     }
 
     @Override
