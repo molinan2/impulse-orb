@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.var.Utils;
 
-import static com.jmolina.orb.var.Vars.ScreenName.SCREEN_MAIN;
+import static com.jmolina.orb.OrbGame.Name.MAIN;
 
 /**
  * Descartada la barra de progreso
@@ -27,7 +27,7 @@ public class LoadScreen extends BaseScreen {
     public void setSplash(Texture splashTexture) {
         splash = new Image(splashTexture);
         splash.setPosition(Utils.xGrid(2), Utils.yGrid(11));
-        getStage().addActor(splash);
+        getMainStage().addActor(splash);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class LoadScreen extends BaseScreen {
 
         if (elapsed > 1.5f && !acting) {
             acting = true;
-            goToScreen(SCREEN_MAIN, Flow.INNER);
+            switchToScreen(MAIN, Hierarchy.LOWER);
         }
     }
 

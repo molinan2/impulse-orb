@@ -6,8 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.widgets.LevelCardWidget;
 
-import static com.jmolina.orb.var.Vars.ScreenName.SCREEN_LEVEL_LAUNCH;
-import static com.jmolina.orb.var.Vars.ScreenName.SCREEN_MAIN;
+import static com.jmolina.orb.OrbGame.Name.LEVEL_LAUNCH;
 
 public class LevelSelectScreen extends MenuScreen {
 
@@ -35,28 +34,28 @@ public class LevelSelectScreen extends MenuScreen {
         level1.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToScreen(SCREEN_LEVEL_LAUNCH, Flow.INNER);
+                switchToScreen(LEVEL_LAUNCH, Hierarchy.LOWER);
             }
         });
 
         level2.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToScreen(SCREEN_LEVEL_LAUNCH, Flow.INNER);
+                switchToScreen(LEVEL_LAUNCH, Hierarchy.LOWER);
             }
         });
 
         level3.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToScreen(SCREEN_LEVEL_LAUNCH, Flow.INNER);
+                switchToScreen(LEVEL_LAUNCH, Hierarchy.LOWER);
             }
         });
 
         level4.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                goToScreen(SCREEN_LEVEL_LAUNCH, Flow.INNER);
+                switchToScreen(LEVEL_LAUNCH, Hierarchy.LOWER);
             }
         });
 

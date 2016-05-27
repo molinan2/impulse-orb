@@ -8,7 +8,7 @@ import com.jmolina.orb.groups.NoticeGroup;
 import com.jmolina.orb.widgets.MainButtonWidget;
 import com.jmolina.orb.groups.MainTitleGroup;
 
-import static com.jmolina.orb.var.Vars.ScreenName.*;
+import static com.jmolina.orb.OrbGame.Name.*;
 
 public class MainScreen extends BaseScreen {
 
@@ -55,28 +55,28 @@ public class MainScreen extends BaseScreen {
         playWidget.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                goToScreen(SCREEN_LEVEL_SELECT, Flow.INNER);
+                switchToScreen(LEVEL_SELECT, Hierarchy.LOWER);
             }
         });
 
         optionsWidget.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                goToScreen(SCREEN_OPTIONS, Flow.INNER);
+                switchToScreen(OPTIONS, Hierarchy.LOWER);
             }
         });
 
         statsWidget.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                goToScreen(SCREEN_STATS, Flow.INNER);
+                switchToScreen(STATS, Hierarchy.LOWER);
             }
         });
 
         creditsWidget.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                goToScreen(SCREEN_CREDITS, Flow.INNER);
+                switchToScreen(CREDITS, Hierarchy.LOWER);
             }
         });
 
@@ -87,13 +87,13 @@ public class MainScreen extends BaseScreen {
             }
         });
 
-        getStage().addActor(mainTitleGroup);
-        getStage().addActor(playWidget);
-        getStage().addActor(optionsWidget);
-        getStage().addActor(statsWidget);
-        getStage().addActor(creditsWidget);
-        getStage().addActor(exitWidget);
-        getStage().addActor(noticeGroup);
+        getMainStage().addActor(mainTitleGroup);
+        getMainStage().addActor(playWidget);
+        getMainStage().addActor(optionsWidget);
+        getMainStage().addActor(statsWidget);
+        getMainStage().addActor(creditsWidget);
+        getMainStage().addActor(exitWidget);
+        getMainStage().addActor(noticeGroup);
     }
 
     @Override

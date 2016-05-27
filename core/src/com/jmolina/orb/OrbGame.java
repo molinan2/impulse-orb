@@ -6,7 +6,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.Logger;
-import com.badlogic.gdx.utils.compression.lzma.Base;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.CreditsScreen;
 import com.jmolina.orb.screens.LevelLaunchScreen;
@@ -15,7 +14,6 @@ import com.jmolina.orb.screens.LoadScreen;
 import com.jmolina.orb.screens.MainScreen;
 import com.jmolina.orb.screens.OptionsScreen;
 import com.jmolina.orb.screens.StatsScreen;
-import com.jmolina.orb.var.Vars;
 
 
 /**
@@ -23,6 +21,9 @@ import com.jmolina.orb.var.Vars;
  * Algun tipo de ScreenManager, que decida el flujo de pantallas y las disposee e instancie
  * Sería una especie de ScreenFactory, o incluiría una ScreenFactory
  * Info: http://www.tutorialspoint.com/design_pattern/factory_pattern.htm
+ *
+ * O sería una clase Singleton: https://en.wikipedia.org/wiki/Singleton_pattern
+ * Con ScreenManager.getManager(). Sin constructor.
  */
 
 /**
@@ -42,6 +43,10 @@ import com.jmolina.orb.var.Vars;
  */
 public class OrbGame extends Game {
 
+	public static enum Name {
+		LOAD, MAIN, OPTIONS, STATS, CREDITS, LEVEL_SELECT, LEVEL_LAUNCH
+	}
+
 	private LoadScreen gameLoadScreen;
 	private MainScreen mainScreen;
 	private OptionsScreen optionsScreen;
@@ -53,7 +58,7 @@ public class OrbGame extends Game {
 	// private BackgroundScreen backgroundScreen;
 
 	private Logger logger;
-	private ArrayMap<Vars.ScreenName, BaseScreen> screens;
+	private ArrayMap<Name, BaseScreen> screens;
 
 	private Texture splashTexture;
 
@@ -84,13 +89,13 @@ public class OrbGame extends Game {
 		levelSelectScreen = new LevelSelectScreen();
 		levelLaunchScreen = new LevelLaunchScreen(); // Parametrica
 
-		gameLoadScreen.setScreenManager(this);
-		mainScreen.setScreenManager(this);
-		optionsScreen.setScreenManager(this);
-		statsScreen.setScreenManager(this);
-		creditsScreen.setScreenManager(this);
-		levelSelectScreen.setScreenManager(this);
-		levelLaunchScreen.setScreenManager(this);
+		gameLoadScreen.setManager(this);
+		mainScreen.setManager(this);
+		optionsScreen.setManager(this);
+		statsScreen.setManager(this);
+		creditsScreen.setManager(this);
+		levelSelectScreen.setManager(this);
+		levelLaunchScreen.setManager(this);
 
 		// TODO: 23/05/2016 AchievementsScreen
 		// TODO: 23/05/2016 LadderScreen
@@ -107,17 +112,17 @@ public class OrbGame extends Game {
 		 *    -Guardar los objetos intermedios a preferencias al finalizar
 		 */
 
-		screens = new ArrayMap<Vars.ScreenName, BaseScreen>();
-		screens.put(Vars.ScreenName.SCREEN_LOAD, gameLoadScreen);
-		screens.put(Vars.ScreenName.SCREEN_MAIN, mainScreen);
-		screens.put(Vars.ScreenName.SCREEN_OPTIONS, optionsScreen);
-		screens.put(Vars.ScreenName.SCREEN_STATS, statsScreen);
-		screens.put(Vars.ScreenName.SCREEN_CREDITS, creditsScreen);
-		screens.put(Vars.ScreenName.SCREEN_LEVEL_SELECT, levelSelectScreen);
-		screens.put(Vars.ScreenName.SCREEN_LEVEL_LAUNCH, levelLaunchScreen);
+		screens = new ArrayMap<Name, BaseScreen>();
+		screens.put(Name.LOAD, gameLoadScreen);
+		screens.put(Name.MAIN, mainScreen);
+		screens.put(Name.OPTIONS, optionsScreen);
+		screens.put(Name.STATS, statsScreen);
+		screens.put(Name.CREDITS, creditsScreen);
+		screens.put(Name.LEVEL_SELECT, levelSelectScreen);
+		screens.put(Name.LEVEL_LAUNCH, levelLaunchScreen);
 
 		// setScreen(gameLoadScreen);
-		setScreenByKey(Vars.ScreenName.SCREEN_LOAD);
+		setScreenByKey(Name.LOAD, BaseScreen.Hierarchy.LOWER);
 	}
 
 	@Override
@@ -148,18 +153,10 @@ public class OrbGame extends Game {
 		// backgroundScreen.dispose();
 	}
 
-	/**
-	 * Metodo temporal mientras refactorizo el resto de las llamadas
-	 * @param key
-     */
-	public void setScreenByKey(Vars.ScreenName key) {
-		setScreenByKey(key, BaseScreen.Flow.INNER);
-	}
-
-	public void setScreenByKey(Vars.ScreenName key, BaseScreen.Flow flow) {
+	public void setScreenByKey(Name key, BaseScreen.Hierarchy hierarchy) {
 		if (this.screen != null) this.screen.hide();
 
-		// TODO: 24/05/2016 Sustituir por una Screen Factory
+		// TODO: Sustituir por una Screen Factory, o un ScreenManager que sea singleton
 
 		// Disposar screen antigua
 		// Remove de ArrayMap. Igual ya no es útil el ArrayMap...
@@ -168,7 +165,7 @@ public class OrbGame extends Game {
 
 		this.screen = screens.get(key);
 		((BaseScreen) this.screen).setAsInputProcessor(); // TODO Extender la clase Game para que use BaseScreen, no Screen
-		((BaseScreen) this.screen).setFlow(flow);
+		((BaseScreen) this.screen).setHierarchy(hierarchy);
 
 		if (this.screen != null) {
 			this.screen.show();

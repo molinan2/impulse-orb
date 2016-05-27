@@ -44,10 +44,10 @@ public abstract class UIAction {
     static public final Action fromInside() {
         return new SequenceAction(sequence(
                 fadeOut(0f),
-                scaleTo(1/Vars.ANIMATION_SCALE_FACTOR, 1/Vars.ANIMATION_SCALE_FACTOR, 0f),
+                scaleTo(1 / Vars.ANIMATION_SCALE_FACTOR, 1 / Vars.ANIMATION_SCALE_FACTOR, 0f),
                 parallel(
                         fadeIn(Vars.ANIMATION_DURATION, Interpolation.pow2),
-                        scaleTo(1 / Vars.ANIMATION_SCALE_FACTOR, 1 / Vars.ANIMATION_SCALE_FACTOR, Vars.ANIMATION_DURATION)
+                        scaleTo(1f, 1f, Vars.ANIMATION_DURATION)
                 )
         ));
     }
@@ -61,6 +61,29 @@ public abstract class UIAction {
                         scaleTo(1f, 1f, Vars.ANIMATION_DURATION)
                 )
         ));
+    }
+
+    static public final Action appear() {
+        return new SequenceAction(sequence(
+                fadeOut(0f),
+                scaleTo(Vars.ANIMATION_SCALE_FACTOR, Vars.ANIMATION_SCALE_FACTOR, 0f),
+                fadeIn(Vars.ANIMATION_DURATION, Interpolation.pow2)
+        ));
+    }
+
+    static public final Action disappear() {
+        return new SequenceAction(sequence(
+                fadeIn(0f),
+                scaleTo(1f, 1f, 0f),
+                fadeOut(Vars.ANIMATION_DURATION, Interpolation.pow2)
+        ));
+    }
+
+    static public final Action dummy() {
+        return new SequenceAction(sequence(
+                fadeIn(1f),
+                scaleTo(1f, 1f, 0f))
+        );
     }
 
 
