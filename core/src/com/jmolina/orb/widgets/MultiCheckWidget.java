@@ -7,9 +7,6 @@ import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.var.Var;
 
-/**
- * TODO Implementar con 3 actores en el check
- */
 public class MultiCheckWidget extends BaseGroup implements Disposable {
 
     private Image text;

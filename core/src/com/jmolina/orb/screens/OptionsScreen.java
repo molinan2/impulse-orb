@@ -20,12 +20,6 @@ public class OptionsScreen extends MenuScreen {
     private Texture zoomTexture;
     // private String username;
 
-    /**
-     * TODO
-     * Debe permitir introducir, modificar el Username
-     * Por defecto, leerlo del móvil o del perfil del SO
-     */
-
     public OptionsScreen() {
         super();
 

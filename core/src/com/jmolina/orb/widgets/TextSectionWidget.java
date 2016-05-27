@@ -11,7 +11,6 @@ public class TextSectionWidget extends BaseGroup {
     private Image body;
 
     public TextSectionWidget(Texture headerTexture, Texture bodyTexture) {
-
         header = new Image(headerTexture);
         body = new Image(bodyTexture);
 

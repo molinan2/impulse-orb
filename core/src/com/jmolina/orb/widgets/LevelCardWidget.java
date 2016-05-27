@@ -48,5 +48,6 @@ public class LevelCardWidget extends BaseGroup implements Disposable {
     @Override
     public void dispose() {
         backgroundTexture.dispose();
+        lockTexture.dispose();
     }
 }

@@ -9,9 +9,6 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
-		// TODO Coordenadas reales: 1184x768
-		// TODO Coordenadas reduccion 1: 1110x720
-
 		config.fullscreen = false;
 		config.height = 1184;
 		config.width = 768;

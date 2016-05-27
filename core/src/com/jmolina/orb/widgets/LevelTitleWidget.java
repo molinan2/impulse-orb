@@ -9,8 +9,6 @@ import com.jmolina.orb.var.Var;
 public class LevelTitleWidget extends BaseGroup implements Disposable {
 
     private Image title;
-    // private Image background;
-    // private Texture backgroundTexture;
 
     public LevelTitleWidget(Texture titleTexture) {
         title = new Image(titleTexture);
