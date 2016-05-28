@@ -5,19 +5,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.groups.NoticeGroup;
-import com.jmolina.orb.widgets.MainButtonWidget;
+import com.jmolina.orb.widgets.ButtonWidget;
 import com.jmolina.orb.groups.MainTitleGroup;
 
-import static com.jmolina.orb.OrbGame.Name.*;
+import static com.jmolina.orb.Orb.Name.*;
 
 public class MainScreen extends BaseScreen {
 
     private MainTitleGroup mainTitleGroup;
-    private MainButtonWidget playWidget;
-    private MainButtonWidget optionsWidget;
-    private MainButtonWidget statsWidget;
-    private MainButtonWidget creditsWidget;
-    private MainButtonWidget exitWidget;
+    private ButtonWidget playWidget;
+    private ButtonWidget optionsWidget;
+    private ButtonWidget statsWidget;
+    private ButtonWidget creditsWidget;
+    private ButtonWidget exitWidget;
     private Texture playTexture;
     private Texture optionsTexture;
     private Texture statsTexture;
@@ -40,11 +40,11 @@ public class MainScreen extends BaseScreen {
         creditsTexture = new Texture(Gdx.files.internal("button_credits.png"));
         exitTexture = new Texture(Gdx.files.internal("button_exit.png"));
 
-        playWidget = new MainButtonWidget(playTexture);
-        optionsWidget = new MainButtonWidget(optionsTexture);
-        statsWidget = new MainButtonWidget(statsTexture);
-        creditsWidget = new MainButtonWidget(creditsTexture);
-        exitWidget = new MainButtonWidget(exitTexture);
+        playWidget = new ButtonWidget(playTexture);
+        optionsWidget = new ButtonWidget(optionsTexture);
+        statsWidget = new ButtonWidget(statsTexture);
+        creditsWidget = new ButtonWidget(creditsTexture);
+        exitWidget = new ButtonWidget(exitTexture);
 
         playWidget.setGridPosition(2, 7.5f);
         optionsWidget.setGridPosition(2, 9.5f);

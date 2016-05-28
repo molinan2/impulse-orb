@@ -1,20 +1,21 @@
-package com.jmolina.orb.groups;
+package com.jmolina.orb.widgets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
+import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.var.Util;
 
-public class ReturningTitleGroup extends com.jmolina.orb.groups.BaseGroup implements Disposable {
+public class ReturningTitleWidget extends BaseGroup implements Disposable {
 
     private Image button;
     private Texture buttonTexture;
     private Image title;
     private Texture titleTexture;
 
-    public ReturningTitleGroup() {
+    public ReturningTitleWidget() {
         buttonTexture = new Texture(Gdx.files.internal("back.png"));
         titleTexture = new Texture(Gdx.files.internal("title.png"));
         button = new Image(buttonTexture);

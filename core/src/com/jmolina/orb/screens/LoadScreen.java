@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.var.Util;
 
-import static com.jmolina.orb.OrbGame.Name.MAIN;
+import static com.jmolina.orb.Orb.Name.MAIN;
 
 public class LoadScreen extends BaseScreen {
 

@@ -5,12 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.var.Var;
 
-public class TextSectionWidget extends BaseGroup {
+public class ParragraphWidget extends BaseGroup {
 
     private Image header;
     private Image body;
 
-    public TextSectionWidget(Texture headerTexture, Texture bodyTexture) {
+    public ParragraphWidget(Texture headerTexture, Texture bodyTexture) {
         header = new Image(headerTexture);
         body = new Image(bodyTexture);
 

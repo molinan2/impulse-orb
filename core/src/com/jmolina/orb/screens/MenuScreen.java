@@ -9,14 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.jmolina.orb.OrbGame;
+import com.jmolina.orb.Orb;
 import com.jmolina.orb.var.Util;
 import com.jmolina.orb.var.Var;
-import com.jmolina.orb.groups.ReturningTitleGroup;
+import com.jmolina.orb.widgets.ReturningTitleWidget;
 
 public class MenuScreen extends BaseScreen {
 
-    private ReturningTitleGroup returningTitleGroup;
+    private ReturningTitleWidget returningTitleWidget;
     private Table table;
     private ScrollPane scrollPane;
     private Texture scrollerTexture;
@@ -24,8 +24,8 @@ public class MenuScreen extends BaseScreen {
     public MenuScreen() {
         super();
 
-        returningTitleGroup = new ReturningTitleGroup();
-        returningTitleGroup.setGridPosition(1, 3);
+        returningTitleWidget = new ReturningTitleWidget();
+        returningTitleWidget.setGridPosition(1, 3);
 
         table = new Table();
         table.top();
@@ -41,13 +41,13 @@ public class MenuScreen extends BaseScreen {
         scrollPane.setHeight(Util.yGrid(4.5f));
         scrollPane.setPosition(0f, 0f);
 
-        addMainActor(returningTitleGroup);
+        addMainActor(returningTitleWidget);
         addMainActor(scrollPane);
     }
 
     @Override
     public void dispose() {
-        returningTitleGroup.dispose();
+        returningTitleWidget.dispose();
         scrollerTexture.dispose();
         super.dispose();
     }
@@ -69,9 +69,9 @@ public class MenuScreen extends BaseScreen {
         getTable().add(actor).width(width * Var.GRID_UNIT).expandX().padBottom(bottomPadding * Var.GRID_UNIT);
     }
 
-    protected void setReturningScreen(final OrbGame.Name name) {
-        returningTitleGroup.clearListeners();
-        returningTitleGroup.setListener(new ClickListener(){
+    protected void setReturningScreen(final Orb.Name name) {
+        returningTitleWidget.clearListeners();
+        returningTitleWidget.setListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 switchToScreen(name, Hierarchy.HIGHER);

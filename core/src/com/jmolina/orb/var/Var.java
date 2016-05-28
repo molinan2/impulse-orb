@@ -7,5 +7,10 @@ public class Var {
     public static float GRID_UNIT = 64.0f;
     public static float ANIMATION_DURATION = 0.2f;
     public static float ANIMATION_SCALE_FACTOR = 1.35f;
+    public static String OPTION_MUSIC = "music";
+    public static String OPTION_SOUND = "sound";
+    public static String OPTION_VIBRATION = "vibration";
+    public static String OPTION_ONLINE = "online";
+    public static String OPTION_ZOOM = "zoom";
 
 }

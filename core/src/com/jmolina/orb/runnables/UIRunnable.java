@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.jmolina.orb.OrbGame;
+import com.jmolina.orb.Orb;
 import com.jmolina.orb.screens.BaseScreen;
 
 public abstract class UIRunnable {
@@ -45,7 +45,7 @@ public abstract class UIRunnable {
         };
     }
 
-    static public Runnable setScreen(final OrbGame manager, final OrbGame.Name name, final BaseScreen.Hierarchy hierarchy) {
+    static public Runnable setScreen(final Orb manager, final Orb.Name name, final BaseScreen.Hierarchy hierarchy) {
         return new Runnable() {
             @Override
             public void run() {

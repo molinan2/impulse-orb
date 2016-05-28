@@ -5,15 +5,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.jmolina.orb.widgets.LadderWidget;
 import com.jmolina.orb.widgets.LevelCoverWidget;
 import com.jmolina.orb.widgets.LevelTitleWidget;
-import com.jmolina.orb.widgets.MainButtonWidget;
+import com.jmolina.orb.widgets.ButtonWidget;
 
-import static com.jmolina.orb.OrbGame.Name.LEVEL_SELECT;
+import static com.jmolina.orb.Orb.Name.LEVEL_SELECT;
 
 public class LevelLaunchScreen extends MenuScreen {
 
     private LevelTitleWidget title;
     private LevelCoverWidget cover;
-    private MainButtonWidget button;
+    private ButtonWidget button;
     private LadderWidget ladderPersonal;
     private LadderWidget ladderOnline;
 
@@ -36,7 +36,7 @@ public class LevelLaunchScreen extends MenuScreen {
 
         title = new LevelTitleWidget(titleTexture);
         cover = new LevelCoverWidget(coverTexture);
-        button = new MainButtonWidget(buttonTexture);
+        button = new ButtonWidget(buttonTexture);
         ladderPersonal = new LadderWidget(ladderPersonalTexture);
         ladderOnline = new LadderWidget(ladderOnlineTexture);
 

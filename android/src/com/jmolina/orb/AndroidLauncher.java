@@ -11,6 +11,6 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useImmersiveMode = false;
-		initialize(new OrbGame(), config);
+		initialize(new Orb(), config);
 	}
 }

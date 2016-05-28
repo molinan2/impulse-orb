@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jmolina.orb.OrbGame;
+import com.jmolina.orb.Orb;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.var.Var;
@@ -34,7 +34,7 @@ public class BaseScreen implements Screen {
         ENTERING, LEAVING
     }
 
-    protected OrbGame manager;
+    protected Orb manager;
 
     private Texture bgTexture;
     private Image bg;
@@ -113,7 +113,7 @@ public class BaseScreen implements Screen {
         Gdx.input.setInputProcessor(null);
     }
 
-    public void setManager(OrbGame game) {
+    public void setManager(Orb game) {
         this.manager = game;
     }
 
@@ -122,7 +122,7 @@ public class BaseScreen implements Screen {
      * @param name Name Nombre de la siguiente pantalla
      * @param hierarchy Hierarchy Jerarquía de la siguiente pantalla respecto de la actual
      */
-    public void switchToScreen(final OrbGame.Name name, final Hierarchy hierarchy) {
+    public void switchToScreen(final Orb.Name name, final Hierarchy hierarchy) {
         clearActions();
 
         addRootAction(sequence(

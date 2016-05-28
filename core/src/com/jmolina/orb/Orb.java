@@ -2,8 +2,7 @@ package com.jmolina.orb;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.Logger;
@@ -15,9 +14,10 @@ import com.jmolina.orb.screens.LoadScreen;
 import com.jmolina.orb.screens.MainScreen;
 import com.jmolina.orb.screens.OptionsScreen;
 import com.jmolina.orb.screens.StatsScreen;
+import com.jmolina.orb.var.Var;
 
 
-public class OrbGame extends Game {
+public class Orb extends Game {
 
 	/**
 	 * Todas las pantallas de menu
@@ -44,11 +44,16 @@ public class OrbGame extends Game {
 
 	private Texture splashTexture;
 
+	private Preferences prefs;
+
 	@Override
 	public void create () {
 		logger = new Logger("Game", Logger.INFO);
 		Gdx.input.setCatchBackKey(true); // Android
 
+		prefs = Gdx.app.getPreferences(Orb.class.getName());
+		firstRun();
+		
 		splashTexture = new Texture(Gdx.files.internal("splash.png"));
 
 		gameLoadScreen = new LoadScreen(); // Parametrica
@@ -63,6 +68,7 @@ public class OrbGame extends Game {
 		gameLoadScreen.setManager(this);
 		mainScreen.setManager(this);
 		optionsScreen.setManager(this);
+		optionsScreen.setPrefs(prefs);
 		statsScreen.setManager(this);
 		creditsScreen.setManager(this);
 		levelSelectScreen.setManager(this);
@@ -113,6 +119,26 @@ public class OrbGame extends Game {
 			this.screen.show();
 			this.screen.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		}
+	}
+
+	/**
+	 * Necesario sólo en la primera ejecución
+	 */
+	public void firstRun () {
+		if (!prefs.contains(Var.OPTION_MUSIC))
+			prefs.putBoolean(Var.OPTION_MUSIC, true);
+
+		if (!prefs.contains(Var.OPTION_SOUND))
+			prefs.putBoolean(Var.OPTION_SOUND, true);
+
+		if (!prefs.contains(Var.OPTION_VIBRATION))
+			prefs.putBoolean(Var.OPTION_VIBRATION, true);
+
+		if (!prefs.contains(Var.OPTION_ONLINE))
+			prefs.putBoolean(Var.OPTION_ONLINE, true);
+
+		if (!prefs.contains(Var.OPTION_ZOOM))
+			prefs.putInteger(Var.OPTION_ZOOM, 2);
 	}
 
 }
