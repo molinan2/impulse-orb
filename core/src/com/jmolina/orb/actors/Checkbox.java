@@ -18,13 +18,17 @@ public class Checkbox extends Image implements Disposable {
     private TextureRegionDrawable uncheckedDrawable;
     private boolean checked;
 
-    public Checkbox() {
+    public Checkbox () {
+        this(true);
+    }
+
+    public Checkbox(boolean checked) {
         checkedTexture = new Texture(Gdx.files.internal("checked.png"));
         uncheckedTexture = new Texture(Gdx.files.internal("unchecked.png"));
         checkedDrawable = new TextureRegionDrawable(new TextureRegion(checkedTexture));
         uncheckedDrawable = new TextureRegionDrawable(new TextureRegion(uncheckedTexture));
 
-        checked = true;
+        this.checked = checked;
         setDrawable(checkedDrawable);
         setScaling(Scaling.stretch);
         setAlign(Align.center);

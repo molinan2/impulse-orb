@@ -3,6 +3,7 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.Orb;
@@ -81,6 +82,23 @@ public class OptionsScreen extends MenuScreen {
             }
         });
 
+        zoom.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (event.getTarget() != null) {
+                    String actorName = event.getTarget().getName();
+                    int value = Integer.parseInt(actorName);
+                    zoom.setValue(value);
+                    putOption(Var.OPTION_ZOOM, value);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        updateOptions();
     }
 
     @Override
@@ -105,6 +123,10 @@ public class OptionsScreen extends MenuScreen {
         sound.setChecked(prefs.getBoolean(Var.OPTION_SOUND));
         vibration.setChecked(prefs.getBoolean(Var.OPTION_VIBRATION));
         online.setChecked(prefs.getBoolean(Var.OPTION_ONLINE));
+        zoom.setValue(MathUtils.clamp(
+                prefs.getInteger(Var.OPTION_ZOOM),
+                Var.OPTION_ZOOM_MIN,
+                Var.OPTION_ZOOM_MAX));
     }
 
     private void putOption (String option, boolean value) {
@@ -114,11 +136,5 @@ public class OptionsScreen extends MenuScreen {
     private void putOption (String option, int value) {
         prefs.putInteger(option, value);
     }
-
-    /**
-     * TODO
-     * Implementar MultiOption como un text + 3 checkbox
-     * Implementar lógica para que siempre haya sólo una opción marcada
-     */
 
 }

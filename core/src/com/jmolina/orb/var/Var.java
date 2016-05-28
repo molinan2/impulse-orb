@@ -12,5 +12,7 @@ public class Var {
     public static String OPTION_VIBRATION = "vibration";
     public static String OPTION_ONLINE = "online";
     public static String OPTION_ZOOM = "zoom";
+    public static int OPTION_ZOOM_MIN = 0;
+    public static int OPTION_ZOOM_MAX = 2;
 
 }
