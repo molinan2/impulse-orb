@@ -15,10 +15,6 @@ import java.text.DecimalFormat;
 
 public class Stat extends BaseGroup implements Disposable {
 
-    public enum Unit {
-        Second, Meter, None
-    }
-
     private Label name;
     private Label number;
     private BitmapFont font;
@@ -29,7 +25,9 @@ public class Stat extends BaseGroup implements Disposable {
     }
 
     public Stat(String name, float value, String unit) {
-        font = new BitmapFont(Gdx.files.internal("font/roboto_medium_45.fnt"));
+        this.unit = unit;
+
+        font = new BitmapFont(Gdx.files.internal("font/roboto_regular_45.fnt"));
         font.setColor(Color.WHITE);
 
         Label.LabelStyle nameLabelStyle = new Label.LabelStyle();
@@ -51,9 +49,10 @@ public class Stat extends BaseGroup implements Disposable {
         DecimalFormat df = new DecimalFormat("###.#");
 
         if (unit.length() > 0)
-            unit = " " + unit;
+            this.number = new Label(df.format(value) + unit, numberLabelStyle);
+        else
+            this.number = new Label(df.format(value), numberLabelStyle);
 
-        this.number = new Label(df.format(value) + unit, numberLabelStyle);
         this.number.setTouchable(Touchable.disabled);
         this.number.setPosition(6f * Var.GRID_UNIT, 0f);
         this.number.setHeight(1f * Var.GRID_UNIT);
@@ -70,4 +69,5 @@ public class Stat extends BaseGroup implements Disposable {
     public void dispose() {
         font.dispose();
     }
+
 }
