@@ -3,9 +3,7 @@ package com.jmolina.orb.groups;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.jmolina.orb.actions.UIAction;
-import com.jmolina.orb.var.Util;
-
-import java.util.ArrayList;
+import com.jmolina.orb.utils.Grid;
 
 public class BaseGroup extends Group {
 
@@ -20,11 +18,11 @@ public class BaseGroup extends Group {
     }
 
     public void setGridPosition (int xGrid, int yGrid) {
-        this.setPosition(Util.xGrid(xGrid), Util.yGrid(yGrid));
+        this.setPosition(Grid.x(xGrid), Grid.y(yGrid));
     }
 
     public void setGridPosition (float xGrid, float yGrid) {
-        this.setPosition(Util.xGrid(xGrid), Util.yGrid(yGrid));
+        this.setPosition(Grid.x(xGrid), Grid.y(yGrid));
     }
 
     public void animateOutside () {

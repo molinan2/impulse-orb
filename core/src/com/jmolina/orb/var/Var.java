@@ -15,5 +15,6 @@ public class Var {
     public static int OPTION_ZOOM_MIN = 0;
     public static int OPTION_ZOOM_MAX = 2;
     public static int COLOR_BLUE = 0x2E3192ff;
+    public static int COLOR_BLACK = 0x4D4D4Dff;
 
 }

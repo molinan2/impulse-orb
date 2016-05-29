@@ -124,3 +124,4 @@ char id=46   x=276     y=196     width=10     height=10     xoffset=2     yoffse
 char id=183   x=286     y=196     width=10     height=10     xoffset=2     yoffset=21    xadvance=15     page=0  chnl=0 
 char id=95   x=296     y=196     width=24     height=8     xoffset=-1     yoffset=40    xadvance=22     page=0  chnl=0 
 char id=45   x=320     y=196     width=16     height=8     xoffset=0     yoffset=24    xadvance=17     page=0  chnl=0 
+kernings count=-1

@@ -3,7 +3,7 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.jmolina.orb.var.Util;
+import com.jmolina.orb.utils.Grid;
 
 import static com.jmolina.orb.Orb.Name.MAIN;
 
@@ -23,7 +23,7 @@ public class LoadScreen extends BaseScreen {
 
     public void setSplash(Texture splashTexture) {
         splash = new Image(splashTexture);
-        splash.setPosition(Util.xGrid(2), Util.yGrid(11));
+        splash.setPosition(Grid.x(2), Grid.y(11));
         addMainActor(splash);
     }
 

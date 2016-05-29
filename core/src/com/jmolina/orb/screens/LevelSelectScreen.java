@@ -24,6 +24,7 @@ public class LevelSelectScreen extends MenuScreen {
         super();
 
         setReturningScreen(Orb.Name.MAIN);
+        setTitle("SELECT");
 
         level1CoverTexture = new Texture(Gdx.files.internal("card_cover.png"));
         level1TitleTexture = new Texture(Gdx.files.internal("card_title.png"));

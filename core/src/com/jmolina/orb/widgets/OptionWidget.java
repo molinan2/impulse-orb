@@ -31,7 +31,7 @@ public class OptionWidget extends BaseGroup implements Disposable {
         ls.font = font;
 
         label = new Label(name, ls);
-        //label.setTouchable(Touchable.disabled);
+        label.setTouchable(Touchable.disabled);
         label.setPosition(0f, 0f);
         label.setHeight(1.5f * Var.GRID_UNIT);
 

@@ -21,6 +21,7 @@ public class CreditsScreen extends MenuScreen {
         super();
 
         setReturningScreen(Orb.Name.MAIN);
+        setTitle("CREDITS");
 
         headerTexture = new Texture(Gdx.files.internal("credits_header.png"));
         bodyTexture = new Texture(Gdx.files.internal("credits_body.png"));

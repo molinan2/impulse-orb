@@ -10,13 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.Orb;
-import com.jmolina.orb.var.Util;
+import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Var;
-import com.jmolina.orb.widgets.ReturningTitleWidget;
+import com.jmolina.orb.widgets.ScreenHeader;
 
 public class MenuScreen extends BaseScreen {
 
-    private ReturningTitleWidget returningTitleWidget;
+    private ScreenHeader screenHeader;
     private Table table;
     private ScrollPane scrollPane;
     private Texture scrollerTexture;
@@ -24,8 +24,8 @@ public class MenuScreen extends BaseScreen {
     public MenuScreen() {
         super();
 
-        returningTitleWidget = new ReturningTitleWidget();
-        returningTitleWidget.setGridPosition(1, 3);
+        screenHeader = new ScreenHeader("");
+        screenHeader.setGridPosition(1, 3);
 
         table = new Table();
         table.top();
@@ -38,16 +38,16 @@ public class MenuScreen extends BaseScreen {
         scrollPane = new ScrollPane(table);
         scrollPane.setStyle(scrollPaneStyle);
         scrollPane.setWidth(Var.VIEWPORT_WIDTH);
-        scrollPane.setHeight(Util.yGrid(4.5f));
+        scrollPane.setHeight(Grid.y(4.5f));
         scrollPane.setPosition(0f, 0f);
 
-        addMainActor(returningTitleWidget);
+        addMainActor(screenHeader);
         addMainActor(scrollPane);
     }
 
     @Override
     public void dispose() {
-        returningTitleWidget.dispose();
+        screenHeader.dispose();
         scrollerTexture.dispose();
         super.dispose();
     }
@@ -70,13 +70,17 @@ public class MenuScreen extends BaseScreen {
     }
 
     protected void setReturningScreen(final Orb.Name name) {
-        returningTitleWidget.clearListeners();
-        returningTitleWidget.setListener(new ClickListener(){
+        screenHeader.clearListeners();
+        screenHeader.setListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 switchToScreen(name, Hierarchy.HIGHER);
             }
         });
+    }
+
+    public void setTitle (String name) {
+        screenHeader.setLabel(name);
     }
 
 }

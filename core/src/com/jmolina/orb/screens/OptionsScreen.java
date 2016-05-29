@@ -26,6 +26,7 @@ public class OptionsScreen extends MenuScreen {
         super();
 
         setReturningScreen(Orb.Name.MAIN);
+        setTitle("OPTIONS");
 
         music = new OptionWidget("Background music");
         sound = new OptionWidget("Sound effects");
