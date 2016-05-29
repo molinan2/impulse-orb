@@ -18,11 +18,6 @@ public class OptionsScreen extends MenuScreen {
     private OptionWidget vibration;
     private OptionWidget online;
     private MultiOptionWidget zoom;
-    private Texture musicTexture;
-    private Texture soundTexture;
-    private Texture vibrationTexture;
-    private Texture onlineTexture;
-    private Texture zoomTexture;
     // private String username;
 
     private Preferences prefs;
@@ -32,17 +27,11 @@ public class OptionsScreen extends MenuScreen {
 
         setReturningScreen(Orb.Name.MAIN);
 
-        musicTexture = new Texture(Gdx.files.internal("option_music.png"));
-        soundTexture = new Texture(Gdx.files.internal("option_sound.png"));
-        vibrationTexture = new Texture(Gdx.files.internal("option_vibration.png"));
-        onlineTexture = new Texture(Gdx.files.internal("option_online.png"));
-        zoomTexture = new Texture(Gdx.files.internal("option_zoom.png"));
-
-        music = new OptionWidget(musicTexture);
-        sound = new OptionWidget(soundTexture);
-        vibration = new OptionWidget(vibrationTexture);
-        online = new OptionWidget(onlineTexture);
-        zoom = new MultiOptionWidget(zoomTexture);
+        music = new OptionWidget("Background music");
+        sound = new OptionWidget("Sound effects");
+        vibration = new OptionWidget("Vibration");
+        online = new OptionWidget("Online play");
+        zoom = new MultiOptionWidget("Zoom level");
 
         addRow(music);
         addRow(sound);
@@ -55,6 +44,7 @@ public class OptionsScreen extends MenuScreen {
             public void clicked(InputEvent event, float x, float y) {
                 music.toggleCheckbox();
                 putOption(Var.OPTION_MUSIC, music.isChecked());
+                Gdx.app.log(event.getTarget().getClass().toString(), "click");
             }
         });
 
@@ -87,9 +77,12 @@ public class OptionsScreen extends MenuScreen {
             public void clicked(InputEvent event, float x, float y) {
                 if (event.getTarget() != null) {
                     String actorName = event.getTarget().getName();
-                    int value = Integer.parseInt(actorName);
-                    zoom.setValue(value);
-                    putOption(Var.OPTION_ZOOM, value);
+                    if (actorName != null) {
+                        int value = Integer.parseInt(actorName);
+                        zoom.setValue(value);
+                        putOption(Var.OPTION_ZOOM, value);
+                    }
+
                 }
             }
         });
@@ -105,12 +98,21 @@ public class OptionsScreen extends MenuScreen {
     public void dispose () {
         super.dispose();
         music.dispose();
+        sound.dispose();
+        vibration.dispose();
+        online.dispose();
+        zoom.dispose();
     }
 
     @Override
     public void hide () {
         super.hide();
         prefs.flush();
+
+        /**
+         * TODO
+         * ¿Qué pasa si cierro la aplicación? ¿Se guardan las prefs? ¿Llama a hide()?
+         */
     }
 
     public void setPrefs (Preferences prefs) {

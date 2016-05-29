@@ -14,5 +14,6 @@ public class Var {
     public static String OPTION_ZOOM = "zoom";
     public static int OPTION_ZOOM_MIN = 0;
     public static int OPTION_ZOOM_MAX = 2;
+    public static int COLOR_BLUE = 0x2E3192ff;
 
 }

@@ -3,13 +3,19 @@ package com.jmolina.orb.actors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Scaling;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+
+/**
+ * TODO
+ * Reformar
+ * Que sea un widget (BaseGroup) compuesto de 2 imagenes: la base y la "marca" superpuesta
+ */
 public class Checkbox extends Image implements Disposable {
 
     private Texture checkedTexture;
@@ -59,4 +65,5 @@ public class Checkbox extends Image implements Disposable {
         checkedTexture.dispose();
         uncheckedTexture.dispose();
     }
+
 }

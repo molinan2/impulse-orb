@@ -1,8 +1,12 @@
 package com.jmolina.orb.widgets;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.actors.Checkbox;
 import com.jmolina.orb.groups.BaseGroup;
@@ -10,24 +14,34 @@ import com.jmolina.orb.var.Var;
 
 public class OptionWidget extends BaseGroup implements Disposable {
 
-    private Image name;
+    private Label label;
+    private BitmapFont font;
     private Checkbox checkbox;
 
-    public OptionWidget(Texture textTexture) {
-        this(textTexture, true);
+    public OptionWidget(String name) {
+        this(name, true);
     }
 
-    public OptionWidget(Texture nameTexture, boolean checked) {
-        name = new Image(nameTexture);
-        name.setPosition(0f, 0f);
-        name.setTouchable(Touchable.disabled);
+    public OptionWidget(String name, boolean checked) {
+        font = new BitmapFont(Gdx.files.internal("font/roboto_medium_45.fnt"));
+        font.setColor(Color.WHITE);
+
+        Label.LabelStyle ls = new Label.LabelStyle();
+        ls.fontColor = new Color(Var.COLOR_BLUE);
+        ls.font = font;
+
+        label = new Label(name, ls);
+        //label.setTouchable(Touchable.disabled);
+        label.setPosition(0f, 0f);
+        label.setHeight(1.5f * Var.GRID_UNIT);
 
         checkbox = new Checkbox(checked);
         checkbox.setPosition(8.5f * Var.GRID_UNIT, 0f);
 
-        addActor(name);
+        addActor(label);
         addActor(checkbox);
         setHeight(1.5f * Var.GRID_UNIT);
+        setTouchable(Touchable.childrenOnly);
     }
 
     public void toggleCheckbox() {
@@ -46,5 +60,6 @@ public class OptionWidget extends BaseGroup implements Disposable {
     @Override
     public void dispose() {
         checkbox.dispose();
+        font.dispose();
     }
 }

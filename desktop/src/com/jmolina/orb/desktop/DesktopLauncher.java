@@ -12,7 +12,7 @@ public class DesktopLauncher {
 		config.fullscreen = false;
 		config.height = 1184;
 		config.width = 768;
-		config.title = "Orb Desktop";
+		config.title = "Orb";
 		config.addIcon("icon.png", Files.FileType.Internal);
 
 		new LwjglApplication(new Orb(), config);
