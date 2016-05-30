@@ -45,7 +45,6 @@ public class OptionsScreen extends MenuScreen {
             public void clicked(InputEvent event, float x, float y) {
                 music.toggleCheckbox();
                 putOption(Var.OPTION_MUSIC, music.isChecked());
-                Gdx.app.log(event.getTarget().getClass().toString(), "click");
             }
         });
 

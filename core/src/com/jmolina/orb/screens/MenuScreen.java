@@ -38,7 +38,7 @@ public class MenuScreen extends BaseScreen {
         scrollPane = new ScrollPane(table);
         scrollPane.setStyle(scrollPaneStyle);
         scrollPane.setWidth(Var.VIEWPORT_WIDTH);
-        scrollPane.setHeight(Grid.y(4.5f));
+        scrollPane.setHeight(Grid.cellY(4.5f));
         scrollPane.setPosition(0f, 0f);
 
         addMainActor(screenHeader);

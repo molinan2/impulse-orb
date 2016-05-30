@@ -18,11 +18,11 @@ public class BaseGroup extends Group {
     }
 
     public void setGridPosition (int xGrid, int yGrid) {
-        this.setPosition(Grid.x(xGrid), Grid.y(yGrid));
+        this.setPosition(Grid.cellX(xGrid), Grid.cellY(yGrid));
     }
 
     public void setGridPosition (float xGrid, float yGrid) {
-        this.setPosition(Grid.x(xGrid), Grid.y(yGrid));
+        this.setPosition(Grid.cellX(xGrid), Grid.cellY(yGrid));
     }
 
     public void animateOutside () {

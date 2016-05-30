@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 
-public class MainTitleGroup extends com.jmolina.orb.groups.BaseGroup implements Disposable {
+public class MainTitleGroup extends BaseGroup implements Disposable {
 
     private Image image;
     private Texture imageTexture;

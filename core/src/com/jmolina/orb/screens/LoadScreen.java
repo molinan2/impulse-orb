@@ -23,7 +23,7 @@ public class LoadScreen extends BaseScreen {
 
     public void setSplash(Texture splashTexture) {
         splash = new Image(splashTexture);
-        splash.setPosition(Grid.x(2), Grid.y(11));
+        splash.setPosition(Grid.cellX(2), Grid.cellY(11));
         addMainActor(splash);
     }
 
@@ -39,7 +39,7 @@ public class LoadScreen extends BaseScreen {
 
         elapsed = elapsed + delta;
 
-        if (elapsed > 1.5f && !acting) {
+        if (elapsed > 0.5f && !acting) {
             acting = true;
             switchToScreen(MAIN, Hierarchy.LOWER);
         }
