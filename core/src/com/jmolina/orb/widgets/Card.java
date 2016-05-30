@@ -4,12 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.groups.BaseGroup;
+import com.jmolina.orb.interfaces.Visitor;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Var;
 
@@ -128,7 +131,7 @@ public class Card extends BaseGroup implements Disposable {
         this.lock.addAction(alpha(1f));
         this.personal.addAction(alpha(0f));
 
-        this.setTouchable(Touchable.disabled);
+        //this.setTouchable(Touchable.disabled);
     }
 
     public void unlock() {
@@ -140,10 +143,30 @@ public class Card extends BaseGroup implements Disposable {
 
         this.lock.addAction(alpha(0f));
 
-        this.setTouchable(Touchable.enabled);
+        //this.setTouchable(Touchable.enabled);
     }
 
     public boolean isLocked() {
         return this.locked;
+    }
+
+    public void setOnClickOperation(final Visitor visitor) {
+        this.clearListeners();
+        this.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (!locked) {
+                    visitor.run();
+                }
+                else {
+                    lock.clearActions();
+                    lock.addAction(sequence(
+                            alpha(1f),
+                            fadeOut(0),
+                            fadeIn(0.5f)
+                    ));
+                }
+            }
+        });
     }
 }

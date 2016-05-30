@@ -2,9 +2,8 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.Orb;
+import com.jmolina.orb.interfaces.Visitor;
 import com.jmolina.orb.widgets.Card;
 
 import static com.jmolina.orb.Orb.Name.LEVEL_LAUNCH;
@@ -31,33 +30,17 @@ public class LevelSelect extends Menu {
         level3 = new Card("EXPERT", "--", "57.41", level1CoverTexture, true);
         level4 = new Card("HERO", "--", "57.41", level1CoverTexture, true);
 
-        level1.addListener(new ClickListener(){
+        Visitor screenSwitcher = new Visitor() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void run() {
                 switchToScreen(LEVEL_LAUNCH, Hierarchy.LOWER);
             }
-        });
+        };
 
-        level2.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                switchToScreen(LEVEL_LAUNCH, Hierarchy.LOWER);
-            }
-        });
-
-        level3.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                switchToScreen(LEVEL_LAUNCH, Hierarchy.LOWER);
-            }
-        });
-
-        level4.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                switchToScreen(LEVEL_LAUNCH, Hierarchy.LOWER);
-            }
-        });
+        level1.setOnClickOperation(screenSwitcher);
+        level2.setOnClickOperation(screenSwitcher);
+        level3.setOnClickOperation(screenSwitcher);
+        level4.setOnClickOperation(screenSwitcher);
 
         addRow(level1);
         addRow(level2);
