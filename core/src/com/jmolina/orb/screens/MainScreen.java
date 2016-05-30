@@ -94,4 +94,8 @@ public class MainScreen extends BaseScreen {
         super.dispose();
     }
 
+    @Override
+    public void back() {
+        exitApplication();
+    }
 }

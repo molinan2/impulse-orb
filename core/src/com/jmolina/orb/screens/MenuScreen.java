@@ -20,6 +20,7 @@ public class MenuScreen extends BaseScreen {
     private Table table;
     private ScrollPane scrollPane;
     private Texture scrollerTexture;
+    private Orb.Name returningScreen;
 
     public MenuScreen() {
         super();
@@ -69,8 +70,16 @@ public class MenuScreen extends BaseScreen {
         getTable().add(actor).width(width * Var.GRID_UNIT).expandX().padBottom(bottomPadding * Var.GRID_UNIT);
     }
 
-    protected void setReturningScreen(final Orb.Name name) {
-        screenHeader.clearListeners();
+    protected void setReturningScreen(Orb.Name name) {
+        this.returningScreen = name;
+        setReturningScreenListener(name);
+    }
+
+    public Orb.Name getReturningScreen() {
+        return this.returningScreen;
+    }
+
+    private void setReturningScreenListener (final Orb.Name name) {
         screenHeader.setListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -83,4 +92,8 @@ public class MenuScreen extends BaseScreen {
         screenHeader.setLabel(name);
     }
 
+    @Override
+    public void back() {
+        switchToScreen(this.returningScreen, Hierarchy.HIGHER);
+    }
 }

@@ -2,6 +2,7 @@ package com.jmolina.orb;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ArrayMap;
@@ -88,6 +89,10 @@ public class Orb extends Game {
 
 	@Override
 	public void render () {
+		if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+			screen.back();
+		}
+
 		if (screen != null) {
 			screen.render(Gdx.graphics.getDeltaTime());
 		}

@@ -20,52 +20,29 @@ public class Credit extends BaseGroup implements Disposable {
     private Label body;
     private BitmapFont headerFont;
     private BitmapFont bodyFont;
-    private ShaderProgram fontShader;
 
     public Credit(String header, String body) {
         headerFont = new BitmapFont(Gdx.files.internal("font/roboto_medium_45.fnt"));
         headerFont.setColor(Color.WHITE);
 
-        bodyFont = new BitmapFont(Gdx.files.internal("font/roboto_regular_48_distance.fnt"));
+        bodyFont = new BitmapFont(Gdx.files.internal("font/roboto_regular_30.fnt"));
         bodyFont.setColor(Color.WHITE);
-        bodyFont.getData().setScale(0.5f);
-
-        Texture distanceTexture = bodyFont.getRegion().getTexture();
-        distanceTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
-        fontShader = new ShaderProgram(
-                Gdx.files.internal("shader/font.vert"),
-                Gdx.files.internal("shader/font.frag"));
-
-        if (!fontShader.isCompiled()) {
-            Gdx.app.error(Orb.class.getSimpleName(), "Shader compilation failed:\n" + fontShader.getLog());
-        }
 
         Label.LabelStyle bodyLabelStyle = new Label.LabelStyle();
-        bodyLabelStyle.fontColor = new Color(Var.COLOR_BLUE);
+        bodyLabelStyle.fontColor = new Color(Var.COLOR_BLACK);
         bodyLabelStyle.font = bodyFont;
 
         Label.LabelStyle headerLabelStyle = new Label.LabelStyle();
         headerLabelStyle.fontColor = new Color(Var.COLOR_BLUE);
         headerLabelStyle.font = headerFont;
 
-        this.body = new Label(body, bodyLabelStyle){
-            @Override
-            public void draw(Batch batch, float parentAlpha) {
-                batch.setShader(fontShader);
-                super.draw(batch, parentAlpha);
-                batch.setShader(null);
-            }
-        };
-
+        this.body = new Label(body, bodyLabelStyle);
         this.body.setTouchable(Touchable.disabled);
         this.body.setPosition(0f, 0f);
         this.body.setWidth(10f * Var.GRID_UNIT);
         this.body.setWrap(true);
         this.body.setAlignment(Align.topLeft);
         this.body.setHeight(this.body.getPrefHeight());
-
-
 
         this.header = new Label(header, headerLabelStyle);
         this.header.setTouchable(Touchable.disabled);
@@ -83,7 +60,6 @@ public class Credit extends BaseGroup implements Disposable {
     public void dispose() {
         headerFont.dispose();
         bodyFont.dispose();
-        fontShader.dispose();
     }
 
     @Override

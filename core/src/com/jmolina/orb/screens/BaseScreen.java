@@ -13,12 +13,13 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.actions.UIAction;
+import com.jmolina.orb.interfaces.AndroidBack;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class BaseScreen implements Screen {
+public class BaseScreen implements Screen, AndroidBack {
 
     /**
      * Jerarquía de esta pantalla respecto de la siguiente
@@ -232,6 +233,11 @@ public class BaseScreen implements Screen {
      */
     public void addMainActor(Actor actor) {
         mainStage.addActor(actor);
+    }
+
+    @Override
+    public void back() {
+
     }
 
 }
