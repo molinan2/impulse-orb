@@ -2,27 +2,25 @@ package com.jmolina.orb.widgets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.actors.Checkbox;
 import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.var.Var;
 
-public class OptionWidget extends BaseGroup implements Disposable {
+public class Option extends BaseGroup implements Disposable {
 
     private Label label;
     private BitmapFont font;
     private Checkbox checkbox;
 
-    public OptionWidget(String name) {
+    public Option(String name) {
         this(name, true);
     }
 
-    public OptionWidget(String name, boolean checked) {
+    public Option(String name, boolean checked) {
         font = new BitmapFont(Gdx.files.internal("font/roboto_medium_45.fnt"));
         font.setColor(Color.WHITE);
 

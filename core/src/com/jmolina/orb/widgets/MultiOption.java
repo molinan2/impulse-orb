@@ -13,18 +13,18 @@ import com.jmolina.orb.var.Var;
 
 import java.util.ArrayList;
 
-public class MultiOptionWidget extends BaseGroup implements Disposable {
+public class MultiOption extends BaseGroup implements Disposable {
 
     private Label label;
     private BitmapFont font;
     private int value;
     private ArrayList<Checkbox> checkboxes;
 
-    public MultiOptionWidget (String name) {
+    public MultiOption(String name) {
         this(name, 2);
     }
 
-    public MultiOptionWidget (String name, int value) {
+    public MultiOption(String name, int value) {
         font = new BitmapFont(Gdx.files.internal("font/roboto_medium_45.fnt"));
         font.setColor(Color.WHITE);
 

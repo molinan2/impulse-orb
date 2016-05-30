@@ -1,23 +1,21 @@
 package com.jmolina.orb.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.var.Var;
-import com.jmolina.orb.widgets.OptionWidget;
-import com.jmolina.orb.widgets.MultiOptionWidget;
+import com.jmolina.orb.widgets.Option;
+import com.jmolina.orb.widgets.MultiOption;
 
 public class OptionsScreen extends MenuScreen {
 
-    private OptionWidget music;
-    private OptionWidget sound;
-    private OptionWidget vibration;
-    private OptionWidget online;
-    private MultiOptionWidget zoom;
+    private Option music;
+    private Option sound;
+    private Option vibration;
+    private Option online;
+    private MultiOption zoom;
     // private String username;
 
     private Preferences prefs;
@@ -28,11 +26,11 @@ public class OptionsScreen extends MenuScreen {
         setReturningScreen(Orb.Name.MAIN);
         setTitle("OPTIONS");
 
-        music = new OptionWidget("Background music");
-        sound = new OptionWidget("Sound effects");
-        vibration = new OptionWidget("Vibration");
-        online = new OptionWidget("Online play");
-        zoom = new MultiOptionWidget("Zoom level");
+        music = new Option("Background music");
+        sound = new Option("Sound effects");
+        vibration = new Option("Vibration");
+        online = new Option("Online play");
+        zoom = new MultiOption("Zoom level");
 
         addRow(music);
         addRow(sound);
