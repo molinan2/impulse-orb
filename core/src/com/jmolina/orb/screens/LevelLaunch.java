@@ -2,26 +2,32 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.jmolina.orb.widgets.LadderWidget;
-import com.jmolina.orb.widgets.LevelCoverWidget;
-import com.jmolina.orb.widgets.LevelTitleWidget;
+import com.jmolina.orb.widgets.Ladder;
+import com.jmolina.orb.widgets.LevelCover;
+import com.jmolina.orb.widgets.LevelTitle;
 import com.jmolina.orb.widgets.Button;
 
 import static com.jmolina.orb.Orb.Name.LEVEL_SELECT;
 
 public class LevelLaunch extends Menu {
 
-    private LevelTitleWidget title;
-    private LevelCoverWidget cover;
+    private LevelTitle title;
+    private LevelCover cover;
     private Button goButton;
-    private LadderWidget ladderPersonal;
-    private LadderWidget ladderOnline;
+    private Ladder ladderPersonal;
+    private Ladder ladderOnline;
 
     private Texture titleTexture;
     private Texture coverTexture;
     private Texture ladderPersonalTexture;
     private Texture ladderOnlineTexture;
 
+    /**
+     * TODO
+     * title, cover, ladderPersonal, ladderOnline
+     *
+     * levelID: carga de disco (o hardcoded) los datos del nivel. Un Objeto mejor por ahora
+     */
     public LevelLaunch() {
         super();
 
@@ -33,11 +39,11 @@ public class LevelLaunch extends Menu {
         ladderPersonalTexture = new Texture(Gdx.files.internal("launch_personal.png"));
         ladderOnlineTexture = new Texture(Gdx.files.internal("launch_online.png"));
 
-        title = new LevelTitleWidget(titleTexture);
-        cover = new LevelCoverWidget(coverTexture);
-        goButton = new Button("GO!");
-        ladderPersonal = new LadderWidget(ladderPersonalTexture);
-        ladderOnline = new LadderWidget(ladderOnlineTexture);
+        title = new LevelTitle(titleTexture);
+        cover = new LevelCover(coverTexture);
+        goButton = new Button("GO!", Button.Type.Play);
+        ladderPersonal = new Ladder(ladderPersonalTexture);
+        ladderOnline = new Ladder(ladderOnlineTexture);
 
         addRow(title);
         addRow(cover);

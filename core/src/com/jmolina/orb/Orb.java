@@ -39,9 +39,9 @@ public class Orb extends Game {
 	private Main main;
 	private Options options;
 	private Stats stats;
-	private Credits creditsScreen;
-	private LevelSelect levelSelectScreen;
-	private LevelLaunch levelLaunchScreen;
+	private Credits credits;
+	private LevelSelect levelSelect;
+	private LevelLaunch levelLaunch;
 
 	private Logger logger;
 	private ArrayMap<Name, BaseScreen> screens;
@@ -65,27 +65,27 @@ public class Orb extends Game {
 		main = new Main();
 		options = new Options();
 		stats = new Stats();
-		creditsScreen = new Credits();
-		levelSelectScreen = new LevelSelect();
-		levelLaunchScreen = new LevelLaunch(); // Parametrica
+		credits = new Credits();
+		levelSelect = new LevelSelect();
+		levelLaunch = new LevelLaunch(); // Parametrica
 
 		gameLoading.setManager(this);
 		main.setManager(this);
 		options.setManager(this);
 		options.setPrefs(prefs);
 		stats.setManager(this);
-		creditsScreen.setManager(this);
-		levelSelectScreen.setManager(this);
-		levelLaunchScreen.setManager(this);
+		credits.setManager(this);
+		levelSelect.setManager(this);
+		levelLaunch.setManager(this);
 
 		screens = new ArrayMap<Name, BaseScreen>();
 		screens.put(Name.LOAD, gameLoading);
 		screens.put(Name.MAIN, main);
 		screens.put(Name.OPTIONS, options);
 		screens.put(Name.STATS, stats);
-		screens.put(Name.CREDITS, creditsScreen);
-		screens.put(Name.LEVEL_SELECT, levelSelectScreen);
-		screens.put(Name.LEVEL_LAUNCH, levelLaunchScreen);
+		screens.put(Name.CREDITS, credits);
+		screens.put(Name.LEVEL_SELECT, levelSelect);
+		screens.put(Name.LEVEL_LAUNCH, levelLaunch);
 
 		setScreenByKey(Name.LOAD, BaseScreen.Hierarchy.LOWER);
 	}
@@ -111,9 +111,9 @@ public class Orb extends Game {
 		gameLoading.dispose();
 		options.dispose();
 		stats.dispose();
-		creditsScreen.dispose();
-		levelSelectScreen.dispose();
-		levelLaunchScreen.dispose();
+		credits.dispose();
+		levelSelect.dispose();
+		levelLaunch.dispose();
 	}
 
 	public void setScreenByKey(Name key, BaseScreen.Hierarchy hierarchy) {
