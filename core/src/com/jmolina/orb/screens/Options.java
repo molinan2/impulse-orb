@@ -9,7 +9,7 @@ import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.Option;
 import com.jmolina.orb.widgets.MultiOption;
 
-public class OptionsScreen extends MenuScreen {
+public class Options extends Menu {
 
     private Option music;
     private Option sound;
@@ -20,7 +20,7 @@ public class OptionsScreen extends MenuScreen {
 
     private Preferences prefs;
 
-    public OptionsScreen() {
+    public Options() {
         super();
 
         setReturningScreen(Orb.Name.MAIN);

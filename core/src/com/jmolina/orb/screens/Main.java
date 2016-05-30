@@ -8,7 +8,7 @@ import com.jmolina.orb.groups.MainTitleGroup;
 
 import static com.jmolina.orb.Orb.Name.*;
 
-public class MainScreen extends BaseScreen {
+public class Main extends BaseScreen {
 
     private MainTitleGroup mainTitleGroup;
     private Button playButton;
@@ -18,7 +18,7 @@ public class MainScreen extends BaseScreen {
     private Button exitButton;
     private NoticeGroup noticeGroup;
 
-    public MainScreen() {
+    public Main() {
         super();
 
         mainTitleGroup = new MainTitleGroup();

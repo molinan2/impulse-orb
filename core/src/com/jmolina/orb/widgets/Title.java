@@ -13,15 +13,15 @@ import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.var.Var;
 
-public class ScreenHeader extends BaseGroup implements Disposable {
+public class Title extends BaseGroup implements Disposable {
 
     private Image button;
     private Texture buttonTexture;
     private Label label;
     private BitmapFont font;
 
-    public ScreenHeader(String name) {
-        font = new BitmapFont(Gdx.files.internal("font/roboto_medium_90.fnt"));
+    public Title(String name) {
+        font = new BitmapFont(Gdx.files.internal("font/roboto_bold_90.fnt"));
         font.setColor(Color.WHITE);
 
         Label.LabelStyle ls = new Label.LabelStyle();

@@ -20,4 +20,12 @@ public class Grid {
         return Var.VIEWPORT_HEIGHT - unit * Var.GRID_UNIT;
     }
 
+    public static float unit(int unit) {
+        return (float) unit * Var.GRID_UNIT;
+    }
+
+    public static float unit(float unit) {
+        return unit * Var.GRID_UNIT;
+    }
+
 }

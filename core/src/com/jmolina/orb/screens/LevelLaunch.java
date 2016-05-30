@@ -9,7 +9,7 @@ import com.jmolina.orb.widgets.Button;
 
 import static com.jmolina.orb.Orb.Name.LEVEL_SELECT;
 
-public class LevelLaunchScreen extends MenuScreen {
+public class LevelLaunch extends Menu {
 
     private LevelTitleWidget title;
     private LevelCoverWidget cover;
@@ -22,7 +22,7 @@ public class LevelLaunchScreen extends MenuScreen {
     private Texture ladderPersonalTexture;
     private Texture ladderOnlineTexture;
 
-    public LevelLaunchScreen() {
+    public LevelLaunch() {
         super();
 
         setReturningScreen(LEVEL_SELECT);

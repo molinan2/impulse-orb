@@ -5,35 +5,31 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.Orb;
-import com.jmolina.orb.widgets.LevelCardWidget;
+import com.jmolina.orb.widgets.Card;
 
 import static com.jmolina.orb.Orb.Name.LEVEL_LAUNCH;
 
-public class LevelSelectScreen extends MenuScreen {
+public class LevelSelect extends Menu {
 
-    private LevelCardWidget level1;
-    private LevelCardWidget level2;
-    private LevelCardWidget level3;
-    private LevelCardWidget level4;
+    private Card level1;
+    private Card level2;
+    private Card level3;
+    private Card level4;
+
     private Texture level1CoverTexture;
-    private Texture level1TitleTexture;
-    private Texture level1BestTexture;
-    private Texture level1WorldTexture;
 
-    public LevelSelectScreen() {
+    public LevelSelect() {
         super();
 
         setReturningScreen(Orb.Name.MAIN);
         setTitle("SELECT");
 
         level1CoverTexture = new Texture(Gdx.files.internal("card_cover.png"));
-        level1TitleTexture = new Texture(Gdx.files.internal("card_title.png"));
-        level1BestTexture = new Texture(Gdx.files.internal("card_best.png"));
-        level1WorldTexture = new Texture(Gdx.files.internal("card_world.png"));
-        level1 = new LevelCardWidget(level1CoverTexture, level1TitleTexture, level1BestTexture, level1WorldTexture);
-        level2 = new LevelCardWidget(level1CoverTexture, level1TitleTexture, level1BestTexture, level1WorldTexture);
-        level3 = new LevelCardWidget(level1CoverTexture, level1TitleTexture, level1BestTexture, level1WorldTexture);
-        level4 = new LevelCardWidget(level1CoverTexture, level1TitleTexture, level1BestTexture, level1WorldTexture);
+
+        level1 = new Card("BASICS", "1:34.72", "57.41", level1CoverTexture);
+        level2 = new Card("ADVANCED", "1:34.72", "57.41", level1CoverTexture);
+        level3 = new Card("EXPERT", "--", "57.41", level1CoverTexture, true);
+        level4 = new Card("HERO", "--", "57.41", level1CoverTexture, true);
 
         level1.addListener(new ClickListener(){
             @Override
@@ -72,9 +68,10 @@ public class LevelSelectScreen extends MenuScreen {
     @Override
     public void dispose() {
         level1CoverTexture.dispose();
-        level1TitleTexture.dispose();
-        level1BestTexture.dispose();
-        level1WorldTexture.dispose();
+        level1.dispose();
+        level2.dispose();
+        level3.dispose();
+        level4.dispose();
         super.dispose();
     }
 

@@ -1,12 +1,10 @@
 package com.jmolina.orb.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.Credit;
 
-public class CreditsScreen extends MenuScreen {
+public class Credits extends Menu {
 
     private Credit application;
     private Credit authors;
@@ -15,7 +13,7 @@ public class CreditsScreen extends MenuScreen {
     private Credit resources;
     private Credit thanks;
 
-    public CreditsScreen() {
+    public Credits() {
         super();
 
         setReturningScreen(Orb.Name.MAIN);

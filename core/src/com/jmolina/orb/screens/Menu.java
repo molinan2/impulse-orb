@@ -12,21 +12,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Var;
-import com.jmolina.orb.widgets.ScreenHeader;
+import com.jmolina.orb.widgets.Title;
 
-public class MenuScreen extends BaseScreen {
+public class Menu extends BaseScreen {
 
-    private ScreenHeader screenHeader;
+    private Title title;
     private Table table;
     private ScrollPane scrollPane;
     private Texture scrollerTexture;
     private Orb.Name returningScreen;
 
-    public MenuScreen() {
+    public Menu() {
         super();
 
-        screenHeader = new ScreenHeader("");
-        screenHeader.setGridPosition(1, 3);
+        title = new Title("");
+        title.setGridPosition(1, 3);
 
         table = new Table();
         table.top();
@@ -42,13 +42,13 @@ public class MenuScreen extends BaseScreen {
         scrollPane.setHeight(Grid.cellY(4.5f));
         scrollPane.setPosition(0f, 0f);
 
-        addMainActor(screenHeader);
+        addMainActor(title);
         addMainActor(scrollPane);
     }
 
     @Override
     public void dispose() {
-        screenHeader.dispose();
+        title.dispose();
         scrollerTexture.dispose();
         super.dispose();
     }
@@ -80,7 +80,7 @@ public class MenuScreen extends BaseScreen {
     }
 
     private void setReturningScreenListener (final Orb.Name name) {
-        screenHeader.setListener(new ClickListener(){
+        title.setListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 switchToScreen(name, Hierarchy.HIGHER);
@@ -89,7 +89,7 @@ public class MenuScreen extends BaseScreen {
     }
 
     public void setTitle (String name) {
-        screenHeader.setLabel(name);
+        title.setLabel(name);
     }
 
     @Override

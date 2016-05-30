@@ -1,13 +1,11 @@
 package com.jmolina.orb.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.widgets.Header;
 import com.jmolina.orb.widgets.Stat;
 
-public class StatsScreen extends MenuScreen {
+public class Stats extends Menu {
 
     private Stat played;
     private Stat distance;
@@ -27,7 +25,7 @@ public class StatsScreen extends MenuScreen {
      * TODO
      * Estos datos deberian venir de disco
      */
-    public StatsScreen() {
+    public Stats() {
         super();
 
         setReturningScreen(Orb.Name.MAIN);

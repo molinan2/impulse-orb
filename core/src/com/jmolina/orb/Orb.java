@@ -5,18 +5,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.Logger;
 import com.jmolina.orb.screens.BaseScreen;
-import com.jmolina.orb.screens.CreditsScreen;
-import com.jmolina.orb.screens.LevelLaunchScreen;
-import com.jmolina.orb.screens.LevelSelectScreen;
-import com.jmolina.orb.screens.LoadScreen;
-import com.jmolina.orb.screens.MainScreen;
-import com.jmolina.orb.screens.OptionsScreen;
-import com.jmolina.orb.screens.StatsScreen;
+import com.jmolina.orb.screens.Credits;
+import com.jmolina.orb.screens.LevelLaunch;
+import com.jmolina.orb.screens.LevelSelect;
+import com.jmolina.orb.screens.Loading;
+import com.jmolina.orb.screens.Main;
+import com.jmolina.orb.screens.Options;
+import com.jmolina.orb.screens.Stats;
 import com.jmolina.orb.var.Var;
 
 
@@ -37,13 +35,13 @@ public class Orb extends Game {
 	 */
 	protected BaseScreen screen;
 
-	private LoadScreen gameLoadScreen;
-	private MainScreen mainScreen;
-	private OptionsScreen optionsScreen;
-	private StatsScreen statsScreen;
-	private CreditsScreen creditsScreen;
-	private LevelSelectScreen levelSelectScreen;
-	private LevelLaunchScreen levelLaunchScreen;
+	private Loading gameLoading;
+	private Main main;
+	private Options options;
+	private Stats stats;
+	private Credits creditsScreen;
+	private LevelSelect levelSelectScreen;
+	private LevelLaunch levelLaunchScreen;
 
 	private Logger logger;
 	private ArrayMap<Name, BaseScreen> screens;
@@ -62,29 +60,29 @@ public class Orb extends Game {
 		
 		splashTexture = new Texture(Gdx.files.internal("splash.png"));
 
-		gameLoadScreen = new LoadScreen(); // Parametrica
-		gameLoadScreen.setSplash(splashTexture);
-		mainScreen = new MainScreen();
-		optionsScreen = new OptionsScreen();
-		statsScreen = new StatsScreen();
-		creditsScreen = new CreditsScreen();
-		levelSelectScreen = new LevelSelectScreen();
-		levelLaunchScreen = new LevelLaunchScreen(); // Parametrica
+		gameLoading = new Loading(); // Parametrica
+		gameLoading.setSplash(splashTexture);
+		main = new Main();
+		options = new Options();
+		stats = new Stats();
+		creditsScreen = new Credits();
+		levelSelectScreen = new LevelSelect();
+		levelLaunchScreen = new LevelLaunch(); // Parametrica
 
-		gameLoadScreen.setManager(this);
-		mainScreen.setManager(this);
-		optionsScreen.setManager(this);
-		optionsScreen.setPrefs(prefs);
-		statsScreen.setManager(this);
+		gameLoading.setManager(this);
+		main.setManager(this);
+		options.setManager(this);
+		options.setPrefs(prefs);
+		stats.setManager(this);
 		creditsScreen.setManager(this);
 		levelSelectScreen.setManager(this);
 		levelLaunchScreen.setManager(this);
 
 		screens = new ArrayMap<Name, BaseScreen>();
-		screens.put(Name.LOAD, gameLoadScreen);
-		screens.put(Name.MAIN, mainScreen);
-		screens.put(Name.OPTIONS, optionsScreen);
-		screens.put(Name.STATS, statsScreen);
+		screens.put(Name.LOAD, gameLoading);
+		screens.put(Name.MAIN, main);
+		screens.put(Name.OPTIONS, options);
+		screens.put(Name.STATS, stats);
 		screens.put(Name.CREDITS, creditsScreen);
 		screens.put(Name.LEVEL_SELECT, levelSelectScreen);
 		screens.put(Name.LEVEL_LAUNCH, levelLaunchScreen);
@@ -109,10 +107,10 @@ public class Orb extends Game {
 
 		splashTexture.dispose();
 
-		mainScreen.dispose();
-		gameLoadScreen.dispose();
-		optionsScreen.dispose();
-		statsScreen.dispose();
+		main.dispose();
+		gameLoading.dispose();
+		options.dispose();
+		stats.dispose();
 		creditsScreen.dispose();
 		levelSelectScreen.dispose();
 		levelLaunchScreen.dispose();

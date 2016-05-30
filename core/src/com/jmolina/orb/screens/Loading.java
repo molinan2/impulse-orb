@@ -7,14 +7,14 @@ import com.jmolina.orb.utils.Grid;
 
 import static com.jmolina.orb.Orb.Name.MAIN;
 
-public class LoadScreen extends BaseScreen {
+public class Loading extends BaseScreen {
 
     private Image splash;
     private Texture defaultSplashTexture;
     private float elapsed;
     private boolean acting;
 
-    public LoadScreen() {
+    public Loading() {
         defaultSplashTexture = new Texture(Gdx.files.internal("splash.png"));
         setSplash(defaultSplashTexture);
         elapsed = 0.0f;
