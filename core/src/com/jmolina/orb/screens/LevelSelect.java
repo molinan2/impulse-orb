@@ -6,7 +6,8 @@ import com.jmolina.orb.Orb;
 import com.jmolina.orb.interfaces.Visitor;
 import com.jmolina.orb.widgets.Card;
 
-import static com.jmolina.orb.Orb.Name.LEVEL_LAUNCH;
+import static com.jmolina.orb.Orb.Name.*;
+import static com.jmolina.orb.screens.BaseScreen.Hierarchy.*;
 
 public class LevelSelect extends Menu {
 
@@ -30,17 +31,38 @@ public class LevelSelect extends Menu {
         level3 = new Card("EXPERT", "--", "57.41", level1CoverTexture, true);
         level4 = new Card("HERO", "--", "57.41", level1CoverTexture, true);
 
-        Visitor screenSwitcher = new Visitor() {
+        Visitor screenSwitcher1 = new Visitor() {
             @Override
             public void run() {
-                switchToScreen(LEVEL_LAUNCH, Hierarchy.LOWER);
+                switchToScreen(LEVEL_LAUNCH_1, LOWER);
             }
         };
 
-        level1.setOnClickOperation(screenSwitcher);
-        level2.setOnClickOperation(screenSwitcher);
-        level3.setOnClickOperation(screenSwitcher);
-        level4.setOnClickOperation(screenSwitcher);
+        Visitor screenSwitcher2 = new Visitor() {
+            @Override
+            public void run() {
+                switchToScreen(LEVEL_LAUNCH_2, LOWER);
+            }
+        };
+
+        Visitor screenSwitcher3 = new Visitor() {
+            @Override
+            public void run() {
+                switchToScreen(LEVEL_LAUNCH_3, LOWER);
+            }
+        };
+
+        Visitor screenSwitcher4 = new Visitor() {
+            @Override
+            public void run() {
+                switchToScreen(LEVEL_LAUNCH_4, LOWER);
+            }
+        };
+
+        level1.setOnClickOperation(screenSwitcher1);
+        level2.setOnClickOperation(screenSwitcher2);
+        level3.setOnClickOperation(screenSwitcher3);
+        level4.setOnClickOperation(screenSwitcher4);
 
         addRow(level1);
         addRow(level2);

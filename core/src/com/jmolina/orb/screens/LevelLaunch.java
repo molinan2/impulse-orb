@@ -13,52 +13,42 @@ public class LevelLaunch extends Menu {
 
     private LevelTitle title;
     private LevelCover cover;
-    private Button goButton;
+    private Button button;
     private Ladder ladderPersonal;
     private Ladder ladderOnline;
-
-    private Texture titleTexture;
     private Texture coverTexture;
-    private Texture ladderPersonalTexture;
-    private Texture ladderOnlineTexture;
 
     /**
      * TODO
-     * title, cover, ladderPersonal, ladderOnline
+     * title, cover
      *
      * levelID: carga de disco (o hardcoded) los datos del nivel. Un Objeto mejor por ahora
      */
-    public LevelLaunch() {
+    public LevelLaunch(String title) {
         super();
 
         setReturningScreen(LEVEL_SELECT);
         setTitle("LEVEL");
 
-        titleTexture = new Texture(Gdx.files.internal("launch_title.png"));
-        coverTexture = new Texture(Gdx.files.internal("launch_cover.png"));
-        ladderPersonalTexture = new Texture(Gdx.files.internal("launch_personal.png"));
-        ladderOnlineTexture = new Texture(Gdx.files.internal("launch_online.png"));
+        this.coverTexture = new Texture(Gdx.files.internal("launch_cover.png"));
 
-        title = new LevelTitle(titleTexture);
-        cover = new LevelCover(coverTexture);
-        goButton = new Button("GO!", Button.Type.Play);
+        this.title = new LevelTitle(title);
+        this.cover = new LevelCover(coverTexture);
+        this.button = new Button("GO!", Button.Type.Play);
         ladderPersonal = new Ladder("Personal best");
         ladderOnline = new Ladder("Online ladder");
 
-        addRow(title);
-        addRow(cover);
-        addRow(goButton, 1f, 8f);
-        addRow(ladderPersonal);
-        addRow(ladderOnline);
+        addRow(this.title);
+        addRow(this.cover);
+        addRow(this.button, 1f, 8f);
+        addRow(this.ladderPersonal);
+        addRow(this.ladderOnline);
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        titleTexture.dispose();
         coverTexture.dispose();
-        ladderPersonalTexture.dispose();
-        ladderOnlineTexture.dispose();
-        goButton.dispose();
+        button.dispose();
     }
 }

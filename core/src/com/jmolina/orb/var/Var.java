@@ -17,6 +17,7 @@ public class Var {
     public static final String OPTION_ZOOM = "zoom";
     public static final int OPTION_ZOOM_MIN = 0;
     public static final int OPTION_ZOOM_MAX = 2;
+    public static final int COLOR_WHITE = 0xffffffff;
     public static final int COLOR_BLUE = 0x2E3192ff;
     public static final int COLOR_BLACK = 0x4D4D4Dff;
     public static final String BACON_IPSUM = "Bacon ipsum dolor amet rump landjaeger beef pig fatback t-bone tri-tip ham hock ribeye. Chuck boudin hamburger, t-bone biltong ham swine bresaola prosciutto pork chop. Spare ribs short ribs leberkas venison. Ham hock hamburger shank t-bone porchetta cow brisket jowl jerky alcatra landjaeger pork chop. Ribeye chuck jerky beef ribs pastrami, tenderloin short loin boudin pork belly ham hock.";

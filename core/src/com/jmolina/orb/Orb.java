@@ -25,9 +25,13 @@ public class Orb extends Game {
 
 	/**
 	 * Todas las pantallas de menu
+	 *
+	 * TODO
+	 * Rehacer el sistema de seleccion de pantallas para evitar tanta repeticion
 	 */
 	public enum Name {
-		LOAD, MAIN, OPTIONS, STATS, CREDITS, LEVEL_SELECT, LEVEL_LAUNCH
+		LOAD, MAIN, OPTIONS, STATS, CREDITS,
+		LEVEL_SELECT, LEVEL_LAUNCH_1, LEVEL_LAUNCH_2, LEVEL_LAUNCH_3, LEVEL_LAUNCH_4
 	}
 
 	/**
@@ -41,7 +45,7 @@ public class Orb extends Game {
 	private Stats stats;
 	private Credits credits;
 	private LevelSelect levelSelect;
-	private LevelLaunch levelLaunch;
+	private LevelLaunch levelLaunch1, levelLaunch2, levelLaunch3, levelLaunch4;
 
 	private Logger logger;
 	private ArrayMap<Name, BaseScreen> screens;
@@ -67,7 +71,10 @@ public class Orb extends Game {
 		stats = new Stats();
 		credits = new Credits();
 		levelSelect = new LevelSelect();
-		levelLaunch = new LevelLaunch(); // Parametrica
+		levelLaunch1 = new LevelLaunch("BASICS");
+		levelLaunch2 = new LevelLaunch("ADVANCED");
+		levelLaunch3 = new LevelLaunch("EXPERT");
+		levelLaunch4 = new LevelLaunch("HERO");
 
 		gameLoading.setManager(this);
 		main.setManager(this);
@@ -76,7 +83,10 @@ public class Orb extends Game {
 		stats.setManager(this);
 		credits.setManager(this);
 		levelSelect.setManager(this);
-		levelLaunch.setManager(this);
+		levelLaunch1.setManager(this);
+		levelLaunch2.setManager(this);
+		levelLaunch3.setManager(this);
+		levelLaunch4.setManager(this);
 
 		screens = new ArrayMap<Name, BaseScreen>();
 		screens.put(Name.LOAD, gameLoading);
@@ -85,7 +95,10 @@ public class Orb extends Game {
 		screens.put(Name.STATS, stats);
 		screens.put(Name.CREDITS, credits);
 		screens.put(Name.LEVEL_SELECT, levelSelect);
-		screens.put(Name.LEVEL_LAUNCH, levelLaunch);
+		screens.put(Name.LEVEL_LAUNCH_1, levelLaunch1);
+		screens.put(Name.LEVEL_LAUNCH_2, levelLaunch2);
+		screens.put(Name.LEVEL_LAUNCH_3, levelLaunch3);
+		screens.put(Name.LEVEL_LAUNCH_4, levelLaunch4);
 
 		setScreenByKey(Name.LOAD, BaseScreen.Hierarchy.LOWER);
 	}
@@ -113,7 +126,10 @@ public class Orb extends Game {
 		stats.dispose();
 		credits.dispose();
 		levelSelect.dispose();
-		levelLaunch.dispose();
+		levelLaunch1.dispose();
+		levelLaunch2.dispose();
+		levelLaunch3.dispose();
+		levelLaunch4.dispose();
 	}
 
 	public void setScreenByKey(Name key, BaseScreen.Hierarchy hierarchy) {

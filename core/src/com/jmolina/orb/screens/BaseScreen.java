@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -139,6 +140,31 @@ public class BaseScreen implements Screen, AndroidBack {
                 transition(Flow.LEAVING, hierarchy),
                 run(UIRunnable.setScreen(manager, name, hierarchy))
         ));
+    }
+
+    public void switchToLaunchScreen (int index) {
+        // index = MathUtils.clamp(index, 1, 4);
+
+        Orb.Name screen;
+
+        switch (index) {
+            case 1:
+                screen = Orb.Name.LEVEL_LAUNCH_1;
+                break;
+            case 2:
+                screen = Orb.Name.LEVEL_LAUNCH_2;
+                break;
+            case 3:
+                screen = Orb.Name.LEVEL_LAUNCH_3;
+                break;
+            case 4:
+                screen = Orb.Name.LEVEL_LAUNCH_4;
+                break;
+            default:
+                screen = Orb.Name.LEVEL_LAUNCH_1;
+        }
+
+        switchToScreen(screen, Hierarchy.LOWER);
     }
 
     /**
