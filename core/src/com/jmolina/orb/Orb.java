@@ -7,6 +7,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.Logger;
+import com.badlogic.gdx.utils.compression.lzma.Base;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.Credits;
 import com.jmolina.orb.screens.LevelLaunch;
@@ -33,11 +34,6 @@ public class Orb extends Game {
 		LOAD, MAIN, OPTIONS, STATS, CREDITS,
 		LEVEL_SELECT, LEVEL_LAUNCH_1, LEVEL_LAUNCH_2, LEVEL_LAUNCH_3, LEVEL_LAUNCH_4
 	}
-
-	/**
-	 * Pantalla actual
-	 */
-	protected BaseScreen screen;
 
 	private Loading gameLoading;
 	private Main main;
@@ -106,7 +102,7 @@ public class Orb extends Game {
 	@Override
 	public void render () {
 		if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
-			screen.back();
+			((BaseScreen) screen).back();
 		}
 
 		if (screen != null) {
@@ -136,8 +132,8 @@ public class Orb extends Game {
 		if (this.screen != null) this.screen.hide();
 
 		this.screen = screens.get(key);
-		this.screen.setAsInputProcessor();
-		this.screen.setHierarchy(hierarchy);
+		((BaseScreen) this.screen).setAsInputProcessor();
+		((BaseScreen) this.screen).setHierarchy(hierarchy);
 
 		if (this.screen != null) {
 			this.screen.show();
