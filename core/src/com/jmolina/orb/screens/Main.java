@@ -2,7 +2,7 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.jmolina.orb.groups.NoticeGroup;
+import com.jmolina.orb.groups.Notice;
 import com.jmolina.orb.widgets.Button;
 import com.jmolina.orb.groups.MainTitleGroup;
 
@@ -16,16 +16,16 @@ public class Main extends BaseScreen {
     private Button statsButton;
     private Button creditsButton;
     private Button exitButton;
-    private NoticeGroup noticeGroup;
+    private Notice notice;
 
     public Main() {
         super();
 
         mainTitleGroup = new MainTitleGroup();
-        noticeGroup = new NoticeGroup();
+        notice = new Notice();
 
         mainTitleGroup.setGridPosition(1, 4);
-        noticeGroup.setGridPosition(1, 18);
+        notice.setGridPosition(1, 18);
 
         playButton = new Button("PLAY", Button.Type.Play);
         optionsButton = new Button("OPTIONS", Button.Type.Default);
@@ -80,12 +80,12 @@ public class Main extends BaseScreen {
         addMainActor(statsButton);
         addMainActor(creditsButton);
         addMainActor(exitButton);
-        addMainActor(noticeGroup);
+        addMainActor(notice);
     }
 
     @Override
     public void dispose() {
-        noticeGroup.dispose();
+        notice.dispose();
         playButton.dispose();
         optionsButton.dispose();
         statsButton.dispose();
