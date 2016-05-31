@@ -2,7 +2,7 @@ package com.jmolina.orb.var;
 
 public class Var {
 
-    public static final String VERSION = "0.1";
+    public static final String VERSION = "0.2";
     public static final String AUTHOR = "Juan M. Molina";
 
     public static final float VIEWPORT_HEIGHT = 1184.0f;

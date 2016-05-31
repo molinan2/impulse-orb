@@ -42,8 +42,8 @@ public class LevelLaunch extends Menu {
         title = new LevelTitle(titleTexture);
         cover = new LevelCover(coverTexture);
         goButton = new Button("GO!", Button.Type.Play);
-        ladderPersonal = new Ladder(ladderPersonalTexture);
-        ladderOnline = new Ladder(ladderOnlineTexture);
+        ladderPersonal = new Ladder("Personal best");
+        ladderOnline = new Ladder("Online ladder");
 
         addRow(title);
         addRow(cover);

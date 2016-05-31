@@ -34,7 +34,7 @@ public class Notice extends BaseGroup implements Disposable {
         this.author.setWidth(Grid.unit(10f));
         this.author.setAlignment(Align.left);
 
-        this.version = new Label(Var.VERSION, labelStyle);
+        this.version = new Label("v" + Var.VERSION, labelStyle);
         this.version.setTouchable(Touchable.disabled);
         this.version.setPosition(Grid.unit(0), Grid.unit(0));
         this.version.setHeight(Grid.unit(0.5f));
