@@ -15,74 +15,76 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public abstract class UIAction {
 
-    static public final Action bounce() {
-        return sequence(
-                scaleTo(Var.ANIMATION_SCALE_FACTOR, Var.ANIMATION_SCALE_FACTOR, Var.ANIMATION_DURATION * 0.5f),
-                scaleTo(1f, 1f, Var.ANIMATION_DURATION * 0.5f)
-        );
-    }
-
-
     static public final Action toOutside() {
-        return new SequenceAction(sequence(
+        return new SequenceAction(
                 parallel(
                         fadeOut(Var.ANIMATION_DURATION, Interpolation.pow2),
                         scaleTo(Var.ANIMATION_SCALE_FACTOR, Var.ANIMATION_SCALE_FACTOR, Var.ANIMATION_DURATION)
                 )
-        ));
+        );
     }
 
     static public final Action toInside() {
-        return new SequenceAction(sequence(
+        return new SequenceAction(
                 parallel(
                         fadeOut(Var.ANIMATION_DURATION, Interpolation.pow2),
                         scaleTo(1 / Var.ANIMATION_SCALE_FACTOR, 1 / Var.ANIMATION_SCALE_FACTOR, Var.ANIMATION_DURATION)
                 )
-        ));
+        );
     }
 
     static public final Action fromInside() {
-        return new SequenceAction(sequence(
+        return new SequenceAction(
                 fadeOut(0f),
                 scaleTo(1 / Var.ANIMATION_SCALE_FACTOR, 1 / Var.ANIMATION_SCALE_FACTOR, 0f),
                 parallel(
                         fadeIn(Var.ANIMATION_DURATION, Interpolation.pow2),
                         scaleTo(1f, 1f, Var.ANIMATION_DURATION)
                 )
-        ));
+        );
     }
 
     static public final Action fromOutside() {
-        return new SequenceAction(sequence(
+        return new SequenceAction(
                 fadeOut(0f),
                 scaleTo(Var.ANIMATION_SCALE_FACTOR, Var.ANIMATION_SCALE_FACTOR, 0f),
                 parallel(
                         fadeIn(Var.ANIMATION_DURATION, Interpolation.pow2),
                         scaleTo(1f, 1f, Var.ANIMATION_DURATION)
                 )
-        ));
+        );
     }
 
     static public final Action appear() {
-        return new SequenceAction(sequence(
+        return new SequenceAction(
                 fadeOut(0f),
                 scaleTo(Var.ANIMATION_SCALE_FACTOR, Var.ANIMATION_SCALE_FACTOR, 0f),
                 fadeIn(Var.ANIMATION_DURATION, Interpolation.pow2)
-        ));
+        );
     }
 
     static public final Action disappear() {
-        return new SequenceAction(sequence(
+        return new SequenceAction(
                 fadeIn(0f),
                 scaleTo(1f, 1f, 0f),
                 fadeOut(Var.ANIMATION_DURATION, Interpolation.pow2)
-        ));
+        );
     }
 
     static public final Action dummy() {
-        return new SequenceAction(sequence(
+        return new SequenceAction(
                 fadeIn(1f),
-                scaleTo(1f, 1f, 0f))
+                scaleTo(1f, 1f, 0f)
+        );
+    }
+
+    static public final Action blink() {
+        return new SequenceAction(
+                alpha(1f),
+                fadeOut(0),
+                fadeIn(0.5f),
+                fadeOut(0.5f),
+                fadeIn(0.5f)
         );
     }
 

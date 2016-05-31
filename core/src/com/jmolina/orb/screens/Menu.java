@@ -68,6 +68,7 @@ public class Menu extends BaseScreen {
     public <T extends Actor> void addRow(T actor, float bottomPadding, float width) {
         getTable().row();
         getTable().add(actor).width(width * Var.GRID_UNIT).expandX().padBottom(bottomPadding * Var.GRID_UNIT);
+        register(actor);
     }
 
     protected void setReturningScreen(Orb.Name name) {

@@ -9,13 +9,17 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.actions.UIAction;
+import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.interfaces.AndroidBack;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.var.Var;
+
+import java.util.ArrayList;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -44,11 +48,14 @@ public class BaseScreen implements Screen, AndroidBack {
     private Stage bgStage;
     private Hierarchy hierarchy;
 
+    private SnapshotArray<Actor> actors;
 
     /**
      * Constructor
      */
     public BaseScreen() {
+        actors = new SnapshotArray<Actor>();
+
         hierarchy = Hierarchy.LOWER;
         viewport = new FitViewport(Var.VIEWPORT_WIDTH, Var.VIEWPORT_HEIGHT);
         mainStage = new Stage(viewport);
@@ -65,7 +72,7 @@ public class BaseScreen implements Screen, AndroidBack {
 
     @Override
     public void show() {
-        clearActions();
+        clearRootActions();
         unsetInputProcessor();
         addRootAction(sequence(
                 transition(Flow.ENTERING, hierarchy),
@@ -98,6 +105,8 @@ public class BaseScreen implements Screen, AndroidBack {
 
     @Override
     public void hide() {
+        clearRegisteredActions();
+        clearRootActions();
     }
 
     @Override
@@ -124,7 +133,7 @@ public class BaseScreen implements Screen, AndroidBack {
      * @param hierarchy Hierarchy Jerarquía de la siguiente pantalla respecto de la actual
      */
     public void switchToScreen(final Orb.Name name, final Hierarchy hierarchy) {
-        clearActions();
+        clearRootActions();
 
         addRootAction(sequence(
                 transition(Flow.LEAVING, hierarchy),
@@ -136,7 +145,7 @@ public class BaseScreen implements Screen, AndroidBack {
      * Ejecuta la animacion de salida y termina la aplicacion
      */
     public void exitApplication() {
-        clearActions();
+        clearRootActions();
         addRootAction(sequence(
                 transition(Flow.LEAVING, Hierarchy.HIGHER),
                 run(UIRunnable.exit())
@@ -155,7 +164,7 @@ public class BaseScreen implements Screen, AndroidBack {
         return mainStage.getRoot();
     }
 
-    public void clearActions() {
+    public void clearRootActions() {
         getRoot().clearActions();
     }
 
@@ -233,6 +242,28 @@ public class BaseScreen implements Screen, AndroidBack {
      */
     public void addMainActor(Actor actor) {
         mainStage.addActor(actor);
+        register(actor);
+    }
+
+    /**
+     * Registra un actor para poder realizar operaciones automaticas sobre el
+     * @param actor
+     */
+    protected void register(Actor actor) {
+        this.actors.add(actor);
+    }
+
+    /**
+     * Resetea todas las acciones en los actores registrados
+     */
+    private void clearRegisteredActions() {
+        for (Actor actor : actors) {
+            actor.clearActions();
+
+            if (actor instanceof BaseGroup) {
+                ((BaseGroup) actor).reset();
+            }
+        }
     }
 
     @Override

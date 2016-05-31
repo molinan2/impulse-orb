@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
+import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.interfaces.Visitor;
 import com.jmolina.orb.utils.Grid;
@@ -160,13 +161,23 @@ public class Card extends BaseGroup implements Disposable {
                 }
                 else {
                     lock.clearActions();
-                    lock.addAction(sequence(
-                            alpha(1f),
-                            fadeOut(0),
-                            fadeIn(0.5f)
-                    ));
+                    lock.addAction(UIAction.blink());
+
+                    // Si creara un metodo publico para lockBlink(), la Screen podria llamarlo si
+                    // isLocked(), con lo que no necesitaria entrar con el Visitor. Sin embargo,
+                    // necesitaria crear el listener, y es mas limpio hacerlo aqui. La Screen no
+                    // tiene por que saber lo que hay que hacer si isLocked() es true; su
+                    // responsabilidad es solo indicar la pantalla destino.
                 }
             }
         });
+    }
+
+    @Override
+    public void reset() {
+        if (this.isLocked())
+            lock();
+        else
+            unlock();
     }
 }
