@@ -142,31 +142,6 @@ public class BaseScreen implements Screen, AndroidBack {
         ));
     }
 
-    public void switchToLaunchScreen (int index) {
-        // index = MathUtils.clamp(index, 1, 4);
-
-        Orb.Name screen;
-
-        switch (index) {
-            case 1:
-                screen = Orb.Name.LEVEL_LAUNCH_1;
-                break;
-            case 2:
-                screen = Orb.Name.LEVEL_LAUNCH_2;
-                break;
-            case 3:
-                screen = Orb.Name.LEVEL_LAUNCH_3;
-                break;
-            case 4:
-                screen = Orb.Name.LEVEL_LAUNCH_4;
-                break;
-            default:
-                screen = Orb.Name.LEVEL_LAUNCH_1;
-        }
-
-        switchToScreen(screen, Hierarchy.LOWER);
-    }
-
     /**
      * Ejecuta la animacion de salida y termina la aplicacion
      */
