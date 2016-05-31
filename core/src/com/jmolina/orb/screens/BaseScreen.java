@@ -63,7 +63,7 @@ public class BaseScreen implements Screen, AndroidBack {
         getRoot().setOrigin(Var.VIEWPORT_WIDTH * 0.5f, Var.VIEWPORT_HEIGHT * 0.5f);
         getRoot().setScale(1f, 1f);
         getRoot().setSize(Var.VIEWPORT_WIDTH, Var.VIEWPORT_HEIGHT);
-        getRoot().setPosition(0, 0);
+        getRoot().setPosition(0f, 0f);
 
         bgStage = new Stage(viewport);
         bgTexture = new Texture(Gdx.files.internal("background.png"));
@@ -85,8 +85,10 @@ public class BaseScreen implements Screen, AndroidBack {
     public void render(float delta) {
         clearColor();
 
+        bgStage.getViewport().apply();
         bgStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
         bgStage.draw();
+        mainStage.getViewport().apply();
         mainStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
         mainStage.draw();
     }

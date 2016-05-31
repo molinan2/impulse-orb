@@ -39,7 +39,7 @@ public class Loading extends BaseScreen {
 
         elapsed = elapsed + delta;
 
-        if (elapsed > 0.5f && !acting) {
+        if (elapsed > 3.5f && !acting) {
             acting = true;
             switchToScreen(MAIN, Hierarchy.LOWER);
         }

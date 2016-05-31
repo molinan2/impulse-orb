@@ -4,93 +4,93 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.groups.Notice;
 import com.jmolina.orb.widgets.Button;
-import com.jmolina.orb.groups.MainTitleGroup;
+import com.jmolina.orb.groups.MainTitle;
 
 import static com.jmolina.orb.Orb.Name.*;
 
 public class Main extends BaseScreen {
 
-    private MainTitleGroup mainTitleGroup;
-    private Button playButton;
-    private Button optionsButton;
-    private Button statsButton;
-    private Button creditsButton;
-    private Button exitButton;
+    private MainTitle mainTitle;
+    private Button play;
+    private Button options;
+    private Button stats;
+    private Button credits;
+    private Button exit;
     private Notice notice;
 
     public Main() {
         super();
 
-        mainTitleGroup = new MainTitleGroup();
+        mainTitle = new MainTitle();
         notice = new Notice();
 
-        mainTitleGroup.setGridPosition(1, 4);
+        mainTitle.setGridPosition(1, 4);
         notice.setGridPosition(1, 18);
 
-        playButton = new Button("PLAY", Button.Type.Play);
-        optionsButton = new Button("OPTIONS", Button.Type.Default);
-        statsButton = new Button("STATS", Button.Type.Default);
-        creditsButton = new Button("CREDITS", Button.Type.Default);
-        exitButton = new Button("EXIT", Button.Type.Exit);
+        play = new Button("PLAY", Button.Type.Play);
+        options = new Button("OPTIONS", Button.Type.Default);
+        stats = new Button("STATS", Button.Type.Default);
+        credits = new Button("CREDITS", Button.Type.Default);
+        exit = new Button("EXIT", Button.Type.Exit);
 
-        playButton.setGridPosition(2, 7.5f);
-        optionsButton.setGridPosition(2, 9.5f);
-        statsButton.setGridPosition(2, 11.5f);
-        creditsButton.setGridPosition(2, 13.5f);
-        exitButton.setGridPosition(2, 15.5f);
+        play.setGridPosition(2, 7.5f);
+        options.setGridPosition(2, 9.5f);
+        stats.setGridPosition(2, 11.5f);
+        credits.setGridPosition(2, 13.5f);
+        exit.setGridPosition(2, 15.5f);
 
-        playButton.addListener(new ClickListener(){
+        play.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 switchToScreen(LEVEL_SELECT, Hierarchy.LOWER);
             }
         });
 
-        optionsButton.addListener(new ClickListener(){
+        options.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 switchToScreen(OPTIONS, Hierarchy.LOWER);
             }
         });
 
-        statsButton.addListener(new ClickListener(){
+        stats.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 switchToScreen(STATS, Hierarchy.LOWER);
             }
         });
 
-        creditsButton.addListener(new ClickListener(){
+        credits.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 switchToScreen(CREDITS, Hierarchy.LOWER);
             }
         });
 
-        exitButton.addListener(new ClickListener(){
+        exit.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 exitApplication();
             }
         });
 
-        addMainActor(mainTitleGroup);
-        addMainActor(playButton);
-        addMainActor(optionsButton);
-        addMainActor(statsButton);
-        addMainActor(creditsButton);
-        addMainActor(exitButton);
+        addMainActor(mainTitle);
+        addMainActor(play);
+        addMainActor(options);
+        addMainActor(stats);
+        addMainActor(credits);
+        addMainActor(exit);
         addMainActor(notice);
     }
 
     @Override
     public void dispose() {
         notice.dispose();
-        playButton.dispose();
-        optionsButton.dispose();
-        statsButton.dispose();
-        creditsButton.dispose();
-        exitButton.dispose();
+        play.dispose();
+        options.dispose();
+        stats.dispose();
+        credits.dispose();
+        exit.dispose();
         super.dispose();
     }
 
