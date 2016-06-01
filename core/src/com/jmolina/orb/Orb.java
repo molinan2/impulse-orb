@@ -4,11 +4,11 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.Logger;
-import com.jmolina.orb.managers.ReflectionAssetManager;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.Credits;
 import com.jmolina.orb.screens.LevelLaunch;
@@ -48,11 +48,11 @@ public class Orb extends Game {
 	private ArrayMap<Name, BaseScreen> screens;
 	private Texture splashTexture;
 	private Preferences prefs;
-	private ReflectionAssetManager assetManager;
+	private AssetManager assetManager;
 
 	@Override
 	public void create () {
-		assetManager = new ReflectionAssetManager();
+		assetManager = new AssetManager();
 
 		assetManager.load(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 		assetManager.load(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);

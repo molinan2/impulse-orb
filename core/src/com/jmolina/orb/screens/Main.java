@@ -1,9 +1,9 @@
 package com.jmolina.orb.screens;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.groups.Notice;
-import com.jmolina.orb.managers.ReflectionAssetManager;
 import com.jmolina.orb.widgets.Button;
 import com.jmolina.orb.groups.MainTitle;
 
@@ -11,7 +11,7 @@ import static com.jmolina.orb.Orb.Name.*;
 
 public class Main extends BaseScreen {
 
-    private ReflectionAssetManager assetManager;
+    private AssetManager assetManager;
     private MainTitle mainTitle;
     private Button play;
     private Button options;
@@ -20,7 +20,7 @@ public class Main extends BaseScreen {
     private Button exit;
     private Notice notice;
 
-    public Main(ReflectionAssetManager assetManager) {
+    public Main(AssetManager assetManager) {
         super();
 
         this.assetManager = assetManager;

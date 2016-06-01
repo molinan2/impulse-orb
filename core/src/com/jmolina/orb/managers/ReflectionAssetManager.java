@@ -6,9 +6,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Field;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
-import com.jmolina.orb.var.Asset;
 
-public class ReflectionAssetManager extends com.badlogic.gdx.assets.AssetManager {
+public class ReflectionAssetManager extends AssetManager {
 
     public ReflectionAssetManager() {
         super();
