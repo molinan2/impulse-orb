@@ -8,13 +8,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Scaling;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import com.jmolina.orb.var.Asset;
 
 /**
  * TODO
  * Reformar
- * Que sea un widget (BaseGroup) compuesto de 2 imagenes: la base y la "marca" superpuesta
+ * Que sea un widget (BaseWidget) compuesto de 2 imagenes: la base y la "marca" superpuesta
  */
 public class Checkbox extends Image implements Disposable {
 
@@ -24,13 +23,9 @@ public class Checkbox extends Image implements Disposable {
     private TextureRegionDrawable uncheckedDrawable;
     private boolean checked;
 
-    public Checkbox () {
-        this(true);
-    }
-
     public Checkbox(boolean checked) {
-        checkedTexture = new Texture(Gdx.files.internal("checkbox_checked.png"));
-        uncheckedTexture = new Texture(Gdx.files.internal("checkbox_unchecked.png"));
+        checkedTexture = new Texture(Gdx.files.internal(Asset.UI_CHECKBOX_CHECKED));
+        uncheckedTexture = new Texture(Gdx.files.internal(Asset.UI_CHECKBOX_UNCHECKED));
         checkedDrawable = new TextureRegionDrawable(new TextureRegion(checkedTexture));
         uncheckedDrawable = new TextureRegionDrawable(new TextureRegion(uncheckedTexture));
 

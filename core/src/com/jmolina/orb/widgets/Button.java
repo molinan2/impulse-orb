@@ -1,6 +1,5 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,51 +9,40 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Disposable;
-import com.jmolina.orb.groups.BaseGroup;
+import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
-public class Button extends BaseGroup implements Disposable {
+public class Button extends BaseWidget {
 
-    /**
-     * Bootstrap: Default, Primary, Success, Warning, Danger, Info
-     */
     public enum Type {
         Play, Exit, Default
     }
 
-    private AssetManager assetManager;
     private Label label;
-    private BitmapFont font;
     private Image bg;
-    private Texture bgTexture;
 
-    public Button(AssetManager assetManager, String name, Type type) {
-        this.assetManager = assetManager;
+    public Button(AssetManager am, String name, Type type) {
+        super(am);
 
-        font = new BitmapFont(Gdx.files.internal("font/roboto_bold_45.fnt"));
-        font.setColor(Color.WHITE);
+        Label.LabelStyle style = new Label.LabelStyle();
+        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.font = getAsset(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
 
-        Label.LabelStyle ls = new Label.LabelStyle();
-        ls.fontColor = new Color(Var.COLOR_BLUE);
-        ls.font = font;
-
-        label = new Label(name, ls);
+        label = new Label(name, style);
         label.setTouchable(Touchable.disabled);
         label.setPosition(0f, 0f);
-        label.setHeight(1.5f * Var.GRID_UNIT);
-        label.setWidth(8f * Var.GRID_UNIT);
+        label.setSize(Grid.unit(8), Grid.unit(1.5f));
         label.setAlignment(Align.center);
 
-        this.bgTexture = getBgTexture(type);
-        this.bg = new Image(bgTexture);
+        this.bg = new Image(getBgTexture(type));
         this.bg.setPosition(0f, 0f);
 
         addActor(bg);
         addActor(label);
 
         setHeight(1.5f * Var.GRID_UNIT);
-        setOrigin(bgTexture.getWidth() * 0.5f, bgTexture.getHeight() * 0.5f);
+        setOrigin(bg.getWidth() * 0.5f, bg.getHeight() * 0.5f);
     }
 
     @Override
@@ -64,20 +52,19 @@ public class Button extends BaseGroup implements Disposable {
 
     @Override
     public void dispose() {
-        bgTexture.dispose();
-        font.dispose();
+        super.dispose();
     }
 
     private Texture getBgTexture(Type type) {
         switch (type) {
             case Default:
-                return new Texture(Gdx.files.internal("button_default.png"));
+                return getAsset(Asset.UI_BUTTON_DEFAULT, Texture.class);
             case Play:
-                return new Texture(Gdx.files.internal("button_play.png"));
+                return getAsset(Asset.UI_BUTTON_PLAY, Texture.class);
             case Exit:
-                return new Texture(Gdx.files.internal("button_exit.png"));
+                return getAsset(Asset.UI_BUTTON_EXIT, Texture.class);
             default:
-                return new Texture(Gdx.files.internal("button_default.png"));
+                return getAsset(Asset.UI_BUTTON_DEFAULT, Texture.class);
         }
     }
 

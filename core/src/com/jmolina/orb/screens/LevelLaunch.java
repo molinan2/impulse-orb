@@ -1,8 +1,8 @@
 package com.jmolina.orb.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.jmolina.orb.managers.OrbAssetManager;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.Ladder;
 import com.jmolina.orb.widgets.LevelCover;
 import com.jmolina.orb.widgets.LevelTitle;
@@ -12,13 +12,11 @@ import static com.jmolina.orb.Orb.Name.LEVEL_SELECT;
 
 public class LevelLaunch extends Menu {
 
-    private AssetManager assetManager;
     private LevelTitle title;
     private LevelCover cover;
     private Button button;
     private Ladder ladderPersonal;
     private Ladder ladderOnline;
-    private Texture coverTexture;
 
     /**
      * TODO
@@ -26,21 +24,19 @@ public class LevelLaunch extends Menu {
      *
      * levelID: carga de disco (o hardcoded) los datos del nivel. Un Objeto mejor por ahora
      */
-    public LevelLaunch(AssetManager assetManager, String title) {
-        super();
+    public LevelLaunch(OrbAssetManager am, String title) {
+        super(am);
 
-        this.assetManager = assetManager;
+        setAssetManager(am);
 
         setReturningScreen(LEVEL_SELECT);
         setTitle("LEVEL");
 
-        this.coverTexture = new Texture(Gdx.files.internal("launch_cover.png"));
-
-        this.title = new LevelTitle(title);
-        this.cover = new LevelCover(coverTexture);
-        this.button = new Button(this.assetManager, "GO!", Button.Type.Play);
-        ladderPersonal = new Ladder("Personal best");
-        ladderOnline = new Ladder("Online ladder");
+        this.title = new LevelTitle(getAssetManager(), title);
+        this.cover = new LevelCover(getAssetManager(), getAsset(Asset.UI_LAUNCH_COVER, Texture.class));
+        this.button = new Button(getAssetManager(), "GO!", Button.Type.Play);
+        ladderPersonal = new Ladder(getAssetManager(), "Personal best");
+        ladderOnline = new Ladder(getAssetManager(), "Online ladder");
 
         addRow(this.title);
         addRow(this.cover);
@@ -51,8 +47,8 @@ public class LevelLaunch extends Menu {
 
     @Override
     public void dispose() {
-        super.dispose();
-        coverTexture.dispose();
         button.dispose();
+        super.dispose();
     }
+
 }

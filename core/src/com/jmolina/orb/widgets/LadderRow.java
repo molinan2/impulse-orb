@@ -1,34 +1,30 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Disposable;
-import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
-public class LadderRow extends BaseGroup implements Disposable {
+public class LadderRow extends BaseWidget {
 
     private Label rank;
     private Label time;
     private Label user;
     private Label onlineRank;
-    private BitmapFont regularFont;
-    private BitmapFont strongFont;
 
-    public LadderRow(String rank, String time, String user, String onlineRank) {
-        regularFont = new BitmapFont(Gdx.files.internal("font/roboto_regular_30.fnt"));
-        strongFont = new BitmapFont(Gdx.files.internal("font/roboto_bold_30.fnt"));
+    public LadderRow(AssetManager am, String rank, String time, String user, String onlineRank) {
+        super(am);
 
         Label.LabelStyle regular = new Label.LabelStyle();
         Label.LabelStyle strong = new Label.LabelStyle();
         regular.fontColor = new Color(Var.COLOR_BLACK);
         strong.fontColor = new Color(Var.COLOR_BLACK);
-        regular.font = regularFont;
-        strong.font = strongFont;
+        regular.font = getAssetManager().get(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
+        strong.font = getAssetManager().get(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
 
         this.rank = new Label(rank, strong);
         this.rank.setPosition(Grid.unit(0), Grid.unit(0));
@@ -61,8 +57,7 @@ public class LadderRow extends BaseGroup implements Disposable {
 
     @Override
     public void dispose() {
-        regularFont.dispose();
-        strongFont.dispose();
+        super.dispose();
     }
 
 }

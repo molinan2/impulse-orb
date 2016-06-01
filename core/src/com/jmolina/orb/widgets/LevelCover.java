@@ -1,16 +1,17 @@
 package com.jmolina.orb.widgets;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.utils.Grid;
-import com.jmolina.orb.var.Var;
 
-public class LevelCover extends BaseGroup {
+public class LevelCover extends BaseWidget {
 
     private Image cover;
 
-    public LevelCover(Texture coverTexture) {
+    public LevelCover(AssetManager am, Texture coverTexture) {
+        super(am);
+
         cover = new Image(coverTexture);
         addActor(cover);
         setHeight(Grid.unit(5));

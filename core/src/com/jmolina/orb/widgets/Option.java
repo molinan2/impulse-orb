@@ -1,33 +1,30 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.Disposable;
-import com.jmolina.orb.groups.BaseGroup;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
-public class Option extends BaseGroup implements Disposable {
+public class Option extends BaseWidget {
 
     private Label label;
-    private BitmapFont font;
     private Checkbox checkbox;
 
-    public Option(String name) {
-        this(name, true);
+    public Option(AssetManager am, String name) {
+        this(am, name, true);
     }
 
-    public Option(String name, boolean checked) {
-        font = new BitmapFont(Gdx.files.internal("font/roboto_medium_45.fnt"));
-        font.setColor(Color.WHITE);
+    public Option(AssetManager am, String name, boolean checked) {
+        super(am);
 
-        Label.LabelStyle ls = new Label.LabelStyle();
-        ls.fontColor = new Color(Var.COLOR_BLUE);
-        ls.font = font;
+        Label.LabelStyle style = new Label.LabelStyle();
+        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.font = getAsset(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
 
-        label = new Label(name, ls);
+        label = new Label(name, style);
         label.setTouchable(Touchable.disabled);
         label.setPosition(0f, 0f);
         label.setHeight(1.5f * Var.GRID_UNIT);
@@ -57,6 +54,6 @@ public class Option extends BaseGroup implements Disposable {
     @Override
     public void dispose() {
         checkbox.dispose();
-        font.dispose();
+        super.dispose();
     }
 }

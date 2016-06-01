@@ -1,6 +1,7 @@
 package com.jmolina.orb.widgets;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -8,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
-import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
 import java.util.ArrayList;
@@ -24,35 +25,32 @@ import java.util.ArrayList;
 /**
  * Ranking Ladder. Por ahora, exactamente con 3 posiciones
  */
-public class Ladder extends BaseGroup implements Disposable {
+public class Ladder extends BaseWidget {
 
     private Label title;
-    private BitmapFont font;
     private Image bg;
-    private Texture bgTexture;
     private ArrayList<LadderRow> rows;
 
-    public Ladder(String title) {
+    public Ladder(AssetManager am, String title) {
+        super(am);
+
         this.rows = new ArrayList<LadderRow>();
 
-        this.bgTexture = new Texture(Gdx.files.internal("ladder_background.png"));
-        this.bg = new Image(bgTexture);
+        this.bg = new Image(getAssetManager().get(Asset.UI_LADDER_BACKGROUND, Texture.class));
         this.bg.setPosition(0f, 0f);
-
-        this.font = new BitmapFont(Gdx.files.internal("font/roboto_bold_30.fnt"));
 
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = new Color(Var.COLOR_BLUE);
-        style.font = font;
+        style.font = getAssetManager().get(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
 
         this.title = new Label(title.toUpperCase(), style);
         this.title.setPosition(Grid.unit(0.5f), Grid.unit(3.125f));
         this.title.setSize(Grid.unit(2), Grid.unit(0.5f));
         this.title.setAlignment(Align.left);
 
-        this.rows.add(new LadderRow("1", "1:34.72", "MyUserName", "(13)"));
-        this.rows.add(new LadderRow("2", "1:35.18", "MyUserName", "(21)"));
-        this.rows.add(new LadderRow("3", "1:41.94", "MyUserName", "(18)"));
+        this.rows.add(new LadderRow(getAssetManager(), "1", "1:34.72", "MyUserName", "(13)"));
+        this.rows.add(new LadderRow(getAssetManager(), "2", "1:35.18", "MyUserName", "(21)"));
+        this.rows.add(new LadderRow(getAssetManager(), "3", "1:41.94", "MyUserName", "(18)"));
 
         addActor(this.bg);
         addActor(this.title);
@@ -62,8 +60,7 @@ public class Ladder extends BaseGroup implements Disposable {
 
     @Override
     public void dispose() {
-        font.dispose();
-        bgTexture.dispose();
+        super.dispose();
     }
 
     private void addLadderRows(ArrayList<LadderRow> rows) {

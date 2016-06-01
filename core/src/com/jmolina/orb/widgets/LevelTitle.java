@@ -1,34 +1,30 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Disposable;
-import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
-public class LevelTitle extends BaseGroup implements Disposable {
+public class LevelTitle extends BaseWidget {
 
     private Label name;
     private Image bg;
-    private Texture bgTexture;
-    private BitmapFont font;
 
-    public LevelTitle(String name) {
-        bgTexture = new Texture(Gdx.files.internal("launch_title.png"));
-        bg = new Image(bgTexture);
+    public LevelTitle(AssetManager am, String name) {
+        super(am);
+
+        bg = new Image(getAssetManager().get(Asset.UI_LAUNCH_TITLE, Texture.class));
         bg.setPosition(0f, 0f);
-
-        this.font = new BitmapFont(Gdx.files.internal("font/roboto_bold_45.fnt"));
 
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = new Color(Var.COLOR_WHITE);
-        style.font = font;
+        style.font = getAssetManager().get(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
 
         this.name = new Label(name.toUpperCase(), style);
         this.name.setPosition(Grid.unit(0), Grid.unit(0));
@@ -44,6 +40,7 @@ public class LevelTitle extends BaseGroup implements Disposable {
 
     @Override
     public void dispose() {
-        bgTexture.dispose();
+        super.dispose();
     }
+
 }

@@ -1,47 +1,46 @@
 package com.jmolina.orb.widgets;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
-import com.jmolina.orb.groups.BaseGroup;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
 import java.text.DecimalFormat;
 
-public class Stat extends BaseGroup implements Disposable {
+public class Stat extends BaseWidget {
 
     private Label name;
     private Label stat;
-    private BitmapFont font;
 
-    public Stat (String name, float value) {
-        this(name, value, "");
+    public Stat (AssetManager am, String name, float value) {
+        this(am, name, value, "");
     }
 
-    public Stat(String name, float value, String unit) {
-        font = new BitmapFont(Gdx.files.internal("font/roboto_regular_45.fnt"));
-        font.setColor(Color.WHITE);
+    public Stat(AssetManager am, String name, float value, String unit) {
+        super(am);
 
-        Label.LabelStyle nameLabelStyle = new Label.LabelStyle();
-        nameLabelStyle.fontColor = new Color(Var.COLOR_BLUE);
-        nameLabelStyle.font = font;
+        Label.LabelStyle nameStyle = new Label.LabelStyle();
+        nameStyle.fontColor = new Color(Var.COLOR_BLUE);
+        nameStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
 
-        this.name = new Label(name, nameLabelStyle);
+        this.name = new Label(name, nameStyle);
         this.name.setTouchable(Touchable.disabled);
         this.name.setPosition(0f, 0f);
         this.name.setHeight(1f * Var.GRID_UNIT);
         this.name.setWidth(6f * Var.GRID_UNIT);
         this.name.setAlignment(Align.left);
 
-        Label.LabelStyle numberLabelStyle = new Label.LabelStyle();
-        numberLabelStyle.fontColor = new Color(Var.COLOR_BLACK);
-        numberLabelStyle.font = font;
+        Label.LabelStyle numberStyle = new Label.LabelStyle();
+        numberStyle.fontColor = new Color(Var.COLOR_BLACK);
+        numberStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
 
-        this.stat = new Label(formatStat(value, unit), numberLabelStyle);
+        this.stat = new Label(formatStat(value, unit), numberStyle);
 
         this.stat.setTouchable(Touchable.disabled);
         this.stat.setPosition(6f * Var.GRID_UNIT, 0f);
@@ -56,7 +55,7 @@ public class Stat extends BaseGroup implements Disposable {
 
     @Override
     public void dispose() {
-        font.dispose();
+        super.dispose();
     }
 
     private String formatStat(float value, String unit) {

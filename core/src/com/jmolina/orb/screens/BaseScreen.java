@@ -14,7 +14,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.actions.UIAction;
-import com.jmolina.orb.groups.BaseGroup;
+import com.jmolina.orb.managers.OrbAssetManager;
+import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.widgets.BaseWidget;
 import com.jmolina.orb.interfaces.AndroidBack;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.var.Var;
@@ -22,6 +24,8 @@ import com.jmolina.orb.var.Var;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class BaseScreen implements Screen, AndroidBack {
+
+    private OrbAssetManager assetManager;
 
     /**
      * Jerarquía de esta pantalla respecto de la siguiente
@@ -39,7 +43,6 @@ public class BaseScreen implements Screen, AndroidBack {
 
     protected Orb screenManager;
 
-    private Texture bgTexture;
     private Image bg;
     private Viewport viewport;
     private Stage mainStage;
@@ -51,7 +54,9 @@ public class BaseScreen implements Screen, AndroidBack {
     /**
      * Constructor
      */
-    public BaseScreen() {
+    public BaseScreen(OrbAssetManager am) {
+        setAssetManager(am);
+
         actors = new SnapshotArray<Actor>();
 
         hierarchy = Hierarchy.LOWER;
@@ -62,9 +67,9 @@ public class BaseScreen implements Screen, AndroidBack {
         getRoot().setSize(Var.VIEWPORT_WIDTH, Var.VIEWPORT_HEIGHT);
         getRoot().setPosition(0f, 0f);
 
+        bg = new Image(getAssetManager().get(Asset.UI_BACKGROUND, Texture.class));
+
         bgStage = new Stage(viewport);
-        bgTexture = new Texture(Gdx.files.internal("background.png"));
-        bg = new Image(bgTexture);
         bgStage.addActor(bg);
     }
 
@@ -111,8 +116,8 @@ public class BaseScreen implements Screen, AndroidBack {
 
     @Override
     public void dispose() {
-        bgTexture.dispose();
         mainStage.dispose();
+        bgStage.dispose();
     }
 
     public void setAsInputProcessor() {
@@ -125,6 +130,10 @@ public class BaseScreen implements Screen, AndroidBack {
 
     public void setScreenManager(Orb game) {
         this.screenManager = game;
+    }
+
+    public Orb getScreenManager() {
+        return this.screenManager;
     }
 
     /**
@@ -260,15 +269,26 @@ public class BaseScreen implements Screen, AndroidBack {
         for (Actor actor : actors) {
             actor.clearActions();
 
-            if (actor instanceof BaseGroup) {
-                ((BaseGroup) actor).reset();
+            if (actor instanceof BaseWidget) {
+                ((BaseWidget) actor).reset();
             }
         }
     }
 
     @Override
     public void back() {
+    }
 
+    public void setAssetManager(OrbAssetManager am) {
+        this.assetManager = am;
+    }
+
+    public OrbAssetManager getAssetManager() {
+        return this.assetManager;
+    }
+
+    public synchronized <T> T getAsset (String fileName, Class<T> type) {
+        return getAssetManager().get(fileName, type);
     }
 
 }

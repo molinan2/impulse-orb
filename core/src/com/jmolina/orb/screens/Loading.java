@@ -1,28 +1,30 @@
 package com.jmolina.orb.screens;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.jmolina.orb.managers.OrbAssetManager;
 import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.ProgressBar;
 
 import static com.jmolina.orb.Orb.Name.MAIN;
 
-public class Load extends BaseScreen {
+public class Loading extends BaseScreen {
 
-    private AssetManager assetManager;
     private Image splash;
     private ProgressBar bar;
     private boolean switching;
     private boolean loaded;
 
-    public Load(AssetManager assetManager, Texture splash) {
-        this.assetManager = assetManager;
+    public Loading(OrbAssetManager am) {
+        super(am);
 
-        this.splash = new Image(splash);
+        // setAssetManager(am);
+
+        this.splash = new Image(getAsset(Asset.UI_SPLASH, Texture.class));
         this.splash.setPosition(Grid.unit(2), Grid.unit(7.5f));
 
-        this.bar = new ProgressBar();
+        this.bar = new ProgressBar(getAssetManager());
         this.bar.setPosition(Grid.unit(2), Grid.unit(3.5f));
 
         addMainActor(this.splash);
@@ -30,22 +32,26 @@ public class Load extends BaseScreen {
 
         switching = false;
         loaded = false;
+
+        getAssetManager().preloadAllAssets();
     }
 
     @Override
     public void dispose() {
         super.dispose();
+        bar.dispose();
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
 
-        loaded = assetManager.update();
-        this.bar.updateProgress(assetManager.getProgress());
+        loaded = getAssetManager().update();
+        this.bar.updateProgress(getAssetManager().getProgress());
 
         if (loaded && !switching) {
             switching = true;
+            getScreenManager().createMenuScreens();
             switchToScreen(MAIN, Hierarchy.LOWER);
         }
     }

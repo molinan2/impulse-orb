@@ -1,17 +1,16 @@
 package com.jmolina.orb.screens;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.jmolina.orb.groups.Notice;
+import com.jmolina.orb.managers.OrbAssetManager;
+import com.jmolina.orb.widgets.Notice;
 import com.jmolina.orb.widgets.Button;
-import com.jmolina.orb.groups.MainTitle;
+import com.jmolina.orb.widgets.MainTitle;
 
 import static com.jmolina.orb.Orb.Name.*;
 
 public class Main extends BaseScreen {
 
-    private AssetManager assetManager;
     private MainTitle mainTitle;
     private Button play;
     private Button options;
@@ -20,24 +19,22 @@ public class Main extends BaseScreen {
     private Button exit;
     private Notice notice;
 
-    public Main(AssetManager assetManager) {
-        super();
+    public Main(OrbAssetManager am) {
+        super(am);
 
-        this.assetManager = assetManager;
+        setAssetManager(am);
 
-        mainTitle = new MainTitle();
-        notice = new Notice();
+        mainTitle = new MainTitle(getAssetManager());
+        notice = new Notice(getAssetManager());
 
         mainTitle.setGridPosition(1, 4);
         notice.setGridPosition(1, 18);
 
-        play = new Button(this.assetManager, "PLAY", Button.Type.Play);
-        options = new Button(this.assetManager, "OPTIONS", Button.Type.Default);
-        stats = new Button(this.assetManager, "STATS", Button.Type.Default);
-        credits = new Button(this.assetManager, "CREDITS", Button.Type.Default);
-        exit = new Button(this.assetManager, "EXIT", Button.Type.Exit);
-
-
+        play = new Button(getAssetManager(), "PLAY", Button.Type.Play);
+        options = new Button(getAssetManager(), "OPTIONS", Button.Type.Default);
+        stats = new Button(getAssetManager(), "STATS", Button.Type.Default);
+        credits = new Button(getAssetManager(), "CREDITS", Button.Type.Default);
+        exit = new Button(getAssetManager(), "EXIT", Button.Type.Exit);
 
         play.setGridPosition(2, 7.5f);
         options.setGridPosition(2, 9.5f);

@@ -1,6 +1,5 @@
 package com.jmolina.orb.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -10,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.Orb;
+import com.jmolina.orb.managers.OrbAssetManager;
 import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.Title;
 
@@ -19,25 +20,24 @@ public class Menu extends BaseScreen {
     private Title title;
     private Table table;
     private ScrollPane scrollPane;
-    private Texture scrollerTexture;
     private Orb.Name returningScreen;
 
-    public Menu() {
-        super();
+    public Menu(OrbAssetManager am) {
+        super(am);
 
-        title = new Title("");
+        title = new Title(getAssetManager(), "");
         title.setGridPosition(1, 3);
 
         table = new Table();
         table.top();
         table.setPosition(Var.GRID_UNIT, 0f);
 
-        ScrollPane.ScrollPaneStyle scrollPaneStyle = new ScrollPane.ScrollPaneStyle();
-        scrollerTexture = new Texture(Gdx.files.internal("scroll_knob.png"));
-        scrollPaneStyle.vScrollKnob = new TextureRegionDrawable(new TextureRegion(scrollerTexture));
+        ScrollPane.ScrollPaneStyle style = new ScrollPane.ScrollPaneStyle();
+        style.vScrollKnob = new TextureRegionDrawable(new TextureRegion(
+                getAsset(Asset.UI_SCROLL_KNOB, Texture.class)));
 
         scrollPane = new ScrollPane(table);
-        scrollPane.setStyle(scrollPaneStyle);
+        scrollPane.setStyle(style);
         scrollPane.setWidth(Var.VIEWPORT_WIDTH);
         scrollPane.setHeight(Grid.cellY(4.5f));
         scrollPane.setPosition(0f, 0f);
@@ -49,7 +49,6 @@ public class Menu extends BaseScreen {
     @Override
     public void dispose() {
         title.dispose();
-        scrollerTexture.dispose();
         super.dispose();
     }
 
@@ -97,4 +96,5 @@ public class Menu extends BaseScreen {
     public void back() {
         switchToScreen(this.returningScreen, Hierarchy.HIGHER);
     }
+
 }

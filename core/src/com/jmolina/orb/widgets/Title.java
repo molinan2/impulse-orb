@@ -1,6 +1,6 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,34 +9,29 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Disposable;
-import com.jmolina.orb.groups.BaseGroup;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
-public class Title extends BaseGroup implements Disposable {
+public class Title extends BaseWidget {
 
     private Image button;
-    private Texture buttonTexture;
     private Label label;
-    private BitmapFont font;
 
-    public Title(String name) {
-        font = new BitmapFont(Gdx.files.internal("font/roboto_bold_90.fnt"));
-        font.setColor(Color.WHITE);
+    public Title(AssetManager am, String name) {
+        super(am);
 
-        Label.LabelStyle ls = new Label.LabelStyle();
-        ls.fontColor = new Color(Var.COLOR_BLUE);
-        ls.font = font;
+        Label.LabelStyle style = new Label.LabelStyle();
+        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.font = getAsset(Asset.FONT_ROBOTO_BOLD_90, BitmapFont.class);
 
-        label = new Label(name, ls);
+        label = new Label(name, style);
         label.setTouchable(Touchable.disabled);
         label.setPosition(3f * Var.GRID_UNIT, 0f);
         label.setHeight(2f * Var.GRID_UNIT);
         label.setWidth(7f * Var.GRID_UNIT);
         label.setAlignment(Align.left);
 
-        buttonTexture = new Texture(Gdx.files.internal("back.png"));
-        button = new Image(buttonTexture);
+        button = new Image(getAsset(Asset.UI_BACK, Texture.class));
         button.setPosition(0f, 0f);
 
         addActor(button);
@@ -45,8 +40,7 @@ public class Title extends BaseGroup implements Disposable {
 
     @Override
     public void dispose() {
-        font.dispose();
-        buttonTexture.dispose();
+        super.dispose();
     }
 
     /**

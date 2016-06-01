@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.Orb;
+import com.jmolina.orb.managers.OrbAssetManager;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.Option;
 import com.jmolina.orb.widgets.MultiOption;
@@ -20,17 +21,17 @@ public class Options extends Menu {
 
     private Preferences prefs;
 
-    public Options() {
-        super();
+    public Options(OrbAssetManager am) {
+        super(am);
 
         setReturningScreen(Orb.Name.MAIN);
         setTitle("OPTIONS");
 
-        music = new Option("Background music");
-        sound = new Option("Sound effects");
-        vibration = new Option("Vibration");
-        online = new Option("Online play");
-        zoom = new MultiOption("Zoom level");
+        music = new Option(getAssetManager(), "Background music");
+        sound = new Option(getAssetManager(), "Sound effects");
+        vibration = new Option(getAssetManager(), "Vibration");
+        online = new Option(getAssetManager(), "Online play");
+        zoom = new MultiOption(getAssetManager(), "Zoom level");
 
         addRow(music);
         addRow(sound);
@@ -94,23 +95,22 @@ public class Options extends Menu {
 
     @Override
     public void dispose () {
-        super.dispose();
         music.dispose();
         sound.dispose();
         vibration.dispose();
         online.dispose();
         zoom.dispose();
+        super.dispose();
     }
 
+    /**
+     * TODO
+     * ¿Qué pasa si cierro la aplicación? ¿Se guardan las prefs? ¿Llama a hide()?
+     */
     @Override
     public void hide () {
-        super.hide();
         prefs.flush();
-
-        /**
-         * TODO
-         * ¿Qué pasa si cierro la aplicación? ¿Se guardan las prefs? ¿Llama a hide()?
-         */
+        super.hide();
     }
 
     public void setPrefs (Preferences prefs) {

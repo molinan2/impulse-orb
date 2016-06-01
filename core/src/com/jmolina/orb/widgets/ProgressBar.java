@@ -1,6 +1,6 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -8,32 +8,28 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
-import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
-public class ProgressBar extends BaseGroup implements Disposable {
+public class ProgressBar extends BaseWidget implements Disposable {
 
     private Image base;
     private Image fill;
-    private Texture baseTexture;
-    private Texture fillTexture;
-    private BitmapFont font;
     private Label label;
 
-    public ProgressBar() {
-        font = new BitmapFont(Gdx.files.internal("font/roboto_regular_30.fnt"));
+    public ProgressBar(AssetManager am) {
+        super(am);
+
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = new Color(Var.COLOR_BLUE);
-        style.font = font;
+        style.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
-        baseTexture = new Texture(Gdx.files.internal("progress_base.png"));
-        base = new Image(baseTexture);
+        base = new Image(getAsset(Asset.UI_PROGRESS_BASE, Texture.class));
         base.setPosition(Grid.unit(0), Grid.unit(0));
         base.setSize(Grid.unit(8), Grid.unit(1));
 
-        fillTexture = new Texture(Gdx.files.internal("progress_fill.png"));
-        fill = new Image(fillTexture);
+        fill = new Image(getAsset(Asset.UI_PROGRESS_FILL, Texture.class));
         fill.setPosition(Grid.unit(0), Grid.unit(0));
         fill.setSize(Grid.unit(0), Grid.unit(1));
 
@@ -56,7 +52,7 @@ public class ProgressBar extends BaseGroup implements Disposable {
 
     @Override
     public void dispose() {
-        baseTexture.dispose();
-        fillTexture.dispose();
+        super.dispose();
     }
+
 }
