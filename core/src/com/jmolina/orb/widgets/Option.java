@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Disposable;
-import com.jmolina.orb.actors.Checkbox;
 import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.var.Var;
 

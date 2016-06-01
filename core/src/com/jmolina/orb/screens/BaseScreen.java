@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -19,8 +18,6 @@ import com.jmolina.orb.groups.BaseGroup;
 import com.jmolina.orb.interfaces.AndroidBack;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.var.Var;
-
-import java.util.ArrayList;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -40,7 +37,7 @@ public class BaseScreen implements Screen, AndroidBack {
         ENTERING, LEAVING
     }
 
-    protected Orb manager;
+    protected Orb screenManager;
 
     private Texture bgTexture;
     private Image bg;
@@ -126,8 +123,8 @@ public class BaseScreen implements Screen, AndroidBack {
         Gdx.input.setInputProcessor(null);
     }
 
-    public void setManager(Orb game) {
-        this.manager = game;
+    public void setScreenManager(Orb game) {
+        this.screenManager = game;
     }
 
     /**
@@ -140,7 +137,7 @@ public class BaseScreen implements Screen, AndroidBack {
 
         addRootAction(sequence(
                 transition(Flow.LEAVING, hierarchy),
-                run(UIRunnable.setScreen(manager, name, hierarchy))
+                run(UIRunnable.setScreen(screenManager, name, hierarchy))
         ));
     }
 

@@ -49,7 +49,7 @@ public class Card extends BaseGroup implements Disposable {
 
         backgroundTexture = new Texture(Gdx.files.internal("card_background.png"));
         coverWhiteTexture = new Texture(Gdx.files.internal("card_cover_white.png"));
-        lockTexture = new Texture(Gdx.files.internal("padlock.png"));
+        lockTexture = new Texture(Gdx.files.internal("card_padlock.png"));
 
         cover = new Image(coverTexture);
         coverWhite = new Image(coverWhiteTexture);

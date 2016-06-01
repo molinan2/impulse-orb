@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.groups.BaseGroup;
+import com.jmolina.orb.managers.ReflectionAssetManager;
 import com.jmolina.orb.var.Var;
 
 public class Button extends BaseGroup implements Disposable {
@@ -22,16 +23,15 @@ public class Button extends BaseGroup implements Disposable {
         Play, Exit, Default
     }
 
+    private ReflectionAssetManager assetManager;
     private Label label;
     private BitmapFont font;
     private Image bg;
     private Texture bgTexture;
 
-    public Button (String name) {
-        this(name, Type.Default);
-    }
+    public Button(ReflectionAssetManager assetManager, String name, Type type) {
+        this.assetManager = assetManager;
 
-    public Button(String name, Type type) {
         font = new BitmapFont(Gdx.files.internal("font/roboto_bold_45.fnt"));
         font.setColor(Color.WHITE);
 
@@ -46,9 +46,9 @@ public class Button extends BaseGroup implements Disposable {
         label.setWidth(8f * Var.GRID_UNIT);
         label.setAlignment(Align.center);
 
-        LoadBgTexture(type);
-        bg = new Image(bgTexture);
-        bg.setPosition(0f, 0f);
+        this.bgTexture = getBgTexture(type);
+        this.bg = new Image(bgTexture);
+        this.bg.setPosition(0f, 0f);
 
         addActor(bg);
         addActor(label);
@@ -68,19 +68,16 @@ public class Button extends BaseGroup implements Disposable {
         font.dispose();
     }
 
-    private void LoadBgTexture (Type type) {
+    private Texture getBgTexture(Type type) {
         switch (type) {
             case Default:
-                this.bgTexture = new Texture(Gdx.files.internal("button_default.png"));
-                break;
+                return new Texture(Gdx.files.internal("button_default.png"));
             case Play:
-                this.bgTexture = new Texture(Gdx.files.internal("button_play.png"));
-                break;
+                return new Texture(Gdx.files.internal("button_play.png"));
             case Exit:
-                this.bgTexture = new Texture(Gdx.files.internal("button_exit.png"));
-                break;
+                return new Texture(Gdx.files.internal("button_exit.png"));
             default:
-                this.bgTexture = new Texture(Gdx.files.internal("button_default.png"));
+                return new Texture(Gdx.files.internal("button_default.png"));
         }
     }
 

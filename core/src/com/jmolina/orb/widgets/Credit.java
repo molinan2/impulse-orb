@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.groups.BaseGroup;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
 public class Credit extends BaseGroup implements Disposable {

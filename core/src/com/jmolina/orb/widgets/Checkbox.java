@@ -1,4 +1,4 @@
-package com.jmolina.orb.actors;
+package com.jmolina.orb.widgets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,8 +29,8 @@ public class Checkbox extends Image implements Disposable {
     }
 
     public Checkbox(boolean checked) {
-        checkedTexture = new Texture(Gdx.files.internal("checked.png"));
-        uncheckedTexture = new Texture(Gdx.files.internal("unchecked.png"));
+        checkedTexture = new Texture(Gdx.files.internal("checkbox_checked.png"));
+        uncheckedTexture = new Texture(Gdx.files.internal("checkbox_unchecked.png"));
         checkedDrawable = new TextureRegionDrawable(new TextureRegion(checkedTexture));
         uncheckedDrawable = new TextureRegionDrawable(new TextureRegion(uncheckedTexture));
 

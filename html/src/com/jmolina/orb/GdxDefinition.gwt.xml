@@ -9,4 +9,6 @@
 	<entry-point class='com.jmolina.orb.client.HtmlLauncher' />
 	
 	<set-configuration-property name="gdx.assetpath" value="../android/assets" />
+	<!-- It is necessary to specify every class which Reflection has been used with -->
+	<extend-configuration-property name="gdx.reflect.include" value="com.jmolina.orb.var.Asset" />
 </module>

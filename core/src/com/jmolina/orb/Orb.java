@@ -5,17 +5,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.Logger;
-import com.badlogic.gdx.utils.compression.lzma.Base;
+import com.jmolina.orb.managers.ReflectionAssetManager;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.Credits;
 import com.jmolina.orb.screens.LevelLaunch;
 import com.jmolina.orb.screens.LevelSelect;
-import com.jmolina.orb.screens.Loading;
+import com.jmolina.orb.screens.Load;
 import com.jmolina.orb.screens.Main;
 import com.jmolina.orb.screens.Options;
 import com.jmolina.orb.screens.Stats;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
 
@@ -35,57 +37,71 @@ public class Orb extends Game {
 		LEVEL_SELECT, LEVEL_LAUNCH_1, LEVEL_LAUNCH_2, LEVEL_LAUNCH_3, LEVEL_LAUNCH_4
 	}
 
-	private Loading gameLoading;
+	private Load load;
 	private Main main;
 	private Options options;
 	private Stats stats;
 	private Credits credits;
 	private LevelSelect levelSelect;
 	private LevelLaunch levelLaunch1, levelLaunch2, levelLaunch3, levelLaunch4;
-
 	private Logger logger;
 	private ArrayMap<Name, BaseScreen> screens;
-
 	private Texture splashTexture;
-
 	private Preferences prefs;
+	private ReflectionAssetManager assetManager;
 
 	@Override
 	public void create () {
+		assetManager = new ReflectionAssetManager();
+
+		assetManager.load(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
+		assetManager.load(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
+		assetManager.load(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
+		assetManager.load(Asset.FONT_ROBOTO_MEDIUM_90, BitmapFont.class);
+		assetManager.load(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
+		assetManager.load(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
+		assetManager.load(Asset.FONT_ROBOTO_BOLD_90, BitmapFont.class);
+
+
+
+
+		//assetManager.finishLoading();
+
+
 		logger = new Logger("Game", Logger.INFO);
 		Gdx.input.setCatchBackKey(true); // Android
 
 		prefs = Gdx.app.getPreferences(Orb.class.getName());
-		firstRun();
+		setFirstRunPrefs();
 		
 		splashTexture = new Texture(Gdx.files.internal("splash.png"));
 
-		gameLoading = new Loading(); // Parametrica
-		gameLoading.setSplash(splashTexture);
-		main = new Main();
+		// Definicion de pantallas
+		load = new Load(assetManager, splashTexture);
+		main = new Main(assetManager);
 		options = new Options();
 		stats = new Stats();
 		credits = new Credits();
 		levelSelect = new LevelSelect();
-		levelLaunch1 = new LevelLaunch("BASICS");
-		levelLaunch2 = new LevelLaunch("ADVANCED");
-		levelLaunch3 = new LevelLaunch("EXPERT");
-		levelLaunch4 = new LevelLaunch("HERO");
+		levelLaunch1 = new LevelLaunch(assetManager, "BASICS");
+		levelLaunch2 = new LevelLaunch(assetManager, "ADVANCED");
+		levelLaunch3 = new LevelLaunch(assetManager, "EXPERT");
+		levelLaunch4 = new LevelLaunch(assetManager, "HERO");
 
-		gameLoading.setManager(this);
-		main.setManager(this);
-		options.setManager(this);
+		load.setScreenManager(this);
+		main.setScreenManager(this);
+		options.setScreenManager(this);
 		options.setPrefs(prefs);
-		stats.setManager(this);
-		credits.setManager(this);
-		levelSelect.setManager(this);
-		levelLaunch1.setManager(this);
-		levelLaunch2.setManager(this);
-		levelLaunch3.setManager(this);
-		levelLaunch4.setManager(this);
+		stats.setScreenManager(this);
+		credits.setScreenManager(this);
+		levelSelect.setScreenManager(this);
+		levelLaunch1.setScreenManager(this);
+		levelLaunch2.setScreenManager(this);
+		levelLaunch3.setScreenManager(this);
+		levelLaunch4.setScreenManager(this);
 
 		screens = new ArrayMap<Name, BaseScreen>();
-		screens.put(Name.LOAD, gameLoading);
+		screens.put(Name.LOAD, load);
 		screens.put(Name.MAIN, main);
 		screens.put(Name.OPTIONS, options);
 		screens.put(Name.STATS, stats);
@@ -96,6 +112,10 @@ public class Orb extends Game {
 		screens.put(Name.LEVEL_LAUNCH_3, levelLaunch3);
 		screens.put(Name.LEVEL_LAUNCH_4, levelLaunch4);
 
+
+
+
+		// TODO Async asset load
 		setScreenByKey(Name.LOAD, BaseScreen.Hierarchy.LOWER);
 	}
 
@@ -117,7 +137,7 @@ public class Orb extends Game {
 		splashTexture.dispose();
 
 		main.dispose();
-		gameLoading.dispose();
+		load.dispose();
 		options.dispose();
 		stats.dispose();
 		credits.dispose();
@@ -144,7 +164,7 @@ public class Orb extends Game {
 	/**
 	 * Necesario sólo en la primera ejecución
 	 */
-	public void firstRun () {
+	public void setFirstRunPrefs() {
 		if (!prefs.contains(Var.OPTION_MUSIC))
 			prefs.putBoolean(Var.OPTION_MUSIC, true);
 

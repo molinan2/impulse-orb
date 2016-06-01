@@ -1,5 +1,9 @@
 # Anotaciones #
 
+### AssetManager ###
+
+No es recomendable instanciar el AssetManager de forma ``static``, por ejemplo en una clase ``Singleton``, debido a que la gestión de memoria de Android puede producir resultados imprevisibles al suspender y reanudar la aplicación. En principio, no habría problema en una aplicación Java de escritorio.
+
 ### ApplicationListener ###
 
 Se puede acceder al ApplicationListener desde cualquier punto de la aplicación, llamando a `Gdx.app.getApplicationListener()`. Como sólo hay un `ApplicationListener`, en el caso de que sea `Game` se puede llamar a sus métodos también desde cualquier punto. Por ejemplo, para cambiar a una nueva pantalla:

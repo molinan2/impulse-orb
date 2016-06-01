@@ -2,6 +2,7 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.jmolina.orb.managers.ReflectionAssetManager;
 import com.jmolina.orb.widgets.Ladder;
 import com.jmolina.orb.widgets.LevelCover;
 import com.jmolina.orb.widgets.LevelTitle;
@@ -11,6 +12,7 @@ import static com.jmolina.orb.Orb.Name.LEVEL_SELECT;
 
 public class LevelLaunch extends Menu {
 
+    private ReflectionAssetManager assetManager;
     private LevelTitle title;
     private LevelCover cover;
     private Button button;
@@ -24,8 +26,10 @@ public class LevelLaunch extends Menu {
      *
      * levelID: carga de disco (o hardcoded) los datos del nivel. Un Objeto mejor por ahora
      */
-    public LevelLaunch(String title) {
+    public LevelLaunch(ReflectionAssetManager assetManager, String title) {
         super();
+
+        this.assetManager = assetManager;
 
         setReturningScreen(LEVEL_SELECT);
         setTitle("LEVEL");
@@ -34,7 +38,7 @@ public class LevelLaunch extends Menu {
 
         this.title = new LevelTitle(title);
         this.cover = new LevelCover(coverTexture);
-        this.button = new Button("GO!", Button.Type.Play);
+        this.button = new Button(this.assetManager, "GO!", Button.Type.Play);
         ladderPersonal = new Ladder("Personal best");
         ladderOnline = new Ladder("Online ladder");
 

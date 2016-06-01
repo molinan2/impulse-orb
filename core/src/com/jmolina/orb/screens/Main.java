@@ -3,6 +3,7 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.groups.Notice;
+import com.jmolina.orb.managers.ReflectionAssetManager;
 import com.jmolina.orb.widgets.Button;
 import com.jmolina.orb.groups.MainTitle;
 
@@ -10,6 +11,7 @@ import static com.jmolina.orb.Orb.Name.*;
 
 public class Main extends BaseScreen {
 
+    private ReflectionAssetManager assetManager;
     private MainTitle mainTitle;
     private Button play;
     private Button options;
@@ -18,8 +20,10 @@ public class Main extends BaseScreen {
     private Button exit;
     private Notice notice;
 
-    public Main() {
+    public Main(ReflectionAssetManager assetManager) {
         super();
+
+        this.assetManager = assetManager;
 
         mainTitle = new MainTitle();
         notice = new Notice();
@@ -27,11 +31,13 @@ public class Main extends BaseScreen {
         mainTitle.setGridPosition(1, 4);
         notice.setGridPosition(1, 18);
 
-        play = new Button("PLAY", Button.Type.Play);
-        options = new Button("OPTIONS", Button.Type.Default);
-        stats = new Button("STATS", Button.Type.Default);
-        credits = new Button("CREDITS", Button.Type.Default);
-        exit = new Button("EXIT", Button.Type.Exit);
+        play = new Button(this.assetManager, "PLAY", Button.Type.Play);
+        options = new Button(this.assetManager, "OPTIONS", Button.Type.Default);
+        stats = new Button(this.assetManager, "STATS", Button.Type.Default);
+        credits = new Button(this.assetManager, "CREDITS", Button.Type.Default);
+        exit = new Button(this.assetManager, "EXIT", Button.Type.Exit);
+
+
 
         play.setGridPosition(2, 7.5f);
         options.setGridPosition(2, 9.5f);

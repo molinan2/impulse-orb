@@ -56,7 +56,7 @@ public class LadderRow extends BaseGroup implements Disposable {
         addActor(this.user);
         addActor(this.onlineRank);
 
-        setHeight(0.5f);
+        setHeight(Grid.unit(0.5f));
     }
 
     @Override
