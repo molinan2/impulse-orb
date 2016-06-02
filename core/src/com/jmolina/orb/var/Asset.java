@@ -1,5 +1,6 @@
 package com.jmolina.orb.var;
 
+// Arroja una Exception al ejecutar la version GWT (HTML)
 public class Asset {
 
     private static final String FONT = "font/";

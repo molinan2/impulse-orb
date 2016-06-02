@@ -1,16 +1,15 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
+// No se encuentra en GWT (HTML), por lo que no se puede compilar en GWT (HTML)
 import java.text.DecimalFormat;
 
 public class Stat extends BaseWidget {
