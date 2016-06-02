@@ -1,48 +1,62 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.Scaling;
+import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Asset;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 /**
  * TODO
  * Reformar
  * Que sea un widget (BaseWidget) compuesto de 2 imagenes: la base y la "marca" superpuesta
  */
-public class Checkbox extends Image implements Disposable {
+public class Checkbox extends BaseWidget {
 
-    private Texture checkedTexture;
-    private Texture uncheckedTexture;
-    private TextureRegionDrawable checkedDrawable;
-    private TextureRegionDrawable uncheckedDrawable;
+    private Image checkedImage;
+    private Image uncheckedImage;
     private boolean checked;
 
-    public Checkbox(boolean checked) {
-        checkedTexture = new Texture(Gdx.files.internal(Asset.UI_CHECKBOX_CHECKED));
-        uncheckedTexture = new Texture(Gdx.files.internal(Asset.UI_CHECKBOX_UNCHECKED));
-        checkedDrawable = new TextureRegionDrawable(new TextureRegion(checkedTexture));
-        uncheckedDrawable = new TextureRegionDrawable(new TextureRegion(uncheckedTexture));
+    public Checkbox(AssetManager am, boolean checked) {
+        super(am);
+
+        checkedImage = new Image(getAsset(Asset.UI_CHECKBOX_CHECKED, Texture.class));
+        checkedImage.setPosition(0f, 0f);
+
+        uncheckedImage = new Image(getAsset(Asset.UI_CHECKBOX_UNCHECKED, Texture.class));
+        uncheckedImage.setPosition(0f, 0f);
 
         this.checked = checked;
-        setDrawable(checkedDrawable);
-        setScaling(Scaling.stretch);
-        setAlign(Align.center);
-        setSize(getPrefWidth(), getPrefHeight());
+
+        addActor(uncheckedImage);
+        addActor(checkedImage);
+
+        setHeight(Grid.unit(1));
+        setWidth(Grid.unit(1));
+
+        // Necesario para que solo el Checkbox responda a eventos
+        // Asi se puede identificar su clase en MultiOption
+        checkedImage.setTouchable(Touchable.disabled);
+        uncheckedImage.setTouchable(Touchable.disabled);
+        setTouchable(Touchable.enabled);
     }
 
     public void check() {
-        setDrawable(checkedDrawable);
+        checkedImage.clearActions();
+        checkedImage.addAction(fadeIn(0));
+        uncheckedImage.clearActions();
+        uncheckedImage.addAction(fadeOut(0));
         checked = true;
     }
 
     public void uncheck() {
-        setDrawable(uncheckedDrawable);
+        uncheckedImage.clearActions();
+        uncheckedImage.addAction(fadeIn(0));
+        checkedImage.clearActions();
+        checkedImage.addAction(fadeOut(0));
         checked = false;
     }
 
@@ -57,8 +71,7 @@ public class Checkbox extends Image implements Disposable {
 
     @Override
     public void dispose() {
-        checkedTexture.dispose();
-        uncheckedTexture.dispose();
+        super.dispose();
     }
 
 }

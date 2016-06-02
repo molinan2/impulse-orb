@@ -29,7 +29,7 @@ public class Option extends BaseWidget {
         label.setPosition(0f, 0f);
         label.setHeight(1.5f * Var.GRID_UNIT);
 
-        checkbox = new Checkbox(checked);
+        checkbox = new Checkbox(getAssetManager(), checked);
         checkbox.setPosition(8.5f * Var.GRID_UNIT, 0f);
 
         addActor(label);

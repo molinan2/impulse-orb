@@ -34,9 +34,9 @@ public class MultiOption extends BaseWidget {
         label.setHeight(1.5f * Var.GRID_UNIT);
 
         checkboxes = new ArrayList<Checkbox>();
-        checkboxes.add(new Checkbox(false));
-        checkboxes.add(new Checkbox(false));
-        checkboxes.add(new Checkbox(false));
+        checkboxes.add(new Checkbox(getAssetManager(), false));
+        checkboxes.add(new Checkbox(getAssetManager(), false));
+        checkboxes.add(new Checkbox(getAssetManager(), false));
 
         setValue(value);
 
@@ -71,6 +71,7 @@ public class MultiOption extends BaseWidget {
         }
 
         checkboxes.get(this.value).check();
+        System.out.println("setvalue");
     }
 
 }
