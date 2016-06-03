@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.jmolina.orb.managers.OrbAssetManager;
 import com.jmolina.orb.screens.BaseScreen;
+import com.jmolina.orb.screens.Blank;
 import com.jmolina.orb.screens.Credits;
 import com.jmolina.orb.screens.LevelLaunch;
 import com.jmolina.orb.screens.LevelSelect;
@@ -31,6 +32,7 @@ public class Orb extends Game {
 		LEVEL_LAUNCH_1, LEVEL_LAUNCH_2, LEVEL_LAUNCH_3, LEVEL_LAUNCH_4
 	}
 
+	private Blank blank;
 	private Loading loading;
 	private Main main;
 	private Options options;

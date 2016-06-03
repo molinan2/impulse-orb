@@ -11,6 +11,9 @@ public class AndroidLauncher extends AndroidApplication {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useImmersiveMode = false;
+		config.useAccelerometer = false;
+		config.useCompass = false;
+		config.hideStatusBar = true;
 		initialize(new Orb(), config);
 	}
 }

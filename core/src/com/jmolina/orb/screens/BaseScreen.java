@@ -26,8 +26,6 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class BaseScreen implements Screen, AndroidBack {
 
-
-
     /**
      * Jerarquía de esta pantalla respecto de la siguiente
      */
