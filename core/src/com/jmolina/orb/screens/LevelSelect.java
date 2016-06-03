@@ -3,11 +3,12 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.graphics.Texture;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.interfaces.Visitor;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.managers.ScreenManager;
+import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.widgets.Card;
 
-import static com.jmolina.orb.Orb.Name.*;
-import static com.jmolina.orb.screens.Base.Hierarchy.*;
+import static com.jmolina.orb.managers.ScreenManager.Key.*;
+import static com.jmolina.orb.screens.OrbScreen.Hierarchy.*;
 
 public class LevelSelect extends Menu {
 
@@ -19,7 +20,7 @@ public class LevelSelect extends Menu {
     public LevelSelect(Orb orb) {
         super(orb);
 
-        setReturningScreen(Orb.Name.MAIN);
+        setReturningScreen(ScreenManager.Key.MAIN);
         setTitle("SELECT");
 
         Texture cover = getAsset(Asset.UI_CARD_COVER, Texture.class);

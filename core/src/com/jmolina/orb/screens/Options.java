@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.managers.PreferenceManager;
+import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.widgets.Option;
 import com.jmolina.orb.widgets.MultiOption;
 
@@ -22,7 +23,7 @@ public class Options extends Menu {
         super(orb);
 
         this.preferenceManager = orb.getPreferenceManager();
-        setReturningScreen(Orb.Name.MAIN);
+        setReturningScreen(ScreenManager.Key.MAIN);
         setTitle("OPTIONS");
 
         music = new Option(getAssetManager(), "Background music");

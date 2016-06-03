@@ -3,15 +3,14 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.Orb;
-import com.jmolina.orb.managers.OrbAssetManager;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.widgets.Notice;
 import com.jmolina.orb.widgets.Button;
 import com.jmolina.orb.widgets.GameTitle;
 
-import static com.jmolina.orb.Orb.Name.*;
+import static com.jmolina.orb.managers.ScreenManager.Key.*;
 
-public class Main extends Base {
+public class Main extends OrbScreen {
 
     private GameTitle gameTitle;
     private Button play;

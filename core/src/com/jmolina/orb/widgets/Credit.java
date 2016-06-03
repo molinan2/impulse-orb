@@ -8,9 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.assets.Asset;
 
-public class Credit extends Base {
+public class Credit extends OrbGroup {
 
     private Label header;
     private Label body;
@@ -19,11 +19,11 @@ public class Credit extends Base {
         super(am);
 
         Label.LabelStyle bodyStyle = new Label.LabelStyle();
-        bodyStyle.fontColor = new Color(Base.COLOR_BLACK);
+        bodyStyle.fontColor = new Color(OrbGroup.COLOR_BLACK);
         bodyStyle.font = getAssetManager().get(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
         Label.LabelStyle headerStyle = new Label.LabelStyle();
-        headerStyle.fontColor = new Color(Base.COLOR_BLUE);
+        headerStyle.fontColor = new Color(OrbGroup.COLOR_BLUE);
         headerStyle.font = getAssetManager().get(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
 
         this.body = new Label(body, bodyStyle);

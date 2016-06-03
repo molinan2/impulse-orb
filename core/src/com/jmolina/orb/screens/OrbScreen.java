@@ -14,14 +14,17 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.actions.UIAction;
-import com.jmolina.orb.managers.OrbAssetManager;
-import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.interfaces.AndroidBack;
+import com.jmolina.orb.interfaces.SuperManager;
+import com.jmolina.orb.managers.AssetManager;
+import com.jmolina.orb.managers.ScreenManager;
+import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.interfaces.BackInteractive;
 import com.jmolina.orb.runnables.UIRunnable;
+import com.jmolina.orb.widgets.OrbGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class Base implements Screen, AndroidBack {
+public class OrbScreen implements Screen, BackInteractive {
 
     protected final float VIEWPORT_HEIGHT = 1184.0f;
     protected final float VIEWPORT_WIDTH = 768.0f;
@@ -36,7 +39,7 @@ public class Base implements Screen, AndroidBack {
         ENTERING, LEAVING
     }
 
-    protected Orb orb;
+    protected SuperManager superManager;
     private Image bg;
     private Viewport viewport;
     private Stage mainStage;
@@ -44,11 +47,12 @@ public class Base implements Screen, AndroidBack {
     private Hierarchy hierarchy;
     private SnapshotArray<Actor> actors;
 
+
     /**
      * Constructor
      */
-    public Base(Orb orb) {
-        this.orb = orb;
+    public OrbScreen(Orb superManager) {
+        this.superManager = superManager;
 
         actors = new SnapshotArray<Actor>();
 
@@ -119,10 +123,6 @@ public class Base implements Screen, AndroidBack {
     }
 
 
-    public Orb getScreenManager() {
-        return this.orb;
-    }
-
     /**
      * Devuelve el Actor raíz de la Stage principal
      * @return Group
@@ -135,18 +135,21 @@ public class Base implements Screen, AndroidBack {
         this.hierarchy = hierarchy;
     }
 
-    public OrbAssetManager getAssetManager() {
-        return getOrb().getAssetManager();
+    public AssetManager getAssetManager() {
+        return getSuperManager().getAssetManager();
+    }
+
+    public ScreenManager getScreenManager() {
+        return getSuperManager().getScreenManager();
     }
 
     public synchronized <T> T getAsset (String fileName, Class<T> type) {
         return getAssetManager().get(fileName, type);
     }
 
-    public Orb getOrb () {
-        return this.orb;
+    public SuperManager getSuperManager() {
+        return this.superManager;
     }
-
 
     public void setAsInputProcessor() {
         Gdx.input.setInputProcessor(this.mainStage);
@@ -158,15 +161,15 @@ public class Base implements Screen, AndroidBack {
 
     /**
      * Ejecuta la animacion de salida y cambia a otra pantalla
-     * @param name Name Nombre de la siguiente pantalla
+     * @param key Name Nombre de la siguiente pantalla
      * @param hierarchy Hierarchy Jerarquía de la siguiente pantalla respecto de la actual
      */
-    public void switchToScreen(final Orb.Name name, final Hierarchy hierarchy) {
+    public void switchToScreen(final ScreenManager.Key key, final Hierarchy hierarchy) {
         clearRootActions();
 
         addRootAction(sequence(
                 transition(Flow.LEAVING, hierarchy),
-                run(UIRunnable.setScreen(getOrb(), name, hierarchy))
+                run(UIRunnable.setScreen(getScreenManager(), key, hierarchy))
         ));
     }
 
@@ -277,8 +280,8 @@ public class Base implements Screen, AndroidBack {
         for (Actor actor : actors) {
             actor.clearActions();
 
-            if (actor instanceof com.jmolina.orb.widgets.Base) {
-                ((com.jmolina.orb.widgets.Base) actor).reset();
+            if (actor instanceof OrbGroup) {
+                ((OrbGroup) actor).reset();
             }
         }
     }

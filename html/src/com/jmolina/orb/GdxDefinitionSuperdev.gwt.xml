@@ -13,5 +13,5 @@
 	<set-configuration-property name="devModeRedirectEnabled" value="true"/>
 	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 	<!-- It is necessary to specify every class which Reflection has been used with -->
-	<extend-configuration-property name="gdx.reflect.include" value="com.jmolina.orb.managers.OrbAssetManager.Asset" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.jmolina.orb.managers.AssetManager.Asset" />
 </module>

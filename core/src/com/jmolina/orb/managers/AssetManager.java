@@ -1,24 +1,25 @@
 package com.jmolina.orb.managers;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
+// import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Field;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.assets.Asset;
 
-public class OrbAssetManager extends AssetManager {
+public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 
-    public OrbAssetManager() {
+    public static final Class ASSET_CLASS = Asset.class;
+
+    public AssetManager() {
         super();
     }
 
     /**
-     * Preload assets needed for Loading screen
+     * Preload assets needed for Load screen
      */
-    public void loadLoadingScreenAssets() {
+    public void loadLoadScreenAssets() {
         load(Asset.UI_BACKGROUND, Texture.class);
         load(Asset.UI_SPLASH, Texture.class);
         load(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
@@ -28,17 +29,17 @@ public class OrbAssetManager extends AssetManager {
     }
 
     /**
-     * Preload assets needed for Loading screen
+     * Preload assets needed for Load screen
      */
     public void preloadAll(Class c) {
-        autoload(c);
+        autoPreload(c);
     }
 
     /**
-     * Dynamic assets load using reflection
+     * Precarga assets indicados en una clase usando reflection
      * @param c Class
      */
-    public void autoload(Class c) {
+    public void autoPreload(Class c) {
         for (Field field : ClassReflection.getFields(c)) {
             try {
                 // Android Studio 2 añade un campo sintetico para soportar su "Instant run",

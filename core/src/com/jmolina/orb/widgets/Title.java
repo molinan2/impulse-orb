@@ -10,9 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.assets.Asset;
 
-public class Title extends Base {
+public class Title extends OrbGroup {
 
     private Image button;
     private Label label;
@@ -21,7 +21,7 @@ public class Title extends Base {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Base.COLOR_BLUE);
+        style.fontColor = new Color(OrbGroup.COLOR_BLUE);
         style.font = getAsset(Asset.FONT_ROBOTO_BOLD_90, BitmapFont.class);
 
         label = new Label(name, style);

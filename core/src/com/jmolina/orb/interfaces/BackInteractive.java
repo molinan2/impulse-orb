@@ -1,6 +1,6 @@
 package com.jmolina.orb.interfaces;
 
-public interface AndroidBack {
+public interface BackInteractive {
 
     public void back();
 

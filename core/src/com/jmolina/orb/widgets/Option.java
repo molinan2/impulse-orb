@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.jmolina.orb.utils.Grid;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.assets.Asset;
 
-public class Option extends Base {
+public class Option extends OrbGroup {
 
     private Label label;
     private Checkbox checkbox;
@@ -21,7 +21,7 @@ public class Option extends Base {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Base.COLOR_BLUE);
+        style.fontColor = new Color(OrbGroup.COLOR_BLUE);
         style.font = getAsset(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
 
         label = new Label(name, style);

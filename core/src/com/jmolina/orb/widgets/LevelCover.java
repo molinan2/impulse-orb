@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.utils.Grid;
 
-public class LevelCover extends Base {
+public class LevelCover extends OrbGroup {
 
     private Image cover;
 

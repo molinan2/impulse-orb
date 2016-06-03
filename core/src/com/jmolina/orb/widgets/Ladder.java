@@ -8,14 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.assets.Asset;
 
 import java.util.ArrayList;
 
 /**
  * Ranking Ladder. Por ahora, exactamente con 3 posiciones
  */
-public class Ladder extends Base {
+public class Ladder extends OrbGroup {
 
     private Label title;
     private Image bg;
@@ -30,7 +30,7 @@ public class Ladder extends Base {
         this.bg.setPosition(0f, 0f);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Base.COLOR_BLUE);
+        style.fontColor = new Color(OrbGroup.COLOR_BLUE);
         style.font = getAssetManager().get(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
 
         this.title = new Label(title.toUpperCase(), style);

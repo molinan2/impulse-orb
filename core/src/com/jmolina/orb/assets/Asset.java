@@ -1,6 +1,10 @@
-package com.jmolina.orb.var;
+package com.jmolina.orb.assets;
 
 // Arroja una Exception al ejecutar la version GWT (HTML)
+
+/**
+ * Primera clase de assets. Se crearan mas cuando se creen pantallas de juego
+ */
 public class Asset {
 
     private static final String FONT = "font/";

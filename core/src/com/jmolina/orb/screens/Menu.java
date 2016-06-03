@@ -9,16 +9,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.Orb;
+import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Grid;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.widgets.Title;
 
-public class Menu extends Base {
+public class Menu extends OrbScreen {
 
     private Title title;
     private Table table;
     private ScrollPane scrollPane;
-    private Orb.Name returningScreen;
+    private ScreenManager.Key returningScreen;
 
     public Menu(Orb orb) {
         super(orb);
@@ -71,20 +72,20 @@ public class Menu extends Base {
         register(actor);
     }
 
-    protected void setReturningScreen(Orb.Name name) {
-        this.returningScreen = name;
-        setReturningScreenListener(name);
+    protected void setReturningScreen(ScreenManager.Key key) {
+        this.returningScreen = key;
+        setReturningScreenListener(key);
     }
 
-    public Orb.Name getReturningScreen() {
+    public ScreenManager.Key getReturningScreen() {
         return this.returningScreen;
     }
 
-    private void setReturningScreenListener (final Orb.Name name) {
+    private void setReturningScreenListener (final ScreenManager.Key key) {
         title.setListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                switchToScreen(name, Hierarchy.HIGHER);
+                switchToScreen(key, Hierarchy.HIGHER);
             }
         });
     }

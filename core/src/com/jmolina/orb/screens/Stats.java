@@ -2,6 +2,7 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.Orb;
+import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.widgets.Heading;
 import com.jmolina.orb.widgets.Stat;
 
@@ -23,7 +24,7 @@ public class Stats extends Menu {
     public Stats(Orb orb) {
         super(orb);
 
-        setReturningScreen(Orb.Name.MAIN);
+        setReturningScreen(ScreenManager.Key.MAIN);
         setTitle("STATS");
 
         played = new Stat(getAssetManager(), "Played", 1420.232f, "s");

@@ -1,6 +1,7 @@
 package com.jmolina.orb.screens;
 
 import com.jmolina.orb.Orb;
+import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.widgets.Credit;
 
 public class Credits extends Menu {
@@ -17,7 +18,7 @@ public class Credits extends Menu {
     public Credits(Orb orb) {
         super(orb);
 
-        setReturningScreen(Orb.Name.MAIN);
+        setReturningScreen(ScreenManager.Key.MAIN);
         setTitle("CREDITS");
 
         application = new Credit(getAssetManager(), "Application", BACON_IPSUM);

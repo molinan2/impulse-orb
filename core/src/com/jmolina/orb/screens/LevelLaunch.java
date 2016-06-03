@@ -2,13 +2,13 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.jmolina.orb.Orb;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.widgets.Ladder;
 import com.jmolina.orb.widgets.LevelCover;
 import com.jmolina.orb.widgets.LevelTitle;
 import com.jmolina.orb.widgets.Button;
 
-import static com.jmolina.orb.Orb.Name.LEVEL_SELECT;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_SELECT;
 
 public class LevelLaunch extends Menu {
 
