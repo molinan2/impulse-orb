@@ -9,11 +9,6 @@ import com.jmolina.orb.var.Asset;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-/**
- * TODO
- * Reformar
- * Que sea un widget (BaseWidget) compuesto de 2 imagenes: la base y la "marca" superpuesta
- */
 public class Checkbox extends BaseWidget {
 
     private Image checkedImage;

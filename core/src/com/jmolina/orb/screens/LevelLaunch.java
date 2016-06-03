@@ -18,12 +18,6 @@ public class LevelLaunch extends Menu {
     private Ladder ladderPersonal;
     private Ladder ladderOnline;
 
-    /**
-     * TODO
-     * title, cover
-     *
-     * levelID: carga de disco (o hardcoded) los datos del nivel. Un Objeto mejor por ahora
-     */
     public LevelLaunch(OrbAssetManager am, String title) {
         super(am);
 

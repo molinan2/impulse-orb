@@ -103,10 +103,6 @@ public class Options extends Menu {
         super.dispose();
     }
 
-    /**
-     * TODO
-     * ¿Qué pasa si cierro la aplicación? ¿Se guardan las prefs? ¿Llama a hide()?
-     */
     @Override
     public void hide () {
         prefs.flush();

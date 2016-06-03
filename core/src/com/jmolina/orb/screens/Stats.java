@@ -21,11 +21,6 @@ public class Stats extends Menu {
     private Heading timeHeading;
     private Heading distanceHeading;
 
-
-    /**
-     * TODO
-     * Estos datos deberian venir de disco
-     */
     public Stats(OrbAssetManager am) {
         super(am);
 

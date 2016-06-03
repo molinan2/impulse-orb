@@ -66,12 +66,10 @@ public class MultiOption extends BaseWidget {
     public void setValue (int value) {
         this.value = MathUtils.clamp(value, Var.OPTION_ZOOM_MIN, Var.OPTION_ZOOM_MAX);
 
-        for (int i=0; i<checkboxes.size(); i++) {
+        for (int i=0; i<checkboxes.size(); i++)
             checkboxes.get(i).uncheck();
-        }
 
         checkboxes.get(this.value).check();
-        System.out.println("setvalue");
     }
 
 }

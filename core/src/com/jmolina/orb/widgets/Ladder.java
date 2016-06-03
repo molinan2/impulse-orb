@@ -16,13 +16,6 @@ import com.jmolina.orb.var.Var;
 import java.util.ArrayList;
 
 /**
- * TODO
- * Idealmente, los tiempos se cargan desde el servidor.
- * Este widget deberia conectar con el recurso pasado como parametro.
- * Mientras los resultados llegan y se procesan, renderizar un "loading".
- */
-
-/**
  * Ranking Ladder. Por ahora, exactamente con 3 posiciones
  */
 public class Ladder extends BaseWidget {

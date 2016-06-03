@@ -97,4 +97,10 @@ public class Menu extends BaseScreen {
         switchToScreen(this.returningScreen, Hierarchy.HIGHER);
     }
 
+    @Override
+    public void show() {
+        scrollPane.setScrollPercentY(0);
+        scrollPane.updateVisualScroll();
+        super.show();
+    }
 }
