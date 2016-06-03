@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.Var;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
@@ -13,7 +14,7 @@ public class DesktopLauncher {
 		config.fullscreen = false;
 		config.height = 1184;
 		config.width = 768;
-		config.title = "Orb";
+		config.title = "Orb " + Var.VERSION;
 		config.addIcon(Asset.APP_ICON_DESKTOP, Files.FileType.Internal);
 
 		new LwjglApplication(new Orb(), config);

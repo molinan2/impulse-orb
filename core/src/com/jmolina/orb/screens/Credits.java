@@ -37,6 +37,12 @@ public class Credits extends Menu {
 
     @Override
     public void dispose() {
+        application.dispose();
+        authors.dispose();
+        license.dispose();
+        libraries.dispose();
+        resources.dispose();
+        thanks.dispose();
         super.dispose();
     }
 

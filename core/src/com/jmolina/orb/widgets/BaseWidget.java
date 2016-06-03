@@ -12,27 +12,15 @@ public class BaseWidget extends Group implements Reseteable, Disposable {
 
     private AssetManager assetManager;
 
-    public BaseWidget() {
+    public BaseWidget(AssetManager am) {
         setScale(1.0f, 1.0f);
         setOrigin(0f, 0f);
-    }
-
-    public BaseWidget(AssetManager am) {
-        this();
         setAssetManager(am);
     }
 
     @Override
     public void draw (Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-    }
-
-    public void setGridPosition (int xGrid, int yGrid) {
-        this.setPosition(Grid.cellX(xGrid), Grid.cellY(yGrid));
-    }
-
-    public void setGridPosition (float xGrid, float yGrid) {
-        this.setPosition(Grid.cellX(xGrid), Grid.cellY(yGrid));
     }
 
     @Override

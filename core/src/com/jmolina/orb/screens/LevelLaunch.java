@@ -47,7 +47,11 @@ public class LevelLaunch extends Menu {
 
     @Override
     public void dispose() {
+        title.dispose();
+        cover.dispose();
         button.dispose();
+        ladderOnline.dispose();
+        ladderPersonal.dispose();
         super.dispose();
     }
 

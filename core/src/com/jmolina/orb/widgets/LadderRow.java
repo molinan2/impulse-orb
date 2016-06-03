@@ -14,9 +14,13 @@ public class LadderRow extends BaseWidget {
     private Label rank;
     private Label time;
     private Label user;
-    private Label onlineRank;
+    private Label globalRank;
 
-    public LadderRow(AssetManager am, String rank, String time, String user, String onlineRank) {
+    public LadderRow(AssetManager am, String rank, String time, String user) {
+        this(am, rank, time, user, "");
+    }
+
+    public LadderRow(AssetManager am, String rank, String time, String user, String globalRank) {
         super(am);
 
         Label.LabelStyle regular = new Label.LabelStyle();
@@ -42,15 +46,17 @@ public class LadderRow extends BaseWidget {
         this.user.setAlignment(Align.left);
         this.user.setEllipsis(true);
 
-        this.onlineRank = new Label(onlineRank, regular);
-        this.onlineRank.setPosition(Grid.unit(7.5f), Grid.unit(0));
-        this.onlineRank.setSize(Grid.unit(1.5f), Grid.unit(0.5f));
-        this.onlineRank.setAlignment(Align.right);
-
         addActor(this.rank);
         addActor(this.time);
         addActor(this.user);
-        addActor(this.onlineRank);
+
+        if (!globalRank.equals("")) {
+            this.globalRank = new Label(globalRank, regular);
+            this.globalRank.setPosition(Grid.unit(7.5f), Grid.unit(0));
+            this.globalRank.setSize(Grid.unit(1.5f), Grid.unit(0.5f));
+            this.globalRank.setAlignment(Align.right);
+            addActor(this.globalRank);
+        }
 
         setHeight(Grid.unit(0.5f));
     }

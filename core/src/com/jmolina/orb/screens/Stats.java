@@ -63,7 +63,6 @@ public class Stats extends Menu {
 
     @Override
     public void dispose() {
-        super.dispose();
         played.dispose();
         distance.dispose();
         fails.dispose();
@@ -73,6 +72,9 @@ public class Stats extends Menu {
         maxTimeAlive.dispose();
         minDistanceAlive.dispose();
         maxDistanceAlive.dispose();
+        timeHeading.dispose();
+        distanceHeading.dispose();
+        super.dispose();
     }
 
 }

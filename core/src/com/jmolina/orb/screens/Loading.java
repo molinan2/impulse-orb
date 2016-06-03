@@ -19,8 +19,6 @@ public class Loading extends BaseScreen {
     public Loading(OrbAssetManager am) {
         super(am);
 
-        // setAssetManager(am);
-
         this.splash = new Image(getAsset(Asset.UI_SPLASH, Texture.class));
         this.splash.setPosition(Grid.unit(2), Grid.unit(7.5f));
 
@@ -38,8 +36,8 @@ public class Loading extends BaseScreen {
 
     @Override
     public void dispose() {
-        super.dispose();
         bar.dispose();
+        super.dispose();
     }
 
     @Override

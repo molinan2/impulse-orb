@@ -26,7 +26,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class BaseScreen implements Screen, AndroidBack {
 
-    private OrbAssetManager assetManager;
+
 
     /**
      * Jerarquía de esta pantalla respecto de la siguiente
@@ -42,14 +42,13 @@ public class BaseScreen implements Screen, AndroidBack {
         ENTERING, LEAVING
     }
 
+    private OrbAssetManager assetManager;
     protected Orb screenManager;
-
     private Image bg;
     private Viewport viewport;
     private Stage mainStage;
     private Stage bgStage;
     private Hierarchy hierarchy;
-
     private SnapshotArray<Actor> actors;
 
     /**

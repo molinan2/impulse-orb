@@ -26,7 +26,7 @@ public class Menu extends BaseScreen {
         super(am);
 
         title = new Title(getAssetManager(), "");
-        title.setGridPosition(1, 3);
+        title.setPosition(Grid.unit(1), Grid.unit(15.5f));
 
         table = new Table();
         table.top();
@@ -39,7 +39,7 @@ public class Menu extends BaseScreen {
         scrollPane = new ScrollPane(table);
         scrollPane.setStyle(style);
         scrollPane.setWidth(Var.VIEWPORT_WIDTH);
-        scrollPane.setHeight(Grid.cellY(4.5f));
+        scrollPane.setHeight(Grid.unit(14));
         scrollPane.setPosition(0f, 0f);
 
         addMainActor(title);

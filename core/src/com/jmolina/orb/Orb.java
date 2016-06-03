@@ -45,11 +45,16 @@ public class Orb extends Game {
 	@Override
 	public void create () {
 		Gdx.input.setCatchBackKey(true); // Android
+
 		prefs = Gdx.app.getPreferences(Orb.class.getName());
 		setFirstRunPrefs();
+
 		screens = new ArrayMap<Name, BaseScreen>();
+
 		assetManager = new OrbAssetManager();
+		assetManager.loadLoadingScreenAssets();
 		createLoadScreen();
+
 		setScreenByKey(Name.LOAD, BaseScreen.Hierarchy.LOWER);
 	}
 
@@ -77,8 +82,8 @@ public class Orb extends Game {
 		levelLaunch3.dispose();
 		levelLaunch4.dispose();
 
-		getAssetManager().clear();
-		getAssetManager().dispose();
+		assetManager.clear();
+		assetManager.dispose();
 	}
 
 	public void setScreenByKey(Name key, BaseScreen.Hierarchy hierarchy) {
@@ -118,6 +123,12 @@ public class Orb extends Game {
 		return this.assetManager;
 	}
 
+	public void createLoadScreen() {
+		loading = new Loading(assetManager);
+		loading.setScreenManager(this);
+		screens.put(Name.LOAD, loading);
+	}
+
 	public void createMenuScreens() {
 		main = new Main(assetManager);
 		options = new Options(assetManager);
@@ -149,13 +160,6 @@ public class Orb extends Game {
 		screens.put(Name.LEVEL_LAUNCH_2, levelLaunch2);
 		screens.put(Name.LEVEL_LAUNCH_3, levelLaunch3);
 		screens.put(Name.LEVEL_LAUNCH_4, levelLaunch4);
-	}
-
-	public void createLoadScreen() {
-		assetManager.loadLoadingScreenAssets();
-		loading = new Loading(assetManager);
-		loading.setScreenManager(this);
-		screens.put(Name.LOAD, loading);
 	}
 
 }

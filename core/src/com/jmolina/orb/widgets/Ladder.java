@@ -60,6 +60,9 @@ public class Ladder extends BaseWidget {
 
     @Override
     public void dispose() {
+        for(LadderRow row : rows)
+            row.dispose();
+
         super.dispose();
     }
 

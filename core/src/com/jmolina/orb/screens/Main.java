@@ -3,15 +3,16 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.managers.OrbAssetManager;
+import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.widgets.Notice;
 import com.jmolina.orb.widgets.Button;
-import com.jmolina.orb.widgets.MainTitle;
+import com.jmolina.orb.widgets.GameTitle;
 
 import static com.jmolina.orb.Orb.Name.*;
 
 public class Main extends BaseScreen {
 
-    private MainTitle mainTitle;
+    private GameTitle gameTitle;
     private Button play;
     private Button options;
     private Button stats;
@@ -22,13 +23,11 @@ public class Main extends BaseScreen {
     public Main(OrbAssetManager am) {
         super(am);
 
-        setAssetManager(am);
-
-        mainTitle = new MainTitle(getAssetManager());
+        gameTitle = new GameTitle(getAssetManager());
         notice = new Notice(getAssetManager());
 
-        mainTitle.setGridPosition(1, 4);
-        notice.setGridPosition(1, 18);
+        gameTitle.setPosition(Grid.unit(1), Grid.unit(14.5f));
+        notice.setPosition(Grid.unit(1), Grid.unit(0.5f));
 
         play = new Button(getAssetManager(), "PLAY", Button.Type.Play);
         options = new Button(getAssetManager(), "OPTIONS", Button.Type.Default);
@@ -36,11 +35,11 @@ public class Main extends BaseScreen {
         credits = new Button(getAssetManager(), "CREDITS", Button.Type.Default);
         exit = new Button(getAssetManager(), "EXIT", Button.Type.Exit);
 
-        play.setGridPosition(2, 7.5f);
-        options.setGridPosition(2, 9.5f);
-        stats.setGridPosition(2, 11.5f);
-        credits.setGridPosition(2, 13.5f);
-        exit.setGridPosition(2, 15.5f);
+        play.setPosition(Grid.unit(2), Grid.unit(11));
+        options.setPosition(Grid.unit(2), Grid.unit(9));
+        stats.setPosition(Grid.unit(2), Grid.unit(7));
+        credits.setPosition(Grid.unit(2), Grid.unit(5));
+        exit.setPosition(Grid.unit(2), Grid.unit(3));
 
         play.addListener(new ClickListener(){
             @Override
@@ -77,7 +76,7 @@ public class Main extends BaseScreen {
             }
         });
 
-        addMainActor(mainTitle);
+        addMainActor(gameTitle);
         addMainActor(play);
         addMainActor(options);
         addMainActor(stats);
@@ -88,12 +87,13 @@ public class Main extends BaseScreen {
 
     @Override
     public void dispose() {
-        notice.dispose();
+        gameTitle.dispose();
         play.dispose();
         options.dispose();
         stats.dispose();
         credits.dispose();
         exit.dispose();
+        notice.dispose();
         super.dispose();
     }
 

@@ -1,5 +1,6 @@
 package com.jmolina.orb.managers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -41,14 +42,13 @@ public class OrbAssetManager extends AssetManager {
         for (Field field : ClassReflection.getFields(c)) {
             try {
                 String name = field.get(c).toString();
-                String[] splits = name.split("\\.");
-                String extension = splits[splits.length-1];
 
-                if (extension.equals("fnt"))
+                if (name.endsWith(".fnt"))
                     this.load(field.get(c).toString(), BitmapFont.class);
-                else if (extension.equals("png"))
+                else if (name.endsWith(".png"))
                     this.load(field.get(c).toString(), Texture.class);
             } catch (ReflectionException e) {
+                Gdx.app.log(this.getClass().toString(), e.toString());
                 e.printStackTrace();
             }
         }

@@ -7,11 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.var.Asset;
 
-public class MainTitle extends BaseWidget {
+public class GameTitle extends BaseWidget {
 
     private Image image;
 
-    public MainTitle(AssetManager am) {
+    public GameTitle(AssetManager am) {
         super(am);
 
         image = new Image(getAsset(Asset.UI_MAIN_TITLE, Texture.class));

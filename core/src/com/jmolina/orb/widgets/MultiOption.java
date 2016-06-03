@@ -57,9 +57,9 @@ public class MultiOption extends BaseWidget {
 
     @Override
     public void dispose () {
-        for (Checkbox checkbox : checkboxes) {
+        for (Checkbox checkbox : checkboxes)
             checkbox.dispose();
-        }
+
         super.dispose();
     }
 

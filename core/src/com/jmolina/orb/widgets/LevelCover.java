@@ -17,4 +17,9 @@ public class LevelCover extends BaseWidget {
         setHeight(Grid.unit(5));
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+    }
+
 }

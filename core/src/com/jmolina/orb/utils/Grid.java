@@ -4,28 +4,42 @@ import com.jmolina.orb.var.Var;
 
 public class Grid {
 
-    public static float cellX(int unit) {
-        return (float) unit * Var.GRID_UNIT;
-    }
-
-    public static float cellY(int unit) {
-        return Var.VIEWPORT_HEIGHT - (float) unit * Var.GRID_UNIT;
-    }
-
-    public static float cellX(float unit) {
-        return unit * Var.GRID_UNIT;
-    }
-
-    public static float cellY(float unit) {
-        return Var.VIEWPORT_HEIGHT - unit * Var.GRID_UNIT;
-    }
-
+    /**
+     * Translates grid units to pixels
+     *
+     * @param unit int
+     * @return float
+     */
     public static float unit(int unit) {
         return (float) unit * Var.GRID_UNIT;
     }
 
+    /**
+     * Translates grid units to pixels
+     *
+     * @param unit unit
+     * @return float
+     */
     public static float unit(float unit) {
         return unit * Var.GRID_UNIT;
+    }
+
+    /**
+     * Equivalent to Var.VIEWPORT_HEIGHT
+     *
+     * @return float
+     */
+    public static float height () {
+        return unit(18.5f);
+    }
+
+    /**
+     * Equivalent to Var.VIEWPORT_WIDTH
+     *
+     * @return float
+     */
+    public static float width () {
+        return unit(12f);
     }
 
 }
