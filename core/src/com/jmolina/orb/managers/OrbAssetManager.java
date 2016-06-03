@@ -30,8 +30,8 @@ public class OrbAssetManager extends AssetManager {
     /**
      * Preload assets needed for Loading screen
      */
-    public void preloadAllAssets() {
-        autoload(Asset.class);
+    public void preloadAll(Class c) {
+        autoload(c);
     }
 
     /**
@@ -41,14 +41,28 @@ public class OrbAssetManager extends AssetManager {
     public void autoload(Class c) {
         for (Field field : ClassReflection.getFields(c)) {
             try {
-                String name = field.get(c).toString();
+                // Android Studio 2 añade un campo sintetico para soportar su "Instant run",
+                // provocando una NullPointerException al ejecutar la app en Android.
+
+                // Salta la iteracion si el campo no es de tipo String (deben ser String)
+                if (!field.getType().toString().equals("class java.lang.String")) {
+                    continue;
+                }
+
+                // Alternativa: Salta la iteracion si el campo es sintetico (mas arriesgado)
+                // if (field.isSynthetic()) {
+                //     continue;
+                // }
+
+                // NullPointerException al ejecutarse sobre un campo sintetico
+                Object o = field.get(c);
+                String name = o.toString();
 
                 if (name.endsWith(".fnt"))
                     this.load(field.get(c).toString(), BitmapFont.class);
                 else if (name.endsWith(".png"))
                     this.load(field.get(c).toString(), Texture.class);
             } catch (ReflectionException e) {
-                Gdx.app.log(this.getClass().toString(), e.toString());
                 e.printStackTrace();
             }
         }

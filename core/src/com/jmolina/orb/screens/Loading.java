@@ -31,7 +31,8 @@ public class Loading extends BaseScreen {
         switching = false;
         loaded = false;
 
-        getAssetManager().preloadAllAssets();
+        Asset a = new Asset();
+        getAssetManager().preloadAll(a.getClass());
     }
 
     @Override
