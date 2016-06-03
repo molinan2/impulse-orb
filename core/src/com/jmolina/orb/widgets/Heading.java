@@ -6,11 +6,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Disposable;
+import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.var.Var;
 
-public class Heading extends BaseWidget {
+public class Heading extends Base {
 
     public enum Weight {
         Regular, Medium, Bold
@@ -30,18 +29,18 @@ public class Heading extends BaseWidget {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.fontColor = new Color(Base.COLOR_BLUE);
         style.font = newBitmapFont(weight);
 
         label = new Label(name, style);
         label.setTouchable(Touchable.disabled);
         label.setPosition(0f, 0f);
-        label.setHeight(1f * Var.GRID_UNIT);
-        label.setWidth(10f * Var.GRID_UNIT);
+        label.setHeight(Grid.unit(1));
+        label.setWidth(Grid.unit(10f));
         label.setAlignment(align);
 
         addActor(label);
-        setHeight(1.0f * Var.GRID_UNIT);
+        setHeight(Grid.unit(1));
     }
 
     @Override

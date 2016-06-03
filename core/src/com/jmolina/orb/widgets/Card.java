@@ -14,11 +14,10 @@ import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.interfaces.Visitor;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class Card extends BaseWidget {
+public class Card extends Base {
 
     private Image cover;
     private Image coverWhite;
@@ -51,7 +50,7 @@ public class Card extends BaseWidget {
         lock.setPosition(Grid.unit(1.75f), Grid.unit(1));
 
         Label.LabelStyle titleStyle = new Label.LabelStyle();
-        titleStyle.fontColor = new Color(Var.COLOR_BLUE);
+        titleStyle.fontColor = new Color(Base.COLOR_BLUE);
         titleStyle.font = getAsset(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
 
         this.title = new Label(title, titleStyle);
@@ -62,7 +61,7 @@ public class Card extends BaseWidget {
         this.title.setAlignment(Align.right);
 
         Label.LabelStyle timeStyle = new Label.LabelStyle();
-        timeStyle.fontColor = new Color(Var.COLOR_BLACK);
+        timeStyle.fontColor = new Color(Base.COLOR_BLACK);
         timeStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
         this.personal = new Label("Best " + personal, timeStyle);

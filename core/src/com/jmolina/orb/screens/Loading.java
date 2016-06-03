@@ -2,6 +2,7 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.jmolina.orb.Orb;
 import com.jmolina.orb.managers.OrbAssetManager;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Asset;
@@ -9,15 +10,15 @@ import com.jmolina.orb.widgets.ProgressBar;
 
 import static com.jmolina.orb.Orb.Name.MAIN;
 
-public class Loading extends BaseScreen {
+public class Loading extends Base {
 
     private Image splash;
     private ProgressBar bar;
     private boolean switching;
     private boolean loaded;
 
-    public Loading(OrbAssetManager am) {
-        super(am);
+    public Loading(Orb orb) {
+        super(orb);
 
         this.splash = new Image(getAsset(Asset.UI_SPLASH, Texture.class));
         this.splash.setPosition(Grid.unit(2), Grid.unit(7.5f));

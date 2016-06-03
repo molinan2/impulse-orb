@@ -4,15 +4,17 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.jmolina.orb.interfaces.Reseteable;
-import com.jmolina.orb.utils.Grid;
 
-public class BaseWidget extends Group implements Reseteable, Disposable {
+public class Base extends Group implements Reseteable, Disposable {
+
+    public static final int COLOR_WHITE = 0xffffffff;
+    public static final int COLOR_BLUE = 0x2E3192ff;
+    public static final int COLOR_BLACK = 0x4D4D4Dff;
 
     private AssetManager assetManager;
 
-    public BaseWidget(AssetManager am) {
+    public Base(AssetManager am) {
         setScale(1.0f, 1.0f);
         setOrigin(0f, 0f);
         setAssetManager(am);

@@ -4,11 +4,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.jmolina.orb.managers.OrbAssetManager;
-import com.jmolina.orb.screens.BaseScreen;
-import com.jmolina.orb.screens.Blank;
+import com.jmolina.orb.managers.PreferenceManager;
+import com.jmolina.orb.screens.Base;
 import com.jmolina.orb.screens.Credits;
 import com.jmolina.orb.screens.LevelLaunch;
 import com.jmolina.orb.screens.LevelSelect;
@@ -16,7 +15,6 @@ import com.jmolina.orb.screens.Loading;
 import com.jmolina.orb.screens.Main;
 import com.jmolina.orb.screens.Options;
 import com.jmolina.orb.screens.Stats;
-import com.jmolina.orb.var.Var;
 
 
 public class Orb extends Game {
@@ -32,7 +30,6 @@ public class Orb extends Game {
 		LEVEL_LAUNCH_1, LEVEL_LAUNCH_2, LEVEL_LAUNCH_3, LEVEL_LAUNCH_4
 	}
 
-	private Blank blank;
 	private Loading loading;
 	private Main main;
 	private Options options;
@@ -40,30 +37,31 @@ public class Orb extends Game {
 	private Credits credits;
 	private LevelSelect levelSelect;
 	private LevelLaunch levelLaunch1, levelLaunch2, levelLaunch3, levelLaunch4;
-	private ArrayMap<Name, BaseScreen> screens;
-	private Preferences prefs;
+	private ArrayMap<Name, Base> screens;
+	private PreferenceManager preferenceManager;
 	private OrbAssetManager assetManager;
 
 	@Override
 	public void create () {
 		Gdx.input.setCatchBackKey(true); // Android
 
-		prefs = Gdx.app.getPreferences(Orb.class.getName());
-		setFirstRunPrefs();
+		// prefs = Gdx.app.getPreferences(Orb.class.getName());
+		preferenceManager = new PreferenceManager(Gdx.app.getPreferences(Orb.class.getName()));
+		preferenceManager.checkPrefs();
 
-		screens = new ArrayMap<Name, BaseScreen>();
+		screens = new ArrayMap<Name, Base>();
 
 		assetManager = new OrbAssetManager();
 		assetManager.loadLoadingScreenAssets();
 		createLoadScreen();
 
-		setScreenByKey(Name.LOAD, BaseScreen.Hierarchy.LOWER);
+		setScreenByKey(Name.LOAD, Base.Hierarchy.LOWER);
 	}
 
 	@Override
 	public void render () {
 		if (Gdx.input.isKeyPressed(Input.Keys.BACK))
-			((BaseScreen) screen).back();
+			((Base) screen).back();
 
 		if (screen != null)
 			screen.render(Gdx.graphics.getDeltaTime());
@@ -88,12 +86,12 @@ public class Orb extends Game {
 		assetManager.dispose();
 	}
 
-	public void setScreenByKey(Name key, BaseScreen.Hierarchy hierarchy) {
+	public void setScreenByKey(Name key, Base.Hierarchy hierarchy) {
 		if (this.screen != null) this.screen.hide();
 
 		this.screen = screens.get(key);
-		((BaseScreen) this.screen).setAsInputProcessor();
-		((BaseScreen) this.screen).setHierarchy(hierarchy);
+		((Base) this.screen).setAsInputProcessor();
+		((Base) this.screen).setHierarchy(hierarchy);
 
 		if (this.screen != null) {
 			this.screen.show();
@@ -101,57 +99,21 @@ public class Orb extends Game {
 		}
 	}
 
-	/**
-	 * Necesario sólo en la primera ejecución
-	 */
-	public void setFirstRunPrefs() {
-		if (!prefs.contains(Var.OPTION_MUSIC))
-			prefs.putBoolean(Var.OPTION_MUSIC, true);
-
-		if (!prefs.contains(Var.OPTION_SOUND))
-			prefs.putBoolean(Var.OPTION_SOUND, true);
-
-		if (!prefs.contains(Var.OPTION_VIBRATION))
-			prefs.putBoolean(Var.OPTION_VIBRATION, true);
-
-		if (!prefs.contains(Var.OPTION_ONLINE))
-			prefs.putBoolean(Var.OPTION_ONLINE, true);
-
-		if (!prefs.contains(Var.OPTION_ZOOM))
-			prefs.putInteger(Var.OPTION_ZOOM, 2);
-	}
-
-	public AssetManager getAssetManager() {
-		return this.assetManager;
-	}
-
 	public void createLoadScreen() {
-		loading = new Loading(assetManager);
-		loading.setScreenManager(this);
+		loading = new Loading(this);
 		screens.put(Name.LOAD, loading);
 	}
 
 	public void createMenuScreens() {
-		main = new Main(assetManager);
-		options = new Options(assetManager);
-		stats = new Stats(assetManager);
-		credits = new Credits(assetManager);
-		levelSelect = new LevelSelect(assetManager);
-		levelLaunch1 = new LevelLaunch(assetManager, "BASICS");
-		levelLaunch2 = new LevelLaunch(assetManager, "ADVANCED");
-		levelLaunch3 = new LevelLaunch(assetManager, "EXPERT");
-		levelLaunch4 = new LevelLaunch(assetManager, "HERO");
-
-		main.setScreenManager(this);
-		options.setScreenManager(this);
-		options.setPrefs(prefs);
-		stats.setScreenManager(this);
-		credits.setScreenManager(this);
-		levelSelect.setScreenManager(this);
-		levelLaunch1.setScreenManager(this);
-		levelLaunch2.setScreenManager(this);
-		levelLaunch3.setScreenManager(this);
-		levelLaunch4.setScreenManager(this);
+		main = new Main(this);
+		options = new Options(this);
+		stats = new Stats(this);
+		credits = new Credits(this);
+		levelSelect = new LevelSelect(this);
+		levelLaunch1 = new LevelLaunch(this, "BASICS");
+		levelLaunch2 = new LevelLaunch(this, "ADVANCED");
+		levelLaunch3 = new LevelLaunch(this, "EXPERT");
+		levelLaunch4 = new LevelLaunch(this, "HERO");
 
 		screens.put(Name.MAIN, main);
 		screens.put(Name.OPTIONS, options);
@@ -162,6 +124,14 @@ public class Orb extends Game {
 		screens.put(Name.LEVEL_LAUNCH_2, levelLaunch2);
 		screens.put(Name.LEVEL_LAUNCH_3, levelLaunch3);
 		screens.put(Name.LEVEL_LAUNCH_4, levelLaunch4);
+	}
+
+	public PreferenceManager getPreferenceManager() {
+		return preferenceManager;
+	}
+
+	public OrbAssetManager getAssetManager() {
+		return this.assetManager;
 	}
 
 }

@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -17,31 +16,27 @@ import com.jmolina.orb.Orb;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.managers.OrbAssetManager;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.widgets.BaseWidget;
 import com.jmolina.orb.interfaces.AndroidBack;
 import com.jmolina.orb.runnables.UIRunnable;
-import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class BaseScreen implements Screen, AndroidBack {
+public class Base implements Screen, AndroidBack {
 
-    /**
-     * Jerarquía de esta pantalla respecto de la siguiente
-     */
+    protected final float VIEWPORT_HEIGHT = 1184.0f;
+    protected final float VIEWPORT_WIDTH = 768.0f;
+
+    /** Jerarquía de esta pantalla respecto de la siguiente */
     public enum Hierarchy {
         LOWER, HIGHER
     }
 
-    /**
-     * Flujo de navegación de la pantalla
-     */
+    /** Flujo de navegación de la pantalla */
     public enum Flow {
         ENTERING, LEAVING
     }
 
-    private OrbAssetManager assetManager;
-    protected Orb screenManager;
+    protected Orb orb;
     private Image bg;
     private Viewport viewport;
     private Stage mainStage;
@@ -52,17 +47,17 @@ public class BaseScreen implements Screen, AndroidBack {
     /**
      * Constructor
      */
-    public BaseScreen(OrbAssetManager am) {
-        setAssetManager(am);
+    public Base(Orb orb) {
+        this.orb = orb;
 
         actors = new SnapshotArray<Actor>();
 
         hierarchy = Hierarchy.LOWER;
-        viewport = new FitViewport(Var.VIEWPORT_WIDTH, Var.VIEWPORT_HEIGHT);
+        viewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         mainStage = new Stage(viewport);
-        getRoot().setOrigin(Var.VIEWPORT_WIDTH * 0.5f, Var.VIEWPORT_HEIGHT * 0.5f);
+        getRoot().setOrigin(VIEWPORT_WIDTH * 0.5f, VIEWPORT_HEIGHT * 0.5f);
         getRoot().setScale(1f, 1f);
-        getRoot().setSize(Var.VIEWPORT_WIDTH, Var.VIEWPORT_HEIGHT);
+        getRoot().setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         getRoot().setPosition(0f, 0f);
 
         bg = new Image(getAssetManager().get(Asset.UI_BACKGROUND, Texture.class));
@@ -70,6 +65,7 @@ public class BaseScreen implements Screen, AndroidBack {
         bgStage = new Stage(viewport);
         bgStage.addActor(bg);
     }
+
 
     @Override
     public void show() {
@@ -108,7 +104,7 @@ public class BaseScreen implements Screen, AndroidBack {
 
     @Override
     public void hide() {
-        clearRegisteredActions();
+        clearActions();
         clearRootActions();
     }
 
@@ -118,20 +114,46 @@ public class BaseScreen implements Screen, AndroidBack {
         bgStage.dispose();
     }
 
+    @Override
+    public void back() {
+    }
+
+
+    public Orb getScreenManager() {
+        return this.orb;
+    }
+
+    /**
+     * Devuelve el Actor raíz de la Stage principal
+     * @return Group
+     */
+    public Group getRoot() {
+        return mainStage.getRoot();
+    }
+
+    public void setHierarchy(Hierarchy hierarchy) {
+        this.hierarchy = hierarchy;
+    }
+
+    public OrbAssetManager getAssetManager() {
+        return getOrb().getAssetManager();
+    }
+
+    public synchronized <T> T getAsset (String fileName, Class<T> type) {
+        return getAssetManager().get(fileName, type);
+    }
+
+    public Orb getOrb () {
+        return this.orb;
+    }
+
+
     public void setAsInputProcessor() {
         Gdx.input.setInputProcessor(this.mainStage);
     }
 
     public void unsetInputProcessor() {
         Gdx.input.setInputProcessor(null);
-    }
-
-    public void setScreenManager(Orb game) {
-        this.screenManager = game;
-    }
-
-    public Orb getScreenManager() {
-        return this.screenManager;
     }
 
     /**
@@ -144,7 +166,7 @@ public class BaseScreen implements Screen, AndroidBack {
 
         addRootAction(sequence(
                 transition(Flow.LEAVING, hierarchy),
-                run(UIRunnable.setScreen(screenManager, name, hierarchy))
+                run(UIRunnable.setScreen(getOrb(), name, hierarchy))
         ));
     }
 
@@ -157,18 +179,6 @@ public class BaseScreen implements Screen, AndroidBack {
                 transition(Flow.LEAVING, Hierarchy.HIGHER),
                 run(UIRunnable.exit())
         ));
-    }
-
-    public void setHierarchy(Hierarchy hierarchy) {
-        this.hierarchy = hierarchy;
-    }
-
-    /**
-     * Devuelve el Actor raíz de la Stage principal
-     * @return Group
-     */
-    public Group getRoot() {
-        return mainStage.getRoot();
     }
 
     public void clearRootActions() {
@@ -254,7 +264,7 @@ public class BaseScreen implements Screen, AndroidBack {
 
     /**
      * Registra un actor para poder realizar operaciones automaticas sobre el
-     * @param actor
+     * @param actor Actor
      */
     protected void register(Actor actor) {
         this.actors.add(actor);
@@ -263,30 +273,14 @@ public class BaseScreen implements Screen, AndroidBack {
     /**
      * Resetea todas las acciones en los actores registrados
      */
-    private void clearRegisteredActions() {
+    private void clearActions() {
         for (Actor actor : actors) {
             actor.clearActions();
 
-            if (actor instanceof BaseWidget) {
-                ((BaseWidget) actor).reset();
+            if (actor instanceof com.jmolina.orb.widgets.Base) {
+                ((com.jmolina.orb.widgets.Base) actor).reset();
             }
         }
-    }
-
-    @Override
-    public void back() {
-    }
-
-    public void setAssetManager(OrbAssetManager am) {
-        this.assetManager = am;
-    }
-
-    public OrbAssetManager getAssetManager() {
-        return this.assetManager;
-    }
-
-    public synchronized <T> T getAsset (String fileName, Class<T> type) {
-        return getAssetManager().get(fileName, type);
     }
 
 }

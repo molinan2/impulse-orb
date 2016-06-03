@@ -1,7 +1,7 @@
 package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.jmolina.orb.managers.OrbAssetManager;
+import com.jmolina.orb.Orb;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.Ladder;
 import com.jmolina.orb.widgets.LevelCover;
@@ -18,10 +18,8 @@ public class LevelLaunch extends Menu {
     private Ladder ladderPersonal;
     private Ladder ladderOnline;
 
-    public LevelLaunch(OrbAssetManager am, String title) {
-        super(am);
-
-        setAssetManager(am);
+    public LevelLaunch(Orb orb, String title) {
+        super(orb);
 
         setReturningScreen(LEVEL_SELECT);
         setTitle("LEVEL");
@@ -32,11 +30,11 @@ public class LevelLaunch extends Menu {
         ladderPersonal = new Ladder(getAssetManager(), "Personal best");
         ladderOnline = new Ladder(getAssetManager(), "Online ladder");
 
-        addRow(this.title);
-        addRow(this.cover);
-        addRow(this.button, 1f, 8f);
-        addRow(this.ladderPersonal);
-        addRow(this.ladderOnline);
+        add(this.title);
+        add(this.cover);
+        add(this.button, 1f, 8f);
+        add(this.ladderPersonal);
+        add(this.ladderOnline);
     }
 
     @Override

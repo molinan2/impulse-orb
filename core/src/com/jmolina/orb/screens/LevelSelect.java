@@ -3,12 +3,11 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.graphics.Texture;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.interfaces.Visitor;
-import com.jmolina.orb.managers.OrbAssetManager;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.Card;
 
 import static com.jmolina.orb.Orb.Name.*;
-import static com.jmolina.orb.screens.BaseScreen.Hierarchy.*;
+import static com.jmolina.orb.screens.Base.Hierarchy.*;
 
 public class LevelSelect extends Menu {
 
@@ -17,8 +16,8 @@ public class LevelSelect extends Menu {
     private Card level3;
     private Card level4;
 
-    public LevelSelect(OrbAssetManager am) {
-        super(am);
+    public LevelSelect(Orb orb) {
+        super(orb);
 
         setReturningScreen(Orb.Name.MAIN);
         setTitle("SELECT");
@@ -63,10 +62,10 @@ public class LevelSelect extends Menu {
         level3.setOnClickOperation(screenSwitcher3);
         level4.setOnClickOperation(screenSwitcher4);
 
-        addRow(level1);
-        addRow(level2);
-        addRow(level3);
-        addRow(level4);
+        add(level1);
+        add(level2);
+        add(level3);
+        add(level4);
     }
 
     @Override

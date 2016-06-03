@@ -6,13 +6,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.var.Var;
 
 // No se encuentra en GWT (HTML), por lo que no se puede compilar en GWT (HTML)
 import java.text.DecimalFormat;
 
-public class Stat extends BaseWidget {
+public class Stat extends Base {
 
     private Label name;
     private Label stat;
@@ -25,31 +25,31 @@ public class Stat extends BaseWidget {
         super(am);
 
         Label.LabelStyle nameStyle = new Label.LabelStyle();
-        nameStyle.fontColor = new Color(Var.COLOR_BLUE);
+        nameStyle.fontColor = new Color(Base.COLOR_BLUE);
         nameStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
 
         this.name = new Label(name, nameStyle);
         this.name.setTouchable(Touchable.disabled);
         this.name.setPosition(0f, 0f);
-        this.name.setHeight(1f * Var.GRID_UNIT);
-        this.name.setWidth(6f * Var.GRID_UNIT);
+        this.name.setHeight(Grid.unit(1));
+        this.name.setWidth(Grid.unit(6));
         this.name.setAlignment(Align.left);
 
         Label.LabelStyle numberStyle = new Label.LabelStyle();
-        numberStyle.fontColor = new Color(Var.COLOR_BLACK);
+        numberStyle.fontColor = new Color(Base.COLOR_BLACK);
         numberStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
 
         this.stat = new Label(formatStat(value, unit), numberStyle);
 
         this.stat.setTouchable(Touchable.disabled);
-        this.stat.setPosition(6f * Var.GRID_UNIT, 0f);
-        this.stat.setHeight(1f * Var.GRID_UNIT);
-        this.stat.setWidth(4f * Var.GRID_UNIT);
+        this.stat.setPosition(Grid.unit(6), 0f);
+        this.stat.setHeight(Grid.unit(1));
+        this.stat.setWidth(Grid.unit(4));
         this.stat.setAlignment(Align.right);
 
         addActor(this.name);
         addActor(this.stat);
-        setHeight(1.0f * Var.GRID_UNIT);
+        setHeight(Grid.unit(1));
     }
 
     @Override

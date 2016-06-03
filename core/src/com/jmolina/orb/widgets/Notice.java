@@ -1,18 +1,16 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
-public class Notice extends BaseWidget {
+public class Notice extends Base {
 
     private Label author;
     private Label version;
@@ -21,7 +19,7 @@ public class Notice extends BaseWidget {
         super(am);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.fontColor = new Color(Var.COLOR_BLUE);
+        labelStyle.fontColor = new Color(Base.COLOR_BLUE);
         labelStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
         this.author = new Label(Var.AUTHOR, labelStyle);

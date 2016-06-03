@@ -10,9 +10,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.var.Var;
 
-public class ProgressBar extends BaseWidget implements Disposable {
+public class ProgressBar extends Base implements Disposable {
 
     private Image base;
     private Image fill;
@@ -22,7 +21,7 @@ public class ProgressBar extends BaseWidget implements Disposable {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.fontColor = new Color(Base.COLOR_BLUE);
         style.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
         base = new Image(getAsset(Asset.UI_PROGRESS_BASE, Texture.class));

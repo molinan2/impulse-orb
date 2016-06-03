@@ -1,6 +1,5 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,17 +7,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.var.Var;
 
 import java.util.ArrayList;
 
 /**
  * Ranking Ladder. Por ahora, exactamente con 3 posiciones
  */
-public class Ladder extends BaseWidget {
+public class Ladder extends Base {
 
     private Label title;
     private Image bg;
@@ -33,7 +30,7 @@ public class Ladder extends BaseWidget {
         this.bg.setPosition(0f, 0f);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.fontColor = new Color(Base.COLOR_BLUE);
         style.font = getAssetManager().get(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
 
         this.title = new Label(title.toUpperCase(), style);

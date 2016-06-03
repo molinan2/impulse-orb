@@ -9,10 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.var.Var;
 
-public class Title extends BaseWidget {
+public class Title extends Base {
 
     private Image button;
     private Label label;
@@ -21,14 +21,14 @@ public class Title extends BaseWidget {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.fontColor = new Color(Base.COLOR_BLUE);
         style.font = getAsset(Asset.FONT_ROBOTO_BOLD_90, BitmapFont.class);
 
         label = new Label(name, style);
         label.setTouchable(Touchable.disabled);
-        label.setPosition(3f * Var.GRID_UNIT, 0f);
-        label.setHeight(2f * Var.GRID_UNIT);
-        label.setWidth(7f * Var.GRID_UNIT);
+        label.setPosition(Grid.unit(3), 0f);
+        label.setHeight(Grid.unit(2));
+        label.setWidth(Grid.unit(7));
         label.setAlignment(Align.left);
 
         button = new Image(getAsset(Asset.UI_BACK, Texture.class));

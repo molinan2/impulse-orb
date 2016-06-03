@@ -1,11 +1,11 @@
 package com.jmolina.orb.screens;
 
 import com.jmolina.orb.Orb;
-import com.jmolina.orb.managers.OrbAssetManager;
-import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.Credit;
 
 public class Credits extends Menu {
+
+    public final String BACON_IPSUM = "Bacon ipsum dolor amet rump landjaeger beef pig fatback t-bone tri-tip ham hock ribeye. Chuck boudin hamburger, t-bone biltong ham swine bresaola prosciutto pork chop. Spare ribs short ribs leberkas venison. Ham hock hamburger shank t-bone porchetta cow brisket jowl jerky alcatra landjaeger pork chop. Ribeye chuck jerky beef ribs pastrami, tenderloin short loin boudin pork belly ham hock.";
 
     private Credit application;
     private Credit authors;
@@ -14,25 +14,25 @@ public class Credits extends Menu {
     private Credit resources;
     private Credit thanks;
 
-    public Credits(OrbAssetManager am) {
-        super(am);
+    public Credits(Orb orb) {
+        super(orb);
 
         setReturningScreen(Orb.Name.MAIN);
         setTitle("CREDITS");
 
-        application = new Credit(getAssetManager(), "Application", Var.BACON_IPSUM);
-        authors = new Credit(getAssetManager(), "Authors", Var.BACON_IPSUM);
-        license = new Credit(getAssetManager(), "License", Var.BACON_IPSUM);
-        libraries = new Credit(getAssetManager(), "Libraries", Var.BACON_IPSUM);
-        resources = new Credit(getAssetManager(), "Resources", Var.BACON_IPSUM);
-        thanks = new Credit(getAssetManager(), "Thanks", Var.BACON_IPSUM);
+        application = new Credit(getAssetManager(), "Application", BACON_IPSUM);
+        authors = new Credit(getAssetManager(), "Authors", BACON_IPSUM);
+        license = new Credit(getAssetManager(), "License", BACON_IPSUM);
+        libraries = new Credit(getAssetManager(), "Libraries", BACON_IPSUM);
+        resources = new Credit(getAssetManager(), "Resources", BACON_IPSUM);
+        thanks = new Credit(getAssetManager(), "Thanks", BACON_IPSUM);
 
-        addRow(application);
-        addRow(authors);
-        addRow(license);
-        addRow(libraries);
-        addRow(resources);
-        addRow(thanks);
+        add(application);
+        add(authors);
+        add(license);
+        add(libraries);
+        add(resources);
+        add(thanks);
     }
 
     @Override

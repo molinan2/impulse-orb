@@ -6,12 +6,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.var.Var;
 
 import java.util.ArrayList;
 
-public class MultiOption extends BaseWidget {
+public class MultiOption extends Base {
 
     private Label label;
     private int value;
@@ -25,13 +25,13 @@ public class MultiOption extends BaseWidget {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.fontColor = new Color(Base.COLOR_BLUE);
         style.font = getAsset(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
 
         label = new Label(name, style);
         label.setTouchable(Touchable.disabled);
         label.setPosition(0f, 0f);
-        label.setHeight(1.5f * Var.GRID_UNIT);
+        label.setHeight(Grid.unit(1.5f));
 
         checkboxes = new ArrayList<Checkbox>();
         checkboxes.add(new Checkbox(getAssetManager(), false));
@@ -40,18 +40,18 @@ public class MultiOption extends BaseWidget {
 
         setValue(value);
 
-        checkboxes.get(0).setPosition(5.5f * Var.GRID_UNIT, 0f);
+        checkboxes.get(0).setPosition(Grid.unit(5.5f), 0f);
         checkboxes.get(0).setName("0");
-        checkboxes.get(1).setPosition(7f * Var.GRID_UNIT, 0f);
+        checkboxes.get(1).setPosition(Grid.unit(7), 0f);
         checkboxes.get(1).setName("1");
-        checkboxes.get(2).setPosition(8.5f * Var.GRID_UNIT, 0f);
+        checkboxes.get(2).setPosition(Grid.unit(8.5f), 0f);
         checkboxes.get(2).setName("2");
 
         addActor(label);
         addActor(checkboxes.get(0));
         addActor(checkboxes.get(1));
         addActor(checkboxes.get(2));
-        setHeight(1.5f * Var.GRID_UNIT);
+        setHeight(Grid.unit(1.5f));
         setTouchable(Touchable.childrenOnly);
     }
 
@@ -64,10 +64,10 @@ public class MultiOption extends BaseWidget {
     }
 
     public void setValue (int value) {
-        this.value = MathUtils.clamp(value, Var.OPTION_ZOOM_MIN, Var.OPTION_ZOOM_MAX);
+        this.value = MathUtils.clamp(value, 0, 2);
 
-        for (int i=0; i<checkboxes.size(); i++)
-            checkboxes.get(i).uncheck();
+        for (Checkbox checkbox : checkboxes)
+            checkbox.uncheck();
 
         checkboxes.get(this.value).check();
     }

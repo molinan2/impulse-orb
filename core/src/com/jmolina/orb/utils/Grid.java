@@ -1,27 +1,27 @@
 package com.jmolina.orb.utils;
 
-import com.jmolina.orb.var.Var;
-
 public class Grid {
 
+    private final static float CELL_SIZE = 64.0f;
+
     /**
-     * Translates grid units to pixels
+     * Translates grid cells to pixels
      *
-     * @param unit int
+     * @param cells int
      * @return float
      */
-    public static float unit(int unit) {
-        return (float) unit * Var.GRID_UNIT;
+    public static float unit(int cells) {
+        return (float) cells * CELL_SIZE;
     }
 
     /**
-     * Translates grid units to pixels
+     * Translates grid cells to pixels
      *
-     * @param unit unit
+     * @param cells float
      * @return float
      */
-    public static float unit(float unit) {
-        return unit * Var.GRID_UNIT;
+    public static float unit(float cells) {
+        return cells * CELL_SIZE;
     }
 
     /**

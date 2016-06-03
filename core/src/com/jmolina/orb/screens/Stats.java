@@ -2,7 +2,6 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.Orb;
-import com.jmolina.orb.managers.OrbAssetManager;
 import com.jmolina.orb.widgets.Heading;
 import com.jmolina.orb.widgets.Stat;
 
@@ -21,8 +20,8 @@ public class Stats extends Menu {
     private Heading timeHeading;
     private Heading distanceHeading;
 
-    public Stats(OrbAssetManager am) {
-        super(am);
+    public Stats(Orb orb) {
+        super(orb);
 
         setReturningScreen(Orb.Name.MAIN);
         setTitle("STATS");
@@ -41,19 +40,19 @@ public class Stats extends Menu {
         maxDistanceAlive = new Stat(getAssetManager(), "Maximum", 143.4f, "m");
         avgDistanceAlive = new Stat(getAssetManager(), "Average", 31.01f, "m");
 
-        addRow(played, 0);
-        addRow(distance, 0);
-        addRow(fails, 0.5f);
+        add(played, 0);
+        add(distance, 0);
+        add(fails, 0.5f);
 
-        addRow(timeHeading, 0);
-        addRow(minTimeAlive, 0);
-        addRow(maxTimeAlive, 0);
-        addRow(avgTimeAlive, 0.5f);
+        add(timeHeading, 0);
+        add(minTimeAlive, 0);
+        add(maxTimeAlive, 0);
+        add(avgTimeAlive, 0.5f);
 
-        addRow(distanceHeading, 0);
-        addRow(minDistanceAlive, 0);
-        addRow(maxDistanceAlive, 0);
-        addRow(avgDistanceAlive, 0.5f);
+        add(distanceHeading, 0);
+        add(minDistanceAlive, 0);
+        add(maxDistanceAlive, 0);
+        add(avgDistanceAlive, 0.5f);
     }
 
     @Override

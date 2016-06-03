@@ -11,9 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.var.Var;
 
-public class Button extends BaseWidget {
+public class Button extends Base {
 
     public enum Type {
         Play, Exit, Default
@@ -26,7 +25,7 @@ public class Button extends BaseWidget {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.fontColor = new Color(Base.COLOR_BLUE);
         style.font = getAsset(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
 
         label = new Label(name, style);
@@ -41,7 +40,7 @@ public class Button extends BaseWidget {
         addActor(bg);
         addActor(label);
 
-        setHeight(1.5f * Var.GRID_UNIT);
+        setHeight(Grid.unit(1.5f));
         setOrigin(bg.getWidth() * 0.5f, bg.getHeight() * 0.5f);
     }
 

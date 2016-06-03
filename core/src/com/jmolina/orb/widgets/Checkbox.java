@@ -9,7 +9,7 @@ import com.jmolina.orb.var.Asset;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class Checkbox extends BaseWidget {
+public class Checkbox extends Base {
 
     private Image checkedImage;
     private Image uncheckedImage;
@@ -29,8 +29,8 @@ public class Checkbox extends BaseWidget {
         addActor(uncheckedImage);
         addActor(checkedImage);
 
-        setHeight(Grid.unit(1));
-        setWidth(Grid.unit(1));
+        setHeight(checkedImage.getHeight());
+        setWidth(checkedImage.getWidth());
 
         // Necesario para que solo el Checkbox responda a eventos
         // Asi se puede identificar su clase en MultiOption

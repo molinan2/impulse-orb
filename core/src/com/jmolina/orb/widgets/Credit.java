@@ -1,6 +1,5 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -8,12 +7,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.var.Var;
 
-public class Credit extends BaseWidget {
+public class Credit extends Base {
 
     private Label header;
     private Label body;
@@ -22,11 +19,11 @@ public class Credit extends BaseWidget {
         super(am);
 
         Label.LabelStyle bodyStyle = new Label.LabelStyle();
-        bodyStyle.fontColor = new Color(Var.COLOR_BLACK);
+        bodyStyle.fontColor = new Color(Base.COLOR_BLACK);
         bodyStyle.font = getAssetManager().get(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
         Label.LabelStyle headerStyle = new Label.LabelStyle();
-        headerStyle.fontColor = new Color(Var.COLOR_BLUE);
+        headerStyle.fontColor = new Color(Base.COLOR_BLUE);
         headerStyle.font = getAssetManager().get(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
 
         this.body = new Label(body, bodyStyle);
