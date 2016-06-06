@@ -20,6 +20,7 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.interfaces.BackInteractive;
 import com.jmolina.orb.runnables.UIRunnable;
+import com.jmolina.orb.stages.BackableStage;
 import com.jmolina.orb.widgets.OrbGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -58,7 +59,9 @@ public class OrbScreen implements Screen, BackInteractive {
 
         hierarchy = Hierarchy.LOWER;
         viewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        mainStage = new Stage(viewport);
+
+        mainStage = new BackableStage(viewport, UIRunnable.backOperation(this));
+
         getRoot().setOrigin(VIEWPORT_WIDTH * 0.5f, VIEWPORT_HEIGHT * 0.5f);
         getRoot().setScale(1f, 1f);
         getRoot().setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);

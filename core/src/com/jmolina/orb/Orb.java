@@ -26,25 +26,19 @@ public class Orb implements ApplicationListener, SuperManager {
 
 	@Override
 	public void create () {
-		Gdx.input.setCatchBackKey(true); // Android
+		setCatchBackKey(true);
 
-		preferenceManager = new PreferenceManager(Gdx.app.getPreferences(Orb.class.getName()));
-		preferenceManager.checkPrefs();
-
+		preferenceManager = new PreferenceManager();
 		screenManager = new ScreenManager(this);
-
 		assetManager = new AssetManager();
-		assetManager.loadLoadScreenAssets();
 
+		assetManager.loadLoadScreenAssets();
 		screenManager.createLoadScreen();
 		screenManager.switchToScreen(ScreenManager.Key.LOAD, OrbScreen.Hierarchy.LOWER);
 	}
 
 	@Override
 	public void render () {
-		if (Gdx.input.isKeyPressed(Input.Keys.BACK))
-			screenManager.back();
-
 		screenManager.render();
 	}
 
@@ -83,6 +77,14 @@ public class Orb implements ApplicationListener, SuperManager {
 	@Override
 	public ScreenManager getScreenManager() {
 		return this.screenManager;
+	}
+
+	/**
+	 * Android Back key
+	 * @param back boolean
+     */
+	private void setCatchBackKey(boolean back) {
+		Gdx.input.setCatchBackKey(back);
 	}
 
 }

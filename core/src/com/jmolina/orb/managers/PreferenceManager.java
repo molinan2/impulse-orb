@@ -1,22 +1,30 @@
 package com.jmolina.orb.managers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.MathUtils;
+import com.jmolina.orb.Orb;
 
 public class PreferenceManager {
 
-    public final int ZOOM_MIN = 0;
-    public final int ZOOM_MAX = 2;
-    public final String MUSIC = "music";
-    public final String SOUND = "sound";
-    public final String VIBRATION = "vibration";
-    public final String ONLINE = "online";
-    public final String ZOOM = "zoom";
+    private final int ZOOM_MIN = 0;
+    private final int ZOOM_MAX = 2;
+    private final String MUSIC = "music";
+    private final String SOUND = "sound";
+    private final String VIBRATION = "vibration";
+    private final String ONLINE = "online";
+    private final String ZOOM = "zoom";
+
+    private final String FILE_NAME = Orb.class.getName();
 
     private Preferences preferences;
 
-    public PreferenceManager(Preferences preferences) {
-        setPreferences(preferences);
+    /**
+     * Constructor
+     */
+    public PreferenceManager() {
+        setPreferences(Gdx.app.getPreferences(FILE_NAME));
+        checkPrefs();
     }
 
     public void setPreferences(Preferences preferences) {

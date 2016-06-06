@@ -54,4 +54,13 @@ public abstract class UIRunnable {
         };
     }
 
+    static public Runnable backOperation (final OrbScreen screen) {
+        return new Runnable() {
+            @Override
+            public void run() {
+                screen.back();
+            }
+        };
+    }
+
 }
