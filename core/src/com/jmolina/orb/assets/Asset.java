@@ -33,14 +33,17 @@ public class Asset {
     public static final String UI_BACKGROUND = UI + "background.png";
     public static final String UI_PROGRESS_BASE = UI + "progress_base.png";
     public static final String UI_PROGRESS_FILL = UI + "progress_fill.png";
-    public static final String APP_ICON_DESKTOP = APP + "icon_desktop.png";
 
     public static final String FONT_ROBOTO_BOLD_30 = FONT + "roboto_bold_30.fnt";
     public static final String FONT_ROBOTO_BOLD_45 = FONT + "roboto_bold_45.fnt";
     public static final String FONT_ROBOTO_BOLD_90 = FONT + "roboto_bold_90.fnt";
     public static final String FONT_ROBOTO_MEDIUM_45 = FONT + "roboto_medium_45.fnt";
     public static final String FONT_ROBOTO_REGULAR_30 = FONT + "roboto_regular_30.fnt";
-
     public static final String FONT_ROBOTO_REGULAR_45 = FONT + "roboto_regular_45.fnt";
+
+    public static final String APP_ICON_128 = APP + "icon_128.png";
+    public static final String APP_ICON_64 = APP + "icon_64.png";
+    public static final String APP_ICON_32 = APP + "icon_32.png";
+    public static final String APP_ICON_16 = APP + "icon_16.png";
 
 }
