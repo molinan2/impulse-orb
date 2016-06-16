@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
 
-public class LadderRow extends OrbGroup {
+public class LadderRow extends BaseGroup {
 
     private Label rank;
     private Label time;
@@ -24,8 +24,8 @@ public class LadderRow extends OrbGroup {
 
         Label.LabelStyle regular = new Label.LabelStyle();
         Label.LabelStyle strong = new Label.LabelStyle();
-        regular.fontColor = new Color(OrbGroup.COLOR_BLACK);
-        strong.fontColor = new Color(OrbGroup.COLOR_BLACK);
+        regular.fontColor = new Color(BaseGroup.COLOR_BLACK);
+        strong.fontColor = new Color(BaseGroup.COLOR_BLACK);
         regular.font = getAssetManager().get(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
         strong.font = getAssetManager().get(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
 

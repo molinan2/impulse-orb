@@ -8,14 +8,16 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public abstract class UIAction {
 
-    private static final float ANIMATION_DURATION = 0.2f;
+    private static final float ANIMATION_DURATION = 0.35f;
     private static final float ANIMATION_SCALE_FACTOR = 1.35f;
+    private static final Interpolation INTERPOLATION_IN = Interpolation.exp5In;
+    private static final Interpolation INTERPOLATION_OUT = Interpolation.exp5Out;
 
     static public final Action toOutside() {
         return new SequenceAction(
                 parallel(
-                        fadeOut(ANIMATION_DURATION, Interpolation.pow2),
-                        scaleTo(ANIMATION_SCALE_FACTOR, ANIMATION_SCALE_FACTOR, ANIMATION_DURATION)
+                        fadeOut(ANIMATION_DURATION, INTERPOLATION_IN),
+                        scaleTo(ANIMATION_SCALE_FACTOR, ANIMATION_SCALE_FACTOR, ANIMATION_DURATION, INTERPOLATION_IN)
                 )
         );
     }
@@ -23,8 +25,8 @@ public abstract class UIAction {
     static public final Action toInside() {
         return new SequenceAction(
                 parallel(
-                        fadeOut(ANIMATION_DURATION, Interpolation.pow2),
-                        scaleTo(1 / ANIMATION_SCALE_FACTOR, 1 / ANIMATION_SCALE_FACTOR, ANIMATION_DURATION)
+                        fadeOut(ANIMATION_DURATION, INTERPOLATION_IN),
+                        scaleTo(1 / ANIMATION_SCALE_FACTOR, 1 / ANIMATION_SCALE_FACTOR, ANIMATION_DURATION, INTERPOLATION_IN)
                 )
         );
     }
@@ -34,8 +36,8 @@ public abstract class UIAction {
                 fadeOut(0f),
                 scaleTo(1 / ANIMATION_SCALE_FACTOR, 1 / ANIMATION_SCALE_FACTOR, 0f),
                 parallel(
-                        fadeIn(ANIMATION_DURATION, Interpolation.pow2),
-                        scaleTo(1f, 1f, ANIMATION_DURATION)
+                        fadeIn(ANIMATION_DURATION, INTERPOLATION_OUT),
+                        scaleTo(1f, 1f, ANIMATION_DURATION, INTERPOLATION_OUT)
                 )
         );
     }
@@ -45,8 +47,8 @@ public abstract class UIAction {
                 fadeOut(0f),
                 scaleTo(ANIMATION_SCALE_FACTOR, ANIMATION_SCALE_FACTOR, 0f),
                 parallel(
-                        fadeIn(ANIMATION_DURATION, Interpolation.pow2),
-                        scaleTo(1f, 1f, ANIMATION_DURATION)
+                        fadeIn(ANIMATION_DURATION, INTERPOLATION_OUT),
+                        scaleTo(1f, 1f, ANIMATION_DURATION, INTERPOLATION_OUT)
                 )
         );
     }
@@ -54,16 +56,16 @@ public abstract class UIAction {
     static public final Action appear() {
         return new SequenceAction(
                 fadeOut(0f),
-                scaleTo(ANIMATION_SCALE_FACTOR, ANIMATION_SCALE_FACTOR, 0f),
-                fadeIn(ANIMATION_DURATION, Interpolation.pow2)
+                scaleTo(ANIMATION_SCALE_FACTOR, ANIMATION_SCALE_FACTOR, 0f, INTERPOLATION_IN),
+                fadeIn(ANIMATION_DURATION, INTERPOLATION_IN)
         );
     }
 
     static public final Action disappear() {
         return new SequenceAction(
                 fadeIn(0f),
-                scaleTo(1f, 1f, 0f),
-                fadeOut(ANIMATION_DURATION, Interpolation.pow2)
+                scaleTo(1f, 1f, 0f, INTERPOLATION_IN),
+                fadeOut(ANIMATION_DURATION, INTERPOLATION_IN)
         );
     }
 

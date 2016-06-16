@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * Ranking Ladder. Por ahora, exactamente con 3 posiciones
  */
-public class Ladder extends OrbGroup {
+public class Ladder extends BaseGroup {
 
     private Label title;
     private Image bg;
@@ -30,7 +30,7 @@ public class Ladder extends OrbGroup {
         this.bg.setPosition(0f, 0f);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(OrbGroup.COLOR_BLUE);
+        style.fontColor = new Color(BaseGroup.COLOR_BLUE);
         style.font = getAssetManager().get(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
 
         this.title = new Label(title.toUpperCase(), style);

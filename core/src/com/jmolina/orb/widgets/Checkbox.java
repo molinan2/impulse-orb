@@ -8,7 +8,7 @@ import com.jmolina.orb.assets.Asset;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class Checkbox extends OrbGroup {
+public class Checkbox extends BaseGroup {
 
     private Image checkedImage;
     private Image uncheckedImage;

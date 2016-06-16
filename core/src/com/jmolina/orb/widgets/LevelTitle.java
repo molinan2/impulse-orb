@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
 
-public class LevelTitle extends OrbGroup {
+public class LevelTitle extends BaseGroup {
 
     private Label name;
     private Image bg;
@@ -22,7 +22,7 @@ public class LevelTitle extends OrbGroup {
         bg.setPosition(0f, 0f);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(OrbGroup.COLOR_WHITE);
+        style.fontColor = new Color(BaseGroup.COLOR_WHITE);
         style.font = getAssetManager().get(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
 
         this.name = new Label(name.toUpperCase(), style);

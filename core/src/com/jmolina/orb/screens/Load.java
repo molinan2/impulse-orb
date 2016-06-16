@@ -10,7 +10,7 @@ import com.jmolina.orb.widgets.ProgressBar;
 
 import static com.jmolina.orb.managers.ScreenManager.Key.MAIN;
 
-public class Load extends OrbScreen {
+public class Load extends BaseScreen {
 
     private Image splash;
     private ProgressBar bar;

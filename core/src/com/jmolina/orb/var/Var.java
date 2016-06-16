@@ -6,6 +6,4 @@ public abstract class Var {
     public static final String AUTHOR = "Juan M. Molina";
     public static final String APPNAME = "Orb 2016";
 
-    public static final int SCREEN_LOAD = 1;
-
 }

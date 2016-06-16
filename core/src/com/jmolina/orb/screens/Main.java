@@ -10,7 +10,7 @@ import com.jmolina.orb.widgets.GameTitle;
 
 import static com.jmolina.orb.managers.ScreenManager.Key.*;
 
-public class Main extends OrbScreen {
+public class Main extends BaseScreen {
 
     private GameTitle gameTitle;
     private Button play;

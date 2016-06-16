@@ -17,7 +17,7 @@ import com.jmolina.orb.assets.Asset;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class Card extends OrbGroup {
+public class Card extends BaseGroup {
 
     private Image cover;
     private Image coverWhite;
@@ -50,7 +50,7 @@ public class Card extends OrbGroup {
         lock.setPosition(Grid.unit(1.75f), Grid.unit(1));
 
         Label.LabelStyle titleStyle = new Label.LabelStyle();
-        titleStyle.fontColor = new Color(OrbGroup.COLOR_BLUE);
+        titleStyle.fontColor = new Color(BaseGroup.COLOR_BLUE);
         titleStyle.font = getAsset(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
 
         this.title = new Label(title, titleStyle);
@@ -61,7 +61,7 @@ public class Card extends OrbGroup {
         this.title.setAlignment(Align.right);
 
         Label.LabelStyle timeStyle = new Label.LabelStyle();
-        timeStyle.fontColor = new Color(OrbGroup.COLOR_BLACK);
+        timeStyle.fontColor = new Color(BaseGroup.COLOR_BLACK);
         timeStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
         this.personal = new Label("Best " + personal, timeStyle);

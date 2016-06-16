@@ -14,7 +14,7 @@ import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.widgets.Title;
 
-public class Menu extends OrbScreen {
+public class Menu extends BaseScreen {
 
     private Title title;
     private Table table;

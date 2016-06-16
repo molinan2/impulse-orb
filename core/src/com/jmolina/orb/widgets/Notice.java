@@ -10,7 +10,7 @@ import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.var.Var;
 
-public class Notice extends OrbGroup {
+public class Notice extends BaseGroup {
 
     private Label author;
     private Label version;
@@ -19,7 +19,7 @@ public class Notice extends OrbGroup {
         super(am);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.fontColor = new Color(OrbGroup.COLOR_BLUE);
+        labelStyle.fontColor = new Color(BaseGroup.COLOR_BLUE);
         labelStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
         this.author = new Label(Var.AUTHOR, labelStyle);

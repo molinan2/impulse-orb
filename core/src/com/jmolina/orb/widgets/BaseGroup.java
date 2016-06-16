@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.interfaces.Reseteable;
 
-public class OrbGroup extends Group implements Reseteable, Disposable {
+public class BaseGroup extends Group implements Reseteable, Disposable {
 
     public static final int COLOR_WHITE = 0xffffffff;
     public static final int COLOR_BLUE = 0x2E3192ff;
@@ -14,7 +14,7 @@ public class OrbGroup extends Group implements Reseteable, Disposable {
 
     private AssetManager assetManager;
 
-    public OrbGroup(AssetManager am) {
+    public BaseGroup(AssetManager am) {
         setScale(1.0f, 1.0f);
         setOrigin(0f, 0f);
         setAssetManager(am);

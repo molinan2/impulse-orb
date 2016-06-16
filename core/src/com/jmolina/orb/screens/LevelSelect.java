@@ -8,7 +8,7 @@ import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.widgets.Card;
 
 import static com.jmolina.orb.managers.ScreenManager.Key.*;
-import static com.jmolina.orb.screens.OrbScreen.Hierarchy.*;
+import static com.jmolina.orb.screens.BaseScreen.Hierarchy.*;
 
 public class LevelSelect extends Menu {
 

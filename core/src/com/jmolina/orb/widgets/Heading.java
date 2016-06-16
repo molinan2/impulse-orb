@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
 
-public class Heading extends OrbGroup {
+public class Heading extends BaseGroup {
 
     public enum Weight {
         Regular, Medium, Bold
@@ -29,7 +29,7 @@ public class Heading extends OrbGroup {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(OrbGroup.COLOR_BLUE);
+        style.fontColor = new Color(BaseGroup.COLOR_BLUE);
         style.font = newBitmapFont(weight);
 
         label = new Label(name, style);

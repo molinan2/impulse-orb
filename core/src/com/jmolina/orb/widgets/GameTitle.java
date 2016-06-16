@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.assets.Asset;
 
-public class GameTitle extends OrbGroup {
+public class GameTitle extends BaseGroup {
 
     private Image image;
 

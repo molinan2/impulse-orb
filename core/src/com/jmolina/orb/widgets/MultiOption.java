@@ -11,7 +11,7 @@ import com.jmolina.orb.assets.Asset;
 
 import java.util.ArrayList;
 
-public class MultiOption extends OrbGroup {
+public class MultiOption extends BaseGroup {
 
     private Label label;
     private int value;
@@ -25,7 +25,7 @@ public class MultiOption extends OrbGroup {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(OrbGroup.COLOR_BLUE);
+        style.fontColor = new Color(BaseGroup.COLOR_BLUE);
         style.font = getAsset(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
 
         label = new Label(name, style);

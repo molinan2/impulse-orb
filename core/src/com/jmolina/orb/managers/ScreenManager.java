@@ -9,7 +9,7 @@ import com.jmolina.orb.screens.LevelSelect;
 import com.jmolina.orb.screens.Load;
 import com.jmolina.orb.screens.Main;
 import com.jmolina.orb.screens.Options;
-import com.jmolina.orb.screens.OrbScreen;
+import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.Stats;
 
 public class ScreenManager {
@@ -22,25 +22,25 @@ public class ScreenManager {
     }
 
     private Orb orb;
-    private OrbScreen screen;
-    private ArrayMap<Key, OrbScreen> screens;
+    private BaseScreen screen;
+    private ArrayMap<Key, BaseScreen> screens;
 
 
     public ScreenManager(Orb orb) {
         this.orb = orb;
-        screens = new ArrayMap<Key, OrbScreen>();
+        screens = new ArrayMap<Key, BaseScreen>();
     }
 
     private Orb getSuperManager() {
         return this.orb;
     }
 
-    private OrbScreen getCurrentScreen() {
+    private BaseScreen getCurrentScreen() {
         return this.screen;
     }
 
-    private void setScreen(OrbScreen orbScreen) {
-        this.screen = orbScreen;
+    private void setScreen(BaseScreen baseScreen) {
+        this.screen = baseScreen;
     }
 
     public void hideCurrentScreen() {
@@ -99,7 +99,7 @@ public class ScreenManager {
         getCurrentScreen().back();
     }
 
-    public void switchToScreen(Key key, OrbScreen.Hierarchy hierarchy) {
+    public void switchToScreen(Key key, BaseScreen.Hierarchy hierarchy) {
         if (getCurrentScreen() != null)
             hideCurrentScreen();
 
@@ -113,7 +113,7 @@ public class ScreenManager {
         }
     }
 
-    public OrbScreen getScreen(Key key) {
+    public BaseScreen getScreen(Key key) {
         return this.screens.get(key);
     }
 

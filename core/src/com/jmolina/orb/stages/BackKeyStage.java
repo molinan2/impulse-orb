@@ -4,11 +4,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class BackableStage extends Stage {
+/**
+ * Stage que ejecuta una operación cuando se pulsa la tecla BACK
+ */
+public class BackKeyStage extends Stage {
 
     private Runnable operation;
 
-    public BackableStage(Viewport viewport, Runnable operation) {
+    public BackKeyStage(Viewport viewport, Runnable operation) {
         super(viewport);
         this.operation = operation;
     }

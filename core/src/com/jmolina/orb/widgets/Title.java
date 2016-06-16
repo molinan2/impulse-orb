@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
 
-public class Title extends OrbGroup {
+public class Title extends BaseGroup {
 
     private Image button;
     private Label label;
@@ -21,7 +21,7 @@ public class Title extends OrbGroup {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(OrbGroup.COLOR_BLUE);
+        style.fontColor = new Color(BaseGroup.COLOR_BLUE);
         style.font = getAsset(Asset.FONT_ROBOTO_BOLD_90, BitmapFont.class);
 
         label = new Label(name, style);

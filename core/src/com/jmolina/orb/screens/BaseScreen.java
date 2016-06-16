@@ -20,12 +20,12 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.interfaces.BackInteractive;
 import com.jmolina.orb.runnables.UIRunnable;
-import com.jmolina.orb.stages.BackableStage;
-import com.jmolina.orb.widgets.OrbGroup;
+import com.jmolina.orb.stages.BackKeyStage;
+import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class OrbScreen implements Screen, BackInteractive {
+public class BaseScreen implements Screen, BackInteractive {
 
     protected final float VIEWPORT_HEIGHT = 1184.0f;
     protected final float VIEWPORT_WIDTH = 768.0f;
@@ -52,7 +52,7 @@ public class OrbScreen implements Screen, BackInteractive {
     /**
      * Constructor
      */
-    public OrbScreen(Orb superManager) {
+    public BaseScreen(Orb superManager) {
         this.superManager = superManager;
 
         actors = new SnapshotArray<Actor>();
@@ -60,7 +60,7 @@ public class OrbScreen implements Screen, BackInteractive {
         hierarchy = Hierarchy.LOWER;
         viewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
-        mainStage = new BackableStage(viewport, UIRunnable.backOperation(this));
+        mainStage = new BackKeyStage(viewport, UIRunnable.backOperation(this));
 
         getRoot().setOrigin(VIEWPORT_WIDTH * 0.5f, VIEWPORT_HEIGHT * 0.5f);
         getRoot().setScale(1f, 1f);
@@ -283,8 +283,8 @@ public class OrbScreen implements Screen, BackInteractive {
         for (Actor actor : actors) {
             actor.clearActions();
 
-            if (actor instanceof OrbGroup) {
-                ((OrbGroup) actor).reset();
+            if (actor instanceof BaseGroup) {
+                ((BaseGroup) actor).reset();
             }
         }
     }

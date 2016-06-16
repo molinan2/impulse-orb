@@ -1,0 +1,150 @@
+
+ui1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+background
+  rotate: false
+  xy: 0, 0
+  size: 768, 1184
+  orig: 768, 1184
+  offset: 0, 0
+  index: -1
+splash
+  rotate: false
+  xy: 0, 1186
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+launch
+  rotate: false
+  xy: 0, 1700
+  size: 640, 320
+  orig: 640, 320
+  offset: 0, 0
+  index: -1
+ladder
+  rotate: false
+  xy: 770, 0
+  size: 640, 256
+  orig: 640, 256
+  offset: 0, 0
+  index: -1
+card
+  rotate: false
+  xy: 770, 258
+  size: 640, 256
+  orig: 640, 256
+  offset: 0, 0
+  index: -1
+card
+  rotate: false
+  xy: 1412, 0
+  size: 320, 256
+  orig: 320, 256
+  offset: 0, 0
+  index: -1
+card
+  rotate: false
+  xy: 1412, 258
+  size: 320, 256
+  orig: 320, 256
+  offset: 0, 0
+  index: -1
+scroll
+  rotate: false
+  xy: 514, 1186
+  size: 32, 256
+  orig: 32, 256
+  offset: 0, 0
+  index: -1
+maintitle
+  rotate: false
+  xy: 770, 516
+  size: 640, 192
+  orig: 640, 192
+  offset: 0, 0
+  index: -1
+back
+  rotate: false
+  xy: 548, 1186
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+card
+  rotate: false
+  xy: 514, 1444
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: -1
+button
+  rotate: false
+  xy: 1412, 516
+  size: 512, 96
+  orig: 512, 96
+  offset: 0, 0
+  index: -1
+button
+  rotate: false
+  xy: 770, 710
+  size: 512, 96
+  orig: 512, 96
+  offset: 0, 0
+  index: -1
+button
+  rotate: false
+  xy: 1284, 710
+  size: 512, 96
+  orig: 512, 96
+  offset: 0, 0
+  index: -1
+checkbox
+  rotate: false
+  xy: 548, 1316
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+checkbox
+  rotate: false
+  xy: 646, 1316
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+launch
+  rotate: false
+  xy: 770, 808
+  size: 640, 64
+  orig: 640, 64
+  offset: 0, 0
+  index: -1
+progress
+  rotate: false
+  xy: 1412, 614
+  size: 512, 64
+  orig: 512, 64
+  offset: 0, 0
+  index: -1
+progress
+  rotate: false
+  xy: 678, 1186
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+
+atlas1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+ui1
+  rotate: false
+  xy: 0, 0
+  size: 2048, 2048
+  orig: 2048, 2048
+  offset: 0, 0
+  index: -1

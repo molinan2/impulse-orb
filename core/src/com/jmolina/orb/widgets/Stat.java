@@ -12,7 +12,7 @@ import com.jmolina.orb.assets.Asset;
 // No se encuentra en GWT (HTML), por lo que no se puede compilar en GWT (HTML)
 import java.text.DecimalFormat;
 
-public class Stat extends OrbGroup {
+public class Stat extends BaseGroup {
 
     private Label name;
     private Label stat;
@@ -25,7 +25,7 @@ public class Stat extends OrbGroup {
         super(am);
 
         Label.LabelStyle nameStyle = new Label.LabelStyle();
-        nameStyle.fontColor = new Color(OrbGroup.COLOR_BLUE);
+        nameStyle.fontColor = new Color(BaseGroup.COLOR_BLUE);
         nameStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
 
         this.name = new Label(name, nameStyle);
@@ -36,7 +36,7 @@ public class Stat extends OrbGroup {
         this.name.setAlignment(Align.left);
 
         Label.LabelStyle numberStyle = new Label.LabelStyle();
-        numberStyle.fontColor = new Color(OrbGroup.COLOR_BLACK);
+        numberStyle.fontColor = new Color(BaseGroup.COLOR_BLACK);
         numberStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
 
         this.stat = new Label(formatStat(value, unit), numberStyle);

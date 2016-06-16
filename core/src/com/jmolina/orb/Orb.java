@@ -2,12 +2,11 @@ package com.jmolina.orb;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.managers.PreferenceManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.screens.OrbScreen;
+import com.jmolina.orb.screens.BaseScreen;
 
 
 public class Orb implements ApplicationListener, SuperManager {
@@ -34,7 +33,7 @@ public class Orb implements ApplicationListener, SuperManager {
 
 		assetManager.loadLoadScreenAssets();
 		screenManager.createLoadScreen();
-		screenManager.switchToScreen(ScreenManager.Key.LOAD, OrbScreen.Hierarchy.LOWER);
+		screenManager.switchToScreen(ScreenManager.Key.LOAD, BaseScreen.Hierarchy.LOWER);
 	}
 
 	@Override
