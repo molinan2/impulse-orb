@@ -85,6 +85,7 @@ public class Menu extends BaseScreen {
         title.setListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                title.clickEffect();
                 switchToScreen(key, Hierarchy.HIGHER);
             }
         });

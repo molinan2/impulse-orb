@@ -44,6 +44,7 @@ public class Main extends BaseScreen {
         play.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
+                play.clickEffect();
                 switchToScreen(LEVEL_SELECT, Hierarchy.LOWER);
             }
         });
@@ -51,6 +52,7 @@ public class Main extends BaseScreen {
         options.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
+                options.clickEffect();
                 switchToScreen(OPTIONS, Hierarchy.LOWER);
             }
         });
@@ -58,6 +60,7 @@ public class Main extends BaseScreen {
         stats.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
+                stats.clickEffect();
                 switchToScreen(STATS, Hierarchy.LOWER);
             }
         });
@@ -65,6 +68,7 @@ public class Main extends BaseScreen {
         credits.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
+                credits.clickEffect();
                 switchToScreen(CREDITS, Hierarchy.LOWER);
             }
         });
@@ -72,6 +76,7 @@ public class Main extends BaseScreen {
         exit.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                exit.clickEffect();
                 exitApplication();
             }
         });

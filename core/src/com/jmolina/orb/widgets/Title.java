@@ -14,7 +14,7 @@ import com.jmolina.orb.assets.Asset;
 
 public class Title extends BaseGroup {
 
-    private Image button;
+    private BackButton button;
     private Label label;
 
     public Title(AssetManager am, String name) {
@@ -31,7 +31,7 @@ public class Title extends BaseGroup {
         label.setWidth(Grid.unit(7));
         label.setAlignment(Align.left);
 
-        button = new Image(getAsset(Asset.UI_BACK, Texture.class));
+        button = new BackButton(getAssetManager());
         button.setPosition(0f, 0f);
 
         addActor(button);
@@ -56,4 +56,8 @@ public class Title extends BaseGroup {
         label.setText(name);
     }
 
+    @Override
+    public void clickEffect() {
+        button.clickEffect();
+    }
 }

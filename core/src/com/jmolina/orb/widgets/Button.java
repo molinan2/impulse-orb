@@ -1,12 +1,10 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -15,9 +13,6 @@ import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
 
 public class Button extends BaseGroup {
-
-    // private ShaderProgram shader;
-    // private float brightness;
 
     public enum Type {
         Play, Exit, Default
@@ -28,9 +23,6 @@ public class Button extends BaseGroup {
 
     public Button(AssetManager am, String name, Type type) {
         super(am);
-
-        // brightness = 0.0f;
-        // shader = new ShaderProgram( Gdx.files.internal("shader/brightness.vert"), Gdx.files.internal("shader/brightness.frag"));
 
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = new Color(BaseGroup.COLOR_BLUE);
@@ -50,19 +42,11 @@ public class Button extends BaseGroup {
 
         setHeight(Grid.unit(1.5f));
         setOrigin(bg.getWidth() * 0.5f, bg.getHeight() * 0.5f);
-
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        // brightness = 1f;
-        // batch.setShader(shader);
-        // shader.begin();
-        // shader.setUniformf("brightness", brightness);
-        // shader.setUniformf("contrast", 1.0f);
         super.draw(batch, parentAlpha);
-        // shader.end();
-        // batch.setShader(null);
     }
 
     @Override

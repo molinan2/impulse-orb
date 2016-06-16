@@ -8,10 +8,10 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public abstract class UIAction {
 
-    private static final float ANIMATION_DURATION = 0.35f;
-    private static final float ANIMATION_SCALE_FACTOR = 1.35f;
-    private static final Interpolation INTERPOLATION_IN = Interpolation.exp5In;
-    private static final Interpolation INTERPOLATION_OUT = Interpolation.exp5Out;
+    public static final float ANIMATION_DURATION = 0.35f;
+    public static final float ANIMATION_SCALE_FACTOR = 1.35f;
+    public static final Interpolation INTERPOLATION_IN = Interpolation.pow2In;
+    public static final Interpolation INTERPOLATION_OUT = Interpolation.pow2Out;
 
     static public final Action toOutside() {
         return new SequenceAction(
