@@ -3,7 +3,6 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -17,10 +16,10 @@ import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.interfaces.BackInteractive;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.stages.BackKeyStage;
+import com.jmolina.orb.widgets.Background;
 import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -42,6 +41,7 @@ public class BaseScreen implements Screen, BackInteractive {
 
     protected SuperManager superManager;
     private Image bg;
+    private Background background;
     private Viewport viewport;
     private Stage mainStage;
     private Stage bgStage;
@@ -67,10 +67,14 @@ public class BaseScreen implements Screen, BackInteractive {
         getRoot().setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         getRoot().setPosition(0f, 0f);
 
-        bg = new Image(getAssetManager().get(Asset.UI_BACKGROUND, Texture.class));
+        /*bg = new Image(getAssetManager().get(Asset.UI_BACKGROUND, Texture.class));
+        bgStage = new Stage(viewport);
+        bgStage.addActor(bg);*/
+
+        background = new Background(getAssetManager(), VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
         bgStage = new Stage(viewport);
-        bgStage.addActor(bg);
+        bgStage.addActor(background);
     }
 
 
@@ -150,7 +154,7 @@ public class BaseScreen implements Screen, BackInteractive {
         return getAssetManager().get(fileName, type);
     }
 
-    public SuperManager getSuperManager() {
+    private SuperManager getSuperManager() {
         return this.superManager;
     }
 

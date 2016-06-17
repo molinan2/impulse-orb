@@ -2,11 +2,9 @@ package com.jmolina.orb.widgets;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
@@ -14,7 +12,7 @@ import com.jmolina.orb.assets.Asset;
 
 public class Title extends BaseGroup {
 
-    private BackButton button;
+    private Back button;
     private Label label;
 
     public Title(AssetManager am, String name) {
@@ -31,7 +29,7 @@ public class Title extends BaseGroup {
         label.setWidth(Grid.unit(7));
         label.setAlignment(Align.left);
 
-        button = new BackButton(getAssetManager());
+        button = new Back(getAssetManager());
         button.setPosition(0f, 0f);
 
         addActor(button);
