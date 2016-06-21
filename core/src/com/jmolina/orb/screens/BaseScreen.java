@@ -40,7 +40,6 @@ public class BaseScreen implements Screen, BackInteractive {
     }
 
     protected SuperManager superManager;
-    private Image bg;
     private Background background;
     private Viewport viewport;
     private Stage mainStage;
@@ -52,14 +51,12 @@ public class BaseScreen implements Screen, BackInteractive {
     /**
      * Constructor
      */
-    public BaseScreen(Orb superManager) {
+    public BaseScreen(SuperManager superManager) {
         this.superManager = superManager;
 
         actors = new SnapshotArray<Actor>();
-
         hierarchy = Hierarchy.LOWER;
         viewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-
         mainStage = new BackStage(viewport, UIRunnable.backOperation(this));
 
         getRoot().setOrigin(VIEWPORT_WIDTH * 0.5f, VIEWPORT_HEIGHT * 0.5f);
@@ -67,12 +64,7 @@ public class BaseScreen implements Screen, BackInteractive {
         getRoot().setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         getRoot().setPosition(0f, 0f);
 
-        /*bg = new Image(getAssetManager().get(Asset.UI_BACKGROUND, Texture.class));
-        bgStage = new Stage(viewport);
-        bgStage.addActor(bg);*/
-
         background = new Background(getAssetManager(), VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-
         bgStage = new Stage(viewport);
         bgStage.addActor(background);
     }
@@ -173,6 +165,7 @@ public class BaseScreen implements Screen, BackInteractive {
      */
     public void switchToScreen(final ScreenManager.Key key, final Hierarchy hierarchy) {
         clearRootActions();
+        unsetInputProcessor();
 
         addRootAction(sequence(
                 transition(Flow.LEAVING, hierarchy),
@@ -259,7 +252,7 @@ public class BaseScreen implements Screen, BackInteractive {
         getRoot().addAction(action);
     }
 
-    private void clearColor() {
+    protected void clearColor() {
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
@@ -291,6 +284,10 @@ public class BaseScreen implements Screen, BackInteractive {
                 ((BaseGroup) actor).reset();
             }
         }
+    }
+
+    protected Stage getMainStage() {
+        return mainStage;
     }
 
 }

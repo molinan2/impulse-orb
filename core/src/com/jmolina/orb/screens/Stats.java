@@ -2,6 +2,7 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.Orb;
+import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.widgets.Heading;
 import com.jmolina.orb.widgets.Stat;
@@ -21,8 +22,8 @@ public class Stats extends Menu {
     private Heading timeHeading;
     private Heading distanceHeading;
 
-    public Stats(Orb orb) {
-        super(orb);
+    public Stats(SuperManager superManager) {
+        super(superManager);
 
         setReturningScreen(ScreenManager.Key.MAIN);
         setTitle("STATS");

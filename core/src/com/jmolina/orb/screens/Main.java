@@ -3,6 +3,7 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.Orb;
+import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.widgets.Notice;
 import com.jmolina.orb.widgets.Button;
@@ -20,8 +21,8 @@ public class Main extends BaseScreen {
     private Button exit;
     private Notice notice;
 
-    public Main(Orb orb) {
-        super(orb);
+    public Main(SuperManager superManager) {
+        super(superManager);
 
         gameTitle = new GameTitle(getAssetManager());
         notice = new Notice(getAssetManager());

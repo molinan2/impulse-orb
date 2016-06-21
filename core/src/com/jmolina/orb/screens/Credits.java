@@ -1,6 +1,7 @@
 package com.jmolina.orb.screens;
 
 import com.jmolina.orb.Orb;
+import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.widgets.Credit;
 
@@ -15,8 +16,8 @@ public class Credits extends Menu {
     private Credit resources;
     private Credit thanks;
 
-    public Credits(Orb orb) {
-        super(orb);
+    public Credits(SuperManager superManager) {
+        super(superManager);
 
         setReturningScreen(ScreenManager.Key.MAIN);
         setTitle("CREDITS");

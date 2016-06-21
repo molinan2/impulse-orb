@@ -3,6 +3,7 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.Orb;
+import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.PreferenceManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.widgets.Option;
@@ -19,10 +20,10 @@ public class Options extends Menu {
 
     private PreferenceManager preferenceManager;
 
-    public Options(Orb orb) {
-        super(orb);
+    public Options(SuperManager superManager) {
+        super(superManager);
 
-        this.preferenceManager = orb.getPreferenceManager();
+        this.preferenceManager = superManager.getPreferenceManager();
         setReturningScreen(ScreenManager.Key.MAIN);
         setTitle("OPTIONS");
 

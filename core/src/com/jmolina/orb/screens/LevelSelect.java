@@ -2,6 +2,7 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.jmolina.orb.Orb;
+import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.interfaces.Visitor;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.assets.Asset;
@@ -17,8 +18,8 @@ public class LevelSelect extends Menu {
     private Card level3;
     private Card level4;
 
-    public LevelSelect(Orb orb) {
-        super(orb);
+    public LevelSelect(SuperManager superManager) {
+        super(superManager);
 
         setReturningScreen(ScreenManager.Key.MAIN);
         setTitle("SELECT");

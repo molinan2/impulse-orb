@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.Orb;
+import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
@@ -21,8 +22,8 @@ public class Menu extends BaseScreen {
     private ScrollPane scrollPane;
     private ScreenManager.Key returningScreen;
 
-    public Menu(Orb orb) {
-        super(orb);
+    public Menu(SuperManager superManager) {
+        super(superManager);
 
         title = new Title(getAssetManager(), "");
         title.setPosition(Grid.unit(1), Grid.unit(15.5f));
@@ -65,10 +66,12 @@ public class Menu extends BaseScreen {
 
     public <T extends Actor> void add(T actor, float bottomPadding, float width) {
         getTable().row();
-        getTable().add(actor)
+        getTable()
+                .add(actor)
                 .width(width * Grid.unit(1))
                 .expandX()
                 .padBottom(bottomPadding * Grid.unit(1));
+
         register(actor);
     }
 

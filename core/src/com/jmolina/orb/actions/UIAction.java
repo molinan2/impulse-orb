@@ -12,7 +12,7 @@ public abstract class UIAction {
     private static final float LARGE = SCALE_FACTOR;
     private static final float SMALL = 1 / SCALE_FACTOR;
 
-    public static final float DURATION = 0.35f;
+    public static final float DURATION = 0.1f;
     public static final Interpolation IN = Interpolation.pow2In;
     public static final Interpolation OUT = Interpolation.pow2Out;
 
