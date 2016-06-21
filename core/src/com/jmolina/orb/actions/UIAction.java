@@ -8,16 +8,19 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public abstract class UIAction {
 
-    public static final float ANIMATION_DURATION = 0.35f;
-    public static final float ANIMATION_SCALE_FACTOR = 1.35f;
-    public static final Interpolation INTERPOLATION_IN = Interpolation.pow2In;
-    public static final Interpolation INTERPOLATION_OUT = Interpolation.pow2Out;
+    private static final float SCALE_FACTOR = 1.35f;
+    private static final float LARGE = SCALE_FACTOR;
+    private static final float SMALL = 1 / SCALE_FACTOR;
+
+    public static final float DURATION = 0.35f;
+    public static final Interpolation IN = Interpolation.pow2In;
+    public static final Interpolation OUT = Interpolation.pow2Out;
 
     static public final Action toOutside() {
         return new SequenceAction(
                 parallel(
-                        fadeOut(ANIMATION_DURATION, INTERPOLATION_IN),
-                        scaleTo(ANIMATION_SCALE_FACTOR, ANIMATION_SCALE_FACTOR, ANIMATION_DURATION, INTERPOLATION_IN)
+                        fadeOut(DURATION, IN),
+                        scaleTo(LARGE, LARGE, DURATION, IN)
                 )
         );
     }
@@ -25,61 +28,60 @@ public abstract class UIAction {
     static public final Action toInside() {
         return new SequenceAction(
                 parallel(
-                        fadeOut(ANIMATION_DURATION, INTERPOLATION_IN),
-                        scaleTo(1 / ANIMATION_SCALE_FACTOR, 1 / ANIMATION_SCALE_FACTOR, ANIMATION_DURATION, INTERPOLATION_IN)
+                        fadeOut(DURATION, IN),
+                        scaleTo(SMALL, SMALL, DURATION, IN)
                 )
         );
     }
 
     static public final Action fromInside() {
         return new SequenceAction(
-                fadeOut(0f),
-                scaleTo(1 / ANIMATION_SCALE_FACTOR, 1 / ANIMATION_SCALE_FACTOR, 0f),
+                alpha(0f),
+                scaleTo(SMALL, SMALL),
                 parallel(
-                        fadeIn(ANIMATION_DURATION, INTERPOLATION_OUT),
-                        scaleTo(1f, 1f, ANIMATION_DURATION, INTERPOLATION_OUT)
+                        fadeIn(DURATION, OUT),
+                        scaleTo(1f, 1f, DURATION, OUT)
                 )
         );
     }
 
     static public final Action fromOutside() {
         return new SequenceAction(
-                fadeOut(0f),
-                scaleTo(ANIMATION_SCALE_FACTOR, ANIMATION_SCALE_FACTOR, 0f),
+                alpha(0f),
+                scaleTo(LARGE, LARGE),
                 parallel(
-                        fadeIn(ANIMATION_DURATION, INTERPOLATION_OUT),
-                        scaleTo(1f, 1f, ANIMATION_DURATION, INTERPOLATION_OUT)
+                        fadeIn(DURATION, OUT),
+                        scaleTo(1f, 1f, DURATION, OUT)
                 )
         );
     }
 
     static public final Action appear() {
         return new SequenceAction(
-                fadeOut(0f),
-                scaleTo(ANIMATION_SCALE_FACTOR, ANIMATION_SCALE_FACTOR, 0f, INTERPOLATION_IN),
-                fadeIn(ANIMATION_DURATION, INTERPOLATION_IN)
+                alpha(0f),
+                scaleTo(LARGE, LARGE),
+                fadeIn(DURATION, IN)
         );
     }
 
     static public final Action disappear() {
         return new SequenceAction(
-                fadeIn(0f),
-                scaleTo(1f, 1f, 0f, INTERPOLATION_IN),
-                fadeOut(ANIMATION_DURATION, INTERPOLATION_IN)
+                alpha(1f),
+                scaleTo(1f, 1f),
+                fadeOut(DURATION, IN)
         );
     }
 
-    static public final Action dummy() {
+    static public final Action reset() {
         return new SequenceAction(
-                fadeIn(1f),
-                scaleTo(1f, 1f, 0f)
+                alpha(1f),
+                scaleTo(1f, 1f)
         );
     }
 
     static public final Action blink() {
         return new SequenceAction(
-                alpha(1f),
-                fadeOut(0),
+                alpha(0f),
                 fadeIn(0.5f),
                 fadeOut(0.5f),
                 fadeIn(0.5f)

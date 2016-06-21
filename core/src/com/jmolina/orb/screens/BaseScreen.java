@@ -18,7 +18,7 @@ import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.interfaces.BackInteractive;
 import com.jmolina.orb.runnables.UIRunnable;
-import com.jmolina.orb.stages.BackKeyStage;
+import com.jmolina.orb.stages.BackStage;
 import com.jmolina.orb.widgets.Background;
 import com.jmolina.orb.widgets.BaseGroup;
 
@@ -60,7 +60,7 @@ public class BaseScreen implements Screen, BackInteractive {
         hierarchy = Hierarchy.LOWER;
         viewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
-        mainStage = new BackKeyStage(viewport, UIRunnable.backOperation(this));
+        mainStage = new BackStage(viewport, UIRunnable.backOperation(this));
 
         getRoot().setOrigin(VIEWPORT_WIDTH * 0.5f, VIEWPORT_HEIGHT * 0.5f);
         getRoot().setScale(1f, 1f);
@@ -215,7 +215,7 @@ public class BaseScreen implements Screen, BackInteractive {
                 break;
 
             default:
-                action = UIAction.dummy();
+                action = UIAction.reset();
         }
 
         return action;

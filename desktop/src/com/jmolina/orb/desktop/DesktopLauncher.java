@@ -12,9 +12,9 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
 		config.fullscreen = false;
-		config.height = 1184;
-		config.width = 768;
-		config.title = "Orb " + Var.VERSION;
+		config.height = Var.HEIGHT;
+		config.width = Var.WIDTH;
+		config.title = Var.APP_NAME + " " + Var.APP_VERSION;
 		config.addIcon(Asset.APP_ICON_128, Files.FileType.Internal);
 		config.addIcon(Asset.APP_ICON_64, Files.FileType.Internal);
 		config.addIcon(Asset.APP_ICON_32, Files.FileType.Internal);

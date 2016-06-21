@@ -33,7 +33,7 @@ public class BaseGroup extends Group implements Reseteable, Disposable {
     public void draw (Batch batch, float parentAlpha) {
         // TODO: Soporte preliminar click feedback con shader. Que solo se renderice el shader cuando brightness > 0
         if (brightness > 0) {
-            // float variance = 0.5f * Gdx.graphics.getDeltaTime() / UIAction.ANIMATION_DURATION;
+            // float variance = 0.5f * Gdx.graphics.getDeltaTime() / UIAction.DURATION;
             float variance = 0.03f;
             brightness = MathUtils.clamp(brightness - variance, 0f, 1f);
             batch.setShader(shader);
