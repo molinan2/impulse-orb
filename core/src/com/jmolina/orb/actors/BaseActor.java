@@ -1,6 +1,5 @@
 package com.jmolina.orb.actors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -8,17 +7,17 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 /**
  * Actor básico que se inicializa y dibuja con los métodos necesarios
- * para que sean efectivas rotaciones, etc.
+ * para que sean efectivas rotaciones, escalado, etc.
  */
 public class BaseActor extends Actor {
 
     private Texture texture;
 
-    public BaseActor() {
-        super();
-
-        texture = new Texture(Gdx.files.internal("ui/paper.png"));
-        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+    public BaseActor(Texture t) {
+        texture = t;
+        texture.getTextureData().useMipMaps();
+        texture.setFilter(Texture.TextureFilter.MipMap, Texture.TextureFilter.MipMap);
+        // texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 
         // Inicializacion estandar del actor
         setPosition(0f, 0f);
@@ -66,7 +65,7 @@ public class BaseActor extends Actor {
                 this.getScaleX(), this.getScaleY(),
                 this.getRotation(),
                 0, 0,
-                0, 0,
+                texture.getWidth(), texture.getHeight(),
                 false, false
         );
     }

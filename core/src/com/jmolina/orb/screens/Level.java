@@ -5,8 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -17,10 +17,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actors.Ball;
+import com.jmolina.orb.actors.Box;
 import com.jmolina.orb.interfaces.SuperManager;
 
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -37,6 +37,7 @@ public class Level extends BaseScreen implements InputProcessor {
     private Vector3 point = new Vector3();
     private final float SCENE_WIDTH = VIEWPORT_WIDTH * 0.01f;
     private final float SCENE_HEIGHT = VIEWPORT_HEIGHT * 0.01f;
+    private final float UNIT = SCENE_WIDTH / 12f;
 
     BodyDef dynamicBodyDef;
     PolygonShape square;
@@ -45,7 +46,8 @@ public class Level extends BaseScreen implements InputProcessor {
 
     private Stage stage;
     private Ball ball;
-    private Body body;
+    private Box box;
+    private Body ballBody, boxBody;
 
 
     /**
@@ -66,18 +68,32 @@ public class Level extends BaseScreen implements InputProcessor {
                 0);
         vp.getCamera().update();
 
+        stage = new Stage(new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT));
+
         world = new World(new Vector2(0,-9.8f), true);
         debugRenderer = new Box2DDebugRenderer(true, false, false, true, true, true);
 
         // Creates a ground to avoid objects falling forever
-        // createBox(1.0f, 1.0f, 0.2f, 0.2f);
-        createBox(0.5f * SCENE_WIDTH, 2.25f, 0.8f * SCENE_WIDTH, 0.2f);
+        float posX = 0.5f * SCENE_WIDTH;
+        float posY = 2.25f;
+        createBox(posX, posY, 8 * UNIT, 0.5f * UNIT);
 
+        box = new Box();
+
+        /*box.setPosition(
+                posX * 100f - 0.5f * box.getWidth(),
+                posY * 100f - 0.5f * box.getHeight()
+        );*/
+
+        stage.addActor(box);
+
+        /*
         for (int i=0; i<10; i++) {
             for (int j=0; j<10; j++) {
                 createBox(i, j, 0.1f, 0.1f);
             }
         }
+        */
 
         // Default Body Definition
         dynamicBodyDef = new BodyDef();
@@ -101,8 +117,6 @@ public class Level extends BaseScreen implements InputProcessor {
         circleFixtureDef.density = 0.5f;
         circleFixtureDef.friction = 0.4f;
         circleFixtureDef.restitution = 0.6f;
-
-        stage = new Stage(new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT));
     }
 
     private void createBox(float x, float y, float w, float h) {
@@ -110,13 +124,13 @@ public class Level extends BaseScreen implements InputProcessor {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.StaticBody;
         bodyDef.position.set(x, y);
-        Body body = world.createBody(bodyDef);
+        boxBody = world.createBody(bodyDef);
 
         // Create a rectangle shape which will fit the world_width and 1 meter high
         PolygonShape groundShape = new PolygonShape();
         groundShape.setAsBox(0.5f * w, 0.5f * h);
         // Create a fixture from our rectangle shape and add it to our ground body
-        body.createFixture(groundShape, 0.0f);
+        boxBody.createFixture(groundShape, 0.0f);
         groundShape.dispose();
     }
 
@@ -128,10 +142,8 @@ public class Level extends BaseScreen implements InputProcessor {
 
     private void createCircle(float x, float y) {
         dynamicBodyDef.position.set(x,y);
-        body = world.createBody(dynamicBodyDef);
-        body.createFixture(circleFixtureDef);
-
-
+        ballBody = world.createBody(dynamicBodyDef);
+        ballBody.createFixture(circleFixtureDef);
     }
 
     private void handleInput() {
@@ -165,14 +177,39 @@ public class Level extends BaseScreen implements InputProcessor {
         clearColor();
         handleInput();
         world.step(1/60f, 6, 2);
-        //debugRenderer.render(world, vp.getCamera().combined);
 
-        if (body != null){
+        // debugRenderer.render(world, vp.getCamera().combined);
+
+        // Update position
+        // Sync World -> Scene
+        // Sync Camera
+        if (ballBody != null){
+            float offsetX = SCENE_WIDTH * 0.5f;
+            float offsetY = SCENE_HEIGHT * 0.5f;
+
             ball.setPosition(
-                    100 * body.getPosition().x - 0.5f * ball.getWidth(),
-                    100 * body.getPosition().y - 0.5f * ball.getHeight()
+                    100 * (ballBody.getPosition().x - (vp.getCamera().position.x - offsetX)) - 0.5f * ball.getWidth(),
+                    100 * (ballBody.getPosition().y - (vp.getCamera().position.y - offsetY)) - 0.5f * ball.getHeight()
             );
-            ball.setRotation(body.getAngle() * 180f / (float) Math.PI );
+
+            // Vector3 vector = new Vector3(ballBody.getPosition().x, ballBody.getPosition().y, 0);
+            //vp.getCamera().project(vector, 0, 0, vp.getScreenWidth(), vp.getScreenHeight());
+            //vp.project(vector);
+            //ball.setPosition(vector.x, vector.y);
+
+            ball.setRotation(MathUtils.radiansToDegrees * ballBody.getAngle());
+        }
+
+        if (boxBody != null){
+            float offsetX = SCENE_WIDTH * 0.5f;
+            float offsetY = SCENE_HEIGHT * 0.5f;
+
+            box.setPosition(
+                    100 * (boxBody.getPosition().x - (vp.getCamera().position.x - offsetX)) - 0.5f * box.getWidth(),
+                    100 * (boxBody.getPosition().y - (vp.getCamera().position.y - offsetY)) - 0.5f * box.getHeight()
+            );
+
+            box.setRotation(MathUtils.radiansToDegrees * boxBody.getAngle());
         }
 
         stage.getViewport().apply();
@@ -221,9 +258,6 @@ public class Level extends BaseScreen implements InputProcessor {
             ball = new Ball();
             ball.setPosition(screenX - 0.5f * ball.getWidth(), (VIEWPORT_HEIGHT - screenY) - 0.5f * ball.getHeight());
             stage.addActor(ball);
-
-            System.out.println("Ball: " + ball.getX() + ", " + ball.getY());
-            System.out.println("Click: " + screenX + ", " + screenY);
 
             return true;
         }
