@@ -87,13 +87,11 @@ public class Level extends BaseScreen implements InputProcessor {
 
         stage.addActor(box);
 
-        /*
         for (int i=0; i<10; i++) {
             for (int j=0; j<10; j++) {
-                createBox(i, j, 0.1f, 0.1f);
+                createBoxOther(i, j, 0.1f, 0.1f);
             }
         }
-        */
 
         // Default Body Definition
         dynamicBodyDef = new BodyDef();
@@ -116,7 +114,7 @@ public class Level extends BaseScreen implements InputProcessor {
         circleFixtureDef.shape = circle;
         circleFixtureDef.density = 0.5f;
         circleFixtureDef.friction = 0.4f;
-        circleFixtureDef.restitution = 0.6f;
+        circleFixtureDef.restitution = 0.8f;
     }
 
     private void createBox(float x, float y, float w, float h) {
@@ -125,6 +123,21 @@ public class Level extends BaseScreen implements InputProcessor {
         bodyDef.type = BodyType.StaticBody;
         bodyDef.position.set(x, y);
         boxBody = world.createBody(bodyDef);
+
+        // Create a rectangle shape which will fit the world_width and 1 meter high
+        PolygonShape groundShape = new PolygonShape();
+        groundShape.setAsBox(0.5f * w, 0.5f * h);
+        // Create a fixture from our rectangle shape and add it to our ground body
+        boxBody.createFixture(groundShape, 0.0f);
+        groundShape.dispose();
+    }
+
+    private void createBoxOther(float x, float y, float w, float h) {
+        // Create a static body definition
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyType.StaticBody;
+        bodyDef.position.set(x, y);
+        Body boxBody = world.createBody(bodyDef);
 
         // Create a rectangle shape which will fit the world_width and 1 meter high
         PolygonShape groundShape = new PolygonShape();
@@ -176,9 +189,17 @@ public class Level extends BaseScreen implements InputProcessor {
     public void render(float delta) {
         clearColor();
         handleInput();
+
+        // Follow camera
+        if (ballBody != null){
+            vp.getCamera().position.x = ballBody.getPosition().x;
+            vp.getCamera().position.y = ballBody.getPosition().y;
+            vp.getCamera().update();
+        }
+
         world.step(1/60f, 6, 2);
 
-        // debugRenderer.render(world, vp.getCamera().combined);
+        debugRenderer.render(world, vp.getCamera().combined);
 
         // Update position
         // Sync World -> Scene
@@ -199,6 +220,8 @@ public class Level extends BaseScreen implements InputProcessor {
 
             ball.setRotation(MathUtils.radiansToDegrees * ballBody.getAngle());
         }
+
+
 
         if (boxBody != null){
             float offsetX = SCENE_WIDTH * 0.5f;
