@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -16,8 +17,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jmolina.orb.actors.Ball;
 import com.jmolina.orb.interfaces.SuperManager;
 
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -27,8 +30,8 @@ public class Level extends BaseScreen implements InputProcessor {
     private BitmapFont font;
     private World world;
     private Box2DDebugRenderer debugRenderer;
-    private Body ball, ground;
-    private Stage stage;
+    // private Body ball, ground;
+
     private Viewport vp;
     private Camera camera;
     private Vector3 point = new Vector3();
@@ -39,6 +42,10 @@ public class Level extends BaseScreen implements InputProcessor {
     PolygonShape square;
     CircleShape circle;
     FixtureDef boxFixtureDef, circleFixtureDef;
+
+    private Stage stage;
+    private Ball ball;
+    private Body body;
 
 
     /**
@@ -60,15 +67,15 @@ public class Level extends BaseScreen implements InputProcessor {
         vp.getCamera().update();
 
         world = new World(new Vector2(0,-9.8f), true);
-        debugRenderer = new Box2DDebugRenderer(true, false, true, true, true, true);
+        debugRenderer = new Box2DDebugRenderer(true, false, false, true, true, true);
 
         // Creates a ground to avoid objects falling forever
-        // createStaticBox(1.0f, 1.0f, 0.2f, 0.2f);
-        createStaticBox(0.5f * SCENE_WIDTH, 2.25f, 0.8f * SCENE_WIDTH, 0.2f);
+        // createBox(1.0f, 1.0f, 0.2f, 0.2f);
+        createBox(0.5f * SCENE_WIDTH, 2.25f, 0.8f * SCENE_WIDTH, 0.2f);
 
-        for (int i=0; i<20; i++) {
-            for (int j=0; j<20; j++) {
-                createStaticBox(i, j, 0.1f, 0.1f);
+        for (int i=0; i<10; i++) {
+            for (int j=0; j<10; j++) {
+                createBox(i, j, 0.1f, 0.1f);
             }
         }
 
@@ -95,10 +102,10 @@ public class Level extends BaseScreen implements InputProcessor {
         circleFixtureDef.friction = 0.4f;
         circleFixtureDef.restitution = 0.6f;
 
-
+        stage = new Stage(new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT));
     }
 
-    private void createStaticBox(float x, float y, float w, float h) {
+    private void createBox(float x, float y, float w, float h) {
         // Create a static body definition
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.StaticBody;
@@ -121,8 +128,10 @@ public class Level extends BaseScreen implements InputProcessor {
 
     private void createCircle(float x, float y) {
         dynamicBodyDef.position.set(x,y);
-        Body body = world.createBody(dynamicBodyDef);
+        body = world.createBody(dynamicBodyDef);
         body.createFixture(circleFixtureDef);
+
+
     }
 
     private void handleInput() {
@@ -156,7 +165,19 @@ public class Level extends BaseScreen implements InputProcessor {
         clearColor();
         handleInput();
         world.step(1/60f, 6, 2);
-        debugRenderer.render(world, vp.getCamera().combined);
+        //debugRenderer.render(world, vp.getCamera().combined);
+
+        if (body != null){
+            ball.setPosition(
+                    100 * body.getPosition().x - 0.5f * ball.getWidth(),
+                    100 * body.getPosition().y - 0.5f * ball.getHeight()
+            );
+            ball.setRotation(body.getAngle() * 180f / (float) Math.PI );
+        }
+
+        stage.getViewport().apply();
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
+        stage.draw();
     }
 
     @Override
@@ -196,6 +217,14 @@ public class Level extends BaseScreen implements InputProcessor {
             point.set(screenX, screenY, 0);
             vp.getCamera().unproject(point);
             createCircle(point.x,point.y);
+
+            ball = new Ball();
+            ball.setPosition(screenX - 0.5f * ball.getWidth(), (VIEWPORT_HEIGHT - screenY) - 0.5f * ball.getHeight());
+            stage.addActor(ball);
+
+            System.out.println("Ball: " + ball.getX() + ", " + ball.getY());
+            System.out.println("Click: " + screenX + ", " + screenY);
+
             return true;
         }
 
