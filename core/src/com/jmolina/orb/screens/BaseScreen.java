@@ -5,13 +5,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jmolina.orb.Orb;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
@@ -39,11 +36,12 @@ public class BaseScreen implements Screen, BackInteractive {
         ENTERING, LEAVING
     }
 
-    protected SuperManager superManager;
+    private SuperManager superManager;
     private Background background;
-    private Viewport viewport;
+    private Viewport mainViewport;
+    private Viewport backgroundViewport;
     private Stage mainStage;
-    private Stage bgStage;
+    private Stage backgroundStage;
     private Hierarchy hierarchy;
     private SnapshotArray<Actor> actors;
 
@@ -56,17 +54,18 @@ public class BaseScreen implements Screen, BackInteractive {
 
         actors = new SnapshotArray<Actor>();
         hierarchy = Hierarchy.LOWER;
-        viewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        mainStage = new BackStage(viewport, UIRunnable.backOperation(this));
+        mainViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        mainStage = new BackStage(mainViewport, UIRunnable.backOperation(this));
 
-        getRoot().setOrigin(VIEWPORT_WIDTH * 0.5f, VIEWPORT_HEIGHT * 0.5f);
-        getRoot().setScale(1f, 1f);
-        getRoot().setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        getRoot().setPosition(0f, 0f);
+        mainStage.getRoot().setOrigin(VIEWPORT_WIDTH * 0.5f, VIEWPORT_HEIGHT * 0.5f);
+        mainStage.getRoot().setScale(1f, 1f);
+        mainStage.getRoot().setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        mainStage.getRoot().setPosition(0f, 0f);
 
         background = new Background(getAssetManager(), VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        bgStage = new Stage(viewport);
-        bgStage.addActor(background);
+        backgroundViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        backgroundStage = new Stage(backgroundViewport);
+        backgroundStage.addActor(background);
     }
 
 
@@ -84,17 +83,18 @@ public class BaseScreen implements Screen, BackInteractive {
     public void render(float delta) {
         clearColor();
 
-        bgStage.getViewport().apply();
-        bgStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
-        bgStage.draw();
-        mainStage.getViewport().apply();
+        // backgroundStage.getViewport().apply();
+        backgroundStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
+        backgroundStage.draw();
+        // mainStage.getViewport().apply();
         mainStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
         mainStage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        mainViewport.update(width, height);
+        backgroundViewport.update(width, height);
     }
 
     @Override
@@ -114,21 +114,13 @@ public class BaseScreen implements Screen, BackInteractive {
     @Override
     public void dispose() {
         mainStage.dispose();
-        bgStage.dispose();
+        backgroundStage.dispose();
     }
 
     @Override
     public void back() {
     }
 
-
-    /**
-     * Devuelve el Actor raíz de la Stage principal
-     * @return Group
-     */
-    public Group getRoot() {
-        return mainStage.getRoot();
-    }
 
     public void setHierarchy(Hierarchy hierarchy) {
         this.hierarchy = hierarchy;
@@ -175,6 +167,10 @@ public class BaseScreen implements Screen, BackInteractive {
 
     /**
      * Ejecuta la animacion de salida y termina la aplicacion
+     *
+     * TODO Las pantallas no deberian salir por si mismas, sino solicitar a un controller salir de
+     * TODO la aplicacion, y el controller debe devolver una respuesta. Si es positiva, la pantalla
+     * TODO anima su salida; si no, deberia mostrar algun feedback. Pero no va a ser asi...
      */
     public void exitApplication() {
         clearRootActions();
@@ -185,7 +181,7 @@ public class BaseScreen implements Screen, BackInteractive {
     }
 
     public void clearRootActions() {
-        getRoot().clearActions();
+        mainStage.getRoot().clearActions();
     }
 
     /**
@@ -249,7 +245,7 @@ public class BaseScreen implements Screen, BackInteractive {
     }
 
     public void addRootAction(Action action) {
-        getRoot().addAction(action);
+        mainStage.getRoot().addAction(action);
     }
 
     protected void clearColor() {
@@ -262,14 +258,14 @@ public class BaseScreen implements Screen, BackInteractive {
      */
     public void addMainActor(Actor actor) {
         mainStage.addActor(actor);
-        register(actor);
+        registerActor(actor);
     }
 
     /**
      * Registra un actor para poder realizar operaciones automaticas sobre el
      * @param actor Actor
      */
-    protected void register(Actor actor) {
+    protected void registerActor(Actor actor) {
         this.actors.add(actor);
     }
 
@@ -288,6 +284,10 @@ public class BaseScreen implements Screen, BackInteractive {
 
     protected Stage getMainStage() {
         return mainStage;
+    }
+
+    protected Stage getBackgroundStage() {
+        return backgroundStage;
     }
 
 }

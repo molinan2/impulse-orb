@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.jmolina.orb.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Grid;
@@ -72,7 +71,7 @@ public class Menu extends BaseScreen {
                 .expandX()
                 .padBottom(bottomPadding * Grid.unit(1));
 
-        register(actor);
+        registerActor(actor);
     }
 
     protected void setReturningScreen(ScreenManager.Key key) {

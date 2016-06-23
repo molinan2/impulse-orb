@@ -3,7 +3,6 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
@@ -19,8 +18,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jmolina.orb.actors.Ball;
-import com.jmolina.orb.actors.Box;
+import com.jmolina.orb.actors.TestBall;
+import com.jmolina.orb.actors.TestBox;
 import com.jmolina.orb.interfaces.SuperManager;
 
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -30,13 +29,13 @@ public class Level extends BaseScreen implements InputProcessor {
     private BitmapFont font;
     private World world;
     private Box2DDebugRenderer debugRenderer;
-    // private Body ball, ground;
+    // private Body testBall, ground;
 
     private Viewport vp;
-    private Camera camera;
     private Vector3 point = new Vector3();
-    private final float SCENE_WIDTH = VIEWPORT_WIDTH * 0.01f;
-    private final float SCENE_HEIGHT = VIEWPORT_HEIGHT * 0.01f;
+    private final float RATIO_METER_PIXEL = 0.01f;
+    private final float SCENE_WIDTH = VIEWPORT_WIDTH * RATIO_METER_PIXEL;
+    private final float SCENE_HEIGHT = VIEWPORT_HEIGHT * RATIO_METER_PIXEL;
     private final float UNIT = SCENE_WIDTH / 12f;
 
     BodyDef dynamicBodyDef;
@@ -45,8 +44,8 @@ public class Level extends BaseScreen implements InputProcessor {
     FixtureDef boxFixtureDef, circleFixtureDef;
 
     private Stage stage;
-    private Ball ball;
-    private Box box;
+    private TestBall testBall;
+    private TestBox testBox;
     private Body ballBody, boxBody;
 
 
@@ -58,8 +57,7 @@ public class Level extends BaseScreen implements InputProcessor {
     public Level(SuperManager superManager) {
         super(superManager);
 
-        camera = new OrthographicCamera();
-        vp = new FitViewport(SCENE_WIDTH, SCENE_HEIGHT, camera);
+        vp = new FitViewport(SCENE_WIDTH, SCENE_HEIGHT, new OrthographicCamera());
 
         // Center camera to get (0,0) as the origin of the Box2D world
         vp.getCamera().position.set(
@@ -75,17 +73,17 @@ public class Level extends BaseScreen implements InputProcessor {
 
         // Creates a ground to avoid objects falling forever
         float posX = 0.5f * SCENE_WIDTH;
-        float posY = 2.25f;
+        float posY = 2f;
         createBox(posX, posY, 8 * UNIT, 0.5f * UNIT);
 
-        box = new Box();
+        testBox = new TestBox();
 
-        /*box.setPosition(
-                posX * 100f - 0.5f * box.getWidth(),
-                posY * 100f - 0.5f * box.getHeight()
+        /*testBox.setPosition(
+                posX * 100f - 0.5f * testBox.getWidth(),
+                posY * 100f - 0.5f * testBox.getHeight()
         );*/
 
-        stage.addActor(box);
+        stage.addActor(testBox);
 
         for (int i=0; i<10; i++) {
             for (int j=0; j<10; j++) {
@@ -199,6 +197,9 @@ public class Level extends BaseScreen implements InputProcessor {
 
         world.step(1/60f, 6, 2);
 
+        getBackgroundStage().act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
+        getBackgroundStage().draw();
+
         debugRenderer.render(world, vp.getCamera().combined);
 
         // Update position
@@ -208,17 +209,17 @@ public class Level extends BaseScreen implements InputProcessor {
             float offsetX = SCENE_WIDTH * 0.5f;
             float offsetY = SCENE_HEIGHT * 0.5f;
 
-            ball.setPosition(
-                    100 * (ballBody.getPosition().x - (vp.getCamera().position.x - offsetX)) - 0.5f * ball.getWidth(),
-                    100 * (ballBody.getPosition().y - (vp.getCamera().position.y - offsetY)) - 0.5f * ball.getHeight()
+            testBall.setPosition(
+                    100 * (ballBody.getPosition().x - (vp.getCamera().position.x - offsetX)) - 0.5f * testBall.getWidth(),
+                    100 * (ballBody.getPosition().y - (vp.getCamera().position.y - offsetY)) - 0.5f * testBall.getHeight()
             );
 
             // Vector3 vector = new Vector3(ballBody.getPosition().x, ballBody.getPosition().y, 0);
             //vp.getCamera().project(vector, 0, 0, vp.getScreenWidth(), vp.getScreenHeight());
             //vp.project(vector);
-            //ball.setPosition(vector.x, vector.y);
+            //testBall.setPosition(vector.x, vector.y);
 
-            ball.setRotation(MathUtils.radiansToDegrees * ballBody.getAngle());
+            testBall.setRotation(MathUtils.radiansToDegrees * ballBody.getAngle());
         }
 
 
@@ -227,13 +228,15 @@ public class Level extends BaseScreen implements InputProcessor {
             float offsetX = SCENE_WIDTH * 0.5f;
             float offsetY = SCENE_HEIGHT * 0.5f;
 
-            box.setPosition(
-                    100 * (boxBody.getPosition().x - (vp.getCamera().position.x - offsetX)) - 0.5f * box.getWidth(),
-                    100 * (boxBody.getPosition().y - (vp.getCamera().position.y - offsetY)) - 0.5f * box.getHeight()
+            testBox.setPosition(
+                    100 * (boxBody.getPosition().x - (vp.getCamera().position.x - offsetX)) - 0.5f * testBox.getWidth(),
+                    100 * (boxBody.getPosition().y - (vp.getCamera().position.y - offsetY)) - 0.5f * testBox.getHeight()
             );
 
-            box.setRotation(MathUtils.radiansToDegrees * boxBody.getAngle());
+            testBox.setRotation(MathUtils.radiansToDegrees * boxBody.getAngle());
         }
+
+
 
         stage.getViewport().apply();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
@@ -278,9 +281,9 @@ public class Level extends BaseScreen implements InputProcessor {
             vp.getCamera().unproject(point);
             createCircle(point.x,point.y);
 
-            ball = new Ball();
-            ball.setPosition(screenX - 0.5f * ball.getWidth(), (VIEWPORT_HEIGHT - screenY) - 0.5f * ball.getHeight());
-            stage.addActor(ball);
+            testBall = new TestBall();
+            testBall.setPosition(screenX - 0.5f * testBall.getWidth(), (VIEWPORT_HEIGHT - screenY) - 0.5f * testBall.getHeight());
+            stage.addActor(testBall);
 
             return true;
         }

@@ -2,15 +2,13 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.jmolina.orb.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.widgets.ProgressBar;
 
-import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL;
-import static com.jmolina.orb.managers.ScreenManager.Key.MAIN;
+import static com.jmolina.orb.managers.ScreenManager.Key.*;
 
 public class Load extends BaseScreen {
 
@@ -53,7 +51,7 @@ public class Load extends BaseScreen {
         if (loaded && !switching) {
             switching = true;
             getScreenManager().createMenuScreens(); // TODO Sacar Level de MenuScreens
-            switchToScreen(LEVEL, Hierarchy.LOWER); // TODO Restaurar
+            switchToScreen(MAIN, Hierarchy.LOWER); // TODO Restaurar
         }
     }
 

@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 /**
- * Actor básico que se inicializa y dibuja con los métodos necesarios
- * para que sean efectivas rotaciones, escalado, etc.
+ * Actor base que implementa los métodos necesarios para que sean efectivas rotaciones, escalado,
+ * posicionado, etc.
  */
 public class BaseActor extends Actor {
 
@@ -15,9 +15,14 @@ public class BaseActor extends Actor {
 
     public BaseActor(Texture t) {
         texture = t;
-        texture.getTextureData().useMipMaps();
-        texture.setFilter(Texture.TextureFilter.MipMap, Texture.TextureFilter.MipMap);
-        // texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+
+        if (texture.getTextureData().useMipMaps())
+            texture.setFilter(Texture.TextureFilter.MipMap, Texture.TextureFilter.MipMap);
+        else
+            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+        // Para texturas repetibles
+        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 
         // Inicializacion estandar del actor
         setPosition(0f, 0f);
@@ -31,18 +36,7 @@ public class BaseActor extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        fullDraw(batch);
-    }
-
-    private void fullDraw(Batch batch) {
-        /** Dibujado estandar del actor, con metodo completo
-         *
-         * Draws a rectangle with the bottom left corner at x,y having the given width and height in pixels. The rectangle is offset by
-         * originX, originY relative to the origin. Scale specifies the scaling factor by which the rectangle should be scaled around
-         * originX, originY. Rotation specifies the angle of counter clockwise rotation of the rectangle around originX, originY. The
-         * portion of the {@link Texture} given by srcX, srcY and srcWidth, srcHeight is used. These coordinates and sizes are given in
-         * texels. FlipX and flipY specify whether the texture portion should be flipped horizontally or vertically.
+        /** Metodo completo de dibujado:
          * @param x the x-coordinate in screen space
          * @param y the y-coordinate in screen space
          * @param originX the x-coordinate of the scaling and rotation origin relative to the screen space coordinates
@@ -69,4 +63,5 @@ public class BaseActor extends Actor {
                 false, false
         );
     }
+
 }

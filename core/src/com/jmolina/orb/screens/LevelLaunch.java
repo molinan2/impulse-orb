@@ -44,7 +44,7 @@ public class LevelLaunch extends Menu {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 button.clickEffect();
-                switchToScreen(LEVEL, Hierarchy.LOWER);
+                switchToScreen(LEVEL_1, Hierarchy.LOWER);
             }
         });
     }
