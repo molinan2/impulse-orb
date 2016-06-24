@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.jmolina.orb.Orb;
 import com.jmolina.orb.screens.Credits;
-import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.screens.Level1;
 import com.jmolina.orb.screens.LevelLaunch;
 import com.jmolina.orb.screens.LevelSelect;
@@ -20,8 +19,7 @@ public class ScreenManager {
     public enum Key {
         LOAD, MAIN,
         OPTIONS, STATS, CREDITS, LEVEL_SELECT,
-        LEVEL_LAUNCH_1, LEVEL_LAUNCH_2, LEVEL_LAUNCH_3, LEVEL_LAUNCH_4,
-        LEVEL,
+        LEVEL_LAUNCH_1, LEVEL_LAUNCH_2, LEVEL_LAUNCH_3, LEVEL_LAUNCH_4, LEVEL_LAUNCH_5,
         LEVEL_1
     }
 
@@ -97,7 +95,7 @@ public class ScreenManager {
         screens.put(Key.LEVEL_LAUNCH_2, new LevelLaunch(getSuperManager(), "ADVANCED"));
         screens.put(Key.LEVEL_LAUNCH_3, new LevelLaunch(getSuperManager(), "EXPERT"));
         screens.put(Key.LEVEL_LAUNCH_4, new LevelLaunch(getSuperManager(), "HERO"));
-        screens.put(Key.LEVEL, new Level(getSuperManager()));
+        screens.put(Key.LEVEL_LAUNCH_5, new LevelLaunch(getSuperManager(), "GOD"));
         screens.put(Key.LEVEL_1, new Level1(getSuperManager()));
     }
 

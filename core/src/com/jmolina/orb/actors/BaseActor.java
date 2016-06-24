@@ -13,7 +13,7 @@ public class BaseActor extends Actor {
 
     private Texture texture;
 
-    public BaseActor(Texture t) {
+    public BaseActor(Texture t, float scaleX, float scaleY) {
         texture = t;
 
         if (texture.getTextureData().useMipMaps())
@@ -29,9 +29,13 @@ public class BaseActor extends Actor {
         setSize(texture.getWidth(), texture.getHeight());
         setBounds(getX(), getY(), getWidth(), getHeight());
         setOrigin(0.5f * texture.getWidth(), 0.5f * texture.getHeight());
-        setScale(1f, 1f);
+        setScale(scaleX, scaleY);
         setVisible(true);
         setTouchable(Touchable.disabled);
+    }
+
+    public BaseActor(Texture t) {
+        this(t, 1, 1);
     }
 
     @Override

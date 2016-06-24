@@ -20,11 +20,11 @@ public class Credit extends BaseGroup {
 
         Label.LabelStyle bodyStyle = new Label.LabelStyle();
         bodyStyle.fontColor = new Color(BaseGroup.COLOR_BLACK);
-        bodyStyle.font = getAssetManager().get(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
+        bodyStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
         Label.LabelStyle headerStyle = new Label.LabelStyle();
         headerStyle.fontColor = new Color(BaseGroup.COLOR_BLUE);
-        headerStyle.font = getAssetManager().get(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
+        headerStyle.font = getAsset(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
 
         this.body = new Label(body, bodyStyle);
         this.body.setTouchable(Touchable.disabled);

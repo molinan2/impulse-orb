@@ -6,22 +6,24 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.jmolina.orb.screens.LevelBaseScreen;
 
 public class Ball extends Element {
 
-    // TODO no tiene sentido pasar el radio, si la textura es fija
-
-    public Ball(World world, float x, float y, float radius) {
-        super();
-
-        createFixture(circle(0.25f));
+    public Ball(World world, float x, float y, float diameter) {
+        Shape shape = circle(diameter);
+        createFixture(shape);
         createBody(world, BodyDef.BodyType.DynamicBody, x, y);
-        createActor(new Texture(Gdx.files.internal("ball.png"), true));
+
+        Texture texture = new Texture(Gdx.files.internal("game/ball.png"), true);
+        float scale = diameter / (float) texture.getWidth() / LevelBaseScreen.RATIO_METER_PIXEL;
+
+        createActor(texture, scale);
     }
 
-    public Shape circle(float radius) {
+    private Shape circle(float diameter) {
         CircleShape shape = new CircleShape();
-        shape.setRadius(radius);
+        shape.setRadius(0.5f * diameter);
 
         return shape;
     }

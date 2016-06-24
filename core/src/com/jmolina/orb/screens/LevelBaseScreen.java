@@ -10,12 +10,14 @@ import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actors.Element;
+import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.interfaces.SuperManager;
 
 public class LevelBaseScreen extends BaseScreen {
 
-    private World world;
     private Box2DDebugRenderer debugRenderer;
+
+    private World world;
     private Viewport worldViewport;
     private Viewport gestureViewport;
     private Viewport hudViewport;
@@ -23,17 +25,18 @@ public class LevelBaseScreen extends BaseScreen {
     private Stage hudStage;
     private SnapshotArray<Element> elements;
 
-    private final float RATIO_METER_PIXEL = 0.01f;
+    public final static float RATIO_METER_PIXEL = 0.015625f; // Grid: 12x18.5, 64 pixel/metro
     private final float SCENE_WIDTH = VIEWPORT_WIDTH * RATIO_METER_PIXEL;
     private final float SCENE_HEIGHT = VIEWPORT_HEIGHT * RATIO_METER_PIXEL;
     private final float SCENE_UNIT = SCENE_WIDTH / 12f;
+    private final Vector2 GRAVITY = new Vector2(0, -19.8f);
 
     public LevelBaseScreen(SuperManager superManager) {
         super(superManager);
 
         elements = new SnapshotArray<Element>();
         worldViewport = new FitViewport(SCENE_WIDTH, SCENE_HEIGHT, new OrthographicCamera());
-        world = new World(new Vector2(0,-9.8f), true);
+        world = new World(GRAVITY, true);
         debugRenderer = new Box2DDebugRenderer(true, false, false, true, true, true);
         resetWorldCamera();
     }
@@ -57,8 +60,8 @@ public class LevelBaseScreen extends BaseScreen {
         syncActors(); // Sync Body -> Actor
 
         getBackgroundStage().draw();
-        //debugRenderer.render(world, worldViewport.getCamera().combined);
         getMainStage().draw();
+        debugRenderer.render(world, worldViewport.getCamera().combined);
     }
 
     /**
@@ -93,6 +96,10 @@ public class LevelBaseScreen extends BaseScreen {
         elements.add(element);
     }
 
+    public SnapshotArray<Element> getElements () {
+        return elements;
+    }
+
     public World getWorld() {
         return world;
     }
@@ -116,6 +123,10 @@ public class LevelBaseScreen extends BaseScreen {
 
     public void syncActor(Element element) {
         element.syncActor(worldViewport, SCENE_WIDTH, SCENE_HEIGHT, RATIO_METER_PIXEL);
+    }
+
+    public float u(float unit){
+        return SCENE_UNIT * unit;
     }
 
 }
