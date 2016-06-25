@@ -5,12 +5,18 @@ import com.jmolina.orb.elements.Ball;
 import com.jmolina.orb.elements.Box;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.interfaces.SuperManager;
+import com.jmolina.orb.managers.ScreenManager;
+import com.jmolina.orb.runnables.UIRunnable;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 
 public class Level1 extends LevelBaseScreen {
 
     public Level1(SuperManager superManager) {
         super(superManager);
+
+        setReturningScreen(ScreenManager.Key.LEVEL_LAUNCH_1);
 
         Ball.BallConfig ballConfig = new Ball.BallConfig(getAssetManager(), getWorld(), SCENE_GRID_UNIT);
         Box.BoxConfig boxConfig = new Box.BoxConfig(getAssetManager(), getWorld(), SCENE_GRID_UNIT);
@@ -82,7 +88,8 @@ public class Level1 extends LevelBaseScreen {
         ballConfig.setPosition(5, 18);
         ballConfig.setDiameter(1);
         ballConfig.type = Element.Type.DUMMY;
-        addElement(new Ball(ballConfig, BodyDef.BodyType.DynamicBody));
+        setOrb(new Ball(ballConfig, BodyDef.BodyType.DynamicBody));
+        addElement(getOrb());
     }
 
 }

@@ -125,6 +125,9 @@ public class Element {
 
     }
 
+    /**
+     * Traduce unidades de World a Stage
+     */
     public void syncActor(Viewport viewport, float sceneWidth, float sceneHeight, float ratio) {
         if (actor != null) {
             float offsetX = sceneWidth * 0.5f;

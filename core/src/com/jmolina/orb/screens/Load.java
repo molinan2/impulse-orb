@@ -51,7 +51,7 @@ public class Load extends BaseScreen {
         if (loaded && !switching) {
             switching = true;
             getScreenManager().createMenuScreens(); // TODO Sacar Level de MenuScreens
-            switchToScreen(LEVEL_1, Hierarchy.LOWER); // TODO Restaurar
+            switchToScreen(MAIN, Hierarchy.LOWER); // TODO Restaurar
         }
     }
 

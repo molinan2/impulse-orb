@@ -18,7 +18,7 @@ public class BackStage extends Stage {
 
     @Override
     public boolean keyUp(int keyCode) {
-        if (keyCode == Input.Keys.BACK) {
+        if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
             operation.run();
         }
 

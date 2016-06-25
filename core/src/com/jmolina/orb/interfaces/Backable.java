@@ -1,6 +1,6 @@
 package com.jmolina.orb.interfaces;
 
-public interface BackInteractive {
+public interface Backable {
 
     public void back();
 

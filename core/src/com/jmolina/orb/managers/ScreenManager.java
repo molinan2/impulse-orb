@@ -2,7 +2,7 @@ package com.jmolina.orb.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ArrayMap;
-import com.jmolina.orb.Orb;
+import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.screens.Credits;
 import com.jmolina.orb.screens.Level1;
 import com.jmolina.orb.screens.LevelLaunch;
@@ -23,18 +23,18 @@ public class ScreenManager {
         LEVEL_1
     }
 
-    private Orb orb;
+    private SuperManager superManager;
     private BaseScreen screen;
     private ArrayMap<Key, BaseScreen> screens;
 
 
-    public ScreenManager(Orb orb) {
-        this.orb = orb;
+    public ScreenManager(SuperManager superManager) {
+        this.superManager = superManager;
         screens = new ArrayMap<Key, BaseScreen>();
     }
 
-    private Orb getSuperManager() {
-        return this.orb;
+    private SuperManager getSuperManager() {
+        return this.superManager;
     }
 
     private BaseScreen getCurrentScreen() {

@@ -1,5 +1,6 @@
 package com.jmolina.orb.elements;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -35,6 +36,9 @@ public class BaseActor extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        Color color = getColor();
+        batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+
         /** Metodo completo de dibujado:
          * @param x the x-coordinate in screen space
          * @param y the y-coordinate in screen space
@@ -61,6 +65,9 @@ public class BaseActor extends Actor {
                 texture.getWidth(), texture.getHeight(),
                 false, false
         );
+
+        // Evita que en algunos casos se modifique el color de la stage
+        // batch.setColor(color.r, color.g, color.b, 1f);
     }
 
 }

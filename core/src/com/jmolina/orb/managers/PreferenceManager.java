@@ -3,7 +3,7 @@ package com.jmolina.orb.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.MathUtils;
-import com.jmolina.orb.Orb;
+import com.jmolina.orb.OrbApp;
 
 public class PreferenceManager {
 
@@ -15,7 +15,7 @@ public class PreferenceManager {
     private final String ONLINE = "online";
     private final String ZOOM = "zoom";
 
-    private final String FILE_NAME = Orb.class.getName();
+    private final String FILE_NAME = OrbApp.class.getName();
 
     private Preferences preferences;
 

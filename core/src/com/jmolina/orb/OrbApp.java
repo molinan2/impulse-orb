@@ -9,7 +9,7 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.screens.BaseScreen;
 
 
-public class Orb implements ApplicationListener, SuperManager {
+public class OrbApp implements ApplicationListener, SuperManager {
 
 	private PreferenceManager preferenceManager;
 	private AssetManager assetManager;
@@ -19,7 +19,7 @@ public class Orb implements ApplicationListener, SuperManager {
 	/**
 	 * Constructor
 	 */
-	public Orb() {
+	public OrbApp() {
 	}
 
 

@@ -19,7 +19,6 @@ public class Menu extends BaseScreen {
     private Title title;
     private Table table;
     private ScrollPane scrollPane;
-    private ScreenManager.Key returningScreen;
 
     public Menu(SuperManager superManager) {
         super(superManager);
@@ -74,16 +73,10 @@ public class Menu extends BaseScreen {
         registerActor(actor);
     }
 
-    protected void setReturningScreen(ScreenManager.Key key) {
-        this.returningScreen = key;
-        setReturningScreenListener(key);
-    }
+    @Override
+    protected void setReturningScreen(final ScreenManager.Key key) {
+        super.setReturningScreen(key);
 
-    public ScreenManager.Key getReturningScreen() {
-        return this.returningScreen;
-    }
-
-    private void setReturningScreenListener (final ScreenManager.Key key) {
         title.setListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -98,14 +91,10 @@ public class Menu extends BaseScreen {
     }
 
     @Override
-    public void back() {
-        switchToScreen(this.returningScreen, Hierarchy.HIGHER);
-    }
-
-    @Override
     public void show() {
         scrollPane.setScrollPercentY(0);
         scrollPane.updateVisualScroll();
         super.show();
     }
+
 }

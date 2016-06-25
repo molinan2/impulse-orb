@@ -1,8 +1,13 @@
 package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,6 +16,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.interfaces.SuperManager;
+import com.jmolina.orb.stages.GestureStage;
+import com.jmolina.orb.widgets.Button;
 
 public class LevelBaseScreen extends BaseScreen {
 
@@ -24,11 +31,25 @@ public class LevelBaseScreen extends BaseScreen {
     private Stage hudStage;
     private SnapshotArray<Element> elements;
 
+    private GestureDetector gestureDetector;
+
+
+    /**
+     * En este elemento se centra la camara
+     * No debe actualizarse su posicion con syncActor / syncBody, ¿o si?
+     */
+    private Element orb;
+
     public final static float RATIO_METER_PIXEL = 0.015625f; // Grid: 12x18.5, 64 pixel/metro
     private final static float SCENE_WIDTH = VIEWPORT_WIDTH * RATIO_METER_PIXEL;
     private final static float SCENE_HEIGHT = VIEWPORT_HEIGHT * RATIO_METER_PIXEL;
     public final static float SCENE_GRID_UNIT = SCENE_WIDTH / 12f;
-    private final Vector2 GRAVITY = new Vector2(0, -19.8f);
+    private final Vector2 GRAVITY = new Vector2(0, -9.8f);
+
+    private static final float HALF_TAP_SQUARE_SIZE = 20.0f;
+    private static final float TAP_COUNT_INTERVAL = 0.4f;
+    private static final float LONG_PRESS_DURATION = 1.1f;
+    private static final float MAX_FLING_DELAY = 0.15f;
 
     public LevelBaseScreen(SuperManager superManager) {
         super(superManager);
@@ -38,6 +59,17 @@ public class LevelBaseScreen extends BaseScreen {
         world = new World(GRAVITY, true);
         debugRenderer = new Box2DDebugRenderer(true, false, false, true, true, true);
         resetWorldCamera();
+
+        gestureDetector = new GestureDetector(HALF_TAP_SQUARE_SIZE,
+                TAP_COUNT_INTERVAL,
+                LONG_PRESS_DURATION,
+                MAX_FLING_DELAY,
+                new GestureHandler());
+
+        gestureStage = new Stage();
+
+        addProcessor(gestureStage);
+        addProcessor(gestureDetector);
     }
 
 
@@ -50,6 +82,10 @@ public class LevelBaseScreen extends BaseScreen {
         clearColor();
 
         // Follow camera. Tendria que haber siempre un OrbElement
+        if (orb != null) {
+            worldViewport.getCamera().position.x = orb.getBody().getPosition().x;
+            worldViewport.getCamera().position.y = orb.getBody().getPosition().y;
+        }
 
         getBackgroundStage().act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
         getMainStage().act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
@@ -61,17 +97,6 @@ public class LevelBaseScreen extends BaseScreen {
         getBackgroundStage().draw();
         getMainStage().draw();
         // debugRenderer.render(world, worldViewport.getCamera().combined);
-    }
-
-    /**
-     * Sobreescribo temporalmente para evitar el efecto de transicion
-     */
-    @Override
-    public void show() {
-        // super.show();
-        clearRootActions();
-        setAsInputProcessor();
-        // TODO: El InputProcessor seria gestureStage (o hudStage)
     }
 
     @Override
@@ -126,6 +151,85 @@ public class LevelBaseScreen extends BaseScreen {
 
     public float u(float unit){
         return SCENE_GRID_UNIT * unit;
+    }
+
+    public void setOrb (Element element) {
+        this.orb = element;
+    }
+
+    public Element getOrb () {
+        return this.orb;
+    }
+
+
+    /**
+     * Gesture Handler
+     */
+    public class GestureHandler implements GestureDetector.GestureListener {
+
+        @Override
+        public boolean touchDown(float x, float y, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean tap(float x, float y, int count, int button) {
+            System.out.println("tap");
+
+            // TODO: Que cuando se detenga, este un tiempo detenido
+
+            getOrb().getBody().setLinearVelocity(0,0);
+            getOrb().getBody().setAngularVelocity(0);
+            getOrb().getBody().setLinearDamping(0);
+            getOrb().getBody().setAngularDamping(0);
+
+            return false;
+        }
+
+        @Override
+        public boolean longPress(float x, float y) {
+            return false;
+        }
+
+        @Override
+        public boolean fling(float velocityX, float velocityY, int button) {
+            System.out.println("fling X: " + velocityX + ", Y: " + velocityY);
+
+            getOrb().getBody().applyLinearImpulse(
+                    velocityX * 0.01f,
+                    velocityY * -0.01f,
+                    getOrb().getBody().getPosition().x,
+                    getOrb().getBody().getPosition().y,
+                    true
+            );
+
+            return false;
+        }
+
+        @Override
+        public boolean pan(float x, float y, float deltaX, float deltaY) {
+            return false;
+        }
+
+        @Override
+        public boolean panStop(float x, float y, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean zoom(float initialDistance, float distance) {
+            return false;
+        }
+
+        @Override
+        public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+            return false;
+        }
+
+        @Override
+        public void pinchStop() {
+        }
+
     }
 
 }

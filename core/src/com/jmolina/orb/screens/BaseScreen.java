@@ -1,6 +1,8 @@
 package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -13,7 +15,7 @@ import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.interfaces.BackInteractive;
+import com.jmolina.orb.interfaces.Backable;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.stages.BackStage;
 import com.jmolina.orb.widgets.Background;
@@ -21,7 +23,7 @@ import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class BaseScreen implements Screen, BackInteractive {
+public class BaseScreen implements Screen, Backable {
 
     protected final static float VIEWPORT_HEIGHT = 1184.0f;
     protected final static float VIEWPORT_WIDTH = 768.0f;
@@ -40,10 +42,12 @@ public class BaseScreen implements Screen, BackInteractive {
     private Background background;
     private Viewport mainViewport;
     private Viewport backgroundViewport;
-    private Stage mainStage;
+    private BackStage mainStage;
     private Stage backgroundStage;
     private Hierarchy hierarchy;
     private SnapshotArray<Actor> actors;
+    private ScreenManager.Key returningScreen;
+    private InputMultiplexer multiplexer;
 
 
     /**
@@ -66,6 +70,9 @@ public class BaseScreen implements Screen, BackInteractive {
         backgroundViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         backgroundStage = new Stage(backgroundViewport);
         backgroundStage.addActor(background);
+
+        multiplexer = new InputMultiplexer();
+        addProcessor(mainStage);
     }
 
 
@@ -74,8 +81,8 @@ public class BaseScreen implements Screen, BackInteractive {
         clearRootActions();
         unsetInputProcessor();
         addRootAction(sequence(
-                transition(Flow.ENTERING, hierarchy),
-                run(UIRunnable.setInputProcessor(mainStage))
+                transition(Flow.ENTERING, getHierarchy()),
+                run(UIRunnable.setInputProcessor(getProcessor()))
         ));
     }
 
@@ -117,8 +124,13 @@ public class BaseScreen implements Screen, BackInteractive {
         backgroundStage.dispose();
     }
 
+    protected void setReturningScreen(ScreenManager.Key key) {
+        this.returningScreen = key;
+    }
+
     @Override
     public void back() {
+        switchToScreen(this.returningScreen, Hierarchy.HIGHER);
     }
 
 
@@ -191,7 +203,7 @@ public class BaseScreen implements Screen, BackInteractive {
      * @param hierarchy Hierarchy Jerarquía de la siguiente pantalla respecto de la actual
      * @return
      */
-    private Action transition(Flow flow, Hierarchy hierarchy) {
+    protected Action transition(Flow flow, Hierarchy hierarchy) {
         Action action;
 
         switch (flow) {
@@ -288,6 +300,18 @@ public class BaseScreen implements Screen, BackInteractive {
 
     protected Stage getBackgroundStage() {
         return backgroundStage;
+    }
+
+    public Hierarchy getHierarchy() {
+        return this.hierarchy;
+    }
+
+    protected InputProcessor getProcessor () {
+        return this.multiplexer;
+    }
+
+    protected void addProcessor (InputProcessor processor) {
+        this.multiplexer.addProcessor(processor);
     }
 
 }
