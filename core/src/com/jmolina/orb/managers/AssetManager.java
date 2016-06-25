@@ -1,6 +1,7 @@
 package com.jmolina.orb.managers;
 
 // import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
@@ -29,17 +30,10 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
     }
 
     /**
-     * Preload assets needed for Load screen
-     */
-    public void preloadAll(Class c) {
-        autoPreload(c);
-    }
-
-    /**
-     * Precarga assets indicados en una clase usando reflection
+     * Precarga todos los assets en una clase usando reflection
      * @param c Class
      */
-    public void autoPreload(Class c) {
+    public void preloadAll(Class c) {
         for (Field field : ClassReflection.getFields(c)) {
             try {
                 // Android Studio 2 añade un campo sintetico para soportar su "Instant run",
@@ -59,10 +53,17 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
                 Object o = field.get(c);
                 String name = o.toString();
 
-                if (name.endsWith(".fnt"))
+                if (name.endsWith(".fnt")){
                     this.load(field.get(c).toString(), BitmapFont.class);
-                else if (name.endsWith(".png"))
-                    this.load(field.get(c).toString(), Texture.class);
+                }
+                else if (name.endsWith(".png")) {
+                    TextureLoader.TextureParameter parameter = new TextureLoader.TextureParameter();
+                    parameter.genMipMaps = true;
+                    parameter.minFilter = Texture.TextureFilter.Linear;
+                    parameter.magFilter = Texture.TextureFilter.Linear;
+                    this.load(field.get(c).toString(), Texture.class, parameter);
+                }
+
             } catch (ReflectionException e) {
                 e.printStackTrace();
             }

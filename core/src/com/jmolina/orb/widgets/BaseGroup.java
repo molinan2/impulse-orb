@@ -54,6 +54,7 @@ public class BaseGroup extends Group implements Reseteable, Disposable {
 
     }
 
+    // TODO Eliminar (se puede sustituir por getAsset)
     public AssetManager getAssetManager() {
         return this.assetManager;
     }

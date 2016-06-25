@@ -10,6 +10,14 @@ public class Asset {
     private static final String FONT = "font/";
     private static final String UI = "ui/";
     private static final String APP = "app/";
+    private static final String GAME = "game/";
+
+    public static final String FONT_ROBOTO_BOLD_30 = FONT + "roboto_bold_30.fnt";
+    public static final String FONT_ROBOTO_BOLD_45 = FONT + "roboto_bold_45.fnt";
+    public static final String FONT_ROBOTO_BOLD_90 = FONT + "roboto_bold_90.fnt";
+    public static final String FONT_ROBOTO_MEDIUM_45 = FONT + "roboto_medium_45.fnt";
+    public static final String FONT_ROBOTO_REGULAR_30 = FONT + "roboto_regular_30.fnt";
+    public static final String FONT_ROBOTO_REGULAR_45 = FONT + "roboto_regular_45.fnt";
 
     public static final String UI_CHECKBOX_CHECKED = UI + "checkbox_checked.png";
     public static final String UI_CHECKBOX_UNCHECKED = UI + "checkbox_unchecked.png";
@@ -34,12 +42,13 @@ public class Asset {
     public static final String UI_PROGRESS_BASE = UI + "progress_base.png";
     public static final String UI_PROGRESS_FILL = UI + "progress_fill.png";
 
-    public static final String FONT_ROBOTO_BOLD_30 = FONT + "roboto_bold_30.fnt";
-    public static final String FONT_ROBOTO_BOLD_45 = FONT + "roboto_bold_45.fnt";
-    public static final String FONT_ROBOTO_BOLD_90 = FONT + "roboto_bold_90.fnt";
-    public static final String FONT_ROBOTO_MEDIUM_45 = FONT + "roboto_medium_45.fnt";
-    public static final String FONT_ROBOTO_REGULAR_30 = FONT + "roboto_regular_30.fnt";
-    public static final String FONT_ROBOTO_REGULAR_45 = FONT + "roboto_regular_45.fnt";
+    public static final String GAME_SQUARE_BLACK = GAME + "square_black.png";
+    public static final String GAME_SQUARE_GREY = GAME + "square_grey.png";
+    public static final String GAME_SQUARE_RED = GAME + "square_red.png";
+    public static final String GAME_CIRCLE_BLACK = GAME + "circle_black.png";
+    public static final String GAME_CIRCLE_GREY = GAME + "circle_grey.png";
+    public static final String GAME_CIRCLE_RED = GAME + "circle_red.png";
+    public static final String GAME_CIRCLE_DUMMY = GAME + "circle_dummy.png";
 
     public static final String APP_ICON_128 = APP + "icon_128.png";
     public static final String APP_ICON_64 = APP + "icon_64.png";

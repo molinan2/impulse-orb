@@ -9,8 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jmolina.orb.actors.Element;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.interfaces.SuperManager;
 
 public class LevelBaseScreen extends BaseScreen {
@@ -26,9 +25,9 @@ public class LevelBaseScreen extends BaseScreen {
     private SnapshotArray<Element> elements;
 
     public final static float RATIO_METER_PIXEL = 0.015625f; // Grid: 12x18.5, 64 pixel/metro
-    private final float SCENE_WIDTH = VIEWPORT_WIDTH * RATIO_METER_PIXEL;
-    private final float SCENE_HEIGHT = VIEWPORT_HEIGHT * RATIO_METER_PIXEL;
-    private final float SCENE_UNIT = SCENE_WIDTH / 12f;
+    private final static float SCENE_WIDTH = VIEWPORT_WIDTH * RATIO_METER_PIXEL;
+    private final static float SCENE_HEIGHT = VIEWPORT_HEIGHT * RATIO_METER_PIXEL;
+    public final static float SCENE_GRID_UNIT = SCENE_WIDTH / 12f;
     private final Vector2 GRAVITY = new Vector2(0, -19.8f);
 
     public LevelBaseScreen(SuperManager superManager) {
@@ -61,7 +60,7 @@ public class LevelBaseScreen extends BaseScreen {
 
         getBackgroundStage().draw();
         getMainStage().draw();
-        debugRenderer.render(world, worldViewport.getCamera().combined);
+        // debugRenderer.render(world, worldViewport.getCamera().combined);
     }
 
     /**
@@ -126,7 +125,7 @@ public class LevelBaseScreen extends BaseScreen {
     }
 
     public float u(float unit){
-        return SCENE_UNIT * unit;
+        return SCENE_GRID_UNIT * unit;
     }
 
 }

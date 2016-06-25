@@ -1,4 +1,4 @@
-package com.jmolina.orb.actors;
+package com.jmolina.orb.elements;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -15,11 +15,6 @@ public class BaseActor extends Actor {
 
     public BaseActor(Texture t, float scaleX, float scaleY) {
         texture = t;
-
-        if (texture.getTextureData().useMipMaps())
-            texture.setFilter(Texture.TextureFilter.MipMap, Texture.TextureFilter.MipMap);
-        else
-            texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         // Para texturas repetibles
         texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
