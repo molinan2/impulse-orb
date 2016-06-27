@@ -16,9 +16,9 @@ import com.jmolina.orb.elements.Element;
  * - Que guarde su altura y se consulte cuando se vayan a apilar las situaciones
  * - Que guarde su anchura e idem (mas complicado)
  */
-public class Situation103 extends Situation {
+public class Situation107 extends Situation {
 
-    public Situation103(AssetManager am, World world, float worldGridUnit) {
+    public Situation107(AssetManager am, World world, float worldGridUnit) {
         super(am, world, worldGridUnit);
     }
 
@@ -26,30 +26,20 @@ public class Situation103 extends Situation {
         Ball.BallConfig ballConfig = new Ball.BallConfig(getAssetManager(), getWorld(), getPixelsPerMeter());
         Box.BoxConfig boxConfig = new Box.BoxConfig(getAssetManager(), getWorld(), getPixelsPerMeter());
 
-        // Barras
-        boxConfig.setPosition(4.5f, 3.5f);
-        boxConfig.setSize(9, 1);
-        boxConfig.rotation = 0;
+        // Franja gris
+        boxConfig.setPosition(3.5f, 5);
+        boxConfig.setSize(10, 1);
+        boxConfig.rotation = 45;
         boxConfig.type = Element.Type.GREY;
         addElement(new Box(boxConfig));
 
-        boxConfig.setPosition(7.5f, 7.5f);
-        boxConfig.setSize(9, 1);
-        boxConfig.rotation = 0;
-        boxConfig.type = Element.Type.GREY;
+        // Franja roja
+        boxConfig.setPosition(8.5f, 13);
+        boxConfig.setSize(10, 1);
+        boxConfig.rotation = -45;
+        boxConfig.type = Element.Type.RED;
         addElement(new Box(boxConfig));
 
-        boxConfig.setPosition(4.5f, 11.5f);
-        boxConfig.setSize(9, 1);
-        boxConfig.rotation = 0;
-        boxConfig.type = Element.Type.GREY;
-        addElement(new Box(boxConfig));
-
-        boxConfig.setPosition(7.5f, 15.5f);
-        boxConfig.setSize(9, 1);
-        boxConfig.rotation = 0;
-        boxConfig.type = Element.Type.GREY;
-        addElement(new Box(boxConfig));
 
         // Left+Right walls
         boxConfig.setPosition(-6 + 0.5f, 9);

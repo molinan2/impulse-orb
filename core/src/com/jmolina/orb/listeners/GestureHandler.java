@@ -1,6 +1,7 @@
 package com.jmolina.orb.listeners;
 
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.screens.LevelBaseScreen;
@@ -9,6 +10,7 @@ public class GestureHandler implements GestureDetector.GestureListener {
 
     private final float IMPULSE_RATIO_X = LevelBaseScreen.RATIO_METER_PIXEL;
     private final float IMPULSE_RATIO_Y = -LevelBaseScreen.RATIO_METER_PIXEL;
+    private final float MAX_VELOCITY = 40.0f;
 
     private Element orb;
 

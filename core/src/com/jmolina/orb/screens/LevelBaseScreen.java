@@ -43,7 +43,7 @@ public class LevelBaseScreen extends BaseScreen {
     private final static float WORLD_HEIGHT = VIEWPORT_HEIGHT * RATIO_METER_PIXEL;
     public final static float WORLD_GRID_UNIT = WORLD_WIDTH / 12f;
 
-    private final Vector2 GRAVITY = new Vector2(0, -20f);
+    private final Vector2 GRAVITY = new Vector2(0, -40f);
     private static final float HALF_TAP_SQUARE_SIZE = 20.0f;
     private static final float TAP_COUNT_INTERVAL = 0.4f;
     private static final float LONG_PRESS_DURATION = 1.1f;
@@ -86,17 +86,19 @@ public class LevelBaseScreen extends BaseScreen {
     public void render(float delta) {
         clearColor();
 
-        // Follow camera. Tendria que haber siempre un OrbElement
-        if (orb != null) {
-            worldViewport.getCamera().position.x = orb.getBody().getPosition().x;
-            worldViewport.getCamera().position.y = orb.getBody().getPosition().y;
-        }
-
         getBackgroundStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getMainStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
 
         // Sync Actor -> Body
         world.step(TIME_STEP, VELOCITY_INTERACTIONS, POSITION_INTERACTIONS);
+
+        // Follow camera. Tendria que haber siempre un OrbElement
+        if (orb != null) {
+            worldViewport.getCamera().position.x = orb.getBody().getPosition().x;
+            worldViewport.getCamera().position.y = orb.getBody().getPosition().y;
+            worldViewport.getCamera().update();
+        }
+
         syncActors(); // Sync Body -> Actor
 
         getBackgroundStage().draw();

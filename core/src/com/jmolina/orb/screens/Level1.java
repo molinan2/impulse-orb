@@ -10,6 +10,10 @@ import com.jmolina.orb.situations.Situation101;
 import com.jmolina.orb.situations.Situation102;
 import com.jmolina.orb.situations.Situation103;
 import com.jmolina.orb.situations.Situation104;
+import com.jmolina.orb.situations.Situation105;
+import com.jmolina.orb.situations.Situation106;
+import com.jmolina.orb.situations.Situation107;
+import com.jmolina.orb.situations.Situation199;
 
 
 public class Level1 extends LevelBaseScreen {
@@ -24,6 +28,11 @@ public class Level1 extends LevelBaseScreen {
         addSituation(new Situation102(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
         addSituation(new Situation103(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
         addSituation(new Situation104(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
+        addSituation(new Situation105(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
+        addSituation(new Situation106(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
+        addSituation(new Situation107(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
+        addSituation(new Situation199(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
+
 
         // Bola que cae
         Ball.BallConfig ballConfig = new Ball.BallConfig(getAssetManager(), getWorld(), WORLD_GRID_UNIT);
