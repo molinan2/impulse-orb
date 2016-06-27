@@ -54,14 +54,14 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
                 String name = o.toString();
 
                 if (name.endsWith(".fnt")){
-                    this.load(field.get(c).toString(), BitmapFont.class);
+                    load(field.get(c).toString(), BitmapFont.class);
                 }
                 else if (name.endsWith(".png")) {
                     TextureLoader.TextureParameter parameter = new TextureLoader.TextureParameter();
                     parameter.genMipMaps = true;
                     parameter.minFilter = Texture.TextureFilter.Linear;
                     parameter.magFilter = Texture.TextureFilter.Linear;
-                    this.load(field.get(c).toString(), Texture.class, parameter);
+                    load(field.get(c).toString(), Texture.class, parameter);
                 }
 
             } catch (ReflectionException e) {

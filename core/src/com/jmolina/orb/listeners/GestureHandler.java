@@ -1,10 +1,7 @@
 package com.jmolina.orb.listeners;
 
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.screens.LevelBaseScreen;
 import com.jmolina.orb.stages.GestureStage;
@@ -71,7 +68,7 @@ public class GestureHandler implements GestureDetector.GestureListener {
                 true
         );
 
-        stage.drawGesture();
+        stage.newGesture();
 
         return false;
     }

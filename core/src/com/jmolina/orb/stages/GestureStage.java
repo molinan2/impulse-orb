@@ -1,7 +1,13 @@
 package com.jmolina.orb.stages;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.GL30;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.jmolina.orb.assets.Asset;
@@ -16,6 +22,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 public class GestureStage extends Stage {
 
     private final float PIXELS_PER_METER = 1 / LevelBaseScreen.RATIO_METER_PIXEL;
+    private final float VIEWPORT_WIDTH = BaseScreen.VIEWPORT_WIDTH;
     private final float VIEWPORT_HEIGHT = BaseScreen.VIEWPORT_HEIGHT;
 
     private BaseActor base;
@@ -23,35 +30,38 @@ public class GestureStage extends Stage {
     private BaseActor arrow;
     private Vector2 start;
     private Vector2 end;
-    private float time;
+    private FrameBuffer buffer;
 
     public GestureStage(AssetManager am) {
         super();
 
-        time = 0f;
+        buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
+
         start = new Vector2();
         end = new Vector2();
 
         base = new BaseActor(am.get(Asset.GAME_GESTURE_BASE, Texture.class));
         base.setScale(PIXELS_PER_METER / base.getWidth(), PIXELS_PER_METER / base.getHeight());
-        base.setVisible(false);
 
         line = new BaseActor(am.get(Asset.GAME_GESTURE_LINE, Texture.class));
         line.setScale(PIXELS_PER_METER / line.getWidth(), PIXELS_PER_METER / line.getHeight() / 8f);
-        line.setVisible(false);
 
         arrow = new BaseActor(am.get(Asset.GAME_GESTURE_ARROW, Texture.class));
         arrow.setScale(PIXELS_PER_METER / arrow.getWidth(), PIXELS_PER_METER / arrow.getHeight());
-        arrow.setVisible(false);
 
         addActor(base);
         addActor(line);
         addActor(arrow);
+
+        getRoot().addAction(alpha(0));
     }
 
-    public void drawGesture() {
-        // time += Gdx.graphics.getDeltaTime();
+    public void newGesture() {
+        // Hay que limpiar el buffer cada vez que viene un gesto nuevo
+        buffer.dispose();
+        buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
 
+        // Inicializar posiciones
         base.setPosition(start.x - 0.5f * base.getWidth(), start.y - 0.5f * base.getHeight());
 
         arrow.setPosition(end.x - 0.5f * arrow.getWidth(), end.y - 0.5f * arrow.getHeight());
@@ -64,16 +74,45 @@ public class GestureStage extends Stage {
         line.setScaleX(distance / line.getWidth());
         line.setPosition(0.5f * (base.getX() + arrow.getX()), 0.5f * (base.getY() + arrow.getY()));
 
-        base.setVisible(true);
-        line.setVisible(true);
-        arrow.setVisible(true);
-
         getRoot().clearActions();
         getRoot().addAction(sequence(
                 alpha(1),
                 fadeOut(0.75f)
         ));
     }
+
+    /**
+     * Modificacion de la version de super para permitir el renderizado en FrameBuffer
+     */
+    @Override
+    public void draw() {
+        Camera camera = getViewport().getCamera();
+        camera.update();
+
+        if (!getRoot().isVisible()) return;
+
+        Batch batch = this.getBatch();
+        if (batch != null) {
+            batch.setProjectionMatrix(camera.combined);
+
+            // Se dibuja la stage en el buffer
+            // buffer.bind(); // Esto viene en el libro pero no parece necesario
+            buffer.begin();
+
+            batch.begin();
+            getRoot().draw(batch, 1);
+            batch.end();
+
+            buffer.end();
+            // FrameBuffer.unbind(); // Esto viene en el libro pero no parece necesario
+
+            // Se dibuja el buffer en la pantalla
+            batch.begin();
+            batch.draw(buffer.getColorBufferTexture(), 0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, 0, 0, 1, 1);
+            batch.end();
+        }
+    }
+
 
     /**
      * InputProcessor methods
