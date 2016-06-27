@@ -27,6 +27,7 @@ public class BaseScreen implements Screen, Backable {
 
     protected final static float VIEWPORT_HEIGHT = 1184.0f;
     protected final static float VIEWPORT_WIDTH = 768.0f;
+    protected final float MIN_DELTA_TIME = 1/60f;
 
     /** Jerarquía de esta pantalla respecto de la siguiente */
     public enum Hierarchy {
@@ -91,10 +92,10 @@ public class BaseScreen implements Screen, Backable {
         clearColor();
 
         // backgroundStage.getViewport().apply();
-        backgroundStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
+        backgroundStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         backgroundStage.draw();
         // mainStage.getViewport().apply();
-        mainStage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 60f));
+        mainStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         mainStage.draw();
     }
 

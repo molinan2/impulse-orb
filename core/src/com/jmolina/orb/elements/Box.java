@@ -32,7 +32,8 @@ public class Box extends Element {
     }
 
     public Box(BoxConfig config) {
-        setAssetManager(config.assetManager);
+        super(config);
+
         Shape shape = box(config.width, config.height);
         createFixture(shape);
         createBody(config.world, BodyDef.BodyType.StaticBody, config.x, config.y, config.rotation);

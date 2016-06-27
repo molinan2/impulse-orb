@@ -3,6 +3,7 @@ package com.jmolina.orb.elements;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -14,6 +15,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 
 public class Element {
+
+    private final float DENSITY_DEFAULT = 1.0f;
+    private final float RESTITUTION_DEFAULT = 0.65f;
+    private final float FRICTION_DEFAULT = 0.0f; // friction=0 evita rotaciones al chocar
+
 
     public enum Type {BLACK, GREY, RED, DUMMY}
 
@@ -52,6 +58,12 @@ public class Element {
     private FixtureDef fixtureDef;
     private Fixture fixture;
     private AssetManager assetManager;
+    private float pixelsPerMeter = 1f;
+
+    protected Element(ElementConfig config) {
+        setAssetManager(config.assetManager);
+        pixelsPerMeter = config.pixelsPerMeter;
+    }
 
     public void setAssetManager(AssetManager am) {
         this.assetManager = am;
@@ -66,8 +78,7 @@ public class Element {
     }
 
     public void createFixture(Shape shape) {
-        // friction=0 provoca que las esferas no roten al chocar
-        createFixture(shape, 1, 1, 0.5f);
+        createFixture(shape, DENSITY_DEFAULT, RESTITUTION_DEFAULT, FRICTION_DEFAULT);
     }
 
     public void createFixture(Shape shape, float density, float restitution, float friction) {
@@ -117,8 +128,24 @@ public class Element {
         return body;
     }
 
+    /**
+     * Grid position
+     */
     public void setPosition(float x, float y) {
-        body.getPosition().set(x, y);
+        getBody().setTransform(
+                x * this.pixelsPerMeter,
+                y * this.pixelsPerMeter,
+                getBody().getAngle()
+        );
+    }
+
+    public Vector2 getPosition () {
+        Vector2 position = new Vector2();
+
+        position.x = getBody().getPosition().x / this.pixelsPerMeter;
+        position.y = getBody().getPosition().y / this.pixelsPerMeter;
+
+        return position;
     }
 
     public void syncBody() {

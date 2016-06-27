@@ -34,7 +34,8 @@ public class Ball extends Element {
     }
 
     public Ball(BallConfig config, BodyDef.BodyType bodyType) {
-        setAssetManager(config.assetManager);
+        super(config);
+
         Shape shape = circle(config.diameter);
         createFixture(shape);
         createBody(config.world, bodyType, config.x, config.y);
