@@ -14,16 +14,18 @@ import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.situations.Situation;
+import com.jmolina.orb.stages.GestureStage;
 
 public class LevelBaseScreen extends BaseScreen {
 
     private Box2DDebugRenderer debugRenderer;
+    private boolean debug = false;
 
     private World world;
     private Viewport worldViewport;
     private Viewport gestureViewport;
     private Viewport hudViewport;
-    private Stage gestureStage;
+    private GestureStage gestureStage;
     private Stage hudStage;
     private SnapshotArray<Element> elements;
     private SnapshotArray<Situation> situations;
@@ -43,7 +45,7 @@ public class LevelBaseScreen extends BaseScreen {
     private final static float WORLD_HEIGHT = VIEWPORT_HEIGHT * RATIO_METER_PIXEL;
     public final static float WORLD_GRID_UNIT = WORLD_WIDTH / 12f;
 
-    private final Vector2 GRAVITY = new Vector2(0, -40f);
+    private final Vector2 GRAVITY = new Vector2(0, -60f);
     private static final float HALF_TAP_SQUARE_SIZE = 20.0f;
     private static final float TAP_COUNT_INTERVAL = 0.4f;
     private static final float LONG_PRESS_DURATION = 1.1f;
@@ -59,10 +61,15 @@ public class LevelBaseScreen extends BaseScreen {
         situations = new SnapshotArray<Situation>();
         worldViewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, new OrthographicCamera());
         world = new World(GRAVITY, true);
-        debugRenderer = new Box2DDebugRenderer(true, false, false, true, true, true);
+
+        if (debug) {
+            debugRenderer = new Box2DDebugRenderer(true, false, false, true, true, true);
+        }
+
         resetWorldCamera();
 
-        gestureHandler = new GestureHandler();
+        gestureStage = new GestureStage(getAssetManager());
+        gestureHandler = new GestureHandler(gestureStage);
         gestureDetector = new GestureDetector(
                 HALF_TAP_SQUARE_SIZE,
                 TAP_COUNT_INTERVAL,
@@ -70,8 +77,6 @@ public class LevelBaseScreen extends BaseScreen {
                 MAX_FLING_DELAY,
                 gestureHandler
         );
-
-        gestureStage = new Stage();
 
         addProcessor(gestureStage);
         addProcessor(gestureDetector);
@@ -88,6 +93,7 @@ public class LevelBaseScreen extends BaseScreen {
 
         getBackgroundStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getMainStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
+        getGestureStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
 
         // Sync Actor -> Body
         world.step(TIME_STEP, VELOCITY_INTERACTIONS, POSITION_INTERACTIONS);
@@ -103,7 +109,11 @@ public class LevelBaseScreen extends BaseScreen {
 
         getBackgroundStage().draw();
         getMainStage().draw();
-        // debugRenderer.render(world, worldViewport.getCamera().combined);
+        getGestureStage().draw();
+
+        if (debug) {
+            debugRenderer.render(world, worldViewport.getCamera().combined);
+        }
     }
 
     @Override
@@ -190,6 +200,10 @@ public class LevelBaseScreen extends BaseScreen {
 
     public SnapshotArray<Situation> getSituations () {
         return this.situations;
+    }
+
+    public GestureStage getGestureStage () {
+        return this.gestureStage;
     }
 
 }

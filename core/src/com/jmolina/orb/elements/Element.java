@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class Element {
 
     private final float DENSITY_DEFAULT = 1.0f;
-    private final float RESTITUTION_DEFAULT = 0.65f;
+    private final float RESTITUTION_DEFAULT = 0.8f;
     private final float FRICTION_DEFAULT = 0.0f; // friction=0 evita rotaciones al chocar
 
 
@@ -112,11 +112,13 @@ public class Element {
     }
 
     public void createActor(Texture texture, float scaleX, float scaleY) {
-        actor = new BaseActor(texture, scaleX, scaleY);
+        actor = new BaseActor(texture);
+        actor.setScale(scaleX, scaleY);
     }
 
     public void createActor(Texture texture, float scaleX, float scaleY, float rotation) {
-        actor = new BaseActor(texture, scaleX, scaleY);
+        actor = new BaseActor(texture);
+        actor.setScale(scaleX, scaleY);
         actor.setRotation(rotation);
     }
 

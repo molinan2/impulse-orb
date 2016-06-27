@@ -1,10 +1,13 @@
 package com.jmolina.orb.listeners;
 
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.screens.LevelBaseScreen;
+import com.jmolina.orb.stages.GestureStage;
 
 public class GestureHandler implements GestureDetector.GestureListener {
 
@@ -13,6 +16,11 @@ public class GestureHandler implements GestureDetector.GestureListener {
     private final float MAX_VELOCITY = 40.0f;
 
     private Element orb;
+    private GestureStage stage;
+
+    public GestureHandler(GestureStage stage) {
+        this.stage = stage;
+    }
 
     public Element getOrb() {
         return this.orb;
@@ -22,6 +30,10 @@ public class GestureHandler implements GestureDetector.GestureListener {
         this.orb = orb;
     }
 
+
+    /**
+     * GestureListener methods
+     */
 
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
@@ -58,6 +70,8 @@ public class GestureHandler implements GestureDetector.GestureListener {
                 getOrb().getBody().getPosition().y,
                 true
         );
+
+        stage.drawGesture();
 
         return false;
     }

@@ -49,6 +49,9 @@ public class Asset {
     public static final String GAME_CIRCLE_GREY = GAME + "circle_grey.png";
     public static final String GAME_CIRCLE_RED = GAME + "circle_red.png";
     public static final String GAME_CIRCLE_DUMMY = GAME + "circle_dummy.png";
+    public static final String GAME_GESTURE_BASE = GAME + "gesture_base.png";
+    public static final String GAME_GESTURE_LINE = GAME + "gesture_line.png";
+    public static final String GAME_GESTURE_ARROW = GAME + "gesture_arrow.png";
 
     public static final String APP_ICON_128 = APP + "icon_128.png";
     public static final String APP_ICON_64 = APP + "icon_64.png";

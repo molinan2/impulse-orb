@@ -25,9 +25,9 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class BaseScreen implements Screen, Backable {
 
-    protected final static float VIEWPORT_HEIGHT = 1184.0f;
-    protected final static float VIEWPORT_WIDTH = 768.0f;
-    protected final float MIN_DELTA_TIME = 1/60f;
+    public final static float VIEWPORT_HEIGHT = 1184.0f;
+    public final static float VIEWPORT_WIDTH = 768.0f;
+    public final float MIN_DELTA_TIME = 1/60f;
 
     /** Jerarquía de esta pantalla respecto de la siguiente */
     public enum Hierarchy {

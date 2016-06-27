@@ -14,7 +14,7 @@ public class BaseActor extends Actor {
 
     private Texture texture;
 
-    public BaseActor(Texture t, float scaleX, float scaleY) {
+    public BaseActor(Texture t) {
         texture = t;
 
         // Para texturas repetibles
@@ -25,14 +25,11 @@ public class BaseActor extends Actor {
         setSize(texture.getWidth(), texture.getHeight());
         setBounds(getX(), getY(), getWidth(), getHeight());
         setOrigin(0.5f * texture.getWidth(), 0.5f * texture.getHeight());
-        setScale(scaleX, scaleY);
+        setScale(1.0f, 1.0f);
         setVisible(true);
         setTouchable(Touchable.disabled);
     }
 
-    public BaseActor(Texture t) {
-        this(t, 1, 1);
-    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
