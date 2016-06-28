@@ -1,15 +1,13 @@
 package com.jmolina.orb.stages;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -28,40 +26,55 @@ public class GestureStage extends Stage {
     private BaseActor base;
     private BaseActor line;
     private BaseActor arrow;
+    private BaseActor tap;
+    private Group fling;
     private Vector2 start;
     private Vector2 end;
     private FrameBuffer buffer;
 
-    public GestureStage(AssetManager am) {
-        super();
-
-        buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
+    public GestureStage(Viewport vp, AssetManager am) {
+        super(vp);
 
         start = new Vector2();
         end = new Vector2();
-
+        fling = new Group();
         base = new BaseActor(am.get(Asset.GAME_GESTURE_BASE, Texture.class));
-        base.setScale(PIXELS_PER_METER / base.getWidth(), PIXELS_PER_METER / base.getHeight());
-
         line = new BaseActor(am.get(Asset.GAME_GESTURE_LINE, Texture.class));
-        line.setScale(PIXELS_PER_METER / line.getWidth(), PIXELS_PER_METER / line.getHeight() / 8f);
-
         arrow = new BaseActor(am.get(Asset.GAME_GESTURE_ARROW, Texture.class));
+
+        tap = new BaseActor(am.get(Asset.GAME_GESTURE_BASE, Texture.class));
+        tap.setPosition(
+                VIEWPORT_WIDTH/2 - tap.getWidth()/2,
+                VIEWPORT_HEIGHT/2 - tap.getHeight()/2);
+
+        buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
+
+        base.setScale(PIXELS_PER_METER / base.getWidth(), PIXELS_PER_METER / base.getHeight());
+        line.setScale(PIXELS_PER_METER / line.getWidth(), PIXELS_PER_METER / line.getHeight() / 8f);
         arrow.setScale(PIXELS_PER_METER / arrow.getWidth(), PIXELS_PER_METER / arrow.getHeight());
 
-        addActor(base);
-        addActor(line);
-        addActor(arrow);
+        tap.addAction(fadeOut(0));
+        addActor(tap);
 
-        getRoot().addAction(alpha(0));
+        fling.addActor(base);
+        fling.addActor(line);
+        fling.addActor(arrow);
+        // fling.setTransform(true);
+        addActor(fling);
+        fling.addAction(fadeOut(0));
     }
 
-    public void newGesture() {
+    public void fling() {
+        tap.clearActions();
+        tap.addAction(fadeOut(0));
+        fling.clearActions();
+        fling.addAction(fadeOut(0));
+
         // Hay que limpiar el buffer cada vez que viene un gesto nuevo
         buffer.dispose();
         buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
 
-        // Inicializar posiciones
+        // Actualiza posiciones
         base.setPosition(start.x - 0.5f * base.getWidth(), start.y - 0.5f * base.getHeight());
 
         arrow.setPosition(end.x - 0.5f * arrow.getWidth(), end.y - 0.5f * arrow.getHeight());
@@ -74,43 +87,39 @@ public class GestureStage extends Stage {
         line.setScaleX(distance / line.getWidth());
         line.setPosition(0.5f * (base.getX() + arrow.getX()), 0.5f * (base.getY() + arrow.getY()));
 
-        getRoot().clearActions();
-        getRoot().addAction(sequence(
-                alpha(1),
+        fling.clearActions();
+        fling.addAction(sequence(
+                fadeIn(0),
                 fadeOut(0.75f)
         ));
     }
 
-    /**
-     * Modificacion de la version de super para permitir el renderizado en FrameBuffer
-     */
+    public void tap() {
+        fling.clearActions();
+        fling.addAction(fadeOut(0));
+        tap.clearActions();
+        tap.addAction(fadeOut(0));
+
+        buffer.dispose();
+        buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
+        tap.addAction(sequence(
+                parallel(fadeIn(0),scaleTo(0.25f, 0.25f)),
+                parallel(fadeOut(0.25f), scaleTo(0.5f, 0.5f, 0.25f))
+        ));
+    }
+
+
     @Override
     public void draw() {
-        Camera camera = getViewport().getCamera();
-        camera.update();
+        // Se dibuja la stage en el buffer
+        // buffer.begin();
+        super.draw();
+        // buffer.end();
 
-        if (!getRoot().isVisible()) return;
-
-        Batch batch = this.getBatch();
-        if (batch != null) {
-            batch.setProjectionMatrix(camera.combined);
-
-            // Se dibuja la stage en el buffer
-            // buffer.bind(); // Esto viene en el libro pero no parece necesario
-            buffer.begin();
-
-            batch.begin();
-            getRoot().draw(batch, 1);
-            batch.end();
-
-            buffer.end();
-            // FrameBuffer.unbind(); // Esto viene en el libro pero no parece necesario
-
-            // Se dibuja el buffer en la pantalla
-            batch.begin();
-            batch.draw(buffer.getColorBufferTexture(), 0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, 0, 0, 1, 1);
-            batch.end();
-        }
+        // Se dibuja el buffer en la pantalla
+        // getBatch().begin();
+        // getBatch().draw(buffer.getColorBufferTexture(), 0, 0, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, 0, 0, 1, 1);
+        // getBatch().end();
     }
 
 
@@ -120,13 +129,19 @@ public class GestureStage extends Stage {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        start.set(screenX, VIEWPORT_HEIGHT - screenY);
+        Vector3 vector = new Vector3(screenX, screenY, 0);
+        getCamera().unproject(vector);
+        start.set(vector.x, vector.y);
+
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        end.set(screenX, VIEWPORT_HEIGHT - screenY);
+        Vector3 vector = new Vector3(screenX, screenY, 0);
+        getCamera().unproject(vector);
+        end.set(vector.x, vector.y);
+
         return false;
     }
 

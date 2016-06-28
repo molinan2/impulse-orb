@@ -17,9 +17,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class Element {
 
     private final float DENSITY_DEFAULT = 1.0f;
-    private final float RESTITUTION_DEFAULT = 0.8f;
-    private final float FRICTION_DEFAULT = 0.0f; // friction=0 evita rotaciones al chocar
-
+    private final float RESTITUTION_DEFAULT = 0.6f;
+    private final float FRICTION_DEFAULT = 0.8f; // friction=0 evita rotaciones al chocar
 
     public enum Type {BLACK, GREY, RED, DUMMY}
 

@@ -81,7 +81,7 @@ public class BaseScreen implements Screen, Backable {
     public void show() {
         clearRootActions();
         unsetInputProcessor();
-        addRootAction(sequence(
+        addMainAction(sequence(
                 transition(Flow.ENTERING, getHierarchy()),
                 run(UIRunnable.setInputProcessor(getProcessor()))
         ));
@@ -172,7 +172,7 @@ public class BaseScreen implements Screen, Backable {
         clearRootActions();
         unsetInputProcessor();
 
-        addRootAction(sequence(
+        addMainAction(sequence(
                 transition(Flow.LEAVING, hierarchy),
                 run(UIRunnable.setScreen(getScreenManager(), key, hierarchy))
         ));
@@ -187,7 +187,7 @@ public class BaseScreen implements Screen, Backable {
      */
     public void exitApplication() {
         clearRootActions();
-        addRootAction(sequence(
+        addMainAction(sequence(
                 transition(Flow.LEAVING, Hierarchy.HIGHER),
                 run(UIRunnable.exit())
         ));
@@ -202,7 +202,6 @@ public class BaseScreen implements Screen, Backable {
      *
      * @param flow Flow Flujo de la pantalla actual
      * @param hierarchy Hierarchy Jerarquía de la siguiente pantalla respecto de la actual
-     * @return
      */
     protected Action transition(Flow flow, Hierarchy hierarchy) {
         Action action;
@@ -257,7 +256,7 @@ public class BaseScreen implements Screen, Backable {
         return action;
     }
 
-    public void addRootAction(Action action) {
+    public void addMainAction(Action action) {
         mainStage.getRoot().addAction(action);
     }
 

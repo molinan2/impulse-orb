@@ -64,7 +64,7 @@ public class BaseActor extends Actor {
         );
 
         // Evita que en algunos casos se modifique el color de la stage
-        // batch.setColor(color.r, color.g, color.b, 1f);
+        batch.setColor(color.r, color.g, color.b, color.a);
     }
 
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.elements.Element;
+import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.situations.Situation;
@@ -19,7 +20,6 @@ import com.jmolina.orb.stages.GestureStage;
 public class LevelBaseScreen extends BaseScreen {
 
     private Box2DDebugRenderer debugRenderer;
-    private boolean debug = false;
 
     private World world;
     private Viewport worldViewport;
@@ -38,9 +38,11 @@ public class LevelBaseScreen extends BaseScreen {
      * En este elemento se centra la camara
      * No debe actualizarse su posicion con syncActor / syncBody, ¿o si?
      */
-    private Element orb;
+    private Orb orb;
+    private float blockTimer;
 
     public final static float RATIO_METER_PIXEL = 0.015625f; // Grid: 12x18.5, 64 pixel/metro
+    public final static float PIXELS_PER_METER = 1 / RATIO_METER_PIXEL;
     private final static float WORLD_WIDTH = VIEWPORT_WIDTH * RATIO_METER_PIXEL;
     private final static float WORLD_HEIGHT = VIEWPORT_HEIGHT * RATIO_METER_PIXEL;
     public final static float WORLD_GRID_UNIT = WORLD_WIDTH / 12f;
@@ -50,9 +52,9 @@ public class LevelBaseScreen extends BaseScreen {
     private static final float TAP_COUNT_INTERVAL = 0.4f;
     private static final float LONG_PRESS_DURATION = 1.1f;
     private static final float MAX_FLING_DELAY = 0.15f;
-    private final float TIME_STEP = 1/120f;
-    private final int VELOCITY_INTERACTIONS = 8;
-    private final int POSITION_INTERACTIONS = 3;
+    private final float WORLD_TIME_STEP = 1/120f;
+    private final int WORLD_VELOCITY_INTERACTIONS = 8;
+    private final int WORLD_POSITION_INTERACTIONS = 3;
 
     public LevelBaseScreen(SuperManager superManager) {
         super(superManager);
@@ -61,14 +63,12 @@ public class LevelBaseScreen extends BaseScreen {
         situations = new SnapshotArray<Situation>();
         worldViewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, new OrthographicCamera());
         world = new World(GRAVITY, true);
-
-        if (debug) {
-            debugRenderer = new Box2DDebugRenderer(true, false, false, true, true, true);
-        }
+        debugRenderer = new Box2DDebugRenderer(true, false, false, true, true, true);
 
         resetWorldCamera();
 
-        gestureStage = new GestureStage(getAssetManager());
+        gestureViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera());
+        gestureStage = new GestureStage(gestureViewport, getAssetManager());
         gestureHandler = new GestureHandler(gestureStage);
         gestureDetector = new GestureDetector(
                 HALF_TAP_SQUARE_SIZE,
@@ -80,6 +80,9 @@ public class LevelBaseScreen extends BaseScreen {
 
         addProcessor(gestureStage);
         addProcessor(gestureDetector);
+
+        setOrb(new Orb(getAssetManager(), getWorld(), PIXELS_PER_METER));
+        blockTimer = 0f;
     }
 
 
@@ -91,35 +94,45 @@ public class LevelBaseScreen extends BaseScreen {
     public void render(float delta) {
         clearColor();
 
-        getBackgroundStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
-        getMainStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
-        getGestureStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
-
-        // Sync Actor -> Body
-        world.step(TIME_STEP, VELOCITY_INTERACTIONS, POSITION_INTERACTIONS);
-
-        // Follow camera. Tendria que haber siempre un OrbElement
-        if (orb != null) {
-            worldViewport.getCamera().position.x = orb.getBody().getPosition().x;
-            worldViewport.getCamera().position.y = orb.getBody().getPosition().y;
-            worldViewport.getCamera().update();
+        // Temporal para restaurar el movimiento en el orbe
+        if (getOrb().isLocked()) {
+            if (blockTimer < 0.75f) {
+                blockTimer += Gdx.graphics.getDeltaTime();
+            }
+            else {
+                blockTimer = 0f;
+                getOrb().unlock();
+            }
+        }
+        else {
+            blockTimer = 0f;
         }
 
-        syncActors(); // Sync Body -> Actor
+        getBackgroundStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
+        getGestureStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
+        getMainStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
+
+        // TODO Sync Actor -> Body
+        world.step(WORLD_TIME_STEP, WORLD_VELOCITY_INTERACTIONS, WORLD_POSITION_INTERACTIONS);
+
+        // Follow camera al Orb
+        worldViewport.getCamera().position.x = orb.getBody().getPosition().x;
+        worldViewport.getCamera().position.y = orb.getBody().getPosition().y;
+        worldViewport.getCamera().update();
+
+        syncActors();
 
         getBackgroundStage().draw();
         getMainStage().draw();
         getGestureStage().draw();
-
-        if (debug) {
-            debugRenderer.render(world, worldViewport.getCamera().combined);
-        }
+        // debugRenderer.render(world, worldViewport.getCamera().combined);
     }
 
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        worldViewport.update(width, height); // Tiene sentido ?
+        worldViewport.update(width, height);
+        gestureViewport.update(width, height);
     }
 
     /**
@@ -156,6 +169,9 @@ public class LevelBaseScreen extends BaseScreen {
         worldViewport.getCamera().update();
     }
 
+    /**
+     * Iguala la posicion y rotacion de los Actors a la de sus Bodies
+     */
     public void syncActors() {
         // Elementos independientes TODO ¿Habra?
         for (Element element : elements) {
@@ -168,6 +184,9 @@ public class LevelBaseScreen extends BaseScreen {
                 element.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, RATIO_METER_PIXEL);
             }
         }
+
+        // Orb
+        orb.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, RATIO_METER_PIXEL);
     }
 
     public void syncActor(Element element) {
@@ -178,12 +197,14 @@ public class LevelBaseScreen extends BaseScreen {
         return WORLD_GRID_UNIT * unit;
     }
 
-    public void setOrb (Element element) {
-        this.orb = element;
-        gestureHandler.setOrb(element);
+    public void setOrb (Orb orb) {
+        this.orb = orb;
+        gestureHandler.setOrb(orb);
+        addMainActor(orb.getActor());
+        orb.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, RATIO_METER_PIXEL);
     }
 
-    public Element getOrb () {
+    public Orb getOrb () {
         return this.orb;
     }
 
