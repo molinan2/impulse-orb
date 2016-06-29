@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
 
-public class Button extends BaseGroup {
+public class MainButton extends BaseGroup {
 
     public enum Type {
         Play, Exit, Default
@@ -21,7 +21,7 @@ public class Button extends BaseGroup {
     private Label label;
     private Image bg;
 
-    public Button(AssetManager am, String name, Type type) {
+    public MainButton(AssetManager am, String name, Type type) {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();

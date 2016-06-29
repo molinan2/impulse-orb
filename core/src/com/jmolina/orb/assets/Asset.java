@@ -11,6 +11,7 @@ public class Asset {
     private static final String UI = "ui/";
     private static final String APP = "app/";
     private static final String GAME = "game/";
+    private static final String HUD = "hud/";
 
     public static final String FONT_ROBOTO_BOLD_30 = FONT + "roboto_bold_30.fnt";
     public static final String FONT_ROBOTO_BOLD_45 = FONT + "roboto_bold_45.fnt";
@@ -52,6 +53,12 @@ public class Asset {
     public static final String GAME_GESTURE_BASE = GAME + "gesture_base.png";
     public static final String GAME_GESTURE_LINE = GAME + "gesture_line.png";
     public static final String GAME_GESTURE_ARROW = GAME + "gesture_arrow.png";
+
+    public static final String HUD_BACKGROUND = HUD + "hud_background.png";
+    public static final String HUD_PAUSE = HUD + "hud_pause.png";
+    public static final String HUD_GAUGE_BACKGROUND = HUD + "hud_gauge_background.png";
+    public static final String HUD_GAUGE_FRAME = HUD + "hud_gauge_frame.png";
+    public static final String HUD_GAUGE_BAR = HUD + "hud_gauge_bar.png";
 
     public static final String APP_ICON_128 = APP + "icon_128.png";
     public static final String APP_ICON_64 = APP + "icon_64.png";

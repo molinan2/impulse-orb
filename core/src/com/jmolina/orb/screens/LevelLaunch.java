@@ -8,7 +8,7 @@ import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.widgets.Ladder;
 import com.jmolina.orb.widgets.LevelCover;
 import com.jmolina.orb.widgets.LevelTitle;
-import com.jmolina.orb.widgets.Button;
+import com.jmolina.orb.widgets.MainButton;
 
 import static com.jmolina.orb.managers.ScreenManager.Key.*;
 
@@ -16,7 +16,7 @@ public class LevelLaunch extends Menu {
 
     private LevelTitle title;
     private LevelCover cover;
-    private Button button;
+    private MainButton mainButton;
     private Ladder ladderPersonal;
     private Ladder ladderOnline;
 
@@ -28,22 +28,22 @@ public class LevelLaunch extends Menu {
 
         this.title = new LevelTitle(getAssetManager(), title);
         this.cover = new LevelCover(getAssetManager(), getAsset(Asset.UI_LAUNCH_COVER, Texture.class));
-        this.button = new Button(getAssetManager(), "GO!", Button.Type.Play);
+        this.mainButton = new MainButton(getAssetManager(), "GO!", MainButton.Type.Play);
         ladderPersonal = new Ladder(getAssetManager(), "Personal best");
         ladderOnline = new Ladder(getAssetManager(), "Online ladder");
 
         add(this.title);
         add(this.cover);
-        add(this.button, 1f, 8f);
+        add(this.mainButton, 1f, 8f);
         add(this.ladderPersonal);
         add(this.ladderOnline);
 
         // TODO Hay que parametrizar el nivel que se carga
 
-        button.addListener(new ClickListener(){
+        mainButton.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
-                button.clickEffect();
+                mainButton.clickEffect();
                 switchToScreen(LEVEL_1, Hierarchy.LOWER);
             }
         });
@@ -53,7 +53,7 @@ public class LevelLaunch extends Menu {
     public void dispose() {
         title.dispose();
         cover.dispose();
-        button.dispose();
+        mainButton.dispose();
         ladderOnline.dispose();
         ladderPersonal.dispose();
         super.dispose();

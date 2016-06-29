@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.screens.LevelBaseScreen;
 import com.jmolina.orb.stages.GestureStage;
+import com.jmolina.orb.stages.HUDStage;
 
 public class GestureHandler implements GestureDetector.GestureListener {
 
@@ -14,9 +15,11 @@ public class GestureHandler implements GestureDetector.GestureListener {
 
     private Orb orb;
     private GestureStage gestureStage;
+    private HUDStage hudStage;
 
-    public GestureHandler(GestureStage gestureStage) {
+    public GestureHandler(GestureStage gestureStage, HUDStage hudStage) {
         this.gestureStage = gestureStage;
+        this.hudStage = hudStage;
     }
 
     public Orb getOrb() {
@@ -41,6 +44,7 @@ public class GestureHandler implements GestureDetector.GestureListener {
     public boolean tap(float x, float y, int count, int button) {
         getOrb().lock();
         gestureStage.tap();
+        hudStage.increase(0.2f);
         return false;
     }
 

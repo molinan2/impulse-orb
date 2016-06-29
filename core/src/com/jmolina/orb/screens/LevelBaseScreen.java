@@ -16,6 +16,7 @@ import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.stages.GestureStage;
+import com.jmolina.orb.stages.HUDStage;
 
 public class LevelBaseScreen extends BaseScreen {
 
@@ -26,7 +27,7 @@ public class LevelBaseScreen extends BaseScreen {
     private Viewport gestureViewport;
     private Viewport hudViewport;
     private GestureStage gestureStage;
-    private Stage hudStage;
+    private HUDStage hudStage;
     private SnapshotArray<Element> elements;
     private SnapshotArray<Situation> situations;
 
@@ -67,9 +68,12 @@ public class LevelBaseScreen extends BaseScreen {
 
         resetWorldCamera();
 
+        hudViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera());
+        hudStage = new HUDStage(hudViewport, getAssetManager());
+
         gestureViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera());
         gestureStage = new GestureStage(gestureViewport, getAssetManager());
-        gestureHandler = new GestureHandler(gestureStage);
+        gestureHandler = new GestureHandler(gestureStage, hudStage);
         gestureDetector = new GestureDetector(
                 HALF_TAP_SQUARE_SIZE,
                 TAP_COUNT_INTERVAL,
@@ -80,6 +84,7 @@ public class LevelBaseScreen extends BaseScreen {
 
         addProcessor(gestureStage);
         addProcessor(gestureDetector);
+        addProcessor(hudStage);
 
         setOrb(new Orb(getAssetManager(), getWorld(), PIXELS_PER_METER));
         blockTimer = 0f;
@@ -94,9 +99,9 @@ public class LevelBaseScreen extends BaseScreen {
     public void render(float delta) {
         clearColor();
 
-        // Temporal para restaurar el movimiento en el orbe
+        // TODO Temporal para restaurar el movimiento en el orbe
         if (getOrb().isLocked()) {
-            if (blockTimer < 0.75f) {
+            if (blockTimer < 0.5f) {
                 blockTimer += Gdx.graphics.getDeltaTime();
             }
             else {
@@ -107,6 +112,9 @@ public class LevelBaseScreen extends BaseScreen {
         else {
             blockTimer = 0f;
         }
+
+        // TODO Temporal para decrementar el gauge con el tiempo
+        hudStage.decrease(0.001f);
 
         getBackgroundStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getGestureStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
@@ -125,6 +133,7 @@ public class LevelBaseScreen extends BaseScreen {
         getBackgroundStage().draw();
         getMainStage().draw();
         getGestureStage().draw();
+        getHUDStage().draw();
         // debugRenderer.render(world, worldViewport.getCamera().combined);
     }
 
@@ -133,6 +142,7 @@ public class LevelBaseScreen extends BaseScreen {
         super.resize(width, height);
         worldViewport.update(width, height);
         gestureViewport.update(width, height);
+        hudViewport.update(width, height);
     }
 
     /**
@@ -225,6 +235,10 @@ public class LevelBaseScreen extends BaseScreen {
 
     public GestureStage getGestureStage () {
         return this.gestureStage;
+    }
+
+    public HUDStage getHUDStage () {
+        return this.hudStage;
     }
 
 }

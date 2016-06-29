@@ -24,7 +24,7 @@ public class Level1 extends LevelBaseScreen {
 
         setReturningScreen(ScreenManager.Key.LEVEL_LAUNCH_1);
 
-        addSituation(new Situation100(getAssetManager(), getWorld(), WORLD_GRID_UNIT)); // TODO PPM
+        addSituation(new Situation100(getAssetManager(), getWorld(), WORLD_GRID_UNIT)); // TODO Revisar PPM
         addSituation(new Situation101(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
         addSituation(new Situation102(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
         addSituation(new Situation103(getAssetManager(), getWorld(), WORLD_GRID_UNIT));

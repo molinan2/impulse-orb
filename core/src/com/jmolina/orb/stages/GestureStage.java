@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.managers.AssetManager;
@@ -30,7 +31,7 @@ public class GestureStage extends Stage {
     private Group fling;
     private Vector2 start;
     private Vector2 end;
-    private FrameBuffer buffer;
+    // private FrameBuffer buffer;
 
     public GestureStage(Viewport vp, AssetManager am) {
         super(vp);
@@ -47,7 +48,7 @@ public class GestureStage extends Stage {
                 VIEWPORT_WIDTH/2 - tap.getWidth()/2,
                 VIEWPORT_HEIGHT/2 - tap.getHeight()/2);
 
-        buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
+        // buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
 
         base.setScale(PIXELS_PER_METER / base.getWidth(), PIXELS_PER_METER / base.getHeight());
         line.setScale(PIXELS_PER_METER / line.getWidth(), PIXELS_PER_METER / line.getHeight() / 8f);
@@ -71,8 +72,8 @@ public class GestureStage extends Stage {
         fling.addAction(fadeOut(0));
 
         // Hay que limpiar el buffer cada vez que viene un gesto nuevo
-        buffer.dispose();
-        buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
+        // buffer.dispose();
+        // buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
 
         // Actualiza posiciones
         base.setPosition(start.x - 0.5f * base.getWidth(), start.y - 0.5f * base.getHeight());
@@ -100,8 +101,9 @@ public class GestureStage extends Stage {
         tap.clearActions();
         tap.addAction(fadeOut(0));
 
-        buffer.dispose();
-        buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
+        // buffer.dispose();
+        // buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
+
         tap.addAction(sequence(
                 parallel(fadeIn(0),scaleTo(0.25f, 0.25f)),
                 parallel(fadeOut(0.25f), scaleTo(0.5f, 0.5f, 0.25f))

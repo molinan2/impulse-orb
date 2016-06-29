@@ -18,7 +18,7 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.interfaces.Backable;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.stages.BackStage;
-import com.jmolina.orb.widgets.Background;
+import com.jmolina.orb.widgets.ScreenBackground;
 import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -40,7 +40,7 @@ public class BaseScreen implements Screen, Backable {
     }
 
     private SuperManager superManager;
-    private Background background;
+    private ScreenBackground screenBackground;
     private Viewport mainViewport;
     private Viewport backgroundViewport;
     private BackStage mainStage;
@@ -67,10 +67,10 @@ public class BaseScreen implements Screen, Backable {
         mainStage.getRoot().setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         mainStage.getRoot().setPosition(0f, 0f);
 
-        background = new Background(getAssetManager(), VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        screenBackground = new ScreenBackground(getAssetManager(), VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         backgroundViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         backgroundStage = new Stage(backgroundViewport);
-        backgroundStage.addActor(background);
+        backgroundStage.addActor(screenBackground);
 
         multiplexer = new InputMultiplexer();
         addProcessor(mainStage);

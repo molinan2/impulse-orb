@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.screens.LevelBaseScreen;
 
 public class Ball extends Element {
@@ -54,11 +55,10 @@ public class Ball extends Element {
 
     private Texture getTexture(Type type) {
         switch (type) {
-            case BLACK: return getAsset("game/circle_black.png", Texture.class);
-            case GREY: return getAsset("game/circle_grey.png", Texture.class);
-            case RED: return getAsset("game/circle_red.png", Texture.class);
-            case DUMMY: return getAsset("game/circle_dummy.png", Texture.class);
-            default: return getAsset("game/circle_grey.png", Texture.class);
+            case BLACK: return getAsset(Asset.GAME_CIRCLE_BLACK, Texture.class);
+            case GREY: return getAsset(Asset.GAME_CIRCLE_GREY, Texture.class);
+            case RED: return getAsset(Asset.GAME_CIRCLE_RED, Texture.class);
+            default: return getAsset(Asset.GAME_CIRCLE_GREY, Texture.class);
         }
     }
 
