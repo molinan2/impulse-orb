@@ -17,12 +17,12 @@ import com.jmolina.orb.elements.Element;
  */
 public class Situation199 extends Situation {
 
-    public Situation199(AssetManager am, World world, float worldGridUnit) {
-        super(am, world, worldGridUnit);
+    public Situation199(AssetManager am, World world) {
+        super(am, world);
     }
 
     protected void createElements () {
-        Box.BoxConfig boxConfig = new Box.BoxConfig(getAssetManager(), getWorld(), getPixelsPerMeter());
+        Box.BoxConfig boxConfig = new Box.BoxConfig(getAssetManager(), getWorld());
 
         // Top wall
         boxConfig.setPosition(6, 27);

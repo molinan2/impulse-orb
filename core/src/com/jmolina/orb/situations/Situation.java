@@ -9,16 +9,14 @@ public abstract class Situation {
 
     private AssetManager assetManager;
     private World world;
-    private float pixelsPerMeter;
     private SnapshotArray<Element> elements;
     private float height = 18f;
     private float width;
 
-    public Situation(AssetManager am, World world, float pixelsPerMeter) {
+    public Situation(AssetManager am, World world) {
         this.elements = new SnapshotArray<Element>();
         this.assetManager = am;
         this.world = world;
-        this.pixelsPerMeter = pixelsPerMeter;
 
         createElements();
     }
@@ -37,7 +35,7 @@ public abstract class Situation {
         for (Element element : getElements()) {
             element.setPosition(
                     element.getBody().getPosition().x,
-                    element.getBody().getPosition().y + order * height * pixelsPerMeter
+                    element.getBody().getPosition().y + order * height
             );
         }
     }
@@ -48,10 +46,6 @@ public abstract class Situation {
 
     protected World getWorld() {
         return this.world;
-    }
-
-    protected float getPixelsPerMeter() {
-        return this.pixelsPerMeter;
     }
 
 }

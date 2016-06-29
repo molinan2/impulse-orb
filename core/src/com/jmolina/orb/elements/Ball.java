@@ -18,15 +18,11 @@ public class Ball extends Element {
             super(am, world);
         }
 
-        public BallConfig(AssetManager am, World world, float ratio){
-            super(am, world, ratio);
-        }
-
         /**
          * Convierte a unidades de Grid teniendo en cuenta la cantidad de pixeles por metro
          */
         public void setDiameter(float diameter) {
-            this.diameter = pixelsPerMeter * diameter;
+            this.diameter = diameter;
         }
     }
 

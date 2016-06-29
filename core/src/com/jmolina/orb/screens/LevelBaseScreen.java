@@ -46,7 +46,6 @@ public class LevelBaseScreen extends BaseScreen {
     public final static float PIXELS_PER_METER = 1 / RATIO_METER_PIXEL;
     private final static float WORLD_WIDTH = VIEWPORT_WIDTH * RATIO_METER_PIXEL;
     private final static float WORLD_HEIGHT = VIEWPORT_HEIGHT * RATIO_METER_PIXEL;
-    public final static float WORLD_GRID_UNIT = WORLD_WIDTH / 12f;
 
     private final Vector2 GRAVITY = new Vector2(0, -60f);
     private static final float HALF_TAP_SQUARE_SIZE = 20.0f;
@@ -201,10 +200,6 @@ public class LevelBaseScreen extends BaseScreen {
 
     public void syncActor(Element element) {
         element.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, RATIO_METER_PIXEL);
-    }
-
-    public float u(float unit){
-        return WORLD_GRID_UNIT * unit;
     }
 
     public void setOrb (Orb orb) {

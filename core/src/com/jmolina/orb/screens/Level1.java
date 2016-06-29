@@ -24,15 +24,15 @@ public class Level1 extends LevelBaseScreen {
 
         setReturningScreen(ScreenManager.Key.LEVEL_LAUNCH_1);
 
-        addSituation(new Situation100(getAssetManager(), getWorld(), WORLD_GRID_UNIT)); // TODO Revisar PPM
-        addSituation(new Situation101(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
-        addSituation(new Situation102(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
-        addSituation(new Situation103(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
-        addSituation(new Situation104(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
-        addSituation(new Situation105(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
-        addSituation(new Situation106(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
-        addSituation(new Situation107(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
-        addSituation(new Situation199(getAssetManager(), getWorld(), WORLD_GRID_UNIT));
+        addSituation(new Situation100(getAssetManager(), getWorld())); // TODO Revisar PPM
+        addSituation(new Situation101(getAssetManager(), getWorld()));
+        addSituation(new Situation102(getAssetManager(), getWorld()));
+        addSituation(new Situation103(getAssetManager(), getWorld()));
+        addSituation(new Situation104(getAssetManager(), getWorld()));
+        addSituation(new Situation105(getAssetManager(), getWorld()));
+        addSituation(new Situation106(getAssetManager(), getWorld()));
+        addSituation(new Situation107(getAssetManager(), getWorld()));
+        addSituation(new Situation199(getAssetManager(), getWorld()));
 
         getOrb().setPosition(6, 9);
     }

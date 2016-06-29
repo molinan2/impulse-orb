@@ -25,7 +25,6 @@ public class Element {
     static public class ElementConfig {
         public AssetManager assetManager;
         public World world;
-        public float pixelsPerMeter = 1f;
         public float x;
         public float y;
         public float rotation = 0f;
@@ -36,18 +35,12 @@ public class Element {
             this.world = world;
         }
 
-        protected ElementConfig(AssetManager am, World world, float pixelsPerMeter) {
-            this.assetManager = am;
-            this.world = world;
-            this.pixelsPerMeter = pixelsPerMeter;
-        }
-
         /**
          * Convierte a unidades de Grid teniendo en cuenta la cantidad de pixeles por metro
          */
         public void setPosition(float x, float y) {
-            this.x = this.pixelsPerMeter * x;
-            this.y = this.pixelsPerMeter * y;
+            this.x = x;
+            this.y = y;
         }
     }
 
@@ -61,7 +54,6 @@ public class Element {
 
     protected Element(ElementConfig config) {
         setAssetManager(config.assetManager);
-        pixelsPerMeter = config.pixelsPerMeter;
     }
 
     public void setAssetManager(AssetManager am) {

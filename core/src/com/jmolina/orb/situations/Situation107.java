@@ -18,13 +18,13 @@ import com.jmolina.orb.elements.Element;
  */
 public class Situation107 extends Situation {
 
-    public Situation107(AssetManager am, World world, float worldGridUnit) {
-        super(am, world, worldGridUnit);
+    public Situation107(AssetManager am, World world) {
+        super(am, world);
     }
 
     protected void createElements () {
-        Ball.BallConfig ballConfig = new Ball.BallConfig(getAssetManager(), getWorld(), getPixelsPerMeter());
-        Box.BoxConfig boxConfig = new Box.BoxConfig(getAssetManager(), getWorld(), getPixelsPerMeter());
+        Ball.BallConfig ballConfig = new Ball.BallConfig(getAssetManager(), getWorld());
+        Box.BoxConfig boxConfig = new Box.BoxConfig(getAssetManager(), getWorld());
 
         // Franja gris
         boxConfig.setPosition(3.5f, 5);

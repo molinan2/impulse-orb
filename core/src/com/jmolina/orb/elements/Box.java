@@ -19,16 +19,12 @@ public class Box extends Element {
             super(am, world);
         }
 
-        public BoxConfig(AssetManager am, World world, float ratio){
-            super(am, world, ratio);
-        }
-
         /**
          * Convierte a unidades de Grid teniendo en cuenta la cantidad de pixeles por metro
          */
         public void setSize(float width, float height) {
-            this.width = pixelsPerMeter * width;
-            this.height = pixelsPerMeter * height;
+            this.width = width;
+            this.height = height;
         }
     }
 
