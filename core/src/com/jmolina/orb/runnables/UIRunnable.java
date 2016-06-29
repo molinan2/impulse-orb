@@ -54,7 +54,7 @@ public abstract class UIRunnable {
         };
     }
 
-    static public Runnable backOperation (final BaseScreen screen) {
+    static public Runnable backOperation(final BaseScreen screen) {
         return new Runnable() {
             @Override
             public void run() {

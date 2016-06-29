@@ -17,6 +17,7 @@ import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
+import com.jmolina.orb.stages.ParallaxStage;
 
 public class LevelBaseScreen extends BaseScreen {
 
@@ -33,6 +34,12 @@ public class LevelBaseScreen extends BaseScreen {
 
     private GestureDetector gestureDetector;
     private GestureHandler gestureHandler;
+
+
+    // Temporal
+    private ParallaxStage parallaxStage;
+    private Viewport parallaxViewport;
+
 
 
     /**
@@ -81,12 +88,22 @@ public class LevelBaseScreen extends BaseScreen {
                 gestureHandler
         );
 
+
+
         addProcessor(gestureStage);
         addProcessor(gestureDetector);
         addProcessor(hudStage);
 
         setOrb(new Orb(getAssetManager(), getWorld(), PIXELS_PER_METER));
         blockTimer = 0f;
+
+
+
+
+
+        // getBackgroundStage().clear();
+        parallaxViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera());
+        parallaxStage = new ParallaxStage(parallaxViewport, getAssetManager());
     }
 
 
@@ -115,6 +132,7 @@ public class LevelBaseScreen extends BaseScreen {
         // TODO Temporal para decrementar el gauge con el tiempo
         hudStage.decrease(0.001f);
 
+        parallaxStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getBackgroundStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getGestureStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getMainStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
@@ -129,7 +147,13 @@ public class LevelBaseScreen extends BaseScreen {
 
         syncActors();
 
-        getBackgroundStage().draw();
+
+
+        parallaxStage.draw(
+                worldViewport.getCamera().position.x,
+                worldViewport.getCamera().position.y
+        );
+        // getBackgroundStage().draw();
         getMainStage().draw();
         getGestureStage().draw();
         getHUDStage().draw();
@@ -142,6 +166,7 @@ public class LevelBaseScreen extends BaseScreen {
         worldViewport.update(width, height);
         gestureViewport.update(width, height);
         hudViewport.update(width, height);
+        parallaxViewport.update(width, height);
     }
 
     /**

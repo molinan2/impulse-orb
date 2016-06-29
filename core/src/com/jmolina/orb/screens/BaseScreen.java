@@ -17,7 +17,7 @@ import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.interfaces.Backable;
 import com.jmolina.orb.runnables.UIRunnable;
-import com.jmolina.orb.stages.BackStage;
+import com.jmolina.orb.stages.BaseStage;
 import com.jmolina.orb.widgets.ScreenBackground;
 import com.jmolina.orb.widgets.BaseGroup;
 
@@ -43,7 +43,7 @@ public class BaseScreen implements Screen, Backable {
     private ScreenBackground screenBackground;
     private Viewport mainViewport;
     private Viewport backgroundViewport;
-    private BackStage mainStage;
+    private BaseStage mainStage;
     private Stage backgroundStage;
     private Hierarchy hierarchy;
     private SnapshotArray<Actor> actors;
@@ -60,7 +60,7 @@ public class BaseScreen implements Screen, Backable {
         actors = new SnapshotArray<Actor>();
         hierarchy = Hierarchy.LOWER;
         mainViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        mainStage = new BackStage(mainViewport, UIRunnable.backOperation(this));
+        mainStage = new BaseStage(mainViewport, UIRunnable.backOperation(this));
 
         mainStage.getRoot().setOrigin(VIEWPORT_WIDTH * 0.5f, VIEWPORT_HEIGHT * 0.5f);
         mainStage.getRoot().setScale(1f, 1f);
@@ -312,6 +312,16 @@ public class BaseScreen implements Screen, Backable {
 
     protected void addProcessor (InputProcessor processor) {
         this.multiplexer.addProcessor(processor);
+    }
+
+    /**
+     * Permite sustituir la Stage de fondo por defecto
+     * @param stage Stage
+     */
+    public void setBackgroundStage (Stage stage) {
+        this.screenBackground.dispose();
+        this.backgroundStage.dispose();
+        this.backgroundStage = stage;
     }
 
 }
