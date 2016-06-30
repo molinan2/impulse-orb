@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.assets.Asset;
-import com.jmolina.orb.screens.LevelBaseScreen;
+import com.jmolina.orb.screens.LevelScreen;
 
 public class Box extends Element {
 
@@ -36,8 +36,8 @@ public class Box extends Element {
         createBody(config.world, BodyDef.BodyType.StaticBody, config.x, config.y, config.rotation);
 
         Texture texture = getTexture(config.type);
-        float scaleX = config.width / (float) texture.getWidth() / LevelBaseScreen.RATIO_METER_PIXEL;
-        float scaleY = config.height / (float) texture.getHeight() / LevelBaseScreen.RATIO_METER_PIXEL;
+        float scaleX = config.width / (float) texture.getWidth() / LevelScreen.RATIO_METER_PIXEL;
+        float scaleY = config.height / (float) texture.getHeight() / LevelScreen.RATIO_METER_PIXEL;
         createActor(texture, scaleX, scaleY, config.rotation);
     }
 

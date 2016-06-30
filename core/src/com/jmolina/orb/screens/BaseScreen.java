@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -17,34 +18,29 @@ import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.interfaces.Backable;
 import com.jmolina.orb.runnables.UIRunnable;
+import com.jmolina.orb.stages.BackgroundStage;
 import com.jmolina.orb.stages.BaseStage;
 import com.jmolina.orb.widgets.ScreenBackground;
 import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class BaseScreen implements Screen, Backable {
+public class BaseScreen extends ScreenAdapter implements Backable {
 
     public final static float VIEWPORT_HEIGHT = 1184.0f;
     public final static float VIEWPORT_WIDTH = 768.0f;
     public final float MIN_DELTA_TIME = 1/60f;
 
     /** Jerarquía de esta pantalla respecto de la siguiente */
-    public enum Hierarchy {
-        LOWER, HIGHER
-    }
+    public enum Hierarchy { LOWER, HIGHER }
 
     /** Flujo de navegación de la pantalla */
-    public enum Flow {
-        ENTERING, LEAVING
-    }
+    public enum Flow { ENTERING, LEAVING }
 
     private SuperManager superManager;
-    private ScreenBackground screenBackground;
-    private Viewport mainViewport;
-    private Viewport backgroundViewport;
+    private Viewport mainViewport, backgroundViewport;
     private BaseStage mainStage;
-    private Stage backgroundStage;
+    private BackgroundStage backgroundStage;
     private Hierarchy hierarchy;
     private SnapshotArray<Actor> actors;
     private ScreenManager.Key returningScreen;
@@ -54,28 +50,28 @@ public class BaseScreen implements Screen, Backable {
     /**
      * Constructor
      */
-    public BaseScreen(SuperManager superManager) {
-        this.superManager = superManager;
+    public BaseScreen(SuperManager sm) {
+        superManager = sm;
 
         actors = new SnapshotArray<Actor>();
         hierarchy = Hierarchy.LOWER;
         mainViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        backgroundViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         mainStage = new BaseStage(mainViewport, UIRunnable.backOperation(this));
+        backgroundStage = new BackgroundStage(getAssetManager(), backgroundViewport);
+        multiplexer = new InputMultiplexer();
 
         mainStage.getRoot().setOrigin(VIEWPORT_WIDTH * 0.5f, VIEWPORT_HEIGHT * 0.5f);
         mainStage.getRoot().setScale(1f, 1f);
         mainStage.getRoot().setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         mainStage.getRoot().setPosition(0f, 0f);
-
-        screenBackground = new ScreenBackground(getAssetManager(), VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        backgroundViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        backgroundStage = new Stage(backgroundViewport);
-        backgroundStage.addActor(screenBackground);
-
-        multiplexer = new InputMultiplexer();
         addProcessor(mainStage);
     }
 
+
+    /**
+     * Screen methods
+     */
 
     @Override
     public void show() {
@@ -106,16 +102,7 @@ public class BaseScreen implements Screen, Backable {
     }
 
     @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
     public void hide() {
-        clearActions();
         clearRootActions();
     }
 
@@ -125,9 +112,10 @@ public class BaseScreen implements Screen, Backable {
         backgroundStage.dispose();
     }
 
-    protected void setReturningScreen(ScreenManager.Key key) {
-        this.returningScreen = key;
-    }
+
+    /**
+     * Backable methods
+     */
 
     @Override
     public void back() {
@@ -135,24 +123,41 @@ public class BaseScreen implements Screen, Backable {
     }
 
 
-    public void setHierarchy(Hierarchy hierarchy) {
-        this.hierarchy = hierarchy;
+    /**
+     * Class methods
+     */
+
+    protected void clearColor() {
+        Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    }
+
+    private SuperManager getSuperManager() {
+        return this.superManager;
     }
 
     public AssetManager getAssetManager() {
         return getSuperManager().getAssetManager();
     }
 
-    public ScreenManager getScreenManager() {
-        return getSuperManager().getScreenManager();
-    }
-
     public synchronized <T> T getAsset (String fileName, Class<T> type) {
         return getAssetManager().get(fileName, type);
     }
 
-    private SuperManager getSuperManager() {
-        return this.superManager;
+    public ScreenManager getScreenManager() {
+        return getSuperManager().getScreenManager();
+    }
+
+    protected void setReturningScreen(ScreenManager.Key key) {
+        this.returningScreen = key;
+    }
+
+    public void setHierarchy(Hierarchy hierarchy) {
+        this.hierarchy = hierarchy;
+    }
+
+    public Hierarchy getHierarchy() {
+        return this.hierarchy;
     }
 
     public void setAsInputProcessor() {
@@ -163,6 +168,14 @@ public class BaseScreen implements Screen, Backable {
         Gdx.input.setInputProcessor(null);
     }
 
+    protected InputProcessor getProcessor () {
+        return this.multiplexer;
+    }
+
+    protected void addProcessor (InputProcessor processor) {
+        this.multiplexer.addProcessor(processor);
+    }
+
     /**
      * Ejecuta la animacion de salida y cambia a otra pantalla
      * @param key Name Nombre de la siguiente pantalla
@@ -171,7 +184,6 @@ public class BaseScreen implements Screen, Backable {
     public void switchToScreen(final ScreenManager.Key key, final Hierarchy hierarchy) {
         clearRootActions();
         unsetInputProcessor();
-
         addMainAction(sequence(
                 transition(Flow.LEAVING, hierarchy),
                 run(UIRunnable.setScreen(getScreenManager(), key, hierarchy))
@@ -181,9 +193,10 @@ public class BaseScreen implements Screen, Backable {
     /**
      * Ejecuta la animacion de salida y termina la aplicacion
      *
-     * TODO Las pantallas no deberian salir por si mismas, sino solicitar a un controller salir de
-     * TODO la aplicacion, y el controller debe devolver una respuesta. Si es positiva, la pantalla
-     * TODO anima su salida; si no, deberia mostrar algun feedback. Pero no va a ser asi...
+     * TODO
+     * Las pantallas no deberian salir por si mismas, sino solicitar a un controller salir de
+     * la aplicacion, y el controller debe devolver una respuesta. Si es positiva, la pantalla
+     * anima su salida; si no, deberia mostrar algun feedback. Pero no va a ser asi...
      */
     public void exitApplication() {
         clearRootActions();
@@ -193,8 +206,12 @@ public class BaseScreen implements Screen, Backable {
         ));
     }
 
-    public void clearRootActions() {
+    private void clearRootActions() {
         mainStage.getRoot().clearActions();
+    }
+
+    private void addMainAction(Action action) {
+        mainStage.getRoot().addAction(action);
     }
 
     /**
@@ -256,15 +273,6 @@ public class BaseScreen implements Screen, Backable {
         return action;
     }
 
-    public void addMainAction(Action action) {
-        mainStage.getRoot().addAction(action);
-    }
-
-    protected void clearColor() {
-        Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    }
-
     /**
      * Añade un Actor a la Stage principal
      */
@@ -281,47 +289,8 @@ public class BaseScreen implements Screen, Backable {
         this.actors.add(actor);
     }
 
-    /**
-     * Resetea todas las acciones en los actores registrados
-     */
-    private void clearActions() {
-        for (Actor actor : actors) {
-            actor.clearActions();
-
-            if (actor instanceof BaseGroup) {
-                ((BaseGroup) actor).reset();
-            }
-        }
-    }
-
     protected Stage getMainStage() {
         return mainStage;
-    }
-
-    protected Stage getBackgroundStage() {
-        return backgroundStage;
-    }
-
-    public Hierarchy getHierarchy() {
-        return this.hierarchy;
-    }
-
-    protected InputProcessor getProcessor () {
-        return this.multiplexer;
-    }
-
-    protected void addProcessor (InputProcessor processor) {
-        this.multiplexer.addProcessor(processor);
-    }
-
-    /**
-     * Permite sustituir la Stage de fondo por defecto
-     * @param stage Stage
-     */
-    public void setBackgroundStage (Stage stage) {
-        this.screenBackground.dispose();
-        this.backgroundStage.dispose();
-        this.backgroundStage = stage;
     }
 
 }

@@ -1,26 +1,23 @@
 package com.jmolina.orb.stages;
 
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jmolina.orb.elements.BaseActor;
 import com.jmolina.orb.screens.BaseScreen;
-import com.jmolina.orb.screens.LevelBaseScreen;
+import com.jmolina.orb.screens.LevelScreen;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class GestureStage extends Stage {
 
-    private final float PIXELS_PER_METER = 1 / LevelBaseScreen.RATIO_METER_PIXEL;
+    private final float PIXELS_PER_METER = 1 / LevelScreen.RATIO_METER_PIXEL;
     private final float VIEWPORT_WIDTH = BaseScreen.VIEWPORT_WIDTH;
     private final float VIEWPORT_HEIGHT = BaseScreen.VIEWPORT_HEIGHT;
 

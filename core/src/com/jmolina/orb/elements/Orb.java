@@ -23,7 +23,6 @@ public class Orb {
     private final float DEFAULT_Y = 0f;
     private final float INFINITE_DAMPING = 10000f;
 
-
     private BaseActor actor;
     private Body body;
     private BodyDef bodyDef;

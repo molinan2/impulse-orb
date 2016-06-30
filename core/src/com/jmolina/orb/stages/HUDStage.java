@@ -1,19 +1,10 @@
 package com.jmolina.orb.stages;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jmolina.orb.assets.Asset;
-import com.jmolina.orb.elements.BaseActor;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.screens.BaseScreen;
-import com.jmolina.orb.screens.LevelBaseScreen;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.widgets.Gauge;
 import com.jmolina.orb.widgets.HUDBackground;
@@ -28,8 +19,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 public class HUDStage extends Stage {
 
-    private final float VIEWPORT_WIDTH = BaseScreen.VIEWPORT_WIDTH;
-    private final float VIEWPORT_HEIGHT = BaseScreen.VIEWPORT_HEIGHT;
+    private final float COOLING_RATE = Gdx.graphics.getDeltaTime() * 0.1f;
 
     private HUDBackground background;
     private Timer timer;
@@ -59,10 +49,10 @@ public class HUDStage extends Stage {
 
     @Override
     public void draw() {
-        super.draw();
-
         time += Gdx.graphics.getDeltaTime();
         timer.updateTime(time);
+        gauge.decrease(COOLING_RATE);
+        super.draw();
     }
 
     /**

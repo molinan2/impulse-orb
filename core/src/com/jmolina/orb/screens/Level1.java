@@ -1,9 +1,5 @@
 package com.jmolina.orb.screens;
 
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.jmolina.orb.elements.Ball;
-import com.jmolina.orb.elements.Element;
-import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.situations.Situation100;
@@ -17,7 +13,7 @@ import com.jmolina.orb.situations.Situation107;
 import com.jmolina.orb.situations.Situation199;
 
 
-public class Level1 extends LevelBaseScreen {
+public class Level1 extends LevelScreen {
 
     public Level1(SuperManager superManager) {
         super(superManager);

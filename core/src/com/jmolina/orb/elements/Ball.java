@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.assets.Asset;
-import com.jmolina.orb.screens.LevelBaseScreen;
+import com.jmolina.orb.screens.LevelScreen;
 
 public class Ball extends Element {
 
@@ -38,7 +38,7 @@ public class Ball extends Element {
         createBody(config.world, bodyType, config.x, config.y);
 
         Texture texture = getTexture(config.type);
-        float scale = config.diameter / (float) texture.getWidth() / LevelBaseScreen.RATIO_METER_PIXEL;
+        float scale = config.diameter / (float) texture.getWidth() / LevelScreen.RATIO_METER_PIXEL;
         createActor(texture, scale);
     }
 

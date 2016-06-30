@@ -3,31 +3,28 @@ package com.jmolina.orb.listeners;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.jmolina.orb.elements.Orb;
-import com.jmolina.orb.screens.LevelBaseScreen;
+import com.jmolina.orb.screens.LevelScreen;
 import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
 
 public class GestureHandler implements GestureDetector.GestureListener {
 
-    private final float IMPULSE_RATIO_X = LevelBaseScreen.RATIO_METER_PIXEL;
-    private final float IMPULSE_RATIO_Y = -LevelBaseScreen.RATIO_METER_PIXEL;
+    private final float IMPULSE_RATIO_X = LevelScreen.RATIO_METER_PIXEL;
+    private final float IMPULSE_RATIO_Y = -LevelScreen.RATIO_METER_PIXEL;
     private final float MAX_VELOCITY = 40.0f;
 
     private Orb orb;
     private GestureStage gestureStage;
     private HUDStage hudStage;
 
-    public GestureHandler(GestureStage gestureStage, HUDStage hudStage) {
+    public GestureHandler(GestureStage gestureStage, HUDStage hudStage, Orb orb) {
+        this.orb = orb;
         this.gestureStage = gestureStage;
         this.hudStage = hudStage;
     }
 
     public Orb getOrb() {
         return this.orb;
-    }
-
-    public void setOrb(Orb orb) {
-        this.orb = orb;
     }
 
 
