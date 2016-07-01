@@ -6,58 +6,70 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.screens.LevelScreen;
 
 
 public class Element {
 
-    private final float DENSITY_DEFAULT = 1.0f;
-    private final float RESTITUTION_DEFAULT = 0.6f;
-    private final float FRICTION_DEFAULT = 0.8f; // friction=0 evita rotaciones al chocar
+    public enum Behaviour {BLACK, GREY, RED}
+    public enum Geometry {CIRCLE, SQUARE}
 
-    public enum Type {BLACK, GREY, RED, DUMMY}
+    private final float DENSITY = 1.0f;
+    private final float RESTITUTION = 0.6f;
+    private final float FRICTION = 0.8f; // friction=0 evita rotaciones al chocar
+    private final float PIXELS_PER_METER = LevelScreen.PIXELS_PER_METER;
 
-    static public class ElementConfig {
-        public AssetManager assetManager;
-        public World world;
-        public float x;
-        public float y;
-        public float rotation = 0f;
-        public Type type;
-
-        protected ElementConfig(AssetManager am, World world) {
-            this.assetManager = am;
-            this.world = world;
-        }
-
-        /**
-         * Convierte a unidades de Grid teniendo en cuenta la cantidad de pixeles por metro
-         */
-        public void setPosition(float x, float y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-
+    private AssetManager assetManager;
     private BaseActor actor;
     private Body body;
-    private BodyDef bodyDef;
-    private FixtureDef fixtureDef;
-    private Fixture fixture;
-    private AssetManager assetManager;
     private float pixelsPerMeter = 1f;
 
-    protected Element(ElementConfig config) {
-        setAssetManager(config.assetManager);
-    }
+    /**
+     * @param am AssetManager
+     * @param world World
+     * @param x Position x coord
+     * @param y Position y coord
+     * @param width Width of the element
+     * @param height Heigth of the element
+     * @param rotation Rotation of the element in degrees counterclockwise
+     * @param behaviour Behaviour
+     * @param geometry Geometry
+     */
+    public Element(AssetManager am, World world, float x, float y, float width, float height, float rotation, Behaviour behaviour, Geometry geometry) {
+        assetManager = am;
 
-    public void setAssetManager(AssetManager am) {
-        this.assetManager = am;
+        FixtureDef fixtureDef = new FixtureDef();
+        BodyDef bodyDef = new BodyDef();
+        actor = new BaseActor();
+        float scaleX, scaleY;
+
+        fixtureDef.density = DENSITY;
+        fixtureDef.restitution = RESTITUTION;
+        fixtureDef.friction = FRICTION;
+        fixtureDef.shape = createShape(geometry, width, height);
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.position.set(x, y);
+        bodyDef.angle = rotation * MathUtils.degreesToRadians;
+
+        body = world.createBody(bodyDef);
+        body.createFixture(fixtureDef);
+        fixtureDef.shape.dispose();
+
+        Texture texture = createTexture(geometry, behaviour);
+        scaleX = PIXELS_PER_METER * width / texture.getWidth();
+        scaleY = PIXELS_PER_METER * height / texture.getHeight();
+
+        actor.setTexture(texture);
+        actor.setScale(scaleX, scaleY);
+        actor.setRotation(rotation);
     }
 
     public synchronized <T> T getAsset (String fileName) {
@@ -66,51 +78,6 @@ public class Element {
 
     public synchronized <T> T getAsset (String fileName, Class<T> type) {
         return this.assetManager.get(fileName, type);
-    }
-
-    public void createFixture(Shape shape) {
-        createFixture(shape, DENSITY_DEFAULT, RESTITUTION_DEFAULT, FRICTION_DEFAULT);
-    }
-
-    public void createFixture(Shape shape, float density, float restitution, float friction) {
-        fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density = density;
-        fixtureDef.restitution = restitution;
-        fixtureDef.friction = friction;
-    }
-
-    public void createBody (World world, BodyDef.BodyType type, float x, float y) {
-        createBody(world, type, x, y, 0);
-    }
-
-    public void createBody (World world, BodyDef.BodyType type, float x, float y, float rotation) {
-        bodyDef = new BodyDef();
-        bodyDef.type = type;
-        bodyDef.position.set(x, y);
-        bodyDef.angle = rotation * MathUtils.degreesToRadians;
-        body = world.createBody(bodyDef);
-        body.createFixture(fixtureDef);
-        fixtureDef.shape.dispose();
-    }
-
-    public void createActor(Texture texture) {
-        createActor(texture, 1, 1);
-    }
-
-    public void createActor(Texture texture, float scale) {
-        createActor(texture, scale, scale);
-    }
-
-    public void createActor(Texture texture, float scaleX, float scaleY) {
-        actor = new BaseActor(texture);
-        actor.setScale(scaleX, scaleY);
-    }
-
-    public void createActor(Texture texture, float scaleX, float scaleY, float rotation) {
-        actor = new BaseActor(texture);
-        actor.setScale(scaleX, scaleY);
-        actor.setRotation(rotation);
     }
 
     public Actor getActor() {
@@ -161,6 +128,48 @@ public class Element {
 
             actor.setRotation(MathUtils.radiansToDegrees * body.getAngle());
         }
+    }
+
+    private Shape square(float width, float height) {
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(0.5f * width, 0.5f * height);
+
+        return shape;
+    }
+
+    private Shape circle(float diameter) {
+        CircleShape shape = new CircleShape();
+        shape.setRadius(0.5f * diameter);
+
+        return shape;
+    }
+
+    private Texture createTexture (Geometry geometry, Behaviour behaviour) {
+        if (geometry == Geometry.CIRCLE) {
+            switch (behaviour) {
+                case BLACK: return getAsset(Asset.GAME_CIRCLE_BLACK, Texture.class);
+                case GREY: return getAsset(Asset.GAME_CIRCLE_GREY, Texture.class);
+                case RED: return getAsset(Asset.GAME_CIRCLE_RED, Texture.class);
+            }
+        }
+        else if (geometry == Geometry.SQUARE) {
+            switch (behaviour) {
+                case BLACK: return getAsset(Asset.GAME_SQUARE_BLACK, Texture.class);
+                case GREY: return getAsset(Asset.GAME_SQUARE_GREY, Texture.class);
+                case RED: return getAsset(Asset.GAME_SQUARE_RED, Texture.class);
+            }
+        }
+
+        return getAsset(Asset.GAME_SQUARE_GREY, Texture.class); // No deberia ocurrir
+    }
+
+    private Shape createShape (Geometry geometry, float width, float height) {
+        switch (geometry) {
+            case SQUARE: return square(width, height);
+            case CIRCLE: return circle(width);
+        }
+
+        return square(width, height); // No deberia ocurrir
     }
 
 }

@@ -70,7 +70,8 @@ public class Options extends Menu {
             }
         });
 
-        // TODO: 03/06/2016 Que el evento lo tire MultiOption, indicando el dato en algun campo de event
+        // TODO
+        // Que el evento lo tire MultiOption, indicando el dato en algun campo de event
         zoom.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {

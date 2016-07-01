@@ -3,7 +3,6 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -20,8 +19,6 @@ import com.jmolina.orb.interfaces.Backable;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.stages.BackgroundStage;
 import com.jmolina.orb.stages.BaseStage;
-import com.jmolina.orb.widgets.ScreenBackground;
-import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -54,7 +51,6 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         superManager = sm;
 
         actors = new SnapshotArray<Actor>();
-        hierarchy = Hierarchy.LOWER;
         mainViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         backgroundViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         mainStage = new BaseStage(mainViewport, UIRunnable.backOperation(this));
@@ -66,6 +62,8 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         mainStage.getRoot().setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         mainStage.getRoot().setPosition(0f, 0f);
         addProcessor(mainStage);
+
+        hierarchy = Hierarchy.LOWER;
     }
 
 

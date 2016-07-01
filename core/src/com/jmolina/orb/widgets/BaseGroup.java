@@ -31,7 +31,9 @@ public class BaseGroup extends Group implements Reseteable, Disposable {
 
     @Override
     public void draw (Batch batch, float parentAlpha) {
-        // TODO: Soporte preliminar click feedback con shader. Que solo se renderice el shader cuando brightness > 0
+        // TODO
+        // Soporte preliminar click feedback con shader.
+        // Solo se renderice el shader cuando brightness > 0
         if (brightness > 0) {
             // float variance = 0.5f * Gdx.graphics.getDeltaTime() / UIAction.DURATION;
             float variance = 0.03f;
@@ -54,7 +56,6 @@ public class BaseGroup extends Group implements Reseteable, Disposable {
 
     }
 
-    // TODO Eliminar (se puede sustituir por getAsset)
     public AssetManager getAssetManager() {
         return this.assetManager;
     }
@@ -73,7 +74,8 @@ public class BaseGroup extends Group implements Reseteable, Disposable {
     }
 
     public void clickEffect() {
-        // TODO: Soporte preliminar click feedback con shader
+        // TODO
+        // Soporte preliminar click feedback con shader
         this.brightness = 0.5f;
     }
 

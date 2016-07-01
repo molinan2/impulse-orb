@@ -5,6 +5,15 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.jmolina.orb.elements.Element;
 
+/**
+ * Una lista de elementos creados y configurados, posicionados respecto a (0,0)
+ *
+ * Inicialmente, todas de 18 unidades de alto y 12 de ancho. Mas adelante:
+ *
+ * - Que carguen de JSON
+ * - Que guarde su altura y se consulte cuando se vayan a apilar las situaciones
+ * - Que guarde su anchura e idem (mas complicado)
+ */
 public abstract class Situation {
 
     private AssetManager assetManager;

@@ -14,20 +14,25 @@ public class BaseActor extends Actor {
 
     private Texture texture;
 
-    public BaseActor(Texture t) {
-        texture = t;
-
-        // Para texturas repetibles
-        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-
-        // Inicializacion estandar del actor
+    public BaseActor () {
         setPosition(0f, 0f);
-        setSize(texture.getWidth(), texture.getHeight());
-        setBounds(getX(), getY(), getWidth(), getHeight());
-        setOrigin(0.5f * texture.getWidth(), 0.5f * texture.getHeight());
         setScale(1.0f, 1.0f);
         setVisible(true);
         setTouchable(Touchable.disabled);
+    }
+
+    public BaseActor(Texture t) {
+        this();
+        setTexture(t);
+    }
+
+    public void setTexture (Texture t) {
+        texture = t;
+        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+
+        setSize(texture.getWidth(), texture.getHeight());
+        setBounds(getX(), getY(), getWidth(), getHeight());
+        setOrigin(0.5f * texture.getWidth(), 0.5f * texture.getHeight());
     }
 
 

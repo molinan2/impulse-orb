@@ -26,12 +26,12 @@ public class Ladder extends BaseGroup {
 
         this.rows = new ArrayList<LadderRow>();
 
-        this.bg = new Image(getAssetManager().get(Asset.UI_LADDER_BACKGROUND, Texture.class));
+        this.bg = new Image(getAsset(Asset.UI_LADDER_BACKGROUND, Texture.class));
         this.bg.setPosition(0f, 0f);
 
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = new Color(BaseGroup.COLOR_BLUE);
-        style.font = getAssetManager().get(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
+        style.font = getAsset(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
 
         this.title = new Label(title.toUpperCase(), style);
         this.title.setPosition(Grid.unit(0.5f), Grid.unit(3.125f));

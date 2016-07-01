@@ -19,7 +19,8 @@ import com.jmolina.orb.stages.ParallaxStage;
 
 
 /**
- * Solo se pueden añadir elementos mediante Situations, no directamente
+ * Solo se pueden añadir elementos mediante Situations, no directamente.
+ * World camera is centered on Orb
  */
 public class LevelScreen extends BaseScreen {
 
@@ -34,8 +35,8 @@ public class LevelScreen extends BaseScreen {
     private static final float TAP_COUNT_INTERVAL = 0.4f;
     private static final float LONG_PRESS_DURATION = 1.1f;
     private static final float MAX_FLING_DELAY = 0.15f;
-    private final Vector2 WORLD_GRAVITY = new Vector2(0, -60f);
-    private final float WORLD_TIME_STEP = 1/120f;
+    private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
+    private final float WORLD_TIME_STEP = 1/60f;
     private final int WORLD_VELOCITY_INTERACTIONS = 8;
     private final int WORLD_POSITION_INTERACTIONS = 3;
     private final float ORB_LOCK_TIME = 0.5f;
@@ -50,7 +51,7 @@ public class LevelScreen extends BaseScreen {
     private HUDStage hudStage;
     private GestureDetector gestureDetector;
     private SnapshotArray<Situation> situations;
-    private Orb orb; // Camara centrada en Orb
+    private Orb orb;
     private float orbLockTimer;
 
     /**
@@ -97,10 +98,8 @@ public class LevelScreen extends BaseScreen {
 
     /**
      * TODO
-     *
-     * Este método es muy lento para Android y ocurren ralentizaciones:
-     * - syncActors() llega a ocupar un 40% del tiempo de frame
-     * - draw() del conjunto de todas las Stages llega a ocupar un 150% del tiempo de frame
+     * Este método es muy lento para Android y se ralentiza.
+     * Los métodos más lentos son syncActors() y draw()
      */
     @Override
     public void render(float delta) {

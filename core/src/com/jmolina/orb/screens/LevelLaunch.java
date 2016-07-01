@@ -38,8 +38,6 @@ public class LevelLaunch extends Menu {
         add(this.ladderPersonal);
         add(this.ladderOnline);
 
-        // TODO Hay que parametrizar el nivel que se carga
-
         mainButton.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
