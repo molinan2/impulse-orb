@@ -17,11 +17,13 @@ public class GestureHandler implements GestureDetector.GestureListener {
     private GestureStage gestureStage;
     private HUDStage hudStage;
     private boolean paused = false;
+    private LevelScreen level;
 
-    public GestureHandler(GestureStage gestureStage, HUDStage hudStage, Orb orb) {
+    public GestureHandler(LevelScreen level, GestureStage gs, HUDStage hs, Orb orb) {
+        this.level = level;
         this.orb = orb;
-        this.gestureStage = gestureStage;
-        this.hudStage = hudStage;
+        this.gestureStage = gs;
+        this.hudStage = hs;
     }
 
     public Orb getOrb() {
@@ -38,7 +40,7 @@ public class GestureHandler implements GestureDetector.GestureListener {
         if (!paused) {
             getOrb().lock();
             gestureStage.tap();
-            hudStage.increase(0.2f);
+            level.incrementGauge();
         }
 
         return false;

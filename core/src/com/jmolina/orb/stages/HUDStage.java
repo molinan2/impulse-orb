@@ -235,16 +235,8 @@ public class HUDStage extends Stage {
      * Metodo temporal para incrementar el Gauge
      * Se implementara en el GameManager
      */
-    public void increase (float increment) {
-        gauge.increase(increment);
-    }
-
-    /**
-     * Metodo temporal para decrementar el Gauge
-     * Se implementara en el GameManager
-     */
-    public void decrease (float decrement) {
-        gauge.decrease(decrement);
+    public void increment(float increment) {
+        gauge.increment(increment);
     }
 
     public void pause () {

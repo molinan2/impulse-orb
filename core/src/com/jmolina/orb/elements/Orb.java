@@ -16,7 +16,7 @@ public class Orb extends Element {
     private boolean locked = false;
 
     public Orb(AssetManager am, World world) {
-        super(am, world, 0, 0, 1f, 1f, 0, Behaviour.RED, Geometry.CIRCLE);
+        super(am, world, 0, 0, 1f, 1f, 0, Behaviour.GREY, Geometry.CIRCLE);
         getActor().setTexture(am.get(Asset.GAME_ORB, Texture.class));
         getBody().setType(BodyDef.BodyType.DynamicBody);
     }

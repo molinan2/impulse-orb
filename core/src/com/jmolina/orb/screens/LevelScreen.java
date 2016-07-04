@@ -4,6 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactFilter;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -12,6 +17,7 @@ import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
+import com.jmolina.orb.listeners.OrbContact;
 import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
@@ -44,11 +50,13 @@ public class LevelScreen extends BaseScreen {
     private final int WORLD_VELOCITY_INTERACTIONS = 8;
     private final int WORLD_POSITION_INTERACTIONS = 3;
     private final float ORB_LOCK_TIME = 0.5f;
+    private final float GAUGE_INCREMENT_DEFAULT = 0.2f;
 
     /**
      * Fields
      */
     private World world;
+    private OrbContact orbContact;
     private Viewport worldViewport, gestureViewport, hudViewport, parallaxViewport;
     private GestureStage gestureStage;
     private ParallaxStage parallaxStage;
@@ -77,12 +85,45 @@ public class LevelScreen extends BaseScreen {
         gestureStage = new GestureStage(gestureViewport, getAssetManager());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport);
         world = new World(WORLD_GRAVITY, true);
+
+        orbContact = new OrbContact(){
+            @Override
+            public void beginContact(Contact contact) {
+                if (contact.getFixtureA().equals(getOrb().getBody().getFixtureList().first())) {
+                    if (contact.getFixtureB().getUserData() == Element.Behaviour.RED) {
+                        // Destruccion
+                        System.out.println(contact.getFixtureB().getUserData());
+                    }
+                }
+                else if (contact.getFixtureB().equals(getOrb().getBody().getFixtureList().first())) {
+                    if (contact.getFixtureA().getUserData() == Element.Behaviour.RED) {
+                        // Destruccion
+                        System.out.println(contact.getFixtureB().getUserData());
+                    }
+                }
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+            }
+        };
+
+        world.setContactListener(orbContact);
+
         orb = new Orb(getAssetManager(), getWorld());
 
         resetWorldCamera();
         addOrb(orb);
 
-        gestureHandler = new GestureHandler(gestureStage, hudStage, orb);
+        gestureHandler = new GestureHandler(this, gestureStage, hudStage, orb);
         gestureDetector = new GestureDetector(
                 HALF_TAP_SQUARE_SIZE,
                 TAP_COUNT_INTERVAL,
@@ -279,6 +320,14 @@ public class LevelScreen extends BaseScreen {
 
     public boolean isPausedGame() {
         return paused;
+    }
+
+    public void incrementGauge () {
+        incrementGauge(GAUGE_INCREMENT_DEFAULT);
+    }
+
+    public void incrementGauge (float increment) {
+        hudStage.increment(increment);
     }
 
 }

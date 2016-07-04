@@ -49,7 +49,7 @@ public class Gauge extends BaseGroup {
     /**
      * @param increment Nivel del Gauge, representado entre 0 y 1
      */
-    public void increase (float increment) {
+    public void increment(float increment) {
         if (!paused) {
             level = MathUtils.clamp(level + increment, LEVEL_MIN, LEVEL_MAX);
             bar.setScaleY(level);

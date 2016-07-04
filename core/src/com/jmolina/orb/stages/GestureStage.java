@@ -72,10 +72,22 @@ public class GestureStage extends Stage {
         // buffer.dispose();
         // buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
 
-        // Actualiza posiciones
-        base.setPosition(start.x - 0.5f * base.getWidth(), start.y - 0.5f * base.getHeight());
+        // Centra la flecha
+        float offsetX = start.x - getViewport().getWorldWidth() * 0.5f;
+        float offsetY = start.y - getViewport().getWorldHeight() * 0.5f;
 
-        arrow.setPosition(end.x - 0.5f * arrow.getWidth(), end.y - 0.5f * arrow.getHeight());
+        offsetX = offsetY = 0; // Desactivado
+
+        // Actualiza posiciones
+        base.setPosition(
+                start.x - 0.5f * base.getWidth() - offsetX,
+                start.y - 0.5f * base.getHeight() - offsetY
+        );
+
+        arrow.setPosition(
+                end.x - 0.5f * arrow.getWidth() - offsetX,
+                end.y - 0.5f * arrow.getHeight() - offsetY
+        );
         Vector2 direction = new Vector2(end.x - start.x, end.y - start.y);
         float angle = MathUtils.atan2(direction.y, direction.x);
         arrow.setRotation(angle * MathUtils.radiansToDegrees);
@@ -83,7 +95,10 @@ public class GestureStage extends Stage {
         line.setRotation(angle * MathUtils.radiansToDegrees);
         float distance = (float) Math.sqrt(Math.pow(direction.x, 2) + Math.pow(direction.y, 2));
         line.setScaleX(distance / line.getWidth());
-        line.setPosition(0.5f * (base.getX() + arrow.getX()), 0.5f * (base.getY() + arrow.getY()));
+        line.setPosition(
+                0.5f * (base.getX() + arrow.getX()),
+                0.5f * (base.getY() + arrow.getY())
+        );
 
         fling.clearActions();
         fling.addAction(sequence(

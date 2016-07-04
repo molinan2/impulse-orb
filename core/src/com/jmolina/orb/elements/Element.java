@@ -62,6 +62,8 @@ public class Element {
         body.createFixture(fixtureDef);
         fixtureDef.shape.dispose();
 
+        body.getFixtureList().first().setUserData(behaviour);
+
         Texture texture = createTexture(geometry, behaviour);
         scaleX = PIXELS_PER_METER * width / texture.getWidth();
         scaleY = PIXELS_PER_METER * height / texture.getHeight();
