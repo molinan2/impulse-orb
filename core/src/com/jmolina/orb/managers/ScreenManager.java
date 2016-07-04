@@ -107,9 +107,9 @@ public class ScreenManager {
         if (getCurrentScreen() != null)
             hideCurrentScreen();
 
+        screens.get(key).setAsInputProcessor();
+        screens.get(key).setHierarchy(hierarchy);
         setScreen(screens.get(key));
-        getCurrentScreen().setAsInputProcessor();
-        getCurrentScreen().setHierarchy(hierarchy);
 
         if (getCurrentScreen() != null) {
             showCurrentScreen();

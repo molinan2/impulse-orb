@@ -1,5 +1,6 @@
 package com.jmolina.orb.widgets;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -19,11 +20,13 @@ public class Timer extends BaseGroup {
 
     private Label label;
     private boolean paused;
+    private float time;
 
     public Timer(AssetManager am) {
         super(am);
 
         paused = false;
+        time = 0f;
 
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = new Color(BaseGroup.COLOR_WHITE);
@@ -34,18 +37,17 @@ public class Timer extends BaseGroup {
         label.setPosition(0, 0);
         label.setHeight(Grid.unit(1.5f));
         label.setWidth(Grid.unit(6));
-        label.setAlignment(Align.right);
+        label.setAlignment(Align.center);
 
         addActor(label);
 
         setHeight(Grid.unit(1.5f));
     }
 
-    /**
-     * @param time Tiempo en segundos
-     */
-    public void updateTime (float time) {
+    public void updateTime () {
         if (!paused) {
+            time += Gdx.graphics.getRawDeltaTime();
+
             int minutes = (int) (time / 60f);
             int seconds = (int) (time - minutes * 60f);
             int decimals = (int) ((time - minutes * 60f - (float) seconds) * 100f);
@@ -62,12 +64,17 @@ public class Timer extends BaseGroup {
         paused = true;
     }
 
-    public void restart() {
+    public void resume() {
         paused = false;
     }
 
     public void reset() {
-        updateTime(0);
+        updateTime();
+    }
+
+    public void toggle () {
+        if (paused) resume();
+        else pause();
     }
 
 }

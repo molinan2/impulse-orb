@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public abstract class UIAction {
+public class UIAction {
 
     private static final float SCALE_FACTOR = 1.35f;
     private static final float LARGE = SCALE_FACTOR;

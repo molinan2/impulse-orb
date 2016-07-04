@@ -16,8 +16,10 @@ public class GestureHandler implements GestureDetector.GestureListener {
     private Orb orb;
     private GestureStage gestureStage;
     private HUDStage hudStage;
+    private boolean paused;
 
     public GestureHandler(GestureStage gestureStage, HUDStage hudStage, Orb orb) {
+        paused = false;
         this.orb = orb;
         this.gestureStage = gestureStage;
         this.hudStage = hudStage;
@@ -33,35 +35,42 @@ public class GestureHandler implements GestureDetector.GestureListener {
      */
 
     @Override
-    public boolean touchDown(float x, float y, int pointer, int button) {
-        return false;
-    }
-
-    @Override
     public boolean tap(float x, float y, int count, int button) {
-        getOrb().lock();
-        gestureStage.tap();
-        hudStage.increase(0.2f);
-        return false;
-    }
+        if (!paused) {
+            getOrb().lock();
+            gestureStage.tap();
+            hudStage.increase(0.2f);
+        }
 
-    @Override
-    public boolean longPress(float x, float y) {
         return false;
     }
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        getOrb().unlock();
-        getOrb().getBody().applyLinearImpulse(
-                velocityX * IMPULSE_RATIO_X,
-                velocityY * IMPULSE_RATIO_Y,
-                getOrb().getBody().getPosition().x,
-                getOrb().getBody().getPosition().y,
-                true
-        );
+        if (!paused) {
+            getOrb().unlock();
+            getOrb().getBody().applyLinearImpulse(
+                    velocityX * IMPULSE_RATIO_X,
+                    velocityY * IMPULSE_RATIO_Y,
+                    getOrb().getBody().getPosition().x,
+                    getOrb().getBody().getPosition().y,
+                    true
+            );
 
-        gestureStage.fling();
+            gestureStage.fling();
+        }
+
+        return false;
+    }
+
+
+    @Override
+    public boolean touchDown(float x, float y, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean longPress(float x, float y) {
         return false;
     }
 
@@ -87,6 +96,18 @@ public class GestureHandler implements GestureDetector.GestureListener {
 
     @Override
     public void pinchStop() {
+    }
+
+    public void pause() {
+        paused = true;
+    }
+
+    public void resume() {
+        paused = false;
+    }
+
+    public boolean isPaused () {
+        return paused;
     }
 
 }

@@ -15,7 +15,9 @@ import java.text.DecimalFormat;
 public class Stat extends BaseGroup {
 
     private Label name;
-    private Label stat;
+    private Label data;
+    private Label.LabelStyle nameStyle;
+    private Label.LabelStyle dataStyle;
 
     public Stat (AssetManager am, String name, float value) {
         this(am, name, value, "");
@@ -24,9 +26,13 @@ public class Stat extends BaseGroup {
     public Stat(AssetManager am, String name, float value, String unit) {
         super(am);
 
-        Label.LabelStyle nameStyle = new Label.LabelStyle();
+        nameStyle = new Label.LabelStyle();
+        dataStyle = new Label.LabelStyle();
+
         nameStyle.fontColor = new Color(BaseGroup.COLOR_BLUE);
+        dataStyle.fontColor = new Color(BaseGroup.COLOR_BLACK);
         nameStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
+        dataStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
 
         this.name = new Label(name, nameStyle);
         this.name.setTouchable(Touchable.disabled);
@@ -35,20 +41,15 @@ public class Stat extends BaseGroup {
         this.name.setWidth(Grid.unit(6));
         this.name.setAlignment(Align.left);
 
-        Label.LabelStyle numberStyle = new Label.LabelStyle();
-        numberStyle.fontColor = new Color(BaseGroup.COLOR_BLACK);
-        numberStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
-
-        this.stat = new Label(formatStat(value, unit), numberStyle);
-
-        this.stat.setTouchable(Touchable.disabled);
-        this.stat.setPosition(Grid.unit(6), 0f);
-        this.stat.setHeight(Grid.unit(1));
-        this.stat.setWidth(Grid.unit(4));
-        this.stat.setAlignment(Align.right);
+        this.data = new Label(formatStat(value, unit), dataStyle);
+        this.data.setTouchable(Touchable.disabled);
+        this.data.setPosition(Grid.unit(6), 0f);
+        this.data.setHeight(Grid.unit(1));
+        this.data.setWidth(Grid.unit(4));
+        this.data.setAlignment(Align.right);
 
         addActor(this.name);
-        addActor(this.stat);
+        addActor(this.data);
         setHeight(Grid.unit(1));
     }
 
@@ -70,11 +71,11 @@ public class Stat extends BaseGroup {
     }
 
     public void setValue(float value) {
-        this.stat.setText(formatStat(value, ""));
+        this.data.setText(formatStat(value, ""));
     }
 
     public void setValue(float value, String unit) {
-        this.stat.setText(formatStat(value, unit));
+        this.data.setText(formatStat(value, unit));
     }
 
     public void setName(String name) {
@@ -83,6 +84,13 @@ public class Stat extends BaseGroup {
 
     public String getName() {
         return this.name.getText().toString();
+    }
+
+    public void setLabelColor (int color) {
+        nameStyle.fontColor = new Color(color);
+        dataStyle.fontColor = new Color(color);
+        name.setStyle(nameStyle);
+        data.setStyle(dataStyle);
     }
 
 }

@@ -30,7 +30,6 @@ public class Element {
     private AssetManager assetManager;
     private BaseActor actor;
     private Body body;
-    private float pixelsPerMeter = 1f;
 
     /**
      * @param am AssetManager
@@ -80,7 +79,7 @@ public class Element {
         return this.assetManager.get(fileName, type);
     }
 
-    public Actor getActor() {
+    public BaseActor getActor() {
         return actor;
     }
 
@@ -92,18 +91,15 @@ public class Element {
      * Grid position
      */
     public void setPosition(float x, float y) {
-        getBody().setTransform(
-                x * this.pixelsPerMeter,
-                y * this.pixelsPerMeter,
-                getBody().getAngle()
+        getBody().setTransform(x, y, getBody().getAngle()
         );
     }
 
     public Vector2 getPosition () {
         Vector2 position = new Vector2();
 
-        position.x = getBody().getPosition().x / this.pixelsPerMeter;
-        position.y = getBody().getPosition().y / this.pixelsPerMeter;
+        position.x = getBody().getPosition().x;
+        position.y = getBody().getPosition().y;
 
         return position;
     }
@@ -115,15 +111,14 @@ public class Element {
     /**
      * Traduce unidades de World a Stage
      */
-    public void syncActor(Viewport viewport, float sceneWidth, float sceneHeight, float ratio) {
+    public void syncActor(Viewport viewport, float worldWidth, float worldHeight, float pixelsPerMeter) {
         if (actor != null) {
-            float offsetX = sceneWidth * 0.5f;
-            float offsetY = sceneHeight * 0.5f;
-            float inverseRatio = 1f / ratio;
+            float offsetX = worldWidth * 0.5f;
+            float offsetY = worldHeight * 0.5f;
 
             actor.setPosition(
-                    inverseRatio * (body.getPosition().x - (viewport.getCamera().position.x - offsetX)) - 0.5f * actor.getWidth(),
-                    inverseRatio * (body.getPosition().y - (viewport.getCamera().position.y - offsetY)) - 0.5f * actor.getHeight()
+                    pixelsPerMeter * (body.getPosition().x - (viewport.getCamera().position.x - offsetX)) - 0.5f * actor.getWidth(),
+                    pixelsPerMeter * (body.getPosition().y - (viewport.getCamera().position.y - offsetY)) - 0.5f * actor.getHeight()
             );
 
             actor.setRotation(MathUtils.radiansToDegrees * body.getAngle());

@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
+import com.jmolina.orb.interfaces.Visitor;
 import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.stages.GestureStage;
@@ -19,8 +20,12 @@ import com.jmolina.orb.stages.ParallaxStage;
 
 
 /**
+ * TODO
+ *
+ * Temporalmente, esta pantalla está actuando como GameManager
+ *
  * Solo se pueden añadir elementos mediante Situations, no directamente.
- * World camera is centered on Orb
+ * World camera is always centered at Orb position
  */
 public class LevelScreen extends BaseScreen {
 
@@ -53,6 +58,9 @@ public class LevelScreen extends BaseScreen {
     private SnapshotArray<Situation> situations;
     private Orb orb;
     private float orbLockTimer;
+    private GestureHandler gestureHandler;
+    private boolean paused;
+    // private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
     /**
      * Constructor
@@ -61,21 +69,23 @@ public class LevelScreen extends BaseScreen {
     public LevelScreen(SuperManager superManager) {
         super(superManager);
 
+        paused = false;
+
         situations = new SnapshotArray<Situation>();
         worldViewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, new OrthographicCamera());
         gestureViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera());
         parallaxViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera());
         hudViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera());
-        hudStage = new HUDStage(hudViewport, getAssetManager());
+        hudStage = new HUDStage(getAssetManager(), this, hudViewport);
         gestureStage = new GestureStage(gestureViewport, getAssetManager());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport);
         world = new World(WORLD_GRAVITY, true);
-        orb = new Orb(getAssetManager(), getWorld(), PIXELS_PER_METER);
+        orb = new Orb(getAssetManager(), getWorld());
 
         resetWorldCamera();
         addOrb(orb);
 
-        GestureHandler gestureHandler = new GestureHandler(gestureStage, hudStage, orb);
+        gestureHandler = new GestureHandler(gestureStage, hudStage, orb);
         gestureDetector = new GestureDetector(
                 HALF_TAP_SQUARE_SIZE,
                 TAP_COUNT_INTERVAL,
@@ -84,9 +94,10 @@ public class LevelScreen extends BaseScreen {
                 gestureHandler
         );
 
+        // Los primeros Processor reciben antes los eventos
+        addProcessor(hudStage);
         addProcessor(gestureStage);
         addProcessor(gestureDetector);
-        addProcessor(hudStage);
 
         orbLockTimer = 0f;
     }
@@ -107,7 +118,11 @@ public class LevelScreen extends BaseScreen {
         unlockOrb();
         act();
         syncBodies();
-        world.step(WORLD_TIME_STEP, WORLD_VELOCITY_INTERACTIONS, WORLD_POSITION_INTERACTIONS);
+
+        if (!isPausedGame()) {
+            world.step(WORLD_TIME_STEP, WORLD_VELOCITY_INTERACTIONS, WORLD_POSITION_INTERACTIONS);
+        }
+
         followCamera();
         syncActors();
         draw();
@@ -158,11 +173,11 @@ public class LevelScreen extends BaseScreen {
     public void syncActors() {
         for (Situation situation : situations ) {
             for (Element element : situation.getElements()) {
-                element.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, RATIO_METER_PIXEL);
+                element.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, PIXELS_PER_METER);
             }
         }
 
-        orb.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, RATIO_METER_PIXEL);
+        orb.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, PIXELS_PER_METER);
     }
 
     /**
@@ -174,12 +189,12 @@ public class LevelScreen extends BaseScreen {
     }
 
     public void syncActor(Element element) {
-        element.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, RATIO_METER_PIXEL);
+        element.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, PIXELS_PER_METER);
     }
 
     public void addOrb(Orb orb) {
         addMainActor(orb.getActor());
-        orb.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, RATIO_METER_PIXEL);
+        orb.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, PIXELS_PER_METER);
     }
 
     public Orb getOrb () {
@@ -222,6 +237,7 @@ public class LevelScreen extends BaseScreen {
         getMainStage().draw();
         gestureStage.draw();
         hudStage.draw();
+        // debugRenderer.render(world, worldViewport.getCamera().combined);
     }
 
     /**
@@ -242,6 +258,32 @@ public class LevelScreen extends BaseScreen {
         else {
             orbLockTimer = 0f;
         }
+    }
+
+    /**
+     * GameManager
+     */
+
+    public void pauseGame() {
+        paused = true;
+        gestureHandler.pause();
+        hudStage.pause();
+    }
+
+    public void resumeGame() {
+        Runnable callback = new Runnable() {
+            @Override
+            public void run() {
+                gestureHandler.resume();
+                paused = false;
+            }
+        };
+
+        hudStage.resume(callback);
+    }
+
+    public boolean isPausedGame() {
+        return paused;
     }
 
 }

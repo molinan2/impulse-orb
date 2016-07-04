@@ -18,6 +18,7 @@ public class Stats extends Menu {
     private Stat minDistanceAlive;
     private Stat maxDistanceAlive;
 
+    private Heading generalHeading;
     private Heading timeHeading;
     private Heading distanceHeading;
 
@@ -27,9 +28,10 @@ public class Stats extends Menu {
         setReturningScreen(ScreenManager.Key.MAIN);
         setTitle("STATS");
 
-        played = new Stat(getAssetManager(), "Played", 1420.232f, "s");
-        distance = new Stat(getAssetManager(), "Distance", 51.3f, "m");
-        fails = new Stat(getAssetManager(), "Fails", 3);
+        generalHeading = new Heading(getAssetManager(), "General", Align.center);
+        played = new Stat(getAssetManager(), "Time played", 1420.232f, "s");
+        distance = new Stat(getAssetManager(), "Distance traveled", 51.3f, "m");
+        fails = new Stat(getAssetManager(), "Got destroyed", 3, "times");
 
         timeHeading = new Heading(getAssetManager(), "Time alive", Align.center);
         minTimeAlive = new Stat(getAssetManager(), "Minimum", 0.9f, "s");
@@ -41,6 +43,7 @@ public class Stats extends Menu {
         maxDistanceAlive = new Stat(getAssetManager(), "Maximum", 143.4f, "m");
         avgDistanceAlive = new Stat(getAssetManager(), "Average", 31.01f, "m");
 
+        add(generalHeading, 0);
         add(played, 0);
         add(distance, 0);
         add(fails, 0.5f);
@@ -69,6 +72,7 @@ public class Stats extends Menu {
         maxDistanceAlive.dispose();
         timeHeading.dispose();
         distanceHeading.dispose();
+        generalHeading.dispose();
         super.dispose();
     }
 

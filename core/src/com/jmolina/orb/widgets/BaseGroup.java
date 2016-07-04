@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.interfaces.Reseteable;
+import com.jmolina.orb.utils.Grid;
 
 public class BaseGroup extends Group implements Reseteable, Disposable {
 
@@ -77,6 +78,10 @@ public class BaseGroup extends Group implements Reseteable, Disposable {
         // TODO
         // Soporte preliminar click feedback con shader
         this.brightness = 0.5f;
+    }
+
+    public void setPositionGrid (float x, float y) {
+        setPosition(Grid.unit(x), Grid.unit(y));
     }
 
 }
