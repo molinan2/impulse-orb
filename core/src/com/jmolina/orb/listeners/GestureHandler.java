@@ -16,10 +16,9 @@ public class GestureHandler implements GestureDetector.GestureListener {
     private Orb orb;
     private GestureStage gestureStage;
     private HUDStage hudStage;
-    private boolean paused;
+    private boolean paused = false;
 
     public GestureHandler(GestureStage gestureStage, HUDStage hudStage, Orb orb) {
-        paused = false;
         this.orb = orb;
         this.gestureStage = gestureStage;
         this.hudStage = hudStage;

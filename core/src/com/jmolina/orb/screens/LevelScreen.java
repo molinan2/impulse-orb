@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
-import com.jmolina.orb.interfaces.Visitor;
 import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.stages.GestureStage;
@@ -55,11 +54,11 @@ public class LevelScreen extends BaseScreen {
     private ParallaxStage parallaxStage;
     private HUDStage hudStage;
     private GestureDetector gestureDetector;
+    private GestureHandler gestureHandler;
     private SnapshotArray<Situation> situations;
     private Orb orb;
-    private float orbLockTimer;
-    private GestureHandler gestureHandler;
-    private boolean paused;
+    private float orbLockTimer = 0f;
+    private boolean paused = false;
     // private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
     /**
@@ -68,8 +67,6 @@ public class LevelScreen extends BaseScreen {
      */
     public LevelScreen(SuperManager superManager) {
         super(superManager);
-
-        paused = false;
 
         situations = new SnapshotArray<Situation>();
         worldViewport = new FitViewport(WORLD_WIDTH, WORLD_HEIGHT, new OrthographicCamera());
@@ -98,8 +95,6 @@ public class LevelScreen extends BaseScreen {
         addProcessor(hudStage);
         addProcessor(gestureStage);
         addProcessor(gestureDetector);
-
-        orbLockTimer = 0f;
     }
 
 

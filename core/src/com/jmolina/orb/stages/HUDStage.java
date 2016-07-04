@@ -127,8 +127,10 @@ public class HUDStage extends Stage {
         }
     };
 
+
     /**
      * Constructor
+     *
      * @param am AssetManager
      * @param ls LevelScreen Futuro GameManager
      * @param vp Viewport
@@ -169,6 +171,30 @@ public class HUDStage extends Stage {
         traveled.addAction(alpha(0));
         destroyed.addAction(alpha(0));
 
+        createListeners();
+
+        traveled.setLabelColor(BaseGroup.COLOR_WHITE);
+        destroyed.setLabelColor(BaseGroup.COLOR_WHITE);
+
+        addActor(background);
+        addActor(timer);
+        addActor(pause);
+        addActor(gauge);
+        addActor(resume);
+        addActor(restart);
+        addActor(leave);
+        addActor(traveled);
+        addActor(destroyed);
+    }
+
+    @Override
+    public void draw() {
+        timer.updateTime();
+        gauge.decrease(COOLING_TICK);
+        super.draw();
+    }
+
+    private void createListeners() {
         pause.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -203,26 +229,6 @@ public class HUDStage extends Stage {
                 event.cancel();
             }
         });
-
-        traveled.setLabelColor(BaseGroup.COLOR_WHITE);
-        destroyed.setLabelColor(BaseGroup.COLOR_WHITE);
-
-        addActor(background);
-        addActor(timer);
-        addActor(pause);
-        addActor(gauge);
-        addActor(resume);
-        addActor(restart);
-        addActor(leave);
-        addActor(traveled);
-        addActor(destroyed);
-    }
-
-    @Override
-    public void draw() {
-        timer.updateTime();
-        gauge.decrease(COOLING_TICK);
-        super.draw();
     }
 
     /**

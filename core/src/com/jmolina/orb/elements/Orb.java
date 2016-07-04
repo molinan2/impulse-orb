@@ -13,13 +13,12 @@ public class Orb extends Element {
     private final float DEFAULT_Y = 0f;
     private final float INFINITE_DAMPING = 10000f;
 
-    private boolean locked;
+    private boolean locked = false;
 
     public Orb(AssetManager am, World world) {
         super(am, world, 0, 0, 1f, 1f, 0, Behaviour.RED, Geometry.CIRCLE);
         getActor().setTexture(am.get(Asset.GAME_ORB, Texture.class));
         getBody().setType(BodyDef.BodyType.DynamicBody);
-        locked = false;
     }
 
     /**
@@ -30,15 +29,16 @@ public class Orb extends Element {
      * - setActive(false)
      */
     public void lock() {
+        locked = true;
         getBody().setLinearDamping(INFINITE_DAMPING);
         getBody().setAngularDamping(INFINITE_DAMPING);
-        locked = true;
     }
 
     public void unlock() {
+        locked = false;
+        getBody().setAwake(true); // Evita que el objeto se quede dormido al bloquearlo
         getBody().setLinearDamping(0);
         getBody().setAngularDamping(0);
-        locked = false;
     }
 
     public boolean isLocked() {
