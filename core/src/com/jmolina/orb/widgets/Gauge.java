@@ -16,12 +16,9 @@ public class Gauge extends BaseGroup {
     private Image bar;
     private Image frame;
     private float level;
-    private boolean paused;
 
     public Gauge(AssetManager am) {
         super(am);
-
-        paused = false;
 
         background = new Image(getAsset(Asset.HUD_GAUGE_BACKGROUND, Texture.class));
         bar = new Image(getAsset(Asset.HUD_GAUGE_BAR, Texture.class));
@@ -49,29 +46,18 @@ public class Gauge extends BaseGroup {
     /**
      * @param increment Nivel del Gauge, representado entre 0 y 1
      */
-    public void increment(float increment) {
-        if (!paused) {
-            level = MathUtils.clamp(level + increment, LEVEL_MIN, LEVEL_MAX);
-            bar.setScaleY(level);
-        }
+    public void increase(float increment) {
+        level = MathUtils.clamp(level + increment, LEVEL_MIN, LEVEL_MAX);
+        bar.setScaleY(level);
     }
 
-    /**
-     * @param decrement Nivel del Gauge, representado entre 0 y 1
-     */
     public void decrease (float decrement) {
-        if (!paused) {
-            level = MathUtils.clamp(level - decrement, LEVEL_MIN, LEVEL_MAX);
-            bar.setScaleY(level);
-        }
+        increase(-decrement);
     }
 
-    public void pause () {
-        paused = true;
-    }
-
-    public void resume () {
-        paused = false;
+    public void setLevel (float level) {
+        this.level = MathUtils.clamp(level, LEVEL_MIN, LEVEL_MAX);
+        bar.setScaleY(level);
     }
 
 }

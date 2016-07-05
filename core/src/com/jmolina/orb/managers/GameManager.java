@@ -4,7 +4,7 @@ import com.jmolina.orb.screens.LevelScreen;
 
 public class GameManager {
 
-    // interface: pause, resume, restart, destroy, increment gauge, decrease gauge?
+    // interface: pause, resume, restart, destroy, increaseGauge gauge, decrease gauge?
     // data: gauge,
 
     private LevelScreen currentLevel;

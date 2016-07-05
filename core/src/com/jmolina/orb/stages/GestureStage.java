@@ -62,7 +62,7 @@ public class GestureStage extends Stage {
         fling.addAction(fadeOut(0));
     }
 
-    public void fling() {
+    public void drawFling() {
         tap.clearActions();
         tap.addAction(fadeOut(0));
         fling.clearActions();
@@ -107,7 +107,7 @@ public class GestureStage extends Stage {
         ));
     }
 
-    public void tap() {
+    public void drawTap() {
         fling.clearActions();
         fling.addAction(fadeOut(0));
         tap.clearActions();

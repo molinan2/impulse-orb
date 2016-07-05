@@ -16,20 +16,20 @@ public class Situation101 extends SideWalledSituation {
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 6, 14, 4, 4, 0,
-                Element.Behaviour.GREY, Element.Geometry.CIRCLE
+                Element.Type.GREY, Element.Geometry.CIRCLE
         ));
 
         // Lateral red boxes
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 0.75f, 10, 0.5f, 4, 0,
-                Element.Behaviour.RED, Element.Geometry.SQUARE
+                Element.Type.RED, Element.Geometry.SQUARE
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 11.25f, 10, 0.5f, 4, 0,
-                Element.Behaviour.RED, Element.Geometry.SQUARE
+                Element.Type.RED, Element.Geometry.SQUARE
         ));
     }
 

@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.screens.LevelScreen;
@@ -19,7 +18,8 @@ import com.jmolina.orb.screens.LevelScreen;
 
 public class Element {
 
-    public enum Behaviour {BLACK, GREY, RED}
+    public enum Type {BLACK, GREY, RED, BLUE}
+    public enum Effect {NONE, EXIT, DESTROY, HEAT, COOL, CUSTOM}
     public enum Geometry {CIRCLE, SQUARE}
 
     private final float DENSITY = 1.0f;
@@ -30,47 +30,64 @@ public class Element {
     private AssetManager assetManager;
     private BaseActor actor;
     private Body body;
+    private float width, height;
+
+    public Element(AssetManager am, World world, float x, float y, float w, float h) {
+        this(am, world, x, y, w, h, 0, Type.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody);
+    }
+
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle) {
+        this(am, world, x, y, w, h, angle, Type.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody);
+    }
+
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Type type) {
+        this(am, world, x, y, w, h, angle, type, Geometry.SQUARE, BodyDef.BodyType.KinematicBody);
+    }
+
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Type type, Geometry geometry) {
+        this(am, world, x, y, w, h, angle, type, geometry, BodyDef.BodyType.KinematicBody);
+    }
 
     /**
+     * Constructor
+     *
      * @param am AssetManager
      * @param world World
      * @param x Position x coord
      * @param y Position y coord
-     * @param width Width of the element
-     * @param height Heigth of the element
-     * @param rotation Rotation of the element in degrees counterclockwise
-     * @param behaviour Behaviour
+     * @param w Width of the element
+     * @param h Heigth of the element
+     * @param angle Rotation of the element in degrees counterclockwise
+     * @param type Type
      * @param geometry Geometry
+     * @param bodyType BodyDef.BodyType
      */
-    public Element(AssetManager am, World world, float x, float y, float width, float height, float rotation, Behaviour behaviour, Geometry geometry) {
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Type type, Geometry geometry, BodyDef.BodyType bodyType) {
         assetManager = am;
+        width = w;
+        height = h;
 
         FixtureDef fixtureDef = new FixtureDef();
         BodyDef bodyDef = new BodyDef();
         actor = new BaseActor();
-        float scaleX, scaleY;
 
         fixtureDef.density = DENSITY;
         fixtureDef.restitution = RESTITUTION;
         fixtureDef.friction = FRICTION;
         fixtureDef.shape = createShape(geometry, width, height);
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.type = bodyType;
         bodyDef.position.set(x, y);
-        bodyDef.angle = rotation * MathUtils.degreesToRadians;
+        bodyDef.angle = angle * MathUtils.degreesToRadians;
 
         body = world.createBody(bodyDef);
         body.createFixture(fixtureDef);
         fixtureDef.shape.dispose();
 
-        body.getFixtureList().first().setUserData(behaviour);
+        setUserData(type);
 
-        Texture texture = createTexture(geometry, behaviour);
-        scaleX = PIXELS_PER_METER * width / texture.getWidth();
-        scaleY = PIXELS_PER_METER * height / texture.getHeight();
-
-        actor.setTexture(texture);
-        actor.setScale(scaleX, scaleY);
-        actor.setRotation(rotation);
+        Texture texture = createTexture(geometry, type);
+        setActorTexture(texture);
+        actor.setRotation(angle);
     }
 
     public synchronized <T> T getAsset (String fileName) {
@@ -141,16 +158,28 @@ public class Element {
         return shape;
     }
 
-    private Texture createTexture (Geometry geometry, Behaviour behaviour) {
+    /**
+     * TODO
+     *
+     * Es confuso que no tengan correlacion los tipos con las texturas que se cargan
+     * La textura deberia ser un parametro. Si no se pasa textura, se utiliza este metodo
+     */
+    private Texture createTexture (Geometry geometry, Type type) {
+        /*
+        if (type == Type.BLUE) {
+            return getAsset(Asset.GAME_EXIT, Texture.class);
+        }
+        */
+
         if (geometry == Geometry.CIRCLE) {
-            switch (behaviour) {
+            switch (type) {
                 case BLACK: return getAsset(Asset.GAME_CIRCLE_BLACK, Texture.class);
                 case GREY: return getAsset(Asset.GAME_CIRCLE_GREY, Texture.class);
                 case RED: return getAsset(Asset.GAME_CIRCLE_RED, Texture.class);
             }
         }
         else if (geometry == Geometry.SQUARE) {
-            switch (behaviour) {
+            switch (type) {
                 case BLACK: return getAsset(Asset.GAME_SQUARE_BLACK, Texture.class);
                 case GREY: return getAsset(Asset.GAME_SQUARE_GREY, Texture.class);
                 case RED: return getAsset(Asset.GAME_SQUARE_RED, Texture.class);
@@ -167,6 +196,36 @@ public class Element {
         }
 
         return square(width, height); // No deberia ocurrir
+    }
+
+    /**
+     * Modifica la textura del actor y reajusta la escala del actor
+     */
+    public void setActorTexture (Texture texture) {
+        float scaleX = PIXELS_PER_METER * width / texture.getWidth();
+        float scaleY = PIXELS_PER_METER * height / texture.getHeight();
+
+        actor.setTexture(texture);
+        actor.setScale(scaleX, scaleY);
+    }
+
+    public void setUserData(Type type) {
+        UserData userData = new UserData();
+
+        if (type == Type.RED)
+            userData.effect = Effect.DESTROY;
+        else
+            userData.effect = Effect.NONE;
+
+        userData.type = type;
+        body.getFixtureList().first().setUserData(userData);
+    }
+
+    public void setUserData(Type type, Effect effect) {
+        UserData userData = new UserData();
+        userData.type = type;
+        userData.effect = effect;
+        body.getFixtureList().first().setUserData(userData);
     }
 
 }

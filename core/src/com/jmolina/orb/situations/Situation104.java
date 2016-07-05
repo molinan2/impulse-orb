@@ -16,13 +16,13 @@ public class Situation104 extends SideWalledSituation {
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 4f, 5f, 4, 4, 0,
-                Element.Behaviour.GREY, Element.Geometry.CIRCLE
+                Element.Type.GREY, Element.Geometry.CIRCLE
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 8f, 12f, 4, 4, 0,
-                Element.Behaviour.GREY, Element.Geometry.CIRCLE
+                Element.Type.GREY, Element.Geometry.CIRCLE
         ));
     }
 

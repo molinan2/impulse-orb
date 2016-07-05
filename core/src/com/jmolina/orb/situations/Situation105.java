@@ -16,19 +16,19 @@ public class Situation105 extends SideWalledSituation {
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 6, 10, 4, 4, 45,
-                Element.Behaviour.GREY, Element.Geometry.SQUARE
+                Element.Type.GREY, Element.Geometry.SQUARE
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 7.5f, 11.5f, 4, 0.5f, -45,
-                Element.Behaviour.RED, Element.Geometry.SQUARE
+                Element.Type.RED, Element.Geometry.SQUARE
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 4.5f, 8.5f, 4, 0.5f, -45,
-                Element.Behaviour.RED, Element.Geometry.SQUARE
+                Element.Type.RED, Element.Geometry.SQUARE
         ));
     }
 

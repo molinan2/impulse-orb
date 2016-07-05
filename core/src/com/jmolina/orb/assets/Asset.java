@@ -56,6 +56,8 @@ public class Asset {
     public static final String GAME_BG_LAYER1 = GAME + "bg_layer1.png";
     public static final String GAME_BG_LAYER2 = GAME + "bg_layer2.png";
     public static final String GAME_BG_LAYER3 = GAME + "bg_layer3.png";
+    public static final String GAME_EXIT = GAME + "exit.png";
+    public static final String GAME_INIT = GAME + "init.png";
 
     public static final String HUD_BACKGROUND = HUD + "hud_background.png";
     public static final String HUD_PAUSE = HUD + "hud_pause.png";

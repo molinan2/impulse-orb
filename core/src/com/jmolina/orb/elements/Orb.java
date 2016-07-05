@@ -2,6 +2,7 @@ package com.jmolina.orb.elements;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.assets.Asset;
@@ -9,24 +10,26 @@ import com.jmolina.orb.assets.Asset;
 public class Orb extends Element {
 
     private final float DIAMETER = 1f;
-    private final float DEFAULT_X = 0f;
-    private final float DEFAULT_Y = 0f;
     private final float INFINITE_DAMPING = 10000f;
+    private final float HEAT_MIN = 0f;
+    private final float HEAT_MAX = 1f;
+    private final float HEAT_DEFAULT_INCREMENT = 0.2f;
 
     private boolean locked = false;
+    private float heat = 0f;
 
     public Orb(AssetManager am, World world) {
-        super(am, world, 0, 0, 1f, 1f, 0, Behaviour.GREY, Geometry.CIRCLE);
+        super(am, world, 6, 2, 1f, 1f, 0, Type.GREY, Geometry.CIRCLE);
+
         getActor().setTexture(am.get(Asset.GAME_ORB, Texture.class));
         getBody().setType(BodyDef.BodyType.DynamicBody);
+
+        // Evita que se quede dormido después de lock(). ¡La Gravedad no despierta a un objeto dormido!
+        getBody().setSleepingAllowed(false);
     }
 
     /**
-     * Opciones:
-     *
-     * - Hacer cero LinearVelocity y AngularVelocity
-     * - Hacer infinito LinearDamping y AngularDamping
-     * - setActive(false)
+     * Anula las fuerzas que afectan al Orb aplicando un amortiguamente infinito.
      */
     public void lock() {
         locked = true;
@@ -36,13 +39,28 @@ public class Orb extends Element {
 
     public void unlock() {
         locked = false;
-        getBody().setAwake(true); // Evita que el objeto se quede dormido al bloquearlo
         getBody().setLinearDamping(0);
         getBody().setAngularDamping(0);
     }
 
     public boolean isLocked() {
         return locked;
+    }
+
+    public void increaseHeat() {
+        increaseHeat(HEAT_DEFAULT_INCREMENT);
+    }
+
+    public void increaseHeat(float increment) {
+        heat = MathUtils.clamp(this.heat + increment, HEAT_MIN, HEAT_MAX);
+    }
+
+    public void decreaseHeat (float decrement) {
+        increaseHeat(-decrement);
+    }
+
+    public float getHeat () {
+        return heat;
     }
 
 }

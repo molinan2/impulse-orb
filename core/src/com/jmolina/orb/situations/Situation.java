@@ -57,4 +57,8 @@ public abstract class Situation {
         return this.world;
     }
 
+    public synchronized <T> T getAsset (String fileName, Class<T> type) {
+        return getAssetManager().get(fileName, type);
+    }
+
 }

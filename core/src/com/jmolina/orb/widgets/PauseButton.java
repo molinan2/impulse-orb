@@ -33,13 +33,11 @@ public class PauseButton extends BaseGroup {
     public void pause () {
         paused = true;
         image.setDrawable(resumeDrawable);
-        // do pause
     }
 
     public void resume () {
         paused = false;
         image.setDrawable(pauseDrawable);
-        // do unpause
     }
 
     public void toggle () {
