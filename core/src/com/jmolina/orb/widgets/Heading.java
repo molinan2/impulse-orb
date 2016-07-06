@@ -18,18 +18,22 @@ public class Heading extends BaseGroup {
     private Label label;
 
     public Heading(AssetManager am, String name) {
-        this(am, name, Align.left, Weight.Medium);
+        this(am, name, Align.left, Weight.Medium, BaseGroup.COLOR_BLUE);
     }
 
     public Heading(AssetManager am, String name, int align) {
-        this(am, name, align, Weight.Medium);
+        this(am, name, align, Weight.Medium, BaseGroup.COLOR_BLUE);
     }
 
     public Heading(AssetManager am, String name, int align, Weight weight) {
+        this(am, name, align, weight, BaseGroup.COLOR_BLUE);
+    }
+
+    public Heading(AssetManager am, String name, int align, Weight weight, int color) {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(BaseGroup.COLOR_BLUE);
+        style.fontColor = new Color(color);
         style.font = newBitmapFont(weight);
 
         label = new Label(name, style);

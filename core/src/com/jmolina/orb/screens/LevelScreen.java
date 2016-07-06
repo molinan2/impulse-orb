@@ -394,16 +394,20 @@ public class LevelScreen extends BaseScreen {
 
             currentOrbPosition = getOrb().getPosition();
             distance = distance(currentOrbPosition, lastOrbPosition);
+            lastOrbPosition = currentOrbPosition;
+
             stats.addTime(Gdx.graphics.getRawDeltaTime());
             stats.addDistance(distance);
-            lastOrbPosition = currentOrbPosition;
+            hudStage.setDistanceValue(stats.getCurrentDistance());
+            hudStage.setFullDistanceValue(stats.getFullDistance());
+            hudStage.setFullTimeValue(stats.getFullTime());
+            hudStage.setFullDestroyedValue(stats.getFullDestroyed());
         }
     }
 
     public void destroyOrb() {
-        // stats add destruction
-        stats.addDestruction();
-        System.out.println(stats.getDestructions());
+        stats.setDestroyed();
+
 
         // pausa
         // secuencia de destruccion

@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.screens.LevelScreen;
@@ -12,6 +13,7 @@ import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.widgets.BaseGroup;
 import com.jmolina.orb.widgets.Gauge;
 import com.jmolina.orb.widgets.HUDBackground;
+import com.jmolina.orb.widgets.Heading;
 import com.jmolina.orb.widgets.MainButton;
 import com.jmolina.orb.widgets.Overlay;
 import com.jmolina.orb.widgets.PauseButton;
@@ -50,8 +52,11 @@ public class HUDStage extends Stage {
     private MainButton resumeButton;
     private MainButton restartButton;
     private MainButton leaveButton;
-    private Stat traveledStat;
-    private Stat destroyedStat;
+    private Stat distanceStat;
+    private Heading fullHeading;
+    private Stat fullTimeStat;
+    private Stat fullDistanceStat;
+    private Stat fullDestroyedStat;
     private LevelScreen level;
 
     /**
@@ -98,8 +103,11 @@ public class HUDStage extends Stage {
             resumeButton.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
             restartButton.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
             leaveButton.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
-            traveledStat.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
-            destroyedStat.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
+            distanceStat.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
+            fullHeading.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
+            fullTimeStat.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
+            fullDistanceStat.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
+            fullDestroyedStat.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
         }
     };
 
@@ -109,8 +117,11 @@ public class HUDStage extends Stage {
             resumeButton.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
             restartButton.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
             leaveButton.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
-            traveledStat.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
-            destroyedStat.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
+            distanceStat.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
+            fullHeading.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
+            fullTimeStat.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
+            fullDistanceStat.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
+            fullDestroyedStat.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
         }
     };
 
@@ -120,8 +131,11 @@ public class HUDStage extends Stage {
             resumeButton.setVisible(true);
             restartButton.setVisible(true);
             leaveButton.setVisible(true);
-            traveledStat.setVisible(true);
-            destroyedStat.setVisible(true);
+            distanceStat.setVisible(true);
+            fullHeading.setVisible(true);
+            fullTimeStat.setVisible(true);
+            fullDistanceStat.setVisible(true);
+            fullDestroyedStat.setVisible(true);
         }
     };
 
@@ -131,8 +145,11 @@ public class HUDStage extends Stage {
             resumeButton.setVisible(false);
             restartButton.setVisible(false);
             leaveButton.setVisible(false);
-            traveledStat.setVisible(false);
-            destroyedStat.setVisible(false);
+            distanceStat.setVisible(false);
+            fullHeading.setVisible(false);
+            fullTimeStat.setVisible(false);
+            fullDistanceStat.setVisible(false);
+            fullDestroyedStat.setVisible(false);
         }
     };
 
@@ -165,10 +182,8 @@ public class HUDStage extends Stage {
     private ClickListener toggleListener = new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            if (!level.isGamePaused())
-                level.pauseGame();
-            else
-                level.resumeGame();
+            if (!level.isGamePaused()) level.pauseGame();
+            else level.resumeGame();
 
             event.cancel();
         }
@@ -177,8 +192,7 @@ public class HUDStage extends Stage {
     private ClickListener resumeListener = new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            if (level.isGamePaused())
-                level.resumeGame();
+            if (level.isGamePaused()) level.resumeGame();
 
             event.cancel();
         }
@@ -221,39 +235,53 @@ public class HUDStage extends Stage {
         resumeButton = new MainButton(am, "RESUME", MainButton.Type.Play);
         restartButton = new MainButton(am, "RESTART", MainButton.Type.Default);
         leaveButton = new MainButton(am, "LEAVE", MainButton.Type.Exit);
-        traveledStat = new Stat(am, "Distance traveled", 542.4f, "m");
-        destroyedStat = new Stat(am, "Got destroyed", 13, "times");
+        distanceStat = new Stat(am, "Distance", 0f, "m");
+        fullHeading = new Heading(am, "Since start", Align.center, Heading.Weight.Bold, BaseGroup.COLOR_WHITE);
+        fullTimeStat = new Stat(am, "Time", 0, "s");
+        fullDistanceStat = new Stat(am, "Distance", 0, "m");
+        fullDestroyedStat = new Stat(am, "Destroyed", 0, "times");
 
         background.setPositionGrid(0, 16);
         overlay.setPositionGrid(0, 0);
         timer.setPositionGrid(3, 16.5f);
         pauseButton.setPositionGrid(10, 16.5f);
         gauge.setPositionGrid(0.5f, 16.5f);
-        resumeButton.setPositionGrid(2, 11.5f);
-        restartButton.setPositionGrid(2, 9);
-        leaveButton.setPositionGrid(2, 6.5f);
-        traveledStat.setPositionGrid(1, 2);
-        destroyedStat.setPositionGrid(1, 1);
+        resumeButton.setPositionGrid(2, 12.5f);
+        restartButton.setPositionGrid(2, 10);
+        leaveButton.setPositionGrid(2, 7.5f);
+        distanceStat.setPositionGrid(1, 5);
+        fullHeading.setPositionGrid(1, 4);
+        fullTimeStat.setPositionGrid(1, 3);
+        fullDistanceStat.setPositionGrid(1, 2);
+        fullDestroyedStat.setPositionGrid(1, 1);
 
         resumeButton.setVisible(false);
         restartButton.setVisible(false);
         leaveButton.setVisible(false);
-        traveledStat.setVisible(false);
-        destroyedStat.setVisible(false);
+        distanceStat.setVisible(false);
+        fullHeading.setVisible(false);
+        fullTimeStat.setVisible(false);
+        fullDistanceStat.setVisible(false);
+        fullDestroyedStat.setVisible(false);
 
         resumeButton.addAction(alpha(0));
         restartButton.addAction(alpha(0));
         leaveButton.addAction(alpha(0));
-        traveledStat.addAction(alpha(0));
-        destroyedStat.addAction(alpha(0));
+        distanceStat.addAction(alpha(0));
+        fullHeading.addAction(alpha(0));
+        fullTimeStat.addAction(alpha(0));
+        fullDistanceStat.addAction(alpha(0));
+        fullDestroyedStat.addAction(alpha(0));
 
         pauseButton.addListener(toggleListener);
         resumeButton.addListener(resumeListener);
         restartButton.addListener(restartListener);
         leaveButton.addListener(leaveListener);
 
-        traveledStat.setLabelColor(BaseGroup.COLOR_WHITE);
-        destroyedStat.setLabelColor(BaseGroup.COLOR_WHITE);
+        distanceStat.setLabelColor(BaseGroup.COLOR_WHITE);
+        fullTimeStat.setLabelColor(BaseGroup.COLOR_WHITE);
+        fullDistanceStat.setLabelColor(BaseGroup.COLOR_WHITE);
+        fullDestroyedStat.setLabelColor(BaseGroup.COLOR_WHITE);
 
         addActor(overlay);
         addActor(background);
@@ -263,8 +291,11 @@ public class HUDStage extends Stage {
         addActor(resumeButton);
         addActor(restartButton);
         addActor(leaveButton);
-        addActor(traveledStat);
-        addActor(destroyedStat);
+        addActor(distanceStat);
+        addActor(fullHeading);
+        addActor(fullTimeStat);
+        addActor(fullDistanceStat);
+        addActor(fullDestroyedStat);
     }
 
     public void updateTimer() {
@@ -359,6 +390,22 @@ public class HUDStage extends Stage {
                 run(enableTouchables),
                 run(unpauseCallback)
         ));
+    }
+
+    public void setDistanceValue(float distance) {
+        distanceStat.setValue(distance, "m");
+    }
+
+    public void setFullDistanceValue(float distance) {
+        fullDistanceStat.setValue(distance, "m");
+    }
+
+    public void setFullTimeValue(float time) {
+        fullTimeStat.setValue(time, "s");
+    }
+
+    public void setFullDestroyedValue(int destroyed) {
+        fullDestroyedStat.setValue(destroyed, "times");
     }
 
 }
