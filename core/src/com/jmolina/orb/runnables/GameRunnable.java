@@ -8,7 +8,7 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.stages.HUDStage;
 
-public abstract class GameRunnable {
+public class GameRunnable {
 
     static public Runnable pauseWidgets(final HUDStage hudStage) {
         return new Runnable() {

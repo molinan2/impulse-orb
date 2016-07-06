@@ -6,10 +6,10 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jmolina.orb.data.GameStats;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
@@ -20,8 +20,6 @@ import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
 import com.jmolina.orb.stages.ParallaxStage;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
-
 
 /**
  * TODO
@@ -31,7 +29,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  * Solo se pueden añadir elementos mediante Situations, no directamente.
  * World camera is always centered at Orb position
  */
-public abstract class LevelScreen extends BaseScreen {
+public class LevelScreen extends BaseScreen {
 
     /**
      * Constants
@@ -46,6 +44,7 @@ public abstract class LevelScreen extends BaseScreen {
     private static final float MAX_FLING_DELAY = 0.15f;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
     private final float WORLD_TIME_STEP = 1/60f;
+    private final float WORLD_PRECISION_FACTOR = 1;
     private final int WORLD_VELOCITY_INTERACTIONS = 8;
     private final int WORLD_POSITION_INTERACTIONS = 3;
     private final float ORB_MAX_LOCK_TIME = 0.5f;
@@ -69,9 +68,35 @@ public abstract class LevelScreen extends BaseScreen {
     private SnapshotArray<Situation> situations;
     private Orb orb;
     private float orbLockTimer = 0f;
-    private boolean paused = false;
+    private boolean paused = true;
     private Vector2 orbStartPosition;
     // private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
+    private GameStats stats;
+    private Vector2 currentOrbPosition;
+    private Vector2 lastOrbPosition;
+
+    /**
+     * Runnables
+     */
+
+    private Runnable reset = new Runnable() {
+        @Override
+        public void run() {
+            getOrb().setPosition(orbStartPosition.x, orbStartPosition.y);
+            getOrb().resetHeat();
+            getOrb().resetVelocity();
+            hudStage.resetTimer();
+            stats.newTry();
+        }
+    };
+
+    private Runnable unpause = new Runnable() {
+        @Override
+        public void run() {
+            paused = false;
+        }
+    };
+
 
     /**
      * Constructor
@@ -89,13 +114,15 @@ public abstract class LevelScreen extends BaseScreen {
         hudStage = new HUDStage(getAssetManager(), this, hudViewport);
         gestureStage = new GestureStage(gestureViewport, getAssetManager());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport);
+        stats = new GameStats();
+        currentOrbPosition = new Vector2();
+        lastOrbPosition = new Vector2();
 
         world = new World(WORLD_GRAVITY, true);
         orb = new Orb(getAssetManager(), getWorld());
         contactHandler = new ContactHandler(this);
         world.setContactListener(contactHandler);
 
-        resetWorldCamera();
         addOrb(orb);
 
         gestureHandler = new GestureHandler(this);
@@ -121,23 +148,20 @@ public abstract class LevelScreen extends BaseScreen {
     /**
      * TODO
      * Este método es muy lento para Android y se ralentiza.
-     * Los métodos más lentos son syncActors() y draw()
+     * Los métodos más lentos son syncActors() [4] y draw() [20]
      */
     @Override
     public void render(float delta) {
         clearColor();
+        act();
+        syncBodies();
+        stepSimulation();
+        followCamera();
+        syncActors();
         updateLockTime();
         updateHeat();
         updateTimer();
-        act();
-        syncBodies();
-
-        if (!isGamePaused()) {
-            world.step(WORLD_TIME_STEP, WORLD_VELOCITY_INTERACTIONS, WORLD_POSITION_INTERACTIONS);
-        }
-
-        followCamera();
-        syncActors();
+        updateStats();
         draw();
     }
 
@@ -158,6 +182,23 @@ public abstract class LevelScreen extends BaseScreen {
         parallaxStage.dispose();
     }
 
+    @Override
+    public void show() {
+        super.show();
+        firstStartGame();
+    }
+
+
+    /**
+     * Backable methods
+     */
+
+    @Override
+    public void back() {
+        if (!isGamePaused()) pauseGame();
+        else resumeGame();
+    }
+
 
     /**
      * Class methods
@@ -167,17 +208,16 @@ public abstract class LevelScreen extends BaseScreen {
         return world;
     }
 
-    /**
-     * Posiciona la cámara del mundo de forma que coincide el (0,0) de la escena con el del mundo
-     */
-    private void resetWorldCamera() {
-        worldViewport.getCamera().position.set(
-                worldViewport.getCamera().position.x + WORLD_WIDTH * 0.5f,
-                worldViewport.getCamera().position.y + WORLD_HEIGHT * 0.5f,
-                0
-        );
-
-        worldViewport.getCamera().update();
+    public void stepSimulation() {
+        if (!isGamePaused()) {
+            for (int i=0; i<WORLD_PRECISION_FACTOR; i++) {
+                world.step(
+                        WORLD_TIME_STEP / WORLD_PRECISION_FACTOR,
+                        WORLD_VELOCITY_INTERACTIONS,
+                        WORLD_POSITION_INTERACTIONS
+                );
+            }
+        }
     }
 
     /**
@@ -279,20 +319,22 @@ public abstract class LevelScreen extends BaseScreen {
     }
 
     public void pauseGame() {
-        paused = true;
-        hudStage.pause();
+        if (!isGamePaused()) {
+            paused = true;
+            hudStage.pause();
+        }
     }
 
     public void resumeGame() {
-        // Que despause el juego cuando termine la animacion de salida de pausa
-        Runnable callback = new Runnable() {
-            @Override
-            public void run() {
-                paused = false;
-            }
-        };
+        hudStage.resume(unpause);
+    }
 
-        hudStage.resume(callback);
+    public void firstStartGame() {
+        hudStage.firstStart(reset, unpause);
+    }
+
+    public void restartGame() {
+        hudStage.restart(reset, unpause);
     }
 
     public boolean isGamePaused() {
@@ -302,27 +344,8 @@ public abstract class LevelScreen extends BaseScreen {
     public void setOrbStartPosition (float x, float y) {
         orbStartPosition.set(x, y);
         getOrb().setPosition(orbStartPosition.x, orbStartPosition.y);
-    }
-
-    public void resetGame() {
-        Runnable callbackReset = new Runnable() {
-            @Override
-            public void run() {
-                getOrb().setPosition(orbStartPosition.x, orbStartPosition.y);
-                getOrb().resetHeat();
-                getOrb().resetVelocity();
-                hudStage.resetTimer();
-            }
-        };
-
-        Runnable callbackUnpause = new Runnable() {
-            @Override
-            public void run() {
-                paused = false;
-            }
-        };
-
-        hudStage.restart(callbackReset, callbackUnpause);
+        currentOrbPosition.set(x, y);
+        lastOrbPosition.set(x, y);
     }
 
     public void tap () {
@@ -363,6 +386,40 @@ public abstract class LevelScreen extends BaseScreen {
         if (!isGamePaused()) {
             hudStage.updateTimer();
         }
+    }
+
+    public void updateStats() {
+        if (!isGamePaused()) {
+            float distance;
+
+            currentOrbPosition = getOrb().getPosition();
+            distance = distance(currentOrbPosition, lastOrbPosition);
+            stats.addTime(Gdx.graphics.getRawDeltaTime());
+            stats.addDistance(distance);
+            lastOrbPosition = currentOrbPosition;
+        }
+    }
+
+    public void destroyOrb() {
+        // stats add destruction
+        stats.addDestruction();
+        System.out.println(stats.getDestructions());
+
+        // pausa
+        // secuencia de destruccion
+        // secuencia de reinicio
+    }
+
+    /**
+     * Distancia entre 2 puntos
+     */
+    private float distance(Vector2 pointA, Vector2 pointB) {
+        Vector2 inter = new Vector2(
+                pointB.x - pointA.x,
+                pointB.y - pointA.y
+        );
+
+        return (float) Math.sqrt(Math.pow(inter.x, 2) + Math.pow(inter.y, 2));
     }
 
 }

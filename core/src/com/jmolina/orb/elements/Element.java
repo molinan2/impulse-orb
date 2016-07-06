@@ -210,7 +210,7 @@ public class Element {
     }
 
     public void setUserData(Type type) {
-        UserData userData = new UserData();
+        com.jmolina.orb.data.UserData userData = new com.jmolina.orb.data.UserData();
 
         if (type == Type.RED)
             userData.effect = Effect.DESTROY;
@@ -222,7 +222,7 @@ public class Element {
     }
 
     public void setUserData(Type type, Effect effect) {
-        UserData userData = new UserData();
+        com.jmolina.orb.data.UserData userData = new com.jmolina.orb.data.UserData();
         userData.type = type;
         userData.effect = effect;
         body.getFixtureList().first().setUserData(userData);

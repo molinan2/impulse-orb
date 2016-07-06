@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.jmolina.orb.elements.Element;
-import com.jmolina.orb.elements.UserData;
+import com.jmolina.orb.data.UserData;
 import com.jmolina.orb.screens.LevelScreen;
 
 public class ContactHandler implements ContactListener {
@@ -28,18 +28,20 @@ public class ContactHandler implements ContactListener {
 
         if (fixtureA.equals(orbFixture)) {
             if (userDataB.type == Element.Type.RED) {
-                System.out.println(userDataB);
+                level.destroyOrb();
             }
             else if (userDataB.type == Element.Type.BLUE) {
-                System.out.println(userDataB);
+                // Comprobar si es EXIT
+                // level.leave();
             }
         }
         else if (fixtureB.equals(orbFixture)) {
             if (userDataA.type == Element.Type.RED) {
-                System.out.println(userDataA);
+                level.destroyOrb();
             }
             else if (userDataA.type == Element.Type.BLUE) {
-                System.out.println(userDataA);
+                // Comprobar si es EXIT
+                // level.leave();
             }
         }
     }

@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.screens.BaseScreen;
 
-public abstract class UIRunnable {
+public class UIRunnable {
 
     static public Runnable enableTouchable(final Actor actor) {
         return new Runnable() {

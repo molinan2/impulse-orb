@@ -26,7 +26,6 @@ public class Overlay extends BaseGroup {
         addActor(image);
 
         setSize(LevelScreen.VIEWPORT_WIDTH, LevelScreen.VIEWPORT_HEIGHT);
-        addAction(alpha(0));
     }
 
 }

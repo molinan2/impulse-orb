@@ -150,6 +150,13 @@ public class HUDStage extends Stage {
         }
     };
 
+    private Runnable fullOverlay = new Runnable() {
+        @Override
+        public void run() {
+            overlay.addAction(alpha(1));
+        }
+    };
+
 
     /**
      * Listeners
@@ -180,7 +187,7 @@ public class HUDStage extends Stage {
     private ClickListener restartListener = new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            level.resetGame();
+            level.restartGame();
             event.cancel();
         }
     };
@@ -324,6 +331,33 @@ public class HUDStage extends Stage {
                 run(resumeWidgets),
                 run(enableTouchables),
                 run(callbackUnpause)
+        ));
+    }
+
+    /**
+     * Secuencia de acciones visuales para el primer inicio de un juego
+     *
+     * @param resetCallback Restea todos los elementos a su estado inicial
+     * @param unpauseCallback Despausa el juego
+     */
+    public void firstStart(Runnable resetCallback, Runnable unpauseCallback) {
+        background.clearActions();
+        background.addAction(sequence(
+//                run(disableTouchables),
+//                run(fadeOutWidgets),
+//                delay(FADE_TIME),
+//                run(disableWidgetsVisibility),
+//                moveTo(0, Grid.unit(-0.25f), 0),
+//                moveTo(0, Grid.unit(16f), ROLLER_TIME, ROLLER_INTERPOLATION),
+//                run(fadeInOverlay),
+//                delay(OVERLAY_FADE_TIME),
+                run(fullOverlay),
+                run(resetCallback),
+                run(fadeOutOverlay),
+                delay(OVERLAY_FADE_TIME),
+                run(resumeWidgets),
+                run(enableTouchables),
+                run(unpauseCallback)
         ));
     }
 
