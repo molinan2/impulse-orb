@@ -11,13 +11,13 @@ import com.jmolina.orb.assets.Asset;
 /**
  * Background tilable ajustable
  */
-public class ScreenBackground extends BaseGroup {
+public class StaticBackground extends BaseGroup {
 
     private Image image;
     private float offset;
     private final float SPEED = 0f;
 
-    public ScreenBackground(AssetManager am, float viewportWidth, float viewportHeight) {
+    public StaticBackground(AssetManager am, float viewportWidth, float viewportHeight) {
         super(am);
 
         this.offset = 0f;

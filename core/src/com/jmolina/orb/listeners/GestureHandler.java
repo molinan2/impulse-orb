@@ -10,9 +10,6 @@ import com.jmolina.orb.stages.HUDStage;
 
 public class GestureHandler extends GestureDetector.GestureAdapter {
 
-    private final float IMPULSE_RATIO_X = LevelScreen.RATIO_METER_PIXEL;
-    private final float IMPULSE_RATIO_Y = -LevelScreen.RATIO_METER_PIXEL;
-
     private LevelScreen level;
 
     public GestureHandler(LevelScreen level) {
@@ -27,11 +24,7 @@ public class GestureHandler extends GestureDetector.GestureAdapter {
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        float impulseX = velocityX * IMPULSE_RATIO_X;
-        float impulseY = velocityY * IMPULSE_RATIO_Y;
-
-        level.fling(impulseX, impulseY);
-
+        level.fling(velocityX, velocityY);
         return false;
     }
 

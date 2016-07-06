@@ -60,6 +60,11 @@ public class Timer extends BaseGroup {
         return time;
     }
 
+    public void reset() {
+        time = 0f;
+        timeFormated = DEFAULT_TEXT;
+    }
+
     public String getTimeFormated () {
         return timeFormated;
     }

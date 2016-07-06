@@ -6,6 +6,7 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -18,6 +19,8 @@ import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
 import com.jmolina.orb.stages.ParallaxStage;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 
 /**
@@ -46,10 +49,11 @@ public abstract class LevelScreen extends BaseScreen {
     private final int WORLD_VELOCITY_INTERACTIONS = 8;
     private final int WORLD_POSITION_INTERACTIONS = 3;
     private final float ORB_MAX_LOCK_TIME = 0.5f;
-    private final float HEAT_INCREMENT = 0.2f;
     private final float COOLING_RATE = 0.1f;
     private final int INFINITE_Z_INDEX = 32000;
     private final float MAX_IMPULSE = 40.0f;
+    private final float IMPULSE_FACTOR_X = RATIO_METER_PIXEL;
+    private final float IMPULSE_FACTOR_Y = -RATIO_METER_PIXEL;
 
     /**
      * Fields
@@ -85,6 +89,7 @@ public abstract class LevelScreen extends BaseScreen {
         hudStage = new HUDStage(getAssetManager(), this, hudViewport);
         gestureStage = new GestureStage(gestureViewport, getAssetManager());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport);
+
         world = new World(WORLD_GRAVITY, true);
         orb = new Orb(getAssetManager(), getWorld());
         contactHandler = new ContactHandler(this);
@@ -300,7 +305,24 @@ public abstract class LevelScreen extends BaseScreen {
     }
 
     public void resetGame() {
-        getOrb().setPosition(orbStartPosition.x, orbStartPosition.y);
+        Runnable callbackReset = new Runnable() {
+            @Override
+            public void run() {
+                getOrb().setPosition(orbStartPosition.x, orbStartPosition.y);
+                getOrb().resetHeat();
+                getOrb().resetVelocity();
+                hudStage.resetTimer();
+            }
+        };
+
+        Runnable callbackUnpause = new Runnable() {
+            @Override
+            public void run() {
+                paused = false;
+            }
+        };
+
+        hudStage.restart(callbackReset, callbackUnpause);
     }
 
     public void tap () {
@@ -311,12 +333,15 @@ public abstract class LevelScreen extends BaseScreen {
         }
     }
 
-    public void fling (float impulseX, float impulseY) {
+    public void fling (float velocityX, float velocityY) {
+        float impulseX = MathUtils.clamp(velocityX * IMPULSE_FACTOR_X, -MAX_IMPULSE, MAX_IMPULSE);
+        float impulseY = MathUtils.clamp(velocityY * IMPULSE_FACTOR_Y, -MAX_IMPULSE, MAX_IMPULSE);
+
         if (!isGamePaused()) {
             getOrb().unlock();
             getOrb().getBody().applyLinearImpulse(
-                    MathUtils.clamp(impulseX, -MAX_IMPULSE, MAX_IMPULSE),
-                    MathUtils.clamp(impulseY, -MAX_IMPULSE, MAX_IMPULSE),
+                    impulseX,
+                    impulseY,
                     getOrb().getBody().getPosition().x,
                     getOrb().getBody().getPosition().y,
                     true

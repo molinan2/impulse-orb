@@ -13,6 +13,7 @@ import com.jmolina.orb.widgets.BaseGroup;
 import com.jmolina.orb.widgets.Gauge;
 import com.jmolina.orb.widgets.HUDBackground;
 import com.jmolina.orb.widgets.MainButton;
+import com.jmolina.orb.widgets.Overlay;
 import com.jmolina.orb.widgets.PauseButton;
 import com.jmolina.orb.widgets.Stat;
 import com.jmolina.orb.widgets.Timer;
@@ -33,6 +34,7 @@ public class HUDStage extends Stage {
 
     private final float FADE_TIME = 0.2f;
     private final float ROLLER_TIME = 0.75f;
+    private final float OVERLAY_FADE_TIME = ROLLER_TIME * 0.5f;
     private final Interpolation ROLLER_INTERPOLATION = Interpolation.exp5;
     private final Interpolation FADE_INTERPOLATION = Interpolation.pow2;
 
@@ -44,6 +46,7 @@ public class HUDStage extends Stage {
     private Timer timer;
     private PauseButton pauseButton;
     private Gauge gauge;
+    private Overlay overlay;
     private MainButton resumeButton;
     private MainButton restartButton;
     private MainButton leaveButton;
@@ -89,7 +92,7 @@ public class HUDStage extends Stage {
         }
     };
 
-    private Runnable fadeIn = new Runnable() {
+    private Runnable fadeInWidgets = new Runnable() {
         @Override
         public void run() {
             resumeButton.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
@@ -100,7 +103,7 @@ public class HUDStage extends Stage {
         }
     };
 
-    private Runnable fadeOut = new Runnable() {
+    private Runnable fadeOutWidgets = new Runnable() {
         @Override
         public void run() {
             resumeButton.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
@@ -111,7 +114,7 @@ public class HUDStage extends Stage {
         }
     };
 
-    private Runnable enableVisibility = new Runnable() {
+    private Runnable enableWidgetsVisibility = new Runnable() {
         @Override
         public void run() {
             resumeButton.setVisible(true);
@@ -122,7 +125,7 @@ public class HUDStage extends Stage {
         }
     };
 
-    private Runnable disableVisibility = new Runnable() {
+    private Runnable disableWidgetsVisibility = new Runnable() {
         @Override
         public void run() {
             resumeButton.setVisible(false);
@@ -130,6 +133,20 @@ public class HUDStage extends Stage {
             leaveButton.setVisible(false);
             traveledStat.setVisible(false);
             destroyedStat.setVisible(false);
+        }
+    };
+
+    private Runnable fadeInOverlay = new Runnable() {
+        @Override
+        public void run() {
+            overlay.addAction(fadeIn(OVERLAY_FADE_TIME, FADE_INTERPOLATION));
+        }
+    };
+
+    private Runnable fadeOutOverlay = new Runnable() {
+        @Override
+        public void run() {
+            overlay.addAction(fadeOut(OVERLAY_FADE_TIME, FADE_INTERPOLATION));
         }
     };
 
@@ -163,7 +180,7 @@ public class HUDStage extends Stage {
     private ClickListener restartListener = new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            System.out.println("restart");
+            level.resetGame();
             event.cancel();
         }
     };
@@ -192,6 +209,8 @@ public class HUDStage extends Stage {
         timer = new Timer(am);
         pauseButton = new PauseButton(am);
         gauge = new Gauge(am);
+        overlay = new Overlay(am);
+
         resumeButton = new MainButton(am, "RESUME", MainButton.Type.Play);
         restartButton = new MainButton(am, "RESTART", MainButton.Type.Default);
         leaveButton = new MainButton(am, "LEAVE", MainButton.Type.Exit);
@@ -199,6 +218,7 @@ public class HUDStage extends Stage {
         destroyedStat = new Stat(am, "Got destroyed", 13, "times");
 
         background.setPositionGrid(0, 16);
+        overlay.setPositionGrid(0, 0);
         timer.setPositionGrid(3, 16.5f);
         pauseButton.setPositionGrid(10, 16.5f);
         gauge.setPositionGrid(0.5f, 16.5f);
@@ -228,6 +248,7 @@ public class HUDStage extends Stage {
         traveledStat.setLabelColor(BaseGroup.COLOR_WHITE);
         destroyedStat.setLabelColor(BaseGroup.COLOR_WHITE);
 
+        addActor(overlay);
         addActor(background);
         addActor(timer);
         addActor(pauseButton);
@@ -243,6 +264,10 @@ public class HUDStage extends Stage {
         timer.update();
     }
 
+    public void resetTimer() {
+        timer.reset();
+    }
+
     public void setGaugeLevel(float level) {
         gauge.setLevel(level);
     }
@@ -254,8 +279,8 @@ public class HUDStage extends Stage {
                 run(pauseWidgets),
                 moveTo(0, Grid.unit(16f), 0),
                 moveTo(0, Grid.unit(-0.25f), ROLLER_TIME, ROLLER_INTERPOLATION),
-                run(enableVisibility),
-                run(fadeIn),
+                run(enableWidgetsVisibility),
+                run(fadeInWidgets),
                 delay(FADE_TIME),
                 run(enableTouchables)
         ));
@@ -265,14 +290,40 @@ public class HUDStage extends Stage {
         background.clearActions();
         background.addAction(sequence(
                 run(disableTouchables),
-                run(fadeOut),
+                run(fadeOutWidgets),
                 delay(FADE_TIME),
-                run(disableVisibility),
+                run(disableWidgetsVisibility),
                 moveTo(0, Grid.unit(-0.25f), 0),
                 moveTo(0, Grid.unit(16f), ROLLER_TIME, ROLLER_INTERPOLATION),
                 run(resumeWidgets),
                 run(enableTouchables),
                 run(callback)
+        ));
+    }
+
+    /**
+     * Secuencia de acciones visuales para reiniciar un juego
+     *
+     * @param callbackReset Restea todos los elementos a su estado inicial
+     * @param callbackUnpause Despausa el juego
+     */
+    public void restart (Runnable callbackReset, Runnable callbackUnpause) {
+        background.clearActions();
+        background.addAction(sequence(
+                run(disableTouchables),
+                run(fadeOutWidgets),
+                delay(FADE_TIME),
+                run(disableWidgetsVisibility),
+                moveTo(0, Grid.unit(-0.25f), 0),
+                moveTo(0, Grid.unit(16f), ROLLER_TIME, ROLLER_INTERPOLATION),
+                run(fadeInOverlay),
+                delay(OVERLAY_FADE_TIME),
+                run(callbackReset),
+                run(fadeOutOverlay),
+                delay(OVERLAY_FADE_TIME),
+                run(resumeWidgets),
+                run(enableTouchables),
+                run(callbackUnpause)
         ));
     }
 

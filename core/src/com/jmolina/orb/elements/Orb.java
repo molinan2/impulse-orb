@@ -43,6 +43,11 @@ public class Orb extends Element {
         getBody().setAngularDamping(0);
     }
 
+    public void resetVelocity() {
+        getBody().setLinearVelocity(0, 0);
+        getBody().setAngularVelocity(0);
+    }
+
     public boolean isLocked() {
         return locked;
     }
@@ -57,6 +62,10 @@ public class Orb extends Element {
 
     public void decreaseHeat (float decrement) {
         increaseHeat(-decrement);
+    }
+
+    public void resetHeat () {
+        heat = HEAT_MIN;
     }
 
     public float getHeat () {

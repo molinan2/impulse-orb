@@ -39,9 +39,14 @@ public class ParallaxStage extends Stage {
         layer2.setPosition(-width, -height);
         layer3.setPosition(-width, -height);
 
-        addActor(layer1);
-        addActor(layer2);
         addActor(layer3);
+        addActor(layer2);
+        addActor(layer1);
+    }
+
+    @Override
+    public void draw() {
+        super.draw();
     }
 
     public void draw(float x, float y) {

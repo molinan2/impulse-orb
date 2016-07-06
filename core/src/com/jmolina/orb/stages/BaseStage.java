@@ -14,6 +14,7 @@ public class BaseStage extends Stage {
     public BaseStage(Viewport viewport, Runnable operation) {
         super(viewport);
         this.operation = operation;
+
     }
 
     @Override
