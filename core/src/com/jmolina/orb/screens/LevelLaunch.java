@@ -23,7 +23,7 @@ public class LevelLaunch extends Menu {
     public LevelLaunch(SuperManager superManager, String title) {
         super(superManager);
 
-        setReturningScreen(LEVEL_SELECT);
+        setPreviousScreenKey(LEVEL_SELECT);
         setTitle("LEVEL");
 
         this.title = new LevelTitle(getAssetManager(), title);

@@ -209,7 +209,7 @@ public class HUDStage extends Stage {
     private ClickListener leaveListener = new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            System.out.println("leave");
+            level.leaveGame();
             event.cancel();
         }
     };

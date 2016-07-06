@@ -12,6 +12,10 @@ import com.jmolina.orb.assets.Asset;
 // No se encuentra en GWT (HTML), por lo que no se puede compilar en GWT (HTML)
 import java.text.DecimalFormat;
 
+/**
+ * TODO
+ * Hacer que conserve la unidad para que no haya que especificarla en cada setValue
+ */
 public class Stat extends BaseGroup {
 
     private Label name;
@@ -59,7 +63,7 @@ public class Stat extends BaseGroup {
     }
 
     private String formatStat(float value, String unit) {
-        DecimalFormat df = new DecimalFormat("###.#");
+        DecimalFormat df = new DecimalFormat("###.##");
         String stat;
 
         if (unit.length() > 0)

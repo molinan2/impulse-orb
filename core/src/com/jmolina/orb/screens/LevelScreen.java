@@ -161,7 +161,7 @@ public class LevelScreen extends BaseScreen {
         updateLockTime();
         updateHeat();
         updateTimer();
-        updateStats();
+        updateGameStats();
         draw();
     }
 
@@ -337,6 +337,30 @@ public class LevelScreen extends BaseScreen {
         hudStage.restart(reset, unpause);
     }
 
+    /**
+     * Abandono manual del juego
+     */
+    public void leaveGame() {
+        // guardar stats
+        // stage -> secuencia de salida
+        // cargar screen anterior (returning screen)
+
+        getPreferencesManager().mergeGameStats(stats);
+        getPreferencesManager().save();
+
+        switchToScreen(getPreviousScreenKey(), Hierarchy.HIGHER);
+    }
+
+    /**
+     * El orbe ha alcanzado la salida
+     */
+    public void successGame() {
+        stats.setSuccessful(true);
+        getPreferencesManager().mergeGameStats(stats);
+        getPreferencesManager().save();
+        //
+    }
+
     public boolean isGamePaused() {
         return paused;
     }
@@ -388,7 +412,7 @@ public class LevelScreen extends BaseScreen {
         }
     }
 
-    public void updateStats() {
+    public void updateGameStats() {
         if (!isGamePaused()) {
             float distance;
 
@@ -399,14 +423,14 @@ public class LevelScreen extends BaseScreen {
             stats.addTime(Gdx.graphics.getRawDeltaTime());
             stats.addDistance(distance);
             hudStage.setDistanceValue(stats.getCurrentDistance());
-            hudStage.setFullDistanceValue(stats.getFullDistance());
-            hudStage.setFullTimeValue(stats.getFullTime());
-            hudStage.setFullDestroyedValue(stats.getFullDestroyed());
+            hudStage.setFullDistanceValue(stats.fullDistance());
+            hudStage.setFullTimeValue(stats.fullTime());
+            hudStage.setFullDestroyedValue(stats.fails());
         }
     }
 
     public void destroyOrb() {
-        stats.setDestroyed();
+        stats.setFailed(true);
 
 
         // pausa

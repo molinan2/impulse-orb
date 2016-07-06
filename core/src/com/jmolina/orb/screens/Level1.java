@@ -18,7 +18,7 @@ public class Level1 extends LevelScreen {
     public Level1(SuperManager sm) {
         super(sm);
 
-        setReturningScreen(ScreenManager.Key.LEVEL_LAUNCH_1);
+        setPreviousScreenKey(ScreenManager.Key.LEVEL_LAUNCH_1);
 
         addSituation(new Situation1Start(getAssetManager(), getWorld()));
         addSituation(new Situation101(getAssetManager(), getWorld()));

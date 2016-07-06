@@ -1,10 +1,13 @@
 package com.jmolina.orb.screens;
 
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.widgets.Heading;
 import com.jmolina.orb.widgets.Stat;
+
+import static com.jmolina.orb.managers.PreferenceManager.*;
 
 public class Stats extends Menu {
 
@@ -22,16 +25,19 @@ public class Stats extends Menu {
     private Heading timeHeading;
     private Heading distanceHeading;
 
+    private Preferences prefs;
+
     public Stats(SuperManager superManager) {
         super(superManager);
 
-        setReturningScreen(ScreenManager.Key.MAIN);
+        setPreviousScreenKey(ScreenManager.Key.MAIN);
         setTitle("STATS");
+        prefs = superManager.getPreferenceManager().getPrefs();
 
         generalHeading = new Heading(getAssetManager(), "General", Align.center);
-        played = new Stat(getAssetManager(), "Time played", 1420.232f, "s");
-        distance = new Stat(getAssetManager(), "Distance traveled", 51.3f, "m");
-        fails = new Stat(getAssetManager(), "Got destroyed", 3, "times");
+        played = new Stat(getAssetManager(), "Time played", prefs.getFloat(STAT_TIME), "s");
+        distance = new Stat(getAssetManager(), "Distance traveled", prefs.getFloat(STAT_DISTANCE), "m");
+        fails = new Stat(getAssetManager(), "Got destroyed", prefs.getInteger(STAT_FAILS), "times");
 
         timeHeading = new Heading(getAssetManager(), "Time alive", Align.center);
         minTimeAlive = new Stat(getAssetManager(), "Minimum", 0.9f, "s");
@@ -74,6 +80,18 @@ public class Stats extends Menu {
         distanceHeading.dispose();
         generalHeading.dispose();
         super.dispose();
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        updateStats();
+    }
+
+    private void updateStats() {
+        played.setValue(prefs.getFloat(STAT_TIME), "s");
+        distance.setValue(prefs.getFloat(STAT_DISTANCE), "m");
+        fails.setValue(prefs.getInteger(STAT_FAILS), "times");
     }
 
 }

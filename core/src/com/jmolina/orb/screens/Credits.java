@@ -18,7 +18,7 @@ public class Credits extends Menu {
     public Credits(SuperManager superManager) {
         super(superManager);
 
-        setReturningScreen(ScreenManager.Key.MAIN);
+        setPreviousScreenKey(ScreenManager.Key.MAIN);
         setTitle("CREDITS");
 
         application = new Credit(getAssetManager(), "Application", BACON_IPSUM);

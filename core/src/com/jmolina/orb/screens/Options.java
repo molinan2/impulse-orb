@@ -23,7 +23,7 @@ public class Options extends Menu {
         super(superManager);
 
         this.preferenceManager = superManager.getPreferenceManager();
-        setReturningScreen(ScreenManager.Key.MAIN);
+        setPreviousScreenKey(ScreenManager.Key.MAIN);
         setTitle("OPTIONS");
 
         music = new Option(getAssetManager(), "Background music");

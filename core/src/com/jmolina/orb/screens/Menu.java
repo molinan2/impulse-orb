@@ -74,8 +74,8 @@ public class Menu extends BaseScreen {
     }
 
     @Override
-    protected void setReturningScreen(final ScreenManager.Key key) {
-        super.setReturningScreen(key);
+    protected void setPreviousScreenKey(final ScreenManager.Key key) {
+        super.setPreviousScreenKey(key);
 
         title.setListener(new ClickListener(){
             @Override

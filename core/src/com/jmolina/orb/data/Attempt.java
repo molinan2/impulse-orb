@@ -9,12 +9,19 @@ public class Attempt {
     private float distance;
 
     /** Si el Orb resulto destruido en el transcurso */
-    private boolean destroyed;
+    private boolean failed;
 
+    /** Si el Orb alcanzo la salida */
+    private boolean successful;
+
+    /**
+     * Constructor
+     */
     public Attempt() {
         time = 0f;
         distance = 0f;
-        destroyed = false;
+        failed = false;
+        successful = false;
     }
 
     public void addTime(float timeIncrement) {
@@ -33,12 +40,20 @@ public class Attempt {
         return time;
     }
 
-    public boolean isDestroyed() {
-        return destroyed;
+    public boolean isFailed() {
+        return failed;
     }
 
-    public void setDestroyed() {
-        destroyed = true;
+    public boolean isSuccessful() {
+        return successful;
+    }
+
+    public void setFailed(boolean failed) {
+        this.failed = failed;
+    }
+
+    public void setSuccessful(boolean successful) {
+        this.successful = successful;
     }
 
 }

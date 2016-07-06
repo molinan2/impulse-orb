@@ -30,18 +30,16 @@ public class ContactHandler implements ContactListener {
             if (userDataB.type == Element.Type.RED) {
                 level.destroyOrb();
             }
-            else if (userDataB.type == Element.Type.BLUE) {
-                // Comprobar si es EXIT
-                // level.leave();
+            else if (userDataB.effect == Element.Effect.EXIT) {
+                level.successGame();
             }
         }
         else if (fixtureB.equals(orbFixture)) {
             if (userDataA.type == Element.Type.RED) {
                 level.destroyOrb();
             }
-            else if (userDataA.type == Element.Type.BLUE) {
-                // Comprobar si es EXIT
-                // level.leave();
+            else if (userDataA.effect == Element.Effect.EXIT) {
+                level.successGame();
             }
         }
     }

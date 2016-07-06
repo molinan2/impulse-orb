@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
+import com.jmolina.orb.managers.PreferenceManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.interfaces.Backable;
 import com.jmolina.orb.runnables.UIRunnable;
@@ -40,7 +41,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     private BackgroundStage backgroundStage;
     private Hierarchy hierarchy;
     private SnapshotArray<Actor> actors;
-    private ScreenManager.Key returningScreen;
+    private ScreenManager.Key previousScreenKey;
     private InputMultiplexer multiplexer;
 
 
@@ -117,7 +118,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
 
     @Override
     public void back() {
-        switchToScreen(this.returningScreen, Hierarchy.HIGHER);
+        switchToScreen(this.previousScreenKey, Hierarchy.HIGHER);
     }
 
 
@@ -134,6 +135,10 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         return this.superManager;
     }
 
+    protected PreferenceManager getPreferencesManager() {
+        return getSuperManager().getPreferenceManager();
+    }
+
     public AssetManager getAssetManager() {
         return getSuperManager().getAssetManager();
     }
@@ -146,8 +151,12 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         return getSuperManager().getScreenManager();
     }
 
-    protected void setReturningScreen(ScreenManager.Key key) {
-        this.returningScreen = key;
+    protected void setPreviousScreenKey(ScreenManager.Key key) {
+        this.previousScreenKey = key;
+    }
+
+    protected ScreenManager.Key getPreviousScreenKey() {
+        return this.previousScreenKey;
     }
 
     public void setHierarchy(Hierarchy hierarchy) {
