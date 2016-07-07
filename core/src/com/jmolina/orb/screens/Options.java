@@ -3,7 +3,7 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.interfaces.SuperManager;
-import com.jmolina.orb.managers.PreferenceManager;
+import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.widgets.Option;
 import com.jmolina.orb.widgets.MultiOption;
@@ -17,12 +17,12 @@ public class Options extends Menu {
     private MultiOption zoom;
     // private String username;
 
-    private PreferenceManager preferenceManager;
+    private PrefsManager prefsManager;
 
     public Options(SuperManager superManager) {
         super(superManager);
 
-        this.preferenceManager = superManager.getPreferenceManager();
+        this.prefsManager = superManager.getPrefsManager();
         setPreviousScreenKey(ScreenManager.Key.MAIN);
         setTitle("OPTIONS");
 
@@ -42,7 +42,7 @@ public class Options extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 music.toggle();
-                preferenceManager.putOptionMusic(music.isChecked());
+                prefsManager.putOptionMusic(music.isChecked());
             }
         });
 
@@ -50,7 +50,7 @@ public class Options extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 sound.toggle();
-                preferenceManager.putOptionSound(sound.isChecked());
+                prefsManager.putOptionSound(sound.isChecked());
             }
         });
 
@@ -58,7 +58,7 @@ public class Options extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 vibration.toggle();
-                preferenceManager.putOptionVibration(vibration.isChecked());
+                prefsManager.putOptionVibration(vibration.isChecked());
             }
         });
 
@@ -66,7 +66,7 @@ public class Options extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 online.toggle();
-                preferenceManager.putOptionOnline(online.isChecked());
+                prefsManager.putOptionOnline(online.isChecked());
             }
         });
 
@@ -81,7 +81,7 @@ public class Options extends Menu {
                     if (actorName != null) {
                         int value = Integer.parseInt(actorName);
                         zoom.setValue(value);
-                        preferenceManager.putOptionZoom(value);
+                        prefsManager.putOptionZoom(value);
                     }
                 }
             }
@@ -106,16 +106,16 @@ public class Options extends Menu {
 
     @Override
     public void hide () {
-        preferenceManager.save();
+        prefsManager.save();
         super.hide();
     }
 
     private void updateScreenOptions() {
-        music.setChecked(preferenceManager.getOptionMusic());
-        sound.setChecked(preferenceManager.getOptionSound());
-        vibration.setChecked(preferenceManager.getOptionVibration());
-        online.setChecked(preferenceManager.getOptionOnline());
-        zoom.setValue(preferenceManager.getOptionZoom());
+        music.setChecked(prefsManager.getOptionMusic());
+        sound.setChecked(prefsManager.getOptionSound());
+        vibration.setChecked(prefsManager.getOptionVibration());
+        online.setChecked(prefsManager.getOptionOnline());
+        zoom.setValue(prefsManager.getOptionZoom());
     }
 
 }

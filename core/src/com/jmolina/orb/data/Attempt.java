@@ -48,6 +48,10 @@ public class Attempt {
         return successful;
     }
 
+    public boolean isCompleted() {
+        return isFailed() || isSuccessful();
+    }
+
     public void setFailed(boolean failed) {
         this.failed = failed;
     }

@@ -7,13 +7,14 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.widgets.Heading;
 import com.jmolina.orb.widgets.Stat;
 
-import static com.jmolina.orb.managers.PreferenceManager.*;
+import static com.jmolina.orb.managers.PrefsManager.*;
 
 public class Stats extends Menu {
 
     private Stat played;
     private Stat distance;
     private Stat fails;
+    private Stat successes;
     private Stat avgTimeAlive;
     private Stat avgDistanceAlive;
     private Stat minTimeAlive;
@@ -22,6 +23,7 @@ public class Stats extends Menu {
     private Stat maxDistanceAlive;
 
     private Heading generalHeading;
+    private Heading attemptsHeading;
     private Heading timeHeading;
     private Heading distanceHeading;
 
@@ -32,28 +34,34 @@ public class Stats extends Menu {
 
         setPreviousScreenKey(ScreenManager.Key.MAIN);
         setTitle("STATS");
-        prefs = superManager.getPreferenceManager().getPrefs();
+        prefs = superManager.getPrefsManager().getPrefs();
 
-        generalHeading = new Heading(getAssetManager(), "General", Align.center);
-        played = new Stat(getAssetManager(), "Time played", prefs.getFloat(STAT_TIME), "s");
-        distance = new Stat(getAssetManager(), "Distance traveled", prefs.getFloat(STAT_DISTANCE), "m");
-        fails = new Stat(getAssetManager(), "Got destroyed", prefs.getInteger(STAT_FAILS), "times");
+        generalHeading = new Heading(getAssetManager(), "All attempts", Align.center, Heading.Weight.Bold);
+        played = new Stat(getAssetManager(), "Time played");
+        distance = new Stat(getAssetManager(), "Distance traveled");
+        fails = new Stat(getAssetManager(), "Failed attempts");
+        successes = new Stat(getAssetManager(), "Successful attempts");
 
+        attemptsHeading = new Heading(getAssetManager(), "Completed attempts", Align.center, Heading.Weight.Bold);
         timeHeading = new Heading(getAssetManager(), "Time alive", Align.center);
-        minTimeAlive = new Stat(getAssetManager(), "Minimum", 0.9f, "s");
-        maxTimeAlive = new Stat(getAssetManager(), "Maximum", 71.22f, "s");
-        avgTimeAlive = new Stat(getAssetManager(), "Average", 14.8414f, "s");
+        minTimeAlive = new Stat(getAssetManager(), "Minimum");
+        maxTimeAlive = new Stat(getAssetManager(), "Maximum");
+        avgTimeAlive = new Stat(getAssetManager(), "Average");
 
         distanceHeading = new Heading(getAssetManager(), "Distance alive", Align.center);
-        minDistanceAlive = new Stat(getAssetManager(), "Minimum", 3.1f, "m");
-        maxDistanceAlive = new Stat(getAssetManager(), "Maximum", 143.4f, "m");
-        avgDistanceAlive = new Stat(getAssetManager(), "Average", 31.01f, "m");
+        minDistanceAlive = new Stat(getAssetManager(), "Minimum");
+        maxDistanceAlive = new Stat(getAssetManager(), "Maximum");
+        avgDistanceAlive = new Stat(getAssetManager(), "Average");
+
+        updateStats();
 
         add(generalHeading, 0);
         add(played, 0);
         add(distance, 0);
-        add(fails, 0.5f);
+        add(fails, 0);
+        add(successes, 0.5f);
 
+        add(attemptsHeading, 0);
         add(timeHeading, 0);
         add(minTimeAlive, 0);
         add(maxTimeAlive, 0);
@@ -70,6 +78,7 @@ public class Stats extends Menu {
         played.dispose();
         distance.dispose();
         fails.dispose();
+        successes.dispose();
         avgTimeAlive.dispose();
         avgDistanceAlive.dispose();
         minTimeAlive.dispose();
@@ -84,14 +93,32 @@ public class Stats extends Menu {
 
     @Override
     public void show() {
-        super.show();
         updateStats();
+        super.show();
     }
 
     private void updateStats() {
         played.setValue(prefs.getFloat(STAT_TIME), "s");
         distance.setValue(prefs.getFloat(STAT_DISTANCE), "m");
-        fails.setValue(prefs.getInteger(STAT_FAILS), "times");
+        fails.setValue(prefs.getInteger(STAT_FAILS));
+        successes.setValue(prefs.getInteger(STAT_SUCCESSES));
+
+        if (prefs.getFloat(STAT_COMPLETED_ATTEMPTS) == 0) {
+            minTimeAlive.setNullValue("s");
+            maxTimeAlive.setNullValue("s");
+            avgTimeAlive.setNullValue("s");
+            minDistanceAlive.setNullValue("m");
+            maxDistanceAlive.setNullValue("m");
+            avgDistanceAlive.setNullValue("m");
+        }
+        else {
+            minTimeAlive.setValue(prefs.getFloat(STAT_MIN_TIME_ALIVE), "s");
+            maxTimeAlive.setValue(prefs.getFloat(STAT_MAX_TIME_ALIVE), "s");
+            avgTimeAlive.setValue(prefs.getFloat(STAT_AVG_TIME_ALIVE), "s");
+            minDistanceAlive.setValue(prefs.getFloat(STAT_MIN_DISTANCE_ALIVE), "m");
+            maxDistanceAlive.setValue(prefs.getFloat(STAT_MAX_DISTANCE_ALIVE), "m");
+            avgDistanceAlive.setValue(prefs.getFloat(STAT_AVG_DISTANCE_ALIVE), "m");
+        }
     }
 
 }

@@ -4,14 +4,14 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
-import com.jmolina.orb.managers.PreferenceManager;
+import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.screens.BaseScreen;
 
 
 public class OrbApp implements ApplicationListener, SuperManager {
 
-	private PreferenceManager preferenceManager;
+	private PrefsManager prefsManager;
 	private AssetManager assetManager;
 	private ScreenManager screenManager;
 
@@ -27,7 +27,7 @@ public class OrbApp implements ApplicationListener, SuperManager {
 	public void create () {
 		setCatchBackKey(true);
 
-		preferenceManager = new PreferenceManager();
+		prefsManager = new PrefsManager();
 		screenManager = new ScreenManager(this);
 		assetManager = new AssetManager();
 
@@ -63,9 +63,8 @@ public class OrbApp implements ApplicationListener, SuperManager {
 		assetManager.dispose();
 	}
 
-	@Override
-	public PreferenceManager getPreferenceManager() {
-		return preferenceManager;
+	public PrefsManager getPrefsManager() {
+		return prefsManager;
 	}
 
 	@Override

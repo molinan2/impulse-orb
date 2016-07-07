@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
-import com.jmolina.orb.managers.PreferenceManager;
+import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.interfaces.Backable;
 import com.jmolina.orb.runnables.UIRunnable;
@@ -135,8 +135,8 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         return this.superManager;
     }
 
-    protected PreferenceManager getPreferencesManager() {
-        return getSuperManager().getPreferenceManager();
+    protected PrefsManager getPrefsManager() {
+        return getSuperManager().getPrefsManager();
     }
 
     public AssetManager getAssetManager() {

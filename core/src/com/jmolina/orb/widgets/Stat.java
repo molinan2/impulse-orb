@@ -1,6 +1,6 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -22,6 +22,10 @@ public class Stat extends BaseGroup {
     private Label data;
     private Label.LabelStyle nameStyle;
     private Label.LabelStyle dataStyle;
+
+    public Stat (AssetManager am, String name) {
+        this(am, name, 0);
+    }
 
     public Stat (AssetManager am, String name, float value) {
         this(am, name, value, "");
@@ -80,6 +84,10 @@ public class Stat extends BaseGroup {
 
     public void setValue(float value, String unit) {
         this.data.setText(formatStat(value, unit));
+    }
+
+    public void setNullValue(String unit) {
+        this.data.setText("-- " + unit);
     }
 
     public void setName(String name) {

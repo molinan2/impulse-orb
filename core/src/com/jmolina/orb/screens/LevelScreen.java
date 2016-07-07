@@ -1,6 +1,7 @@
 package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.MathUtils;
@@ -19,6 +20,8 @@ import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
 import com.jmolina.orb.stages.ParallaxStage;
+
+import static com.jmolina.orb.managers.PrefsManager.*;
 
 
 /**
@@ -341,13 +344,9 @@ public class LevelScreen extends BaseScreen {
      * Abandono manual del juego
      */
     public void leaveGame() {
-        // guardar stats
+        saveGameStats();
+        // pausa (ya estaba en pausa)
         // stage -> secuencia de salida
-        // cargar screen anterior (returning screen)
-
-        getPreferencesManager().mergeGameStats(stats);
-        getPreferencesManager().save();
-
         switchToScreen(getPreviousScreenKey(), Hierarchy.HIGHER);
     }
 
@@ -356,9 +355,10 @@ public class LevelScreen extends BaseScreen {
      */
     public void successGame() {
         stats.setSuccessful(true);
-        getPreferencesManager().mergeGameStats(stats);
-        getPreferencesManager().save();
-        //
+        saveGameStats();
+        // pausa
+        // stage -> secuencia de exito
+        // pantalla de success
     }
 
     public boolean isGamePaused() {
@@ -432,10 +432,9 @@ public class LevelScreen extends BaseScreen {
     public void destroyOrb() {
         stats.setFailed(true);
 
-
         // pausa
         // secuencia de destruccion
-        // secuencia de reinicio
+        // restart level
     }
 
     /**
@@ -448,6 +447,53 @@ public class LevelScreen extends BaseScreen {
         );
 
         return (float) Math.sqrt(Math.pow(inter.x, 2) + Math.pow(inter.y, 2));
+    }
+
+    private void saveGameStats() {
+        Preferences prefs = getPrefsManager().getPrefs();
+
+        if (!stats.isEmpty()) {
+            prefs.putFloat(STAT_TIME, prefs.getFloat(STAT_TIME) + stats.fullTime());
+            prefs.putFloat(STAT_DISTANCE, prefs.getFloat(STAT_DISTANCE) + stats.fullDistance());
+            prefs.putInteger(STAT_FAILS, prefs.getInteger(STAT_FAILS) + stats.fails());
+            prefs.putInteger(STAT_SUCCESSES, prefs.getInteger(STAT_SUCCESSES) + stats.successes());
+
+            int completedAttempts = stats.completedAttempts().size();
+
+            if (completedAttempts > 0) {
+                float minTimeAlive = stats.minTimeAlive();
+                float minDistanceAlive = stats.minDistanceAlive();
+                float maxTimeAlive = stats.maxTimeAlive();
+                float maxDistanceAlive = stats.maxDistanceAlive();
+                float avgTimeAlive = stats.averageTimeAlive();
+                float avgDistanceAlive = stats.averageDistanceAlive();
+
+                int savedAttempts = prefs.getInteger(STAT_COMPLETED_ATTEMPTS);
+                float savedAvgTimeAlive = prefs.getFloat(STAT_AVG_TIME_ALIVE);
+                float savedAvgDistanceAlive = prefs.getFloat(STAT_AVG_DISTANCE_ALIVE);
+
+                if (minTimeAlive < prefs.getFloat(STAT_MIN_TIME_ALIVE) || savedAttempts == 0)
+                    prefs.putFloat(STAT_MIN_TIME_ALIVE, minTimeAlive);
+
+                if (minDistanceAlive < prefs.getFloat(STAT_MIN_DISTANCE_ALIVE) || savedAttempts == 0)
+                    prefs.putFloat(STAT_MIN_DISTANCE_ALIVE, minDistanceAlive);
+
+                if (maxTimeAlive > prefs.getFloat(STAT_MAX_TIME_ALIVE))
+                    prefs.putFloat(STAT_MAX_TIME_ALIVE, maxTimeAlive);
+
+                if (maxDistanceAlive > prefs.getFloat(STAT_MAX_DISTANCE_ALIVE))
+                    prefs.putFloat(STAT_MAX_DISTANCE_ALIVE, maxDistanceAlive);
+
+                float wAvgTimeAlive = ((float) savedAttempts * savedAvgTimeAlive + completedAttempts * avgTimeAlive) / ((float) savedAttempts + completedAttempts);
+                float wAvgDistanceAlive = ((float) savedAttempts * savedAvgDistanceAlive + completedAttempts * avgDistanceAlive) / ((float) savedAttempts + completedAttempts);
+
+                prefs.putFloat(STAT_AVG_TIME_ALIVE, wAvgTimeAlive);
+                prefs.putFloat(STAT_AVG_DISTANCE_ALIVE, wAvgDistanceAlive);
+                prefs.putInteger(STAT_COMPLETED_ATTEMPTS, prefs.getInteger(STAT_COMPLETED_ATTEMPTS) + completedAttempts);
+            }
+        }
+
+        getPrefsManager().save();
     }
 
 }

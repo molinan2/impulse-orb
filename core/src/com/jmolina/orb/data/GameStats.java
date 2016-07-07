@@ -1,18 +1,13 @@
 package com.jmolina.orb.data;
 
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.jmolina.orb.var.Var;
-
 import java.util.ArrayList;
 
 /**
- * TODO
- *
- * Error: solo se estan considerando los tiempos de intentos FALLIDOS. Hay que considerar tanto los
- * fallidos como los exitoso (EXIT encontrada). Los que hay que dejar fuera son los reiniciados. Esto
- * es valido para el computo de los min, max y average (porque son "estando vivo").
+ * ATTEMPT: Un Attempt se considera COMPLETO cuando el Orb alcanza la salida o es destruido.
  */
 public class GameStats {
+
+    public static final float ERROR = -1.0f;
 
     private ArrayList<Attempt> attempts;
 
@@ -94,15 +89,32 @@ public class GameStats {
         return fullTime;
     }
 
+    /**
+     * Numero de intentos fallidos (orbe destruido)
+     */
     public int fails() {
-        int failsTotal = 0;
+        int fails = 0;
 
         for (Attempt attempt : attempts) {
             if (attempt.isFailed())
-                failsTotal++;
+                fails++;
         }
 
-        return failsTotal;
+        return fails;
+    }
+
+    /**
+     * Numero de intentos exitosos (salida hallada)
+     */
+    public int successes() {
+        int succeeses = 0;
+
+        for (Attempt attempt : attempts) {
+            if (attempt.isSuccessful())
+                succeeses++;
+        }
+
+        return succeeses;
     }
 
     public boolean isEmpty() {
@@ -110,57 +122,71 @@ public class GameStats {
     }
 
     /**
-     * Devuelve la lista de intentos que acabado en destruccion
+     * Devuelve la lista de intentos completos
      */
-    private ArrayList<Attempt> findCompletedAttempts() {
+    public ArrayList<Attempt> completedAttempts() {
         ArrayList<Attempt> completedAttempts = new ArrayList<Attempt>();
 
         for (Attempt attempt : attempts) {
-            if (attempt.isFailed() || attempt.isSuccessful())
+            if (attempt.isCompleted())
                 completedAttempts.add(attempt);
         }
 
         return completedAttempts;
     }
 
-    public int countCompletedAttempts() {
-        return findCompletedAttempts().size();
+    /**
+     * Solo contabiliza intentos completos.
+     * Devuelve -1 si no hay intentos completos.
+     */
+    public float minTimeAlive() {
+        ArrayList<Attempt> completedAttempts = completedAttempts();
+
+        if (completedAttempts.size() == 0) {
+            return ERROR;
+        }
+        else {
+            float minTimeAlive = completedAttempts.get(0).getTime();
+
+            for (Attempt attempt : completedAttempts) {
+                if (attempt.getTime() < minTimeAlive)
+                    minTimeAlive = attempt.getTime();
+            }
+
+            return minTimeAlive;
+        }
     }
 
     /**
-     * Sólo cuentan los tiempos mínimos si el orbe ha sido destruido (i.e. se descartan los tiempos
-     * de intentos que se hayan reiniciado manualmente).
-     *
-     * Devuelve -1 si no encuentra un minTimeAlive (i.e. no hay intentos que hayan terminado a
-     * causa de la destrucción del orbe).
+     * Solo contabiliza intentos completos.
+     * Devuelve -1 si no hay intentos completos.
      */
-    public float minTimeAlive() throws GdxRuntimeException {
-        if (isEmpty()) {
-            throw new GdxRuntimeException(Var.EMPTY_LIST_ACCESS_EXCEPTION);
+    public float minDistanceAlive() {
+        ArrayList<Attempt> completedAttempts = completedAttempts();
+
+        if (completedAttempts.size() == 0) {
+            return ERROR;
         }
         else {
-            ArrayList<Attempt> completedAttempts = findCompletedAttempts();
+            float minDistanceAlive = completedAttempts.get(0).getDistance();
 
-            if (completedAttempts.size() == 0) {
-                return -1f; // Cutre error code
+            for (Attempt attempt : completedAttempts) {
+                if (attempt.getDistance() < minDistanceAlive)
+                    minDistanceAlive = attempt.getDistance();
             }
-            else {
-                float minTimeAlive = completedAttempts.get(0).getTime();
 
-                for (Attempt attempt : completedAttempts) {
-                    if (attempt.getTime() < minTimeAlive)
-                        minTimeAlive = attempt.getTime();
-                }
-
-                return minTimeAlive;
-            }
+            return minDistanceAlive;
         }
     }
 
+    /**
+     * Solo contabiliza intentos completos.
+     */
     public float maxTimeAlive() {
+        ArrayList<Attempt> completedAttempts = completedAttempts();
         float maxTime = 0f;
 
-        for (Attempt attempt : attempts) {
+        for (Attempt attempt : completedAttempts) {
             if (attempt.getTime() > maxTime)
                 maxTime = attempt.getTime();
         }
@@ -169,97 +195,60 @@ public class GameStats {
     }
 
     /**
-     * Sólo cuentan las distancias mínimas si el orbe ha sido destruido (i.e. se descartan las distancias
-     * de intentos que se hayan reiniciado manualmente).
-     *
-     * Devuelve -1 si no encuentra una minDistanceAlive (i.e. no hay intentos que hayan terminado a
-     * causa de la destrucción del orbe).
+     * Solo contabiliza intentos completos.
      */
-    public float minDistanceAlive() throws GdxRuntimeException {
-        if (isEmpty()) {
-            throw new GdxRuntimeException(Var.EMPTY_LIST_ACCESS_EXCEPTION);
-        }
-        else {
-            ArrayList<Attempt> completedAttempts = findCompletedAttempts();
-
-            if (completedAttempts.size() == 0) {
-                return -1f; // Cutre error code
-            }
-            else {
-                float minDistanceAlive = completedAttempts.get(0).getDistance();
-
-                for (Attempt attempt : completedAttempts) {
-                    if (attempt.getDistance() < minDistanceAlive)
-                        minDistanceAlive = attempt.getDistance();
-                }
-
-                return minDistanceAlive;
-            }
-        }
-    }
-
     public float maxDistanceAlive() {
+        ArrayList<Attempt> completedAttempts = completedAttempts();
         float maxDistance = 0f;
 
-        for (Attempt attempt : attempts) {
+        for (Attempt attempt : completedAttempts) {
             if (attempt.getDistance() > maxDistance)
-                maxDistance = attempt.getTime();
+                maxDistance = attempt.getDistance();
         }
 
         return maxDistance;
     }
 
     /**
-     * Devuelve -1 si no hay intentos fallidos
+     * Solo contabiliza intentos completos.
+     * Devuelve -1 si no hay intentos completos
      */
-    public float averageDistanceAlive() {
-        if (isEmpty()) {
-            throw new GdxRuntimeException(Var.EMPTY_LIST_ACCESS_EXCEPTION);
+    public float averageTimeAlive() {
+        ArrayList<Attempt> completedAttempts = completedAttempts();
+        int count = completedAttempts.size();
+
+        if (count == 0) {
+            return ERROR;
         }
         else {
-            ArrayList<Attempt> completedAttempts = findCompletedAttempts();
-            int count = completedAttempts.size();
+            float time = 0f;
 
-            if (count == 0) {
-                return -1f; // Cutre error code
-            }
-            else {
-                float distance = 0f;
+            for (Attempt attempt : completedAttempts())
+                time += attempt.getTime();
 
-                for (Attempt attempt : findCompletedAttempts()) {
-                    distance += attempt.getDistance();
-                }
-
-                return distance / (float) count;
-            }
+            return time / (float) count;
         }
     }
 
     /**
-     * Devuelve -1 si no hay intentos fallidos
+     * Solo contabiliza intentos completos.
+     * Devuelve -1 si no hay intentos completos
      */
-    public float averageTimeAlive() {
-        if (isEmpty()) {
-            throw new GdxRuntimeException(Var.EMPTY_LIST_ACCESS_EXCEPTION);
+    public float averageDistanceAlive() {
+        ArrayList<Attempt> completedAttempts = completedAttempts();
+        int count = completedAttempts.size();
+
+        if (count == 0) {
+            return ERROR;
         }
         else {
-            ArrayList<Attempt> completedAttempts = findCompletedAttempts();
-            int count = completedAttempts.size();
+            float distance = 0f;
 
-            if (count == 0) {
-                return -1f; // Cutre error code
-            }
-            else {
-                float time = 0f;
+            for (Attempt attempt : completedAttempts())
+                distance += attempt.getDistance();
 
-                for (Attempt attempt : findCompletedAttempts()) {
-                    time += attempt.getTime();
-                }
-
-                return time / (float) count;
-            }
+            return distance / (float) count;
         }
     }
-
 
 }
