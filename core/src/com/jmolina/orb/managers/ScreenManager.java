@@ -46,26 +46,19 @@ public class ScreenManager {
     }
 
     public void hideCurrent() {
-        if (getCurrent() != null)
-            getCurrent().hide();
+        if (getCurrent() != null) getCurrent().hide();
     }
 
     public void showCurrent() {
-        if (getCurrent() != null)
-            getCurrent().show();
+        if (getCurrent() != null) getCurrent().show();
     }
 
     public void render() {
-        if (getCurrent() != null) {
-            System.out.println("Screen Render 1: " + TimeUtils.nanoTime());
-            getCurrent().render(Gdx.graphics.getDeltaTime());
-            System.out.println("Screen Render 2: " + TimeUtils.nanoTime());
-        }
+        if (getCurrent() != null) getCurrent().render(Gdx.graphics.getDeltaTime());
     }
 
     public void resize(int width, int height) {
-        if (getCurrent() != null)
-            getCurrent().resize(width, height);
+        if (getCurrent() != null) getCurrent().resize(width, height);
     }
 
     public void resume() {
@@ -76,10 +69,8 @@ public class ScreenManager {
         getCurrent().pause();
     }
 
-    public void disposeAll() {
-        if (getCurrent() != null)
-            getCurrent().hide();
-
+    public void dispose() {
+        if (getCurrent() != null) getCurrent().hide();
         getCurrent().dispose();
     }
 
@@ -88,15 +79,12 @@ public class ScreenManager {
     }
 
     public void switchToScreen(Key key, BaseScreen.Hierarchy hierarchy) {
-        if (getCurrent() != null){
+        if (getCurrent() != null) {
             hideCurrent();
-            System.out.println("Switch 1: " + TimeUtils.nanoTime());
             getCurrent().dispose();
-            System.out.println("Switch 2: " + TimeUtils.nanoTime());
         }
 
         setScreen(newScreen(key));
-        System.out.println("Switch 3: " + TimeUtils.nanoTime());
         getCurrent().setAsInputProcessor();
         getCurrent().setHierarchy(hierarchy);
 

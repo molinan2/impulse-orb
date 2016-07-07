@@ -57,7 +57,7 @@ public class OrbApp implements ApplicationListener, SuperManager {
 
 	@Override
 	public void dispose () {
-		screenManager.disposeAll();
+		screenManager.dispose();
 		assetManager.clear();
 		assetManager.dispose();
 	}

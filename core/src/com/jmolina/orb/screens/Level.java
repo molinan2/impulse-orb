@@ -168,29 +168,17 @@ public class Level extends BaseScreen {
      */
     @Override
     public void render(float delta) {
-        System.out.println("Render 1: " + TimeUtils.nanoTime());
         clearColor();
-        System.out.println("Render 2: " + TimeUtils.nanoTime());
         act();
-        System.out.println("Render 3: " + TimeUtils.nanoTime());
         syncBodies();
-        System.out.println("Render 4: " + TimeUtils.nanoTime());
         stepSimulation();
-        System.out.println("Render 5: " + TimeUtils.nanoTime());
         followCamera();
-        System.out.println("Render 6: " + TimeUtils.nanoTime());
         syncActors();
-        System.out.println("Render 7: " + TimeUtils.nanoTime());
         updateLockTime();
-        System.out.println("Render 8: " + TimeUtils.nanoTime());
         updateHeat();
-        System.out.println("Render 9: " + TimeUtils.nanoTime());
         updateTimer();
-        System.out.println("Render 10: " + TimeUtils.nanoTime());
         updateGameStats();
-        System.out.println("Render 11: " + TimeUtils.nanoTime());
         draw();
-        System.out.println("Render 12: " + TimeUtils.nanoTime());
     }
 
     @Override

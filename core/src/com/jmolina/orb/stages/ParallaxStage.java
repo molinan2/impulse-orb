@@ -21,11 +21,16 @@ public class ParallaxStage extends Stage {
     private TiledLayer layer2;
     private TiledLayer layer3;
 
-    // FIX: evita que se dibuje la Stage después de haber llamado a dispose()
-    // Level#render() continúa ejecutándose después de Level#dispose()
-    // More: https://bitbucket.org/molinan2/orb2/issues/38/crash
+    /**
+     * FIX: evita que se dibuje la Stage después de haber llamado a dispose()
+     * Level#render() continúa ejecutándose después de Level#dispose()
+     * Moar: https://bitbucket.org/molinan2/orb2/issues/38/crash
+     */
     private boolean disposing = false;
 
+    /**
+     * Constructor
+     */
     public ParallaxStage(AssetManager am, Viewport vp) {
         super(vp);
 
