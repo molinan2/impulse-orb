@@ -7,14 +7,14 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.data.UserData;
-import com.jmolina.orb.screens.LevelScreen;
+import com.jmolina.orb.screens.Level;
 
 public class ContactHandler implements ContactListener {
 
-    private LevelScreen level;
+    private Level level;
     private Fixture orbFixture;
 
-    public ContactHandler(LevelScreen level) {
+    public ContactHandler(Level level) {
         this.level = level;
         this.orbFixture = level.getOrb().getBody().getFixtureList().first();
     }

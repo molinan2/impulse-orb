@@ -19,6 +19,9 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 
     /**
      * Preload assets needed for Load screen
+     *
+     * load: preload
+     * finishLoading: actual load
      */
     public void loadLoadScreenAssets() {
         load(Asset.UI_BACKGROUND, Texture.class);

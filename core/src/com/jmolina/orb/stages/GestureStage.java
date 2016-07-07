@@ -11,13 +11,13 @@ import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jmolina.orb.elements.BaseActor;
 import com.jmolina.orb.screens.BaseScreen;
-import com.jmolina.orb.screens.LevelScreen;
+import com.jmolina.orb.screens.Level;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class GestureStage extends Stage {
 
-    private final float PIXELS_PER_METER = 1 / LevelScreen.RATIO_METER_PIXEL;
+    private final float PIXELS_PER_METER = 1 / Level.RATIO_METER_PIXEL;
     private final float VIEWPORT_WIDTH = BaseScreen.VIEWPORT_WIDTH;
     private final float VIEWPORT_HEIGHT = BaseScreen.VIEWPORT_HEIGHT;
 

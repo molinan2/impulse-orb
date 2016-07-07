@@ -13,12 +13,12 @@ import com.jmolina.orb.situations.Situation107;
 import com.jmolina.orb.situations.Situation1End;
 
 
-public class Level1 extends LevelScreen {
+public class Level1 extends Level {
 
-    public Level1(SuperManager sm) {
-        super(sm);
+    public Level1(SuperManager sm, ScreenManager.Key key) {
+        super(sm, key);
 
-        setPreviousScreenKey(ScreenManager.Key.LEVEL_LAUNCH_1);
+        setPreviousKey(ScreenManager.Key.LEVEL_LAUNCH_1);
 
         addSituation(new Situation1Start(getAssetManager(), getWorld()));
         addSituation(new Situation101(getAssetManager(), getWorld()));

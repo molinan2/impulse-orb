@@ -29,10 +29,10 @@ public class Stats extends Menu {
 
     private Preferences prefs;
 
-    public Stats(SuperManager superManager) {
-        super(superManager);
+    public Stats(SuperManager superManager, ScreenManager.Key key) {
+        super(superManager, key);
 
-        setPreviousScreenKey(ScreenManager.Key.MAIN);
+        setPreviousKey(ScreenManager.Key.MAIN);
         setTitle("STATS");
         prefs = superManager.getPrefsManager().getPrefs();
 
@@ -103,7 +103,7 @@ public class Stats extends Menu {
         fails.setValue(prefs.getInteger(STAT_FAILS));
         successes.setValue(prefs.getInteger(STAT_SUCCESSES));
 
-        if (prefs.getFloat(STAT_COMPLETED_ATTEMPTS) == 0) {
+        if (prefs.getInteger(STAT_COMPLETED_ATTEMPTS) == 0) {
             minTimeAlive.setNullValue("s");
             maxTimeAlive.setNullValue("s");
             avgTimeAlive.setNullValue("s");

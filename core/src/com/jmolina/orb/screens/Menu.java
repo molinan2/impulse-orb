@@ -20,8 +20,8 @@ public class Menu extends BaseScreen {
     private Table table;
     private ScrollPane scrollPane;
 
-    public Menu(SuperManager superManager) {
-        super(superManager);
+    public Menu(SuperManager superManager, ScreenManager.Key key) {
+        super(superManager, key);
 
         title = new Title(getAssetManager(), "");
         title.setPosition(Grid.unit(1), Grid.unit(15.5f));
@@ -74,8 +74,8 @@ public class Menu extends BaseScreen {
     }
 
     @Override
-    protected void setPreviousScreenKey(final ScreenManager.Key key) {
-        super.setPreviousScreenKey(key);
+    protected void setPreviousKey(final ScreenManager.Key key) {
+        super.setPreviousKey(key);
 
         title.setListener(new ClickListener(){
             @Override

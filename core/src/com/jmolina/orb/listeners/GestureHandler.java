@@ -1,18 +1,13 @@
 package com.jmolina.orb.listeners;
 
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.jmolina.orb.elements.Orb;
-import com.jmolina.orb.screens.LevelScreen;
-import com.jmolina.orb.stages.GestureStage;
-import com.jmolina.orb.stages.HUDStage;
+import com.jmolina.orb.screens.Level;
 
 public class GestureHandler extends GestureDetector.GestureAdapter {
 
-    private LevelScreen level;
+    private Level level;
 
-    public GestureHandler(LevelScreen level) {
+    public GestureHandler(Level level) {
         this.level = level;
     }
 

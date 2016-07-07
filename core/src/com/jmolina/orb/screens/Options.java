@@ -19,11 +19,11 @@ public class Options extends Menu {
 
     private PrefsManager prefsManager;
 
-    public Options(SuperManager superManager) {
-        super(superManager);
+    public Options(SuperManager superManager, ScreenManager.Key key) {
+        super(superManager, key);
 
         this.prefsManager = superManager.getPrefsManager();
-        setPreviousScreenKey(ScreenManager.Key.MAIN);
+        setPreviousKey(ScreenManager.Key.MAIN);
         setTitle("OPTIONS");
 
         music = new Option(getAssetManager(), "Background music");

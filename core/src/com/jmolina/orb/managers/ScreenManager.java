@@ -1,7 +1,6 @@
 package com.jmolina.orb.managers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.ArrayMap;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.screens.Credits;
 import com.jmolina.orb.screens.Level1;
@@ -12,6 +11,8 @@ import com.jmolina.orb.screens.Main;
 import com.jmolina.orb.screens.Options;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.Stats;
+
+import static com.jmolina.orb.managers.ScreenManager.Key.*;
 
 public class ScreenManager {
 
@@ -25,19 +26,17 @@ public class ScreenManager {
 
     private SuperManager superManager;
     private BaseScreen screen;
-    private ArrayMap<Key, BaseScreen> screens;
 
 
     public ScreenManager(SuperManager superManager) {
         this.superManager = superManager;
-        screens = new ArrayMap<Key, BaseScreen>();
     }
 
     private SuperManager getSuperManager() {
         return this.superManager;
     }
 
-    private BaseScreen getCurrentScreen() {
+    private BaseScreen getCurrent() {
         return this.screen;
     }
 
@@ -45,80 +44,74 @@ public class ScreenManager {
         this.screen = baseScreen;
     }
 
-    public void hideCurrentScreen() {
-        if (getCurrentScreen() != null)
-            getCurrentScreen().hide();
+    public void hideCurrent() {
+        if (getCurrent() != null)
+            getCurrent().hide();
     }
 
-    public void showCurrentScreen() {
-        if (getCurrentScreen() != null)
-            getCurrentScreen().show();
+    public void showCurrent() {
+        if (getCurrent() != null)
+            getCurrent().show();
     }
 
     public void render() {
-        if (getCurrentScreen() != null)
-            getCurrentScreen().render(Gdx.graphics.getDeltaTime());
+        if (getCurrent() != null)
+            getCurrent().render(Gdx.graphics.getDeltaTime());
     }
 
     public void resize(int width, int height) {
-        if (getCurrentScreen() != null)
-            getCurrentScreen().resize(width, height);
+        if (getCurrent() != null)
+            getCurrent().resize(width, height);
     }
 
     public void resume() {
-        getCurrentScreen().resume();
+        getCurrent().resume();
     }
 
     public void pause() {
-        getCurrentScreen().pause();
+        getCurrent().pause();
     }
 
     public void disposeAll() {
-        if (getCurrentScreen() != null)
-            getCurrentScreen().hide();
+        if (getCurrent() != null)
+            getCurrent().hide();
 
-        for (Key key : Key.values())
-            getScreen(key).dispose();
-    }
-
-    public void createLoadScreen() {
-        screens.put(Key.LOAD, new Load(getSuperManager()));
-    }
-
-    public void createMenuScreens() {
-        screens.put(Key.MAIN, new Main(getSuperManager()));
-        screens.put(Key.OPTIONS, new Options(getSuperManager()));
-        screens.put(Key.STATS, new Stats(getSuperManager()));
-        screens.put(Key.CREDITS, new Credits(getSuperManager()));
-        screens.put(Key.LEVEL_SELECT, new LevelSelect(getSuperManager()));
-        screens.put(Key.LEVEL_LAUNCH_1, new LevelLaunch(getSuperManager(), "BASICS"));
-        screens.put(Key.LEVEL_LAUNCH_2, new LevelLaunch(getSuperManager(), "ADVANCED"));
-        screens.put(Key.LEVEL_LAUNCH_3, new LevelLaunch(getSuperManager(), "EXPERT"));
-        screens.put(Key.LEVEL_LAUNCH_4, new LevelLaunch(getSuperManager(), "HERO"));
-        screens.put(Key.LEVEL_LAUNCH_5, new LevelLaunch(getSuperManager(), "GOD"));
-        screens.put(Key.LEVEL_1, new Level1(getSuperManager()));
+        getCurrent().dispose();
     }
 
     public void back() {
-        getCurrentScreen().back();
+        getCurrent().back();
     }
 
     public void switchToScreen(Key key, BaseScreen.Hierarchy hierarchy) {
-        if (getCurrentScreen() != null)
-            hideCurrentScreen();
-
-        screens.get(key).setAsInputProcessor();
-        screens.get(key).setHierarchy(hierarchy);
-        setScreen(screens.get(key));
-
-        if (getCurrentScreen() != null) {
-            showCurrentScreen();
-            resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        if (getCurrent() != null){
+            hideCurrent();
+            getCurrent().dispose();
         }
+
+        setScreen(newScreen(key));
+        getCurrent().setAsInputProcessor();
+        getCurrent().setHierarchy(hierarchy);
+        showCurrent();
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    public BaseScreen getScreen(Key key) {
-        return this.screens.get(key);
+    public BaseScreen newScreen(Key key) {
+        switch (key) {
+            case LOAD: return new Load(getSuperManager(), LOAD);
+            case MAIN: return new Main(getSuperManager(), MAIN);
+            case OPTIONS: return new Options(getSuperManager(), OPTIONS);
+            case STATS: return new Stats(getSuperManager(), STATS);
+            case CREDITS: return new Credits(getSuperManager(), CREDITS);
+            case LEVEL_SELECT: return new LevelSelect(getSuperManager(), LEVEL_SELECT);
+            case LEVEL_LAUNCH_1: return new LevelLaunch(getSuperManager(), LEVEL_LAUNCH_1, "BASICS");
+            case LEVEL_LAUNCH_2: return new LevelLaunch(getSuperManager(), LEVEL_LAUNCH_2, "ADVANCED");
+            case LEVEL_LAUNCH_3: return new LevelLaunch(getSuperManager(), LEVEL_LAUNCH_3, "EXPERT");
+            case LEVEL_LAUNCH_4: return new LevelLaunch(getSuperManager(), LEVEL_LAUNCH_4, "HERO");
+            case LEVEL_LAUNCH_5: return new LevelLaunch(getSuperManager(), LEVEL_LAUNCH_4, "GOD");
+            case LEVEL_1: return new Level1(getSuperManager(), LEVEL_1);
+            default: return new Main(getSuperManager(), MAIN);
+        }
     }
 
 }

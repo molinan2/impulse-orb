@@ -17,10 +17,10 @@ public class LevelSelect extends Menu {
     private Card level3;
     private Card level4;
 
-    public LevelSelect(SuperManager superManager) {
-        super(superManager);
+    public LevelSelect(SuperManager superManager, ScreenManager.Key key) {
+        super(superManager, key);
 
-        setPreviousScreenKey(ScreenManager.Key.MAIN);
+        setPreviousKey(ScreenManager.Key.MAIN);
         setTitle("SELECT");
 
         Texture cover = getAsset(Asset.UI_CARD_COVER, Texture.class);

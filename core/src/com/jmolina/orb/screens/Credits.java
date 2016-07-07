@@ -15,10 +15,10 @@ public class Credits extends Menu {
     private Credit resources;
     private Credit thanks;
 
-    public Credits(SuperManager superManager) {
-        super(superManager);
+    public Credits(SuperManager superManager, ScreenManager.Key key) {
+        super(superManager, key);
 
-        setPreviousScreenKey(ScreenManager.Key.MAIN);
+        setPreviousKey(ScreenManager.Key.MAIN);
         setTitle("CREDITS");
 
         application = new Credit(getAssetManager(), "Application", BACON_IPSUM);

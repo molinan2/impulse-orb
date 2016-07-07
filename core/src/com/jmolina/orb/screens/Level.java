@@ -16,6 +16,7 @@ import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.listeners.ContactHandler;
+import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
@@ -26,13 +27,12 @@ import static com.jmolina.orb.managers.PrefsManager.*;
 
 /**
  * TODO
- *
  * Temporalmente, esta pantalla está actuando como GameManager
  *
- * Solo se pueden añadir elementos mediante Situations, no directamente.
- * World camera is always centered at Orb position
+ * Reset: reiniciar elementos de la pantalla
+ * Restart: reiniciar juego
  */
-public class LevelScreen extends BaseScreen {
+public class Level extends BaseScreen {
 
     /**
      * Constants
@@ -82,7 +82,7 @@ public class LevelScreen extends BaseScreen {
      * Runnables
      */
 
-    private Runnable reset = new Runnable() {
+    private Runnable restart = new Runnable() {
         @Override
         public void run() {
             getOrb().setPosition(orbStartPosition.x, orbStartPosition.y);
@@ -90,6 +90,18 @@ public class LevelScreen extends BaseScreen {
             getOrb().resetVelocity();
             hudStage.resetTimer();
             stats.newTry();
+        }
+    };
+
+    private Runnable reset = new Runnable() {
+        @Override
+        public void run() {
+            getOrb().setPosition(orbStartPosition.x, orbStartPosition.y);
+            getOrb().resetHeat();
+            getOrb().resetVelocity();
+            hudStage.resetTimer();
+            stats.reset();
+
         }
     };
 
@@ -105,8 +117,8 @@ public class LevelScreen extends BaseScreen {
      * Constructor
      * @param superManager SuperManager
      */
-    public LevelScreen(SuperManager superManager) {
-        super(superManager);
+    public Level(SuperManager superManager, ScreenManager.Key key) {
+        super(superManager, key);
 
         orbStartPosition = new Vector2();
         situations = new SnapshotArray<Situation>();
@@ -189,6 +201,19 @@ public class LevelScreen extends BaseScreen {
     public void show() {
         super.show();
         firstStartGame();
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
+        // saveGameStats();
+        // TODO Ojo: no se puede guardar 2 veces la misma stat
+    }
+
+    @Override
+    public void pause() {
+        super.pause();
+        pauseGame();
     }
 
 
@@ -333,21 +358,24 @@ public class LevelScreen extends BaseScreen {
     }
 
     public void firstStartGame() {
-        hudStage.firstStart(reset, unpause);
+        hudStage.firstStart(restart, unpause);
     }
 
     public void restartGame() {
-        hudStage.restart(reset, unpause);
+        hudStage.restart(restart, unpause);
     }
 
     /**
      * Abandono manual del juego
      */
     public void leaveGame() {
+        paused = true;
         saveGameStats();
-        // pausa (ya estaba en pausa)
-        // stage -> secuencia de salida
-        switchToScreen(getPreviousScreenKey(), Hierarchy.HIGHER);
+
+        // mix a blanco
+        // cambio de pantalla
+
+        switchToScreen(getPreviousKey(), Hierarchy.HIGHER);
     }
 
     /**

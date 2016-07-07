@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
-import com.jmolina.orb.screens.LevelScreen;
+import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.widgets.BaseGroup;
 import com.jmolina.orb.widgets.Gauge;
@@ -57,7 +57,7 @@ public class HUDStage extends Stage {
     private Stat fullTimeStat;
     private Stat fullDistanceStat;
     private Stat fullDestroyedStat;
-    private LevelScreen level;
+    private Level level;
 
     /**
      * Runnables
@@ -219,13 +219,13 @@ public class HUDStage extends Stage {
      * Constructor
      *
      * @param am AssetManager
-     * @param levelScreen LevelScreen Futuro GameManager
+     * @param level Level Futuro GameManager
      * @param vp Viewport
      */
-    public HUDStage(AssetManager am, LevelScreen levelScreen, Viewport vp) {
+    public HUDStage(AssetManager am, Level level, Viewport vp) {
         super(vp);
 
-        level = levelScreen;
+        this.level = level;
         background = new HUDBackground(am);
         timer = new Timer(am);
         pauseButton = new PauseButton(am);
@@ -374,14 +374,6 @@ public class HUDStage extends Stage {
     public void firstStart(Runnable resetCallback, Runnable unpauseCallback) {
         background.clearActions();
         background.addAction(sequence(
-//                run(disableTouchables),
-//                run(fadeOutWidgets),
-//                delay(FADE_TIME),
-//                run(disableWidgetsVisibility),
-//                moveTo(0, Grid.unit(-0.25f), 0),
-//                moveTo(0, Grid.unit(16f), ROLLER_TIME, ROLLER_INTERPOLATION),
-//                run(fadeInOverlay),
-//                delay(OVERLAY_FADE_TIME),
                 run(fullOverlay),
                 run(resetCallback),
                 run(fadeOutOverlay),
@@ -389,6 +381,14 @@ public class HUDStage extends Stage {
                 run(resumeWidgets),
                 run(enableTouchables),
                 run(unpauseCallback)
+        ));
+    }
+
+    public void leave () {
+        background.clearActions();
+        background.addAction(sequence(
+                run(fadeInOverlay),
+                delay(OVERLAY_FADE_TIME)
         ));
     }
 

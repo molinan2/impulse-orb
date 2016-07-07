@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.assets.Asset;
-import com.jmolina.orb.screens.LevelScreen;
+import com.jmolina.orb.screens.Level;
 
 
 public class Element {
@@ -25,7 +25,7 @@ public class Element {
     private final float DENSITY = 1.0f;
     private final float RESTITUTION = 0.6f;
     private final float FRICTION = 0.8f; // friction=0 evita rotaciones al chocar
-    private final float PIXELS_PER_METER = LevelScreen.PIXELS_PER_METER;
+    private final float PIXELS_PER_METER = Level.PIXELS_PER_METER;
 
     private AssetManager assetManager;
     private BaseActor actor;

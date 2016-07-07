@@ -7,12 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.managers.AssetManager;
-import com.jmolina.orb.screens.LevelScreen;
+import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.widgets.TiledLayer;
 
 public class ParallaxStage extends Stage {
 
-    private final float PIXELS_PER_METER = LevelScreen.PIXELS_PER_METER;
+    private final float PIXELS_PER_METER = Level.PIXELS_PER_METER;
     private final float LAYER_1_SPEED = 1 / 4.0f;
     private final float LAYER_2_SPEED = 1 / 8.0f;
     private final float LAYER_3_SPEED = 1 / 64.0f;

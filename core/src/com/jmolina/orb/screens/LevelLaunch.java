@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.interfaces.SuperManager;
+import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.widgets.Ladder;
 import com.jmolina.orb.widgets.LevelCover;
 import com.jmolina.orb.widgets.LevelTitle;
@@ -20,10 +21,10 @@ public class LevelLaunch extends Menu {
     private Ladder ladderPersonal;
     private Ladder ladderOnline;
 
-    public LevelLaunch(SuperManager superManager, String title) {
-        super(superManager);
+    public LevelLaunch(SuperManager superManager, ScreenManager.Key key, String title) {
+        super(superManager, key);
 
-        setPreviousScreenKey(LEVEL_SELECT);
+        setPreviousKey(LEVEL_SELECT);
         setTitle("LEVEL");
 
         this.title = new LevelTitle(getAssetManager(), title);

@@ -41,15 +41,17 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     private BackgroundStage backgroundStage;
     private Hierarchy hierarchy;
     private SnapshotArray<Actor> actors;
-    private ScreenManager.Key previousScreenKey;
     private InputMultiplexer multiplexer;
+    private ScreenManager.Key previousKey;
+    private ScreenManager.Key key;
 
 
     /**
      * Constructor
      */
-    public BaseScreen(SuperManager sm) {
+    public BaseScreen(SuperManager sm, ScreenManager.Key key) {
         superManager = sm;
+        this.key = key;
 
         actors = new SnapshotArray<Actor>();
         mainViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
@@ -118,13 +120,17 @@ public class BaseScreen extends ScreenAdapter implements Backable {
 
     @Override
     public void back() {
-        switchToScreen(this.previousScreenKey, Hierarchy.HIGHER);
+        switchToScreen(this.previousKey, Hierarchy.HIGHER);
     }
 
 
     /**
      * Class methods
      */
+
+    public ScreenManager.Key getKey() {
+        return this.key;
+    }
 
     protected void clearColor() {
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -151,12 +157,12 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         return getSuperManager().getScreenManager();
     }
 
-    protected void setPreviousScreenKey(ScreenManager.Key key) {
-        this.previousScreenKey = key;
+    protected void setPreviousKey(ScreenManager.Key key) {
+        this.previousKey = key;
     }
 
-    protected ScreenManager.Key getPreviousScreenKey() {
-        return this.previousScreenKey;
+    protected ScreenManager.Key getPreviousKey() {
+        return this.previousKey;
     }
 
     public void setHierarchy(Hierarchy hierarchy) {
@@ -231,16 +237,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         Action action;
 
         switch (flow) {
-            case ENTERING:
-                action = transitionEntering(hierarchy);
-                break;
-
-            case LEAVING:
-                action = transitionLeaving(hierarchy);
-                break;
-
-            default:
-                action = UIAction.reset();
+            case ENTERING: action = transitionEntering(hierarchy); break;
+            case LEAVING: action = transitionLeaving(hierarchy); break;
+            default: action = UIAction.reset();
         }
 
         return action;
@@ -250,14 +249,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         Action action;
 
         switch (hierarchy) {
-            case LOWER:
-                action = UIAction.fromInside();
-                break;
-            case HIGHER:
-                action = UIAction.fromOutside();
-                break;
-            default:
-                action = UIAction.appear();
+            case LOWER: action = UIAction.fromInside(); break;
+            case HIGHER: action = UIAction.fromOutside(); break;
+            default: action = UIAction.appear();
         }
 
         return action;
@@ -267,14 +261,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         Action action;
 
         switch (hierarchy) {
-            case LOWER:
-                action = UIAction.toOutside();
-                break;
-            case HIGHER:
-                action = UIAction.toInside();
-                break;
-            default:
-                action = UIAction.disappear();
+            case LOWER: action = UIAction.toOutside(); break;
+            case HIGHER: action = UIAction.toInside(); break;
+            default: action = UIAction.disappear();
         }
 
         return action;

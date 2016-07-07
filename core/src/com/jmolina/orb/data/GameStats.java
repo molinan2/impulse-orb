@@ -11,6 +11,10 @@ public class GameStats {
 
     private ArrayList<Attempt> attempts;
 
+    public GameStats() {
+        attempts = new ArrayList<Attempt>();
+    }
+
     private Attempt getLastAttemp() {
         return attempts.get(attempts.size()-1);
     }
@@ -22,13 +26,13 @@ public class GameStats {
             return false;
     }
 
-    public GameStats() {
-        attempts = new ArrayList<Attempt>();
-    }
-
     public void newTry() {
         Attempt attempt = new Attempt();
         attempts.add(attempt);
+    }
+
+    public void reset() {
+        attempts = new ArrayList<Attempt>();
     }
 
     public void addTime(float time) {
