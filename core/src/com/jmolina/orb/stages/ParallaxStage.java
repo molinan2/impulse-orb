@@ -21,6 +21,11 @@ public class ParallaxStage extends Stage {
     private TiledLayer layer2;
     private TiledLayer layer3;
 
+    // FIX: evita que se dibuje la Stage después de haber llamado a dispose()
+    // Level#render() continúa ejecutándose después de Level#dispose()
+    // More: https://bitbucket.org/molinan2/orb2/issues/38/crash
+    private boolean disposing = false;
+
     public ParallaxStage(AssetManager am, Viewport vp) {
         super(vp);
 
@@ -45,28 +50,35 @@ public class ParallaxStage extends Stage {
     }
 
     @Override
-    public void draw() {
-        super.draw();
+    public void dispose() {
+        disposing = true;
+        super.dispose();
     }
 
     public void draw(float x, float y) {
-        drawLayer(layer3, LAYER_3_SPEED, x, y);
-        drawLayer(layer2, LAYER_2_SPEED, x, y);
-        drawLayer(layer1, LAYER_1_SPEED, x, y);
+        if (!disposing) {
+            drawLayer(layer3, LAYER_3_SPEED, x, y);
+            drawLayer(layer2, LAYER_2_SPEED, x, y);
+            drawLayer(layer1, LAYER_1_SPEED, x, y);
+        }
     }
 
     private void drawLayer (TiledLayer layer, float speed, float x, float y) {
         Camera camera = getViewport().getCamera();
-        Batch batch = this.getBatch();
-
         camera.position.x = x * PIXELS_PER_METER * speed;
         camera.position.y = y * PIXELS_PER_METER * speed;
         camera.update();
 
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        layer.draw(batch, 1);
-        batch.end();
+        if (!getRoot().isVisible()) return;
+
+        Batch batch = getBatch();
+
+        if (batch != null) {
+            batch.setProjectionMatrix(camera.combined);
+            batch.begin();
+            layer.draw(batch, 1);
+            batch.end();
+        }
     }
 
 }

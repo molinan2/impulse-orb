@@ -1,6 +1,7 @@
 package com.jmolina.orb.managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.screens.Credits;
 import com.jmolina.orb.screens.Level1;
@@ -55,8 +56,11 @@ public class ScreenManager {
     }
 
     public void render() {
-        if (getCurrent() != null)
+        if (getCurrent() != null) {
+            System.out.println("Screen Render 1: " + TimeUtils.nanoTime());
             getCurrent().render(Gdx.graphics.getDeltaTime());
+            System.out.println("Screen Render 2: " + TimeUtils.nanoTime());
+        }
     }
 
     public void resize(int width, int height) {
@@ -86,14 +90,20 @@ public class ScreenManager {
     public void switchToScreen(Key key, BaseScreen.Hierarchy hierarchy) {
         if (getCurrent() != null){
             hideCurrent();
+            System.out.println("Switch 1: " + TimeUtils.nanoTime());
             getCurrent().dispose();
+            System.out.println("Switch 2: " + TimeUtils.nanoTime());
         }
 
         setScreen(newScreen(key));
+        System.out.println("Switch 3: " + TimeUtils.nanoTime());
         getCurrent().setAsInputProcessor();
         getCurrent().setHierarchy(hierarchy);
-        showCurrent();
-        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        if (getCurrent() != null) {
+            showCurrent();
+            resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        }
     }
 
     public BaseScreen newScreen(Key key) {

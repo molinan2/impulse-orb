@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.SnapshotArray;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.data.GameStats;
@@ -167,17 +168,29 @@ public class Level extends BaseScreen {
      */
     @Override
     public void render(float delta) {
+        System.out.println("Render 1: " + TimeUtils.nanoTime());
         clearColor();
+        System.out.println("Render 2: " + TimeUtils.nanoTime());
         act();
+        System.out.println("Render 3: " + TimeUtils.nanoTime());
         syncBodies();
+        System.out.println("Render 4: " + TimeUtils.nanoTime());
         stepSimulation();
+        System.out.println("Render 5: " + TimeUtils.nanoTime());
         followCamera();
+        System.out.println("Render 6: " + TimeUtils.nanoTime());
         syncActors();
+        System.out.println("Render 7: " + TimeUtils.nanoTime());
         updateLockTime();
+        System.out.println("Render 8: " + TimeUtils.nanoTime());
         updateHeat();
+        System.out.println("Render 9: " + TimeUtils.nanoTime());
         updateTimer();
+        System.out.println("Render 10: " + TimeUtils.nanoTime());
         updateGameStats();
+        System.out.println("Render 11: " + TimeUtils.nanoTime());
         draw();
+        System.out.println("Render 12: " + TimeUtils.nanoTime());
     }
 
     @Override
@@ -191,10 +204,11 @@ public class Level extends BaseScreen {
 
     @Override
     public void dispose() {
-        super.dispose();
+        world.dispose();
         hudStage.dispose();
         gestureStage.dispose();
         parallaxStage.dispose();
+        super.dispose();
     }
 
     @Override
@@ -318,6 +332,7 @@ public class Level extends BaseScreen {
 
     private void draw() {
         parallaxStage.draw(worldViewport.getCamera().position.x, worldViewport.getCamera().position.y);
+        // parallaxStage.draw();
         getMainStage().draw();
         gestureStage.draw();
         hudStage.draw();

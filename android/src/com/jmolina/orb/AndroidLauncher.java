@@ -14,6 +14,7 @@ public class AndroidLauncher extends AndroidApplication {
 		config.useAccelerometer = false;
 		config.useCompass = false;
 		config.hideStatusBar = true;
+		config.useGL30 = true;
 		initialize(new OrbApp(), config);
 	}
 }
