@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.data.GameStats;
@@ -18,11 +18,22 @@ import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.listeners.ContactHandler;
 import com.jmolina.orb.managers.ScreenManager;
+import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
+import com.jmolina.orb.stages.OverlayStage;
 import com.jmolina.orb.stages.ParallaxStage;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.jmolina.orb.managers.PrefsManager.*;
 
 
@@ -48,7 +59,7 @@ public class Level extends BaseScreen {
     private static final float MAX_FLING_DELAY = 0.15f;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
     private final float WORLD_TIME_STEP = 1/60f;
-    private final float WORLD_PRECISION_FACTOR = 1;
+    private final float WORLD_OVERSTEP_FACTOR = 8;
     private final int WORLD_VELOCITY_INTERACTIONS = 8;
     private final int WORLD_POSITION_INTERACTIONS = 3;
     private final float ORB_MAX_LOCK_TIME = 0.5f;
@@ -66,6 +77,7 @@ public class Level extends BaseScreen {
     private Viewport worldViewport, gestureViewport, hudViewport, parallaxViewport;
     private GestureStage gestureStage;
     private ParallaxStage parallaxStage;
+    private OverlayStage overlayStage;
     private HUDStage hudStage;
     private GestureDetector gestureDetector;
     private GestureHandler gestureHandler;
@@ -128,6 +140,7 @@ public class Level extends BaseScreen {
         parallaxViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera());
         hudViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera());
         hudStage = new HUDStage(getAssetManager(), this, hudViewport);
+        overlayStage = new OverlayStage(getAssetManager(), hudViewport); // todo Vp especifico?
         gestureStage = new GestureStage(gestureViewport, getAssetManager());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport);
         stats = new GameStats();
@@ -154,6 +167,11 @@ public class Level extends BaseScreen {
         addProcessor(hudStage);
         addProcessor(gestureStage);
         addProcessor(gestureDetector);
+
+        hudStage.addAction(sequence(
+                alpha(0),
+                scaleTo(1/1.35f, 1/1.35f, 0)
+        ));
     }
 
 
@@ -193,6 +211,7 @@ public class Level extends BaseScreen {
     @Override
     public void dispose() {
         world.dispose();
+        overlayStage.dispose();
         hudStage.dispose();
         gestureStage.dispose();
         parallaxStage.dispose();
@@ -201,8 +220,35 @@ public class Level extends BaseScreen {
 
     @Override
     public void show() {
-        super.show();
-        firstStartGame();
+        // super.show();
+        unsetInputProcessor();
+        hudStage.addAction(sequence(
+                run(new Runnable() {
+                    @Override
+                    public void run() {
+                        overlayStage.addAction(sequence(
+                                alpha(1)
+                        ));
+                    }
+                }),
+                transition(Flow.ENTERING, getHierarchy()),
+                run(new Runnable() {
+                    @Override
+                    public void run() {
+                        overlayStage.addAction(fadeOut(0.5f));
+                    }
+                }),
+                delay(0.5f),
+                run(UIRunnable.setInputProcessor(getProcessor())),
+                run(new Runnable() {
+                    @Override
+                    public void run() {
+                        paused = false;
+                    }
+                })
+        ));
+
+        stats.newTry();
     }
 
     @Override
@@ -239,10 +285,10 @@ public class Level extends BaseScreen {
     }
 
     public void stepSimulation() {
-        if (!isGamePaused()) {
-            for (int i=0; i<WORLD_PRECISION_FACTOR; i++) {
+        for (int i = 0; i< WORLD_OVERSTEP_FACTOR; i++) {
+            if (!isGamePaused()) {
                 world.step(
-                        WORLD_TIME_STEP / WORLD_PRECISION_FACTOR,
+                        WORLD_TIME_STEP / WORLD_OVERSTEP_FACTOR,
                         WORLD_VELOCITY_INTERACTIONS,
                         WORLD_POSITION_INTERACTIONS
                 );
@@ -315,6 +361,7 @@ public class Level extends BaseScreen {
         parallaxStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getMainStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         gestureStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
+        overlayStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         hudStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
     }
 
@@ -323,6 +370,7 @@ public class Level extends BaseScreen {
         // parallaxStage.draw();
         getMainStage().draw();
         gestureStage.draw();
+        overlayStage.draw();
         hudStage.draw();
         // debugRenderer.render(world, worldViewport.getCamera().combined);
     }
@@ -360,25 +408,54 @@ public class Level extends BaseScreen {
         hudStage.resume(unpause);
     }
 
-    public void firstStartGame() {
-        hudStage.firstStart(restart, unpause);
-    }
-
     public void restartGame() {
         hudStage.restart(restart, unpause);
     }
 
     /**
-     * Abandono manual del juego
+     * Abandono manual del juego.
+     * Sólo puede ocurrir desde el menú de pausa
      */
     public void leaveGame() {
-        paused = true;
+        unsetInputProcessor();
         saveGameStats();
+        overlayStage.addAction(sequence(
+                run(new Runnable() {
+                    @Override
+                    public void run() {
+                        hudStage.getHUDBackground().setPositionGrid(-12, -18);
+                        hudStage.getHUDBackground().addAction(scaleBy(4,4));
+                    }
+                }),
+                //fadeIn(0.35f, Interpolation.pow2),
+                run(new Runnable() {
+                    @Override
+                    public void run() {
+                        switchToScreen(getPreviousKey(), Hierarchy.HIGHER);
+                    }
+                })
+        ));
+    }
 
-        // mix a blanco
-        // cambio de pantalla
-
-        switchToScreen(getPreviousKey(), Hierarchy.HIGHER);
+    @Override
+    public void switchToScreen(final ScreenManager.Key key, final Hierarchy hierarchy) {
+        hudStage.addAction(sequence(
+                run(new Runnable() {
+                    @Override
+                    public void run() {
+                        overlayStage.addAction(fadeIn(0.35f, Interpolation.pow2));
+                    }
+                }),
+                delay(0.35f),
+                /*run(new Runnable() {
+                    @Override
+                    public void run() {
+                        hudStage.getHUDBackground().addAction(fadeOut(0.3f * 0.5f, Interpolation.pow2));
+                    }
+                }),*/
+                transition(Flow.LEAVING, hierarchy),
+                run(UIRunnable.setScreen(getScreenManager(), key, hierarchy))
+        ));
     }
 
     /**
@@ -461,11 +538,9 @@ public class Level extends BaseScreen {
     }
 
     public void destroyOrb() {
+        paused = true;
         stats.setFailed(true);
-
-        // pausa
-        // secuencia de destruccion
-        // restart level
+        hudStage.destroyAndRestart(restart, unpause);
     }
 
     /**

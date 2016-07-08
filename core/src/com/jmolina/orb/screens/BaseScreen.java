@@ -219,7 +219,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         ));
     }
 
-    private void clearRootActions() {
+    protected void clearRootActions() {
         mainStage.getRoot().clearActions();
     }
 

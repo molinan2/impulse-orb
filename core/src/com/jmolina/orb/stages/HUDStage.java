@@ -1,6 +1,7 @@
 package com.jmolina.orb.stages;
 
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -20,13 +21,7 @@ import com.jmolina.orb.widgets.PauseButton;
 import com.jmolina.orb.widgets.Stat;
 import com.jmolina.orb.widgets.Timer;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class HUDStage extends Stage {
 
@@ -241,7 +236,8 @@ public class HUDStage extends Stage {
         fullDistanceStat = new Stat(am, "Distance", 0, "m");
         fullDestroyedStat = new Stat(am, "Destroyed", 0, "times");
 
-        background.setPositionGrid(0, 16);
+        background.setPositionGrid(-6, 16);
+        background.setScaleX(2f);
         overlay.setPositionGrid(0, 0);
         timer.setPositionGrid(3, 16.5f);
         pauseButton.setPositionGrid(10, 16.5f);
@@ -254,6 +250,8 @@ public class HUDStage extends Stage {
         fullTimeStat.setPositionGrid(1, 3);
         fullDistanceStat.setPositionGrid(1, 2);
         fullDestroyedStat.setPositionGrid(1, 1);
+
+        overlay.addAction(alpha(0)); // todo Borrarlo?
 
         resumeButton.setVisible(false);
         restartButton.setVisible(false);
@@ -296,6 +294,11 @@ public class HUDStage extends Stage {
         addActor(fullTimeStat);
         addActor(fullDistanceStat);
         addActor(fullDestroyedStat);
+
+        getRoot().setOrigin(vp.getWorldWidth() * 0.5f, vp.getWorldHeight() * 0.5f);
+        getRoot().setScale(1f, 1f);
+        getRoot().setSize(vp.getWorldWidth(), vp.getWorldHeight());
+        getRoot().setPosition(0f, 0f);
     }
 
     public void updateTimer() {
@@ -365,22 +368,21 @@ public class HUDStage extends Stage {
         ));
     }
 
-    /**
-     * Secuencia de acciones visuales para el primer inicio de un juego
-     *
-     * @param resetCallback Restea todos los elementos a su estado inicial
-     * @param unpauseCallback Despausa el juego
-     */
-    public void firstStart(Runnable resetCallback, Runnable unpauseCallback) {
+    public void destroyAndRestart(Runnable callbackReset, Runnable callbackUnpause) {
         background.clearActions();
         background.addAction(sequence(
-                run(fullOverlay),
-                run(resetCallback),
+                run(disableTouchables),
+                run(fadeOutWidgets),
+                delay(FADE_TIME),
+                run(disableWidgetsVisibility),
+                run(fadeInOverlay),
+                delay(OVERLAY_FADE_TIME),
+                run(callbackReset),
                 run(fadeOutOverlay),
                 delay(OVERLAY_FADE_TIME),
                 run(resumeWidgets),
                 run(enableTouchables),
-                run(unpauseCallback)
+                run(callbackUnpause)
         ));
     }
 
@@ -406,6 +408,10 @@ public class HUDStage extends Stage {
 
     public void setFullDestroyedValue(int destroyed) {
         fullDestroyedStat.setValue(destroyed, "times");
+    }
+
+    public HUDBackground getHUDBackground() {
+        return background;
     }
 
 }
