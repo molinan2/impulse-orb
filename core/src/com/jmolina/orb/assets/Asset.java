@@ -51,12 +51,16 @@ public class Asset {
     public static final String GAME_CIRCLE_GREY = GAME + "circle_grey.png";
     public static final String GAME_CIRCLE_RED = GAME + "circle_red.png";
     public static final String GAME_ORB = GAME + "orb.png";
+    public static final String GAME_ORB_FRAGMENT_1 = GAME + "orb_fragment_01.png";
+    public static final String GAME_ORB_FRAGMENT_2 = GAME + "orb_fragment_02.png";
+    public static final String GAME_ORB_FRAGMENT_3 = GAME + "orb_fragment_03.png";
+    public static final String GAME_ORB_FRAGMENT_4 = GAME + "orb_fragment_04.png";
     public static final String GAME_GESTURE_BASE = GAME + "gesture_base.png";
     public static final String GAME_GESTURE_LINE = GAME + "gesture_line.png";
     public static final String GAME_GESTURE_ARROW = GAME + "gesture_arrow.png";
-    public static final String GAME_BG_LAYER1 = GAME + "bg_layer1.png";
-    public static final String GAME_BG_LAYER2 = GAME + "bg_layer2.png";
-    public static final String GAME_BG_LAYER3 = GAME + "bg_layer3.png";
+    public static final String GAME_PARALLAX_LAYER_1 = GAME + "parallax_layer_01.png";
+    public static final String GAME_PARALLAX_LAYER_2 = GAME + "parallax_layer_02.png";
+    public static final String GAME_PARALLAX_LAYER_3 = GAME + "parallax_layer_03.png";
     public static final String GAME_EXIT = GAME + "exit.png";
     public static final String GAME_INIT = GAME + "init.png";
 
@@ -66,6 +70,7 @@ public class Asset {
     public static final String HUD_GAUGE_BACKGROUND = HUD + "hud_gauge_background.png";
     public static final String HUD_GAUGE_FRAME = HUD + "hud_gauge_frame.png";
     public static final String HUD_GAUGE_BAR = HUD + "hud_gauge_bar.png";
+    public static final String HUD_GAUGE_OVERLOAD = HUD + "hud_gauge_overload.png";
 
     public static final String APP_ICON_128 = APP + "icon_128.png";
     public static final String APP_ICON_64 = APP + "icon_64.png";

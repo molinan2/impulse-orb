@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.screens.Level;
@@ -127,9 +128,6 @@ public class Element {
 
     }
 
-    /**
-     * Traduce unidades de World a Stage
-     */
     public void syncActor(Viewport viewport, float worldWidth, float worldHeight, float pixelsPerMeter) {
         if (actor != null) {
             float offsetX = worldWidth * 0.5f;

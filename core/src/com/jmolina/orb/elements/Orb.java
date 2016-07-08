@@ -5,18 +5,36 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.widgets.FragmentedOrb;
 
+/**
+ * TODO
+ * Heat:
+ * Cuando se llegue al 100%, se mantiene bloqueado (OVERLOAD) al 100% durante X segundos.
+ * Si estando en estado OVERLOAD se recibe otro tap, el orbe se destruye.
+ * Pasados X segundos, se reanuda el COOLING.
+ *
+ * TODO
+ * Pintar de rojo intermitente la barra cuando este overload
+ * Comprobar en level que esta overload. Si esta overload, disminuir el tiempo de overload, pero no la barra
+ */
 public class Orb extends Element {
 
     private final float DIAMETER = 1f;
     private final float INFINITE_DAMPING = 10000f;
-    private final float HEAT_MIN = 0f;
-    private final float HEAT_MAX = 1f;
-    private final float HEAT_DEFAULT_INCREMENT = 0.2f;
+    public static final float HEAT_MIN = 0f;
+    public static final float HEAT_MAX = 1f;
+    public static final float HEAT_DEFAULT_INCREMENT = 0.2f;
+    public static final float OVERLOAD_TIME = 5f;
 
     private boolean locked = false;
+    private boolean overloaded = false;
     private float heat = 0f;
+    private FragmentedOrb fragmentedActor;
 
     public Orb(AssetManager am, World world) {
         super(am, world, 6, 2, 1f, 1f, 0, Type.GREY, Geometry.CIRCLE);
@@ -24,8 +42,14 @@ public class Orb extends Element {
         getActor().setTexture(am.get(Asset.GAME_ORB, Texture.class));
         getBody().setType(BodyDef.BodyType.DynamicBody);
 
-        // Evita que se quede dormido después de lock(). ¡La Gravedad no despierta a un objeto dormido!
+        // Evita que se quede dormido después de lock().
+        // ¡La Gravedad no despierta a un objeto dormido!
         getBody().setSleepingAllowed(false);
+
+        fragmentedActor = new FragmentedOrb(am);
+        fragmentedActor.setTouchable(Touchable.disabled);
+        // fragmentedActor.setVisible(false);
+        fragmentedActor.setPositionGrid(3, 3);
     }
 
     /**
@@ -57,7 +81,9 @@ public class Orb extends Element {
     }
 
     public void increaseHeat(float increment) {
-        heat = MathUtils.clamp(this.heat + increment, HEAT_MIN, HEAT_MAX);
+        if (!isOverloaded()) {
+            heat = MathUtils.clamp(this.heat + increment, HEAT_MIN, HEAT_MAX);
+        }
     }
 
     public void decreaseHeat (float decrement) {
@@ -70,6 +96,43 @@ public class Orb extends Element {
 
     public float getHeat () {
         return heat;
+    }
+
+    public Actor getFragmentedActor() {
+        return fragmentedActor;
+    }
+
+    @Override
+    public void syncActor(Viewport viewport, float worldWidth, float worldHeight, float pixelsPerMeter) {
+        super.syncActor(viewport, worldWidth, worldHeight, pixelsPerMeter);
+
+        if (fragmentedActor != null) {
+            float offsetX = worldWidth * 0.5f;
+            float offsetY = worldHeight * 0.5f;
+
+            fragmentedActor.setPosition(
+                    pixelsPerMeter * (getBody().getPosition().x - (viewport.getCamera().position.x - offsetX)) - 0.5f * fragmentedActor.getWidth(),
+                    pixelsPerMeter * (getBody().getPosition().y - (viewport.getCamera().position.y - offsetY)) - 0.5f * fragmentedActor.getHeight()
+            );
+
+            fragmentedActor.setRotation(MathUtils.radiansToDegrees * getBody().getAngle());
+        }
+    }
+
+    public void destroy() {
+        fragmentedActor.destroy();
+    }
+
+    public void resetFragments() {
+        fragmentedActor.reset();
+    }
+
+    public boolean isOverloaded() {
+        return overloaded;
+    }
+
+    public void setOverloaded(boolean overloaded) {
+        this.overloaded = overloaded;
     }
 
 }

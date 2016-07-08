@@ -47,13 +47,13 @@ public class GameStats {
         }
     }
 
-    public void setFailed(boolean failed) {
+    public void setAsFail(boolean failed) {
         if (hasAttemps()) {
             getLastAttemp().setFailed(failed);
         }
     }
 
-    public void setSuccessful(boolean successful) {
+    public void setAsSuccess(boolean successful) {
         if (hasAttemps()) {
             getLastAttemp().setSuccessful(successful);
         }

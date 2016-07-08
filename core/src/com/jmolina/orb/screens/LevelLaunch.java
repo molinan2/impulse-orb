@@ -31,7 +31,7 @@ public class LevelLaunch extends Menu {
         this.cover = new LevelCover(getAssetManager(), getAsset(Asset.UI_LAUNCH_COVER, Texture.class));
         this.mainButton = new MainButton(getAssetManager(), "GO!", MainButton.Type.Play);
         ladderPersonal = new Ladder(getAssetManager(), "Personal best");
-        ladderOnline = new Ladder(getAssetManager(), "Online ladder");
+        ladderOnline = new Ladder(getAssetManager(), "Onl-ine ladder");
 
         add(this.title);
         add(this.cover);

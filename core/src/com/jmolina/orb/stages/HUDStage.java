@@ -12,6 +12,7 @@ import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.widgets.BaseGroup;
+import com.jmolina.orb.widgets.FragmentedOrb;
 import com.jmolina.orb.widgets.Gauge;
 import com.jmolina.orb.widgets.HUDBackground;
 import com.jmolina.orb.widgets.Heading;
@@ -368,13 +369,12 @@ public class HUDStage extends Stage {
         ));
     }
 
-    public void destroyAndRestart(Runnable callbackReset, Runnable callbackUnpause) {
+    public void destroyAndRestart(Runnable callbackReset, Runnable callbackDestroyOrb, Runnable callbackUnpause, Runnable callbackUndestroy) {
         background.clearActions();
         background.addAction(sequence(
                 run(disableTouchables),
-                run(fadeOutWidgets),
-                delay(FADE_TIME),
-                run(disableWidgetsVisibility),
+                run(callbackDestroyOrb),
+                delay(1.3f),
                 run(fadeInOverlay),
                 delay(OVERLAY_FADE_TIME),
                 run(callbackReset),
@@ -382,6 +382,7 @@ public class HUDStage extends Stage {
                 delay(OVERLAY_FADE_TIME),
                 run(resumeWidgets),
                 run(enableTouchables),
+                run(callbackUndestroy),
                 run(callbackUnpause)
         ));
     }
@@ -412,6 +413,14 @@ public class HUDStage extends Stage {
 
     public HUDBackground getHUDBackground() {
         return background;
+    }
+
+    public void setGaugeOverload(boolean overloaded) {
+        gauge.setOverloaded(overloaded);
+    }
+
+    public void resetGauge() {
+        gauge.reset();
     }
 
 }

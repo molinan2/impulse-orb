@@ -64,6 +64,7 @@ public class Level extends BaseScreen {
     private final int WORLD_POSITION_INTERACTIONS = 3;
     private final float ORB_MAX_LOCK_TIME = 0.5f;
     private final float COOLING_RATE = 0.1f;
+    private final float OVERLOAD_TIME = 4f;
     private final int INFINITE_Z_INDEX = 32000;
     private final float MAX_IMPULSE = 40.0f;
     private final float IMPULSE_FACTOR_X = RATIO_METER_PIXEL;
@@ -84,7 +85,9 @@ public class Level extends BaseScreen {
     private SnapshotArray<Situation> situations;
     private Orb orb;
     private float orbLockTimer = 0f;
+    private float orbOverloadTimer = 0f;
     private boolean paused = true;
+    private boolean locked = false; // If locked = true, game cannot be unpaused
     private Vector2 orbStartPosition;
     // private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     private GameStats stats;
@@ -101,7 +104,10 @@ public class Level extends BaseScreen {
             getOrb().setPosition(orbStartPosition.x, orbStartPosition.y);
             getOrb().resetHeat();
             getOrb().resetVelocity();
+            getOrb().resetFragments();
+            getOrb().setOverloaded(false);
             hudStage.resetTimer();
+            hudStage.resetGauge();
             stats.newTry();
         }
     };
@@ -322,7 +328,8 @@ public class Level extends BaseScreen {
     }
 
     public void addOrb(Orb orb) {
-        addMainActor(orb.getActor());
+        //addMainActor(orb.getActor());
+        addMainActor(orb.getFragmentedActor());
         orb.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, PIXELS_PER_METER);
         orb.getActor().setZIndex(INFINITE_Z_INDEX);
     }
@@ -342,6 +349,7 @@ public class Level extends BaseScreen {
         }
 
         orb.getActor().setZIndex(INFINITE_Z_INDEX);
+        orb.getFragmentedActor().setZIndex(INFINITE_Z_INDEX);
     }
 
     public SnapshotArray<Situation> getSituations () {
@@ -405,7 +413,9 @@ public class Level extends BaseScreen {
     }
 
     public void resumeGame() {
-        hudStage.resume(unpause);
+        if (!locked) {
+            hudStage.resume(unpause);
+        }
     }
 
     public void restartGame() {
@@ -462,9 +472,35 @@ public class Level extends BaseScreen {
      * El orbe ha alcanzado la salida
      */
     public void successGame() {
-        stats.setSuccessful(true);
+        stats.setAsSuccess(true);
         saveGameStats();
-        // pausa
+        paused = true;
+        locked = true;
+
+        unsetInputProcessor();
+        saveGameStats();
+
+        // Pause y lock
+        // Se mueve el orbe hasta el centro del objeto EXIT
+        // Desaparece el orbe
+        // Carga pantalla (o Stage) de Success
+
+        overlayStage.addAction(sequence(
+                run(new Runnable() {
+                    @Override
+                    public void run() {
+                        hudStage.getHUDBackground().setPositionGrid(-12, -18);
+                        hudStage.getHUDBackground().addAction(scaleBy(4,4));
+                    }
+                }),
+                run(new Runnable() {
+                    @Override
+                    public void run() {
+                        switchToScreen(getPreviousKey(), Hierarchy.HIGHER);
+                    }
+                })
+        ));
+
         // stage -> secuencia de exito
         // pantalla de success
     }
@@ -480,11 +516,38 @@ public class Level extends BaseScreen {
         lastOrbPosition.set(x, y);
     }
 
-    public void tap () {
+    public void tap() {
         if (!isGamePaused()) {
-            getOrb().lock();
             getOrb().increaseHeat();
             gestureStage.drawTap();
+            getOrb().lock();
+
+            if (getOrb().isOverloaded()) {
+                destroyOrb();
+            }
+
+            if (getOrb().getHeat() == Orb.HEAT_MAX) {
+                getOrb().setOverloaded(true);
+                hudStage.setGaugeOverload(true);
+                orbOverloadTimer = OVERLOAD_TIME;
+            }
+        }
+    }
+
+    public void updateHeat() {
+        if (!isGamePaused()) {
+            hudStage.setGaugeLevel(getOrb().getHeat());
+
+            if (getOrb().isOverloaded()) {
+                orbOverloadTimer = MathUtils.clamp(orbOverloadTimer - Gdx.graphics.getRawDeltaTime(), 0f, OVERLOAD_TIME);
+                if (orbOverloadTimer == 0f) {
+                    getOrb().setOverloaded(false);
+                    hudStage.setGaugeOverload(false);
+                }
+            } else {
+                float decrement = COOLING_RATE * Gdx.graphics.getRawDeltaTime();
+                getOrb().decreaseHeat(decrement);
+            }
         }
     }
 
@@ -503,14 +566,6 @@ public class Level extends BaseScreen {
             );
 
             gestureStage.drawFling();
-        }
-    }
-
-    public void updateHeat() {
-        if (!isGamePaused()) {
-            float decrement = COOLING_RATE * Gdx.graphics.getRawDeltaTime();
-            getOrb().decreaseHeat(decrement);
-            hudStage.setGaugeLevel(getOrb().getHeat());
         }
     }
 
@@ -538,9 +593,24 @@ public class Level extends BaseScreen {
     }
 
     public void destroyOrb() {
+        Runnable unlock = new Runnable() {
+            @Override
+            public void run() {
+                locked = false;
+            }
+        };
+
+        Runnable destroyOrb = new Runnable() {
+            @Override
+            public void run() {
+                getOrb().destroy();
+            }
+        };
+
         paused = true;
-        stats.setFailed(true);
-        hudStage.destroyAndRestart(restart, unpause);
+        locked = true;
+        stats.setAsFail(true);
+        hudStage.destroyAndRestart(restart, destroyOrb, unlock, unpause);
     }
 
     /**
