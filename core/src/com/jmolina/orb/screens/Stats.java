@@ -39,38 +39,38 @@ public class Stats extends Menu {
         generalHeading = new Heading(getAssetManager(), "All attempts", Align.center, Heading.Weight.Bold);
         played = new Stat(getAssetManager(), "Time played");
         distance = new Stat(getAssetManager(), "Distance traveled");
-        fails = new Stat(getAssetManager(), "Failed attempts");
         successes = new Stat(getAssetManager(), "Successful attempts");
+        fails = new Stat(getAssetManager(), "Failed attempts");
 
         attemptsHeading = new Heading(getAssetManager(), "Completed attempts", Align.center, Heading.Weight.Bold);
         timeHeading = new Heading(getAssetManager(), "Time alive", Align.center);
         minTimeAlive = new Stat(getAssetManager(), "Minimum");
-        maxTimeAlive = new Stat(getAssetManager(), "Maximum");
         avgTimeAlive = new Stat(getAssetManager(), "Average");
+        maxTimeAlive = new Stat(getAssetManager(), "Maximum");
 
         distanceHeading = new Heading(getAssetManager(), "Distance alive", Align.center);
         minDistanceAlive = new Stat(getAssetManager(), "Minimum");
-        maxDistanceAlive = new Stat(getAssetManager(), "Maximum");
         avgDistanceAlive = new Stat(getAssetManager(), "Average");
+        maxDistanceAlive = new Stat(getAssetManager(), "Maximum");
 
         updateStats();
 
         add(generalHeading, 0);
         add(played, 0);
         add(distance, 0);
-        add(fails, 0);
-        add(successes, 0.5f);
+        add(successes, 0);
+        add(fails, 0.5f);
 
         add(attemptsHeading, 0);
         add(timeHeading, 0);
         add(minTimeAlive, 0);
-        add(maxTimeAlive, 0);
-        add(avgTimeAlive, 0.5f);
+        add(avgTimeAlive, 0);
+        add(maxTimeAlive, 0.5f);
 
         add(distanceHeading, 0);
         add(minDistanceAlive, 0);
-        add(maxDistanceAlive, 0);
-        add(avgDistanceAlive, 0.5f);
+        add(avgDistanceAlive, 0);
+        add(maxDistanceAlive, 0.5f);
     }
 
     @Override

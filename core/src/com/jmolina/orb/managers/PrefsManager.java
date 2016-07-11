@@ -4,13 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.MathUtils;
 import com.jmolina.orb.OrbApp;
+import com.jmolina.orb.var.Var;
 
 public class PrefsManager {
 
-    private final String FILE_NAME = OrbApp.class.getName();
+    private final String FILE_NAME = OrbApp.class.getPackage().getName() + ".settings";
     private final int OPTION_ZOOM_MIN = 0;
     private final int OPTION_ZOOM_MAX = 2;
 
+    private final String VERSION = "version";
     private final String OPTION_MUSIC = "music";
     private final String OPTION_SOUND = "sound";
     private final String OPTION_VIBRATION = "vibration";
@@ -51,6 +53,7 @@ public class PrefsManager {
      * Si alguna preferencia no esta configurada, la guarda con un valor por defecto
      */
     public void initialize() {
+        if (!prefs.contains(VERSION)) prefs.putString(VERSION, Var.APP_VERSION);
         if (!prefs.contains(OPTION_MUSIC)) prefs.putBoolean(OPTION_MUSIC, true);
         if (!prefs.contains(OPTION_SOUND)) prefs.putBoolean(OPTION_SOUND, true);
         if (!prefs.contains(OPTION_VIBRATION)) prefs.putBoolean(OPTION_VIBRATION, true);
