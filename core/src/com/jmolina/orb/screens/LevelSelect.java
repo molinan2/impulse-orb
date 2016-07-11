@@ -20,7 +20,7 @@ public class LevelSelect extends Menu {
     public LevelSelect(SuperManager superManager, ScreenManager.Key key) {
         super(superManager, key);
 
-        setPreviousKey(ScreenManager.Key.MAIN);
+        setPreviousScreen(ScreenManager.Key.MAIN);
         setTitle("SELECT");
 
         Texture cover = getAsset(Asset.UI_CARD_COVER, Texture.class);

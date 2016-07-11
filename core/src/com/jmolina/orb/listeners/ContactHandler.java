@@ -1,5 +1,6 @@
 package com.jmolina.orb.listeners;
 
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -21,17 +22,18 @@ public class ContactHandler implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        UserData userDataA = (UserData) contact.getFixtureA().getUserData();
-        UserData userDataB = (UserData) contact.getFixtureB().getUserData();
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
+        UserData userDataA = (UserData) fixtureA.getUserData();
+        UserData userDataB = (UserData) fixtureB.getUserData();
 
         if (fixtureA.equals(orbFixture)) {
             if (userDataB.type == Element.Type.RED) {
                 level.destroyOrb();
             }
             else if (userDataB.effect == Element.Effect.EXIT) {
-                level.successGame();
+                Body exitBody = fixtureB.getBody();
+                level.successGame(exitBody);
             }
         }
         else if (fixtureB.equals(orbFixture)) {
@@ -39,7 +41,8 @@ public class ContactHandler implements ContactListener {
                 level.destroyOrb();
             }
             else if (userDataA.effect == Element.Effect.EXIT) {
-                level.successGame();
+                Body exitBody = fixtureA.getBody();
+                level.successGame(exitBody);
             }
         }
     }

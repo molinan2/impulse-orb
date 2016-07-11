@@ -18,7 +18,8 @@ public class Level1 extends Level {
     public Level1(SuperManager sm, ScreenManager.Key key) {
         super(sm, key);
 
-        setPreviousKey(ScreenManager.Key.LEVEL_LAUNCH_1);
+        setPreviousScreen(ScreenManager.Key.LEVEL_LAUNCH_1);
+        setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_1);
 
         addSituation(new Situation1Start(getAssetManager(), getWorld()));
         addSituation(new Situation101(getAssetManager(), getWorld()));
@@ -30,7 +31,7 @@ public class Level1 extends Level {
         addSituation(new Situation107(getAssetManager(), getWorld()));
         addSituation(new Situation1End(getAssetManager(), getWorld()));
 
-        setOrbStartPosition(6, 9);
+        setOrbStartPosition(6, 9 + 8 * 18);
     }
 
 }

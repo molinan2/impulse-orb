@@ -36,8 +36,16 @@ public class Attempt {
         return distance;
     }
 
+    public void setTime(float time) {
+        this.time = time;
+    }
+
     public float getTime() {
         return time;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
     }
 
     public boolean isFailed() {

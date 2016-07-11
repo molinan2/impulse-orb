@@ -1,8 +1,10 @@
 package com.jmolina.orb.elements;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -21,6 +23,13 @@ import com.jmolina.orb.widgets.FragmentedOrb;
  * TODO
  * Pintar de rojo intermitente la barra cuando este overload
  * Comprobar en level que esta overload. Si esta overload, disminuir el tiempo de overload, pero no la barra
+ *
+ * TODO
+ * Los Override denotan que Orb no deriva exactamente de Element
+ * Habria que refactorizar (BasicElement -> Orb, BasicElement -> Element -> (Todos))
+ *
+ * TODO
+ * Cuando se llegue a Overload, que se ponga naranja (cambio de textura en FragmentedOrb
  */
 public class Orb extends Element {
 
@@ -35,6 +44,8 @@ public class Orb extends Element {
     private boolean overloaded = false;
     private float heat = 0f;
     private FragmentedOrb fragmentedActor;
+
+    public boolean disposing = false;
 
     public Orb(AssetManager am, World world) {
         super(am, world, 6, 2, 1f, 1f, 0, Type.GREY, Geometry.CIRCLE);
@@ -100,6 +111,26 @@ public class Orb extends Element {
 
     public Actor getFragmentedActor() {
         return fragmentedActor;
+    }
+
+    @Override
+    public void syncBody() {
+        // TODO
+        // Iguala la posicion
+
+        // Iguala solo la rotacion
+        if (fragmentedActor != null) {
+            // TODO
+            // La llamada a Body#setTransform peta la JVM cuando se hace Level#dispose()
+            // Comprobamos que no se ha hecho Level#dispose() antes de ejecutar Body#setTransform
+            if (!disposing) {
+                getBody().setTransform(
+                        getBody().getPosition().x,
+                        getBody().getPosition().y,
+                        MathUtils.degreesToRadians * fragmentedActor.getRotation()
+                );
+            }
+        }
     }
 
     @Override

@@ -25,23 +25,21 @@ public class Asset {
     public static final String UI_BUTTON_DEFAULT = UI + "button_default.png";
     public static final String UI_BUTTON_PLAY = UI + "button_play.png";
     public static final String UI_BUTTON_EXIT = UI + "button_exit.png";
-
     public static final String UI_CARD_COVER = UI + "card_cover.png";
     public static final String UI_CARD_BACKGROUND = UI + "card_background.png";
     public static final String UI_CARD_COVER_WHITE = UI + "card_cover_white.png";
     public static final String UI_CARD_PADLOCK = UI + "card_padlock.png";
     public static final String UI_LAUNCH_COVER = UI + "launch_cover.png";
-
     public static final String UI_LAUNCH_TITLE = UI + "launch_title.png";
     public static final String UI_LADDER_BACKGROUND = UI + "ladder_background.png";
     public static final String UI_SPLASH = UI + "splash.png";
     public static final String UI_SCROLL_KNOB = UI + "scroll_knob.png";
     public static final String UI_MAIN_TITLE = UI + "maintitle.png";
-
     public static final String UI_BACK = UI + "back.png";
     public static final String UI_BACKGROUND = UI + "background.png";
     public static final String UI_PROGRESS_BASE = UI + "progress_base.png";
     public static final String UI_PROGRESS_FILL = UI + "progress_fill.png";
+    public static final String UI_SUCCESS_COVER_01 = UI + "success_cover.png";
 
     public static final String GAME_SQUARE_BLACK = GAME + "square_black.png";
     public static final String GAME_SQUARE_GREY = GAME + "square_grey.png";

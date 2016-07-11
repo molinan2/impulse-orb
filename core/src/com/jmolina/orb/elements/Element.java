@@ -125,7 +125,14 @@ public class Element {
     }
 
     public void syncBody() {
+        // TODO
+        // Iguala la posicion
 
+        // Iguala solo la rotacion
+        // TODO Esto generara un error de Java al hacer dispose()
+        if (actor != null && body != null) {
+            body.setTransform(body.getPosition().x, body.getPosition().y, MathUtils.degreesToRadians * actor.getRotation());
+        }
     }
 
     public void syncActor(Viewport viewport, float worldWidth, float worldHeight, float pixelsPerMeter) {
@@ -224,6 +231,11 @@ public class Element {
         userData.type = type;
         userData.effect = effect;
         body.getFixtureList().first().setUserData(userData);
+    }
+
+    public void resetAngle() {
+        actor.setRotation(0);
+        body.setTransform(body.getPosition().x, body.getPosition().y, 0);
     }
 
 }

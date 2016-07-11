@@ -5,16 +5,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.utils.Grid;
 
-public class LevelCover extends BaseGroup {
+public class SuccessCover extends BaseGroup {
 
-    private Image cover;
+    private Image greeting;
 
-    public LevelCover(AssetManager am, Texture coverTexture) {
+    public SuccessCover(AssetManager am, Texture greetingTexture) {
         super(am);
 
-        cover = new Image(coverTexture);
-        addActor(cover);
-        setHeight(Grid.unit(5));
+        greeting = new Image(greetingTexture);
+        addActor(greeting);
+        setSize(Grid.unit(10), Grid.unit(4));
     }
 
     @Override

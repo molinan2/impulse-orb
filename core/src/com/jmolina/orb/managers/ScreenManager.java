@@ -7,6 +7,7 @@ import com.jmolina.orb.screens.Credits;
 import com.jmolina.orb.screens.Level1;
 import com.jmolina.orb.screens.LevelLaunch;
 import com.jmolina.orb.screens.LevelSelect;
+import com.jmolina.orb.screens.LevelSuccess;
 import com.jmolina.orb.screens.Load;
 import com.jmolina.orb.screens.Main;
 import com.jmolina.orb.screens.Options;
@@ -22,7 +23,8 @@ public class ScreenManager {
         LOAD, MAIN,
         OPTIONS, STATS, CREDITS, LEVEL_SELECT,
         LEVEL_LAUNCH_1, LEVEL_LAUNCH_2, LEVEL_LAUNCH_3, LEVEL_LAUNCH_4, LEVEL_LAUNCH_5,
-        LEVEL_1
+        LEVEL_1,
+        LEVEL_SUCCESS_1, LEVEL_SUCCESS_2, LEVEL_SUCCESS_3, LEVEL_SUCCESS_4, LEVEL_SUCCESS_5
     }
 
     private SuperManager superManager;
@@ -39,6 +41,10 @@ public class ScreenManager {
 
     private BaseScreen getCurrent() {
         return this.screen;
+    }
+
+    private void setCurrent(BaseScreen screen) {
+        this.screen = screen;
     }
 
     private void setScreen(BaseScreen baseScreen) {
@@ -108,6 +114,11 @@ public class ScreenManager {
             case LEVEL_LAUNCH_4: return new LevelLaunch(getSuperManager(), LEVEL_LAUNCH_4, "HERO");
             case LEVEL_LAUNCH_5: return new LevelLaunch(getSuperManager(), LEVEL_LAUNCH_4, "GOD");
             case LEVEL_1: return new Level1(getSuperManager(), LEVEL_1);
+            case LEVEL_SUCCESS_1: return new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_1, "BASICS");
+            case LEVEL_SUCCESS_2: return new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_2, "ADVANCED");
+            case LEVEL_SUCCESS_3: return new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_3, "EXPERT");
+            case LEVEL_SUCCESS_4: return new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_4, "HERO");
+            case LEVEL_SUCCESS_5: return new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_5, "GOD");
             default: return new Main(getSuperManager(), MAIN);
         }
     }

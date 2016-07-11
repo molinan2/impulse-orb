@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
+import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.screens.BaseScreen;
@@ -14,6 +15,7 @@ public class OrbApp implements ApplicationListener, SuperManager {
 	private PrefsManager prefsManager;
 	private AssetManager assetManager;
 	private ScreenManager screenManager;
+	private GameManager gameManager;
 
 
 	/**
@@ -30,6 +32,7 @@ public class OrbApp implements ApplicationListener, SuperManager {
 		prefsManager = new PrefsManager();
 		screenManager = new ScreenManager(this);
 		assetManager = new AssetManager();
+		gameManager = new GameManager();
 
 		assetManager.loadLoadScreenAssets();
 		screenManager.switchToScreen(ScreenManager.Key.LOAD, BaseScreen.Hierarchy.LOWER);
@@ -74,6 +77,11 @@ public class OrbApp implements ApplicationListener, SuperManager {
 	@Override
 	public ScreenManager getScreenManager() {
 		return this.screenManager;
+	}
+
+	@Override
+	public GameManager getGameManager() {
+		return this.gameManager;
 	}
 
 	/**

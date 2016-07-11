@@ -7,10 +7,12 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.data.GameStats;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Orb;
@@ -29,7 +31,10 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
@@ -70,6 +75,10 @@ public class Level extends BaseScreen {
     private final float IMPULSE_FACTOR_X = RATIO_METER_PIXEL;
     private final float IMPULSE_FACTOR_Y = -RATIO_METER_PIXEL;
 
+    public static final float ORB_INTRO_SEQUENCE_TIME = 1f;
+    public static final float ORB_EXIT_SEQUENCE_TIME = 1f;
+
+
     /**
      * Fields
      */
@@ -93,6 +102,7 @@ public class Level extends BaseScreen {
     private GameStats stats;
     private Vector2 currentOrbPosition;
     private Vector2 lastOrbPosition;
+    private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
 
     /**
      * Runnables
@@ -102,6 +112,7 @@ public class Level extends BaseScreen {
         @Override
         public void run() {
             getOrb().setPosition(orbStartPosition.x, orbStartPosition.y);
+            getOrb().resetAngle();
             getOrb().resetHeat();
             getOrb().resetVelocity();
             getOrb().resetFragments();
@@ -128,6 +139,37 @@ public class Level extends BaseScreen {
         @Override
         public void run() {
             paused = false;
+        }
+    };
+
+    private Runnable orbIntro = new Runnable() {
+        @Override
+        public void run() {
+            getOrb().getFragmentedActor().addAction(sequence(
+                    parallel(
+                            scaleBy(4, 4, 0),
+                            rotateTo(0, 0),
+                            alpha(0)
+                    ),
+                    parallel(
+                            rotateTo(360, ORB_INTRO_SEQUENCE_TIME, Interpolation.exp5),
+                            scaleTo(1, 1, ORB_INTRO_SEQUENCE_TIME, Interpolation.pow2),
+                            fadeIn(ORB_INTRO_SEQUENCE_TIME, Interpolation.pow2)
+                    )
+            ));
+        }
+    };
+
+    private Runnable orbExit = new Runnable() {
+        @Override
+        public void run() {
+            getOrb().getFragmentedActor().addAction(sequence(
+                    parallel(
+                            rotateBy(360, ORB_INTRO_SEQUENCE_TIME, Interpolation.exp5Out),
+                            scaleTo(4, 4, ORB_INTRO_SEQUENCE_TIME, Interpolation.pow2),
+                            fadeOut(ORB_INTRO_SEQUENCE_TIME, Interpolation.pow2)
+                    )
+            ));
         }
     };
 
@@ -216,11 +258,12 @@ public class Level extends BaseScreen {
 
     @Override
     public void dispose() {
-        world.dispose();
+        orb.disposing = true;
         overlayStage.dispose();
         hudStage.dispose();
         gestureStage.dispose();
         parallaxStage.dispose();
+        world.dispose();
         super.dispose();
     }
 
@@ -244,7 +287,8 @@ public class Level extends BaseScreen {
                         overlayStage.addAction(fadeOut(0.5f));
                     }
                 }),
-                delay(0.5f),
+                run(orbIntro),
+                delay(Math.max(0.5f, ORB_INTRO_SEQUENCE_TIME)),
                 run(UIRunnable.setInputProcessor(getProcessor())),
                 run(new Runnable() {
                     @Override
@@ -260,8 +304,9 @@ public class Level extends BaseScreen {
     @Override
     public void hide() {
         super.hide();
-        // saveGameStats();
+
         // TODO Ojo: no se puede guardar 2 veces la misma stat
+        // saveGameStats();
     }
 
     @Override
@@ -303,6 +348,18 @@ public class Level extends BaseScreen {
     }
 
     /**
+     * TODO
+     * Iguala la posicion y rotacion de los Bodies a las de sus Actors
+     */
+    private void syncBodies() {
+        // Todos los cuerpos
+        // Por hacer
+
+        // Orb
+        orb.syncBody();
+    }
+
+    /**
      * Iguala la posicion y rotacion de los Actors a las de sus Bodies
      */
     public void syncActors() {
@@ -315,15 +372,7 @@ public class Level extends BaseScreen {
         orb.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, PIXELS_PER_METER);
     }
 
-    /**
-     * TODO
-     * Iguala la posicion y rotacion de los Bodies a la de sus Actors
-     */
-    private void syncBodies() {
-
-    }
-
-    public void syncActor(Element element) {
+    private void syncActor(Element element) {
         element.syncActor(worldViewport, WORLD_WIDTH, WORLD_HEIGHT, PIXELS_PER_METER);
     }
 
@@ -419,7 +468,7 @@ public class Level extends BaseScreen {
     }
 
     public void restartGame() {
-        hudStage.restart(restart, unpause);
+        hudStage.restart(restart, unpause, orbIntro);
     }
 
     /**
@@ -441,7 +490,7 @@ public class Level extends BaseScreen {
                 run(new Runnable() {
                     @Override
                     public void run() {
-                        switchToScreen(getPreviousKey(), Hierarchy.HIGHER);
+                        switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
                     }
                 })
         ));
@@ -471,14 +520,13 @@ public class Level extends BaseScreen {
     /**
      * El orbe ha alcanzado la salida
      */
-    public void successGame() {
+    public void successGame(final Body exitBody) {
         stats.setAsSuccess(true);
         saveGameStats();
+        saveLastAttempt();
+        unsetInputProcessor();
         paused = true;
         locked = true;
-
-        unsetInputProcessor();
-        saveGameStats();
 
         // Pause y lock
         // Se mueve el orbe hasta el centro del objeto EXIT
@@ -486,17 +534,31 @@ public class Level extends BaseScreen {
         // Carga pantalla (o Stage) de Success
 
         overlayStage.addAction(sequence(
+                // run(orbExit),
                 run(new Runnable() {
+                    @Override
+                    public void run() {
+                        getOrb().getFragmentedActor().addAction(sequence(
+                                parallel(
+                                        rotateBy(360, ORB_EXIT_SEQUENCE_TIME, Interpolation.exp5Out),
+                                        scaleTo(4, 4, ORB_EXIT_SEQUENCE_TIME, Interpolation.pow2),
+                                        fadeOut(ORB_EXIT_SEQUENCE_TIME, Interpolation.pow2)
+                                )
+                        ));
+                    }
+                }),
+                delay(ORB_INTRO_SEQUENCE_TIME),
+                /*run(new Runnable() {
                     @Override
                     public void run() {
                         hudStage.getHUDBackground().setPositionGrid(-12, -18);
                         hudStage.getHUDBackground().addAction(scaleBy(4,4));
                     }
-                }),
+                }),*/
                 run(new Runnable() {
                     @Override
                     public void run() {
-                        switchToScreen(getPreviousKey(), Hierarchy.HIGHER);
+                        switchToScreen(getSuccessScreen(), Hierarchy.HIGHER);
                     }
                 })
         ));
@@ -610,7 +672,7 @@ public class Level extends BaseScreen {
         paused = true;
         locked = true;
         stats.setAsFail(true);
-        hudStage.destroyAndRestart(restart, destroyOrb, unlock, unpause);
+        hudStage.destroyAndRestart(restart, destroyOrb, unlock, unpause, orbIntro);
     }
 
     /**
@@ -670,6 +732,18 @@ public class Level extends BaseScreen {
         }
 
         getPrefsManager().save();
+    }
+
+    public void setSuccessScreen(ScreenManager.Key key) {
+        this.successScreen = key;
+    }
+
+    public ScreenManager.Key getSuccessScreen() {
+        return this.successScreen;
+    }
+
+    private void saveLastAttempt () {
+        getGameManager().setLastSuccessfulAttempt(stats.getLastAttempt());
     }
 
 }

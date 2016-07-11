@@ -32,7 +32,7 @@ public class Stats extends Menu {
     public Stats(SuperManager superManager, ScreenManager.Key key) {
         super(superManager, key);
 
-        setPreviousKey(ScreenManager.Key.MAIN);
+        setPreviousScreen(ScreenManager.Key.MAIN);
         setTitle("STATS");
         prefs = superManager.getPrefsManager().getPrefs();
 

@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
+import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.interfaces.Backable;
@@ -157,11 +158,11 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         return getSuperManager().getScreenManager();
     }
 
-    protected void setPreviousKey(ScreenManager.Key key) {
+    protected void setPreviousScreen(ScreenManager.Key key) {
         this.previousKey = key;
     }
 
-    protected ScreenManager.Key getPreviousKey() {
+    protected ScreenManager.Key getPreviousScreen() {
         return this.previousKey;
     }
 
@@ -287,6 +288,10 @@ public class BaseScreen extends ScreenAdapter implements Backable {
 
     protected Stage getMainStage() {
         return mainStage;
+    }
+
+    protected GameManager getGameManager() {
+        return getSuperManager().getGameManager();
     }
 
 }

@@ -255,4 +255,17 @@ public class GameStats {
         }
     }
 
+    /**
+     * Igual a getCurrentAttempt
+     *
+     * TODO
+     * No se deberia llamar con attemps vacio. Deberia lanzar una excepcion
+     */
+    public Attempt getLastAttempt() {
+        if (!isEmpty())
+            return attempts.get(attempts.size()-1);
+        else
+            return null;
+    }
+
 }

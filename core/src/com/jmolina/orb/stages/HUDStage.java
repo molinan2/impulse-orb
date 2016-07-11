@@ -1,7 +1,6 @@
 package com.jmolina.orb.stages;
 
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -12,7 +11,6 @@ import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.widgets.BaseGroup;
-import com.jmolina.orb.widgets.FragmentedOrb;
 import com.jmolina.orb.widgets.Gauge;
 import com.jmolina.orb.widgets.HUDBackground;
 import com.jmolina.orb.widgets.Heading;
@@ -346,10 +344,10 @@ public class HUDStage extends Stage {
     /**
      * Secuencia de acciones visuales para reiniciar un juego
      *
-     * @param callbackReset Restea todos los elementos a su estado inicial
-     * @param callbackUnpause Despausa el juego
+     * @param resetCallabck Restea todos los elementos a su estado inicial
+     * @param unpauseCallback Despausa el juego
      */
-    public void restart (Runnable callbackReset, Runnable callbackUnpause) {
+    public void restart (Runnable resetCallabck, Runnable unpauseCallback, Runnable orbIntroCallback) {
         background.clearActions();
         background.addAction(sequence(
                 run(disableTouchables),
@@ -360,16 +358,17 @@ public class HUDStage extends Stage {
                 moveTo(0, Grid.unit(16f), ROLLER_TIME, ROLLER_INTERPOLATION),
                 run(fadeInOverlay),
                 delay(OVERLAY_FADE_TIME),
-                run(callbackReset),
+                run(resetCallabck),
+                run(orbIntroCallback),
                 run(fadeOutOverlay),
-                delay(OVERLAY_FADE_TIME),
+                delay(Math.max(OVERLAY_FADE_TIME, Level.ORB_INTRO_SEQUENCE_TIME)),
                 run(resumeWidgets),
                 run(enableTouchables),
-                run(callbackUnpause)
+                run(unpauseCallback)
         ));
     }
 
-    public void destroyAndRestart(Runnable callbackReset, Runnable callbackDestroyOrb, Runnable callbackUnpause, Runnable callbackUndestroy) {
+    public void destroyAndRestart(Runnable callbackReset, Runnable callbackDestroyOrb, Runnable callbackUnpause, Runnable callbackUndestroy, Runnable callbackOrbIntro) {
         background.clearActions();
         background.addAction(sequence(
                 run(disableTouchables),
@@ -378,8 +377,9 @@ public class HUDStage extends Stage {
                 run(fadeInOverlay),
                 delay(OVERLAY_FADE_TIME),
                 run(callbackReset),
+                run(callbackOrbIntro),
                 run(fadeOutOverlay),
-                delay(OVERLAY_FADE_TIME),
+                delay(Math.max(OVERLAY_FADE_TIME, Level.ORB_INTRO_SEQUENCE_TIME)),
                 run(resumeWidgets),
                 run(enableTouchables),
                 run(callbackUndestroy),
