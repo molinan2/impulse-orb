@@ -98,8 +98,8 @@ public class Stats extends Menu {
     }
 
     private void updateStats() {
-        played.setValue(prefs.getFloat(STAT_TIME), "s");
-        distance.setValue(prefs.getFloat(STAT_DISTANCE), "m");
+        played.setValue(prefs.getFloat(STAT_TIME), "s", false);
+        distance.setValue(prefs.getFloat(STAT_DISTANCE), "m", false);
         fails.setValue(prefs.getInteger(STAT_FAILS));
         successes.setValue(prefs.getInteger(STAT_SUCCESSES));
 

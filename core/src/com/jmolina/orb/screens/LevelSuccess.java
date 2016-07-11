@@ -8,6 +8,7 @@ import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.ScreenManager;
+import com.jmolina.orb.utils.Time;
 import com.jmolina.orb.widgets.BaseGroup;
 import com.jmolina.orb.widgets.BigText;
 import com.jmolina.orb.widgets.Heading;
@@ -36,9 +37,9 @@ public class LevelSuccess extends BaseScreen {
     private BigText distance;
     private MainButton button;
 
-    public LevelSuccess(SuperManager superManager, ScreenManager.Key key, String title) {
+    public LevelSuccess(SuperManager superManager, ScreenManager.Key key, ScreenManager.Key previousKey, String title) {
         super(superManager, key);
-        setPreviousScreen(LEVEL_SELECT);
+        setPreviousScreen(previousKey);
 
         Attempt attempt = getGameManager().getLastSuccessfulAttempt();
 
@@ -48,7 +49,7 @@ public class LevelSuccess extends BaseScreen {
         this.timeHeading = new Heading(getAssetManager(), "Time", Align.center, Heading.Weight.Regular, BaseGroup.COLOR_BLUE);
         this.distanceHeading = new Heading(getAssetManager(), "Distance", Align.center, Heading.Weight.Regular, BaseGroup.COLOR_BLUE);
 
-        this.time = new BigText(getAssetManager(), formatTime(attempt.getTime()));
+        this.time = new BigText(getAssetManager(), Time.formatTime(attempt.getTime()));
         this.distance = new BigText(getAssetManager(), formatDistance(attempt.getDistance()));
 
         this.button = new MainButton(getAssetManager(), "BACK", MainButton.Type.Default);
@@ -56,7 +57,7 @@ public class LevelSuccess extends BaseScreen {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 button.clickEffect();
-                switchToScreen(LEVEL_LAUNCH_1, Hierarchy.HIGHER);
+                switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
             }
         });
 
@@ -87,22 +88,6 @@ public class LevelSuccess extends BaseScreen {
         distance.dispose();
         button.dispose();
         super.dispose();
-    }
-
-    private String formatTime(float time) {
-        String formattedDistance = "";
-
-        int minutes = (int) (time / 60f);
-        int seconds = (int) (time - minutes * 60f);
-        int decimals = (int) ((time - minutes * 60f - (float) seconds) * 100f);
-
-        String minutesString = String.format(new Locale(""), "%02d", minutes);
-        String secondsString = String.format(new Locale(""), "%02d", seconds);
-        String decimalsString = String.format(new Locale(""), "%02d", decimals);
-
-        formattedDistance = minutesString + ":" + secondsString + "." + decimalsString;
-
-        return formattedDistance;
     }
 
     private String formatDistance(float distance) {

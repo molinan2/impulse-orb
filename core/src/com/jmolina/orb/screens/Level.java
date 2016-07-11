@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.data.GameStats;
+import com.jmolina.orb.data.PersonalTimes;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
@@ -729,6 +730,11 @@ public class Level extends BaseScreen {
                 prefs.putFloat(STAT_AVG_DISTANCE_ALIVE, wAvgDistanceAlive);
                 prefs.putInteger(STAT_COMPLETED_ATTEMPTS, prefs.getInteger(STAT_COMPLETED_ATTEMPTS) + completedAttempts);
             }
+
+            // Guarda los mejores tiempos
+            PersonalTimes personalTimes = new PersonalTimes(prefs, getKey());
+            personalTimes.addAttempt(stats.getLastAttempt());
+            personalTimes.save();
         }
 
         getPrefsManager().save();

@@ -1,7 +1,8 @@
-package com.jmolina.orb.screens;
+package com.jmolina.orb.screens.levels;
 
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.ScreenManager;
+import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.situations.Situation1Start;
 import com.jmolina.orb.situations.Situation101;
 import com.jmolina.orb.situations.Situation102;
@@ -14,6 +15,8 @@ import com.jmolina.orb.situations.Situation1End;
 
 
 public class Level1 extends Level {
+
+    private final float EXIT_OFFSET = 8 * 18;
 
     public Level1(SuperManager sm, ScreenManager.Key key) {
         super(sm, key);
@@ -31,7 +34,7 @@ public class Level1 extends Level {
         addSituation(new Situation107(getAssetManager(), getWorld()));
         addSituation(new Situation1End(getAssetManager(), getWorld()));
 
-        setOrbStartPosition(6, 9 + 8 * 18);
+        setOrbStartPosition(6, 9);
     }
 
 }

@@ -64,16 +64,16 @@ public class Card extends BaseGroup {
         timeStyle.fontColor = new Color(BaseGroup.COLOR_BLACK);
         timeStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
-        this.personal = new Label("Best " + personal, timeStyle);
+        this.personal = new Label("Best   " + personal, timeStyle);
         this.personal.setTouchable(Touchable.disabled);
-        this.personal.setPosition(Grid.unit(5), Grid.unit(0.75f));
+        this.personal.setPosition(Grid.unit(5), Grid.unit(0));
         this.personal.setHeight(Grid.unit(0.75f));
         this.personal.setWidth(Grid.unit(4.75f));
         this.personal.setAlignment(Align.right);
 
-        this.world = new Label("World " + world, timeStyle);
+        this.world = new Label("World   " + world, timeStyle);
         this.world.setTouchable(Touchable.disabled);
-        this.world.setPosition(Grid.unit(5), Grid.unit(0));
+        this.world.setPosition(Grid.unit(5), Grid.unit(0.75f));
         this.world.setHeight(Grid.unit(0.75f));
         this.world.setWidth(Grid.unit(4.75f));
         this.world.setAlignment(Align.right);
@@ -84,7 +84,7 @@ public class Card extends BaseGroup {
         addActor(this.lock);
         addActor(this.title);
         addActor(this.personal);
-        addActor(this.world);
+        // addActor(this.world);
 
         setHeight(Grid.unit(4));
 

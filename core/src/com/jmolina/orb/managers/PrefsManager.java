@@ -29,6 +29,22 @@ public class PrefsManager {
     public static final String STAT_MAX_DISTANCE_ALIVE = "max_distance";
     public static final String STAT_AVG_TIME_ALIVE = "avg_time";
     public static final String STAT_AVG_DISTANCE_ALIVE = "avg_distance";
+    public static final String LADDER_1_1 = "ladder_1_1";
+    public static final String LADDER_1_2 = "ladder_1_2";
+    public static final String LADDER_1_3 = "ladder_1_3";
+    public static final String LADDER_2_1 = "ladder_2_1";
+    public static final String LADDER_2_2 = "ladder_2_2";
+    public static final String LADDER_2_3 = "ladder_2_3";
+    public static final String LADDER_3_1 = "ladder_3_1";
+    public static final String LADDER_3_2 = "ladder_3_2";
+    public static final String LADDER_3_3 = "ladder_3_3";
+    public static final String LADDER_4_1 = "ladder_4_1";
+    public static final String LADDER_4_2 = "ladder_4_2";
+    public static final String LADDER_4_3 = "ladder_4_3";
+    public static final String LADDER_5_1 = "ladder_5_1";
+    public static final String LADDER_5_2 = "ladder_5_2";
+    public static final String LADDER_5_3 = "ladder_5_3";
+
 
     private Preferences prefs;
 

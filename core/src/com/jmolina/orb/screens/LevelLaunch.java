@@ -21,32 +21,33 @@ public class LevelLaunch extends Menu {
     private Ladder ladderPersonal;
     private Ladder ladderOnline;
 
-    public LevelLaunch(SuperManager superManager, ScreenManager.Key key, String title) {
+    public LevelLaunch(SuperManager superManager, ScreenManager.Key key, final ScreenManager.Key nextScreen, String title) {
         super(superManager, key);
 
         setPreviousScreen(LEVEL_SELECT);
-        setTitle("LEVEL");
+        setTitle(nextScreen.toString().replace("_", " "));
 
         this.title = new LevelTitle(getAssetManager(), title);
         this.cover = new LaunchCover(getAssetManager(), getAsset(Asset.UI_LAUNCH_COVER, Texture.class));
         this.mainButton = new MainButton(getAssetManager(), "GO!", MainButton.Type.Play);
-        ladderPersonal = new Ladder(getAssetManager(), "Personal best");
-        ladderOnline = new Ladder(getAssetManager(), "Onl-ine ladder");
+        ladderPersonal = new Ladder(getAssetManager(), getPrefsManager(), nextScreen, "Personal best");
+        ladderOnline = new Ladder(getAssetManager(), getPrefsManager(), nextScreen, "Online ladder");
 
         add(this.title);
         add(this.cover);
         add(this.mainButton, 1f, 8f);
         add(this.ladderPersonal);
-        add(this.ladderOnline);
+        // add(this.ladderOnline);
 
         mainButton.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 mainButton.clickEffect();
-                switchToScreen(LEVEL_1, Hierarchy.LOWER);
+                switchToScreen(nextScreen, Hierarchy.LOWER);
             }
         });
     }
+
 
     @Override
     public void dispose() {

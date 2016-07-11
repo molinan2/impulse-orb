@@ -67,7 +67,17 @@ public class Stat extends BaseGroup {
     }
 
     private String formatStat(float value, String unit) {
-        DecimalFormat df = new DecimalFormat("###.##");
+        return formatStat(value, unit, true);
+    }
+
+    private String formatStat(float value, String unit, boolean withDecimals) {
+        DecimalFormat df;
+
+        if (withDecimals)
+            df = new DecimalFormat("###.##");
+        else
+            df = new DecimalFormat("###");
+
         String stat;
 
         if (unit.length() > 0)
@@ -79,11 +89,15 @@ public class Stat extends BaseGroup {
     }
 
     public void setValue(float value) {
-        this.data.setText(formatStat(value, ""));
+        setValue(value, "");
     }
 
     public void setValue(float value, String unit) {
-        this.data.setText(formatStat(value, unit));
+        setValue(value, unit, true);
+    }
+
+    public void setValue(float value, String unit, boolean decimals) {
+        this.data.setText(formatStat(value, unit, decimals));
     }
 
     public void setNullValue(String unit) {
