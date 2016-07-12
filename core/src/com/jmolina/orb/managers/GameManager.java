@@ -9,10 +9,17 @@ import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.screens.Level;
 
+/**
+ * TODO
+ * Clase para la Musica, que lleve la cuenta de la pista en reproduccion actual
+ * y sea capaz de parar el resto, ver si hay alguna en reproduccion y si concuerda con la pantalla.
+ * Capaz de hacer fadeIn y fadeOut.
+ *
+ * TODO
+ * Trasladar aqui los metodos de control implementados en Level: pause, resume, restart,
+ * destroy, increaseGauge gauge, decrease gauge,...
+ */
 public class GameManager {
-
-    // interface: pause, resume, restart, destroySound, increaseGauge gauge, decrease gauge?
-    // data: gauge,
 
     public enum Fx {
         Back, Button, Collision, Destroy, Exit, Fling, Init, Option, Tap
@@ -150,6 +157,27 @@ public class GameManager {
         menuMusic.setVolume(VOLUME_MUSIC);
         gameMusic.setVolume(VOLUME_MUSIC);
         successMusic.setVolume(VOLUME_MUSIC);
+
+        menuMusic.setOnCompletionListener(new Music.OnCompletionListener() {
+            @Override
+            public void onCompletion(Music music) {
+                music.play();
+            }
+        });
+
+        gameMusic.setOnCompletionListener(new Music.OnCompletionListener() {
+            @Override
+            public void onCompletion(Music music) {
+                music.play();
+            }
+        });
+
+        successMusic.setOnCompletionListener(new Music.OnCompletionListener() {
+            @Override
+            public void onCompletion(Music music) {
+                music.play();
+            }
+        });
     }
 
     public void playFx(Fx fx) {
