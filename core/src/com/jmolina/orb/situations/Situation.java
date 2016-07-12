@@ -21,8 +21,10 @@ public abstract class Situation {
     private SnapshotArray<Element> elements;
     private float height = 18f;
     private float width;
+    private float ratioMeterPixel;
 
-    public Situation(AssetManager am, World world) {
+    public Situation(AssetManager am, World world, float ratioMeterPixel) {
+        this.ratioMeterPixel = ratioMeterPixel;
         this.elements = new SnapshotArray<Element>();
         this.assetManager = am;
         this.world = world;
@@ -31,6 +33,10 @@ public abstract class Situation {
     }
 
     protected abstract void createElements ();
+
+    protected float getRatioMeterPixel() {
+        return ratioMeterPixel;
+    }
 
     public void addElement (Element element) {
         this.elements.add(element);

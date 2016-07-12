@@ -8,8 +8,8 @@ import com.jmolina.orb.assets.Asset;
 
 public class Exit extends Element {
 
-    public Exit(AssetManager am, World world, float x, float y) {
-        super(am, world, x, y, 10, 4, 0, Type.BLUE);
+    public Exit(AssetManager am, World world, float x, float y, float ratioMeterPixel) {
+        super(am, world, x, y, 10, 4, 0, Type.BLUE, ratioMeterPixel);
         setActorTexture(am.get(Asset.GAME_EXIT, Texture.class));
         getBody().getFixtureList().first().setSensor(true);
         setUserData(Type.BLUE, Effect.EXIT);

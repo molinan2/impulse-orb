@@ -17,10 +17,11 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class GestureStage extends Stage {
 
-    private final float PIXELS_PER_METER = 1 / Level.RATIO_METER_PIXEL;
     private final float VIEWPORT_WIDTH = BaseScreen.VIEWPORT_WIDTH;
     private final float VIEWPORT_HEIGHT = BaseScreen.VIEWPORT_HEIGHT;
 
+    private float pixelsPerMeter;
+    private float zoomRatio;
     private BaseActor base;
     private BaseActor line;
     private BaseActor arrow;
@@ -30,8 +31,11 @@ public class GestureStage extends Stage {
     private Vector2 end;
     // private FrameBuffer buffer;
 
-    public GestureStage(Viewport vp, AssetManager am) {
+    public GestureStage(Viewport vp, AssetManager am, float rmp, float zr) {
         super(vp);
+
+        pixelsPerMeter = 1 / rmp;
+        zoomRatio = zr;
 
         start = new Vector2();
         end = new Vector2();
@@ -47,9 +51,9 @@ public class GestureStage extends Stage {
 
         // buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
 
-        base.setScale(PIXELS_PER_METER / base.getWidth(), PIXELS_PER_METER / base.getHeight());
-        line.setScale(PIXELS_PER_METER / line.getWidth(), PIXELS_PER_METER / line.getHeight() / 8f);
-        arrow.setScale(PIXELS_PER_METER / arrow.getWidth(), PIXELS_PER_METER / arrow.getHeight());
+        base.setScale(pixelsPerMeter / base.getWidth(), pixelsPerMeter / base.getHeight());
+        line.setScale(pixelsPerMeter / line.getWidth(), pixelsPerMeter / line.getHeight() / 8f);
+        arrow.setScale(pixelsPerMeter / arrow.getWidth(), pixelsPerMeter / arrow.getHeight());
 
         tap.addAction(fadeOut(0));
         addActor(tap);
@@ -57,7 +61,6 @@ public class GestureStage extends Stage {
         fling.addActor(base);
         fling.addActor(line);
         fling.addActor(arrow);
-        // fling.setTransform(true);
         addActor(fling);
         fling.addAction(fadeOut(0));
     }
@@ -117,8 +120,8 @@ public class GestureStage extends Stage {
         // buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) VIEWPORT_WIDTH, (int) VIEWPORT_HEIGHT, false);
 
         tap.addAction(sequence(
-                parallel(fadeIn(0),scaleTo(0.25f, 0.25f)),
-                parallel(fadeOut(0.25f), scaleTo(0.5f, 0.5f, 0.25f))
+                parallel(fadeIn(0), scaleTo(zoomRatio * 0.25f, zoomRatio * 0.25f)),
+                parallel(fadeOut(0.25f), scaleTo(zoomRatio * 0.5f, zoomRatio * 0.5f, 0.25f))
         ));
     }
 

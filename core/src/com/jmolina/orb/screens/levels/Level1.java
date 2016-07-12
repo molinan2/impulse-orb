@@ -3,20 +3,20 @@ package com.jmolina.orb.screens.levels;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.screens.Level;
-import com.jmolina.orb.situations.Situation1Start;
-import com.jmolina.orb.situations.Situation101;
-import com.jmolina.orb.situations.Situation102;
-import com.jmolina.orb.situations.Situation103;
-import com.jmolina.orb.situations.Situation104;
-import com.jmolina.orb.situations.Situation105;
-import com.jmolina.orb.situations.Situation106;
-import com.jmolina.orb.situations.Situation107;
-import com.jmolina.orb.situations.Situation1End;
+import com.jmolina.orb.situations.level1.Situation1Start;
+import com.jmolina.orb.situations.level1.Situation101;
+import com.jmolina.orb.situations.level1.Situation102;
+import com.jmolina.orb.situations.level1.Situation103;
+import com.jmolina.orb.situations.level1.Situation104;
+import com.jmolina.orb.situations.level1.Situation105;
+import com.jmolina.orb.situations.level1.Situation106;
+import com.jmolina.orb.situations.level1.Situation107;
+import com.jmolina.orb.situations.level1.Situation1End;
 
 
 public class Level1 extends Level {
 
-    private final float EXIT_OFFSET = 8 * 18;
+    private final float DEBUG_EXIT_OFFSET = 8 * 18;
 
     public Level1(SuperManager sm, ScreenManager.Key key) {
         super(sm, key);
@@ -24,15 +24,15 @@ public class Level1 extends Level {
         setPreviousScreen(ScreenManager.Key.LEVEL_LAUNCH_1);
         setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_1);
 
-        addSituation(new Situation1Start(getAssetManager(), getWorld()));
-        addSituation(new Situation101(getAssetManager(), getWorld()));
-        addSituation(new Situation102(getAssetManager(), getWorld()));
-        addSituation(new Situation103(getAssetManager(), getWorld()));
-        addSituation(new Situation104(getAssetManager(), getWorld()));
-        addSituation(new Situation105(getAssetManager(), getWorld()));
-        addSituation(new Situation106(getAssetManager(), getWorld()));
-        addSituation(new Situation107(getAssetManager(), getWorld()));
-        addSituation(new Situation1End(getAssetManager(), getWorld()));
+        addSituation(new Situation1Start(getAssetManager(), getWorld(), getRatioMeterPixel()));
+        addSituation(new Situation101(getAssetManager(), getWorld(), getRatioMeterPixel()));
+        addSituation(new Situation102(getAssetManager(), getWorld(), getRatioMeterPixel()));
+        addSituation(new Situation103(getAssetManager(), getWorld(), getRatioMeterPixel()));
+        addSituation(new Situation104(getAssetManager(), getWorld(), getRatioMeterPixel()));
+        addSituation(new Situation105(getAssetManager(), getWorld(), getRatioMeterPixel()));
+        addSituation(new Situation106(getAssetManager(), getWorld(), getRatioMeterPixel()));
+        addSituation(new Situation107(getAssetManager(), getWorld(), getRatioMeterPixel()));
+        addSituation(new Situation1End(getAssetManager(), getWorld(), getRatioMeterPixel()));
 
         setOrbStartPosition(6, 9);
     }

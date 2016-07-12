@@ -12,6 +12,14 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.addAction;
 
 
+/**
+ * Fragments:
+ *
+ * 1: Top left
+ * 2: Top right
+ * 3: Bottom left
+ * 4: Bottom right
+ */
 public class FragmentedOrb extends BaseGroup {
 
     private Image fragment1;
@@ -22,27 +30,12 @@ public class FragmentedOrb extends BaseGroup {
     public FragmentedOrb(AssetManager am) {
         super(am);
 
-        float textureWidth = getAsset(Asset.GAME_ORB_FRAGMENT_1, Texture.class).getWidth();
-        float scale = Grid.unit(0.5f) / textureWidth;
-
         fragment1 = new Image(getAsset(Asset.GAME_ORB_FRAGMENT_1, Texture.class));
         fragment2 = new Image(getAsset(Asset.GAME_ORB_FRAGMENT_2, Texture.class));
         fragment3 = new Image(getAsset(Asset.GAME_ORB_FRAGMENT_3, Texture.class));
         fragment4 = new Image(getAsset(Asset.GAME_ORB_FRAGMENT_4, Texture.class));
 
         reset();
-
-        fragment1.setOrigin(fragment1.getWidth()/2, fragment1.getHeight()/2);
-        fragment2.setOrigin(fragment2.getWidth()/2, fragment2.getHeight()/2);
-        fragment3.setOrigin(fragment3.getWidth()/2, fragment3.getHeight()/2);
-        fragment4.setOrigin(fragment4.getWidth()/2, fragment4.getHeight()/2);
-
-        /*
-        fragment1.setScale(scale);
-        fragment2.setScale(scale);
-        fragment3.setScale(scale);
-        fragment4.setScale(scale);
-        */
 
         addActor(fragment1);
         addActor(fragment2);
@@ -97,12 +90,14 @@ public class FragmentedOrb extends BaseGroup {
     }
 
     public void reset() {
+        clearActions();
+        addAction(alpha(1));
+
         fragment1.clearActions();
         fragment2.clearActions();
         fragment3.clearActions();
         fragment4.clearActions();
-        clearActions();
-        addAction(alpha(1));
+
         fragment1.setPosition(Grid.unit(0), Grid.unit(0.5f));
         fragment2.setPosition(Grid.unit(0.5f), Grid.unit(0.5f));
         fragment3.setPosition(Grid.unit(0f), Grid.unit(0f));
@@ -119,6 +114,15 @@ public class FragmentedOrb extends BaseGroup {
         fragment2.setRotation(0);
         fragment3.setRotation(0);
         fragment4.setRotation(0);
+        fragment1.setOrigin(fragment1.getWidth()/2, fragment1.getHeight()/2);
+        fragment2.setOrigin(fragment2.getWidth()/2, fragment2.getHeight()/2);
+        fragment3.setOrigin(fragment3.getWidth()/2, fragment3.getHeight()/2);
+        fragment4.setOrigin(fragment4.getWidth()/2, fragment4.getHeight()/2);
+
+        // fragment1.setScale(scale);
+        // fragment2.setScale(scale);
+        // fragment3.setScale(scale);
+        // fragment4.setScale(scale);
     };
 
 }

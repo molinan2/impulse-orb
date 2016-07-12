@@ -9,8 +9,9 @@ import com.jmolina.orb.var.Var;
 public class PrefsManager {
 
     private final String FILE_NAME = OrbApp.class.getPackage().getName() + ".settings";
-    private final int OPTION_ZOOM_MIN = 0;
-    private final int OPTION_ZOOM_MAX = 2;
+    public static final int OPTION_ZOOM_MIN = 0;
+    public static final int OPTION_ZOOM_DEFAULT = 1;
+    public static final int OPTION_ZOOM_MAX = 2;
 
     private final String VERSION = "version";
     private final String OPTION_MUSIC = "music";

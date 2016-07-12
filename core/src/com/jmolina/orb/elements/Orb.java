@@ -44,11 +44,12 @@ public class Orb extends Element {
     private boolean overloaded = false;
     private float heat = 0f;
     private FragmentedOrb fragmentedActor;
+    private float originalScale;
 
     public boolean disposing = false;
 
-    public Orb(AssetManager am, World world) {
-        super(am, world, 6, 2, 1f, 1f, 0, Type.GREY, Geometry.CIRCLE);
+    public Orb(AssetManager am, World world, float ratioMeterPixel) {
+        super(am, world, 6, 2, 1f, 1f, 0, Type.GREY, Geometry.CIRCLE, ratioMeterPixel);
 
         getActor().setTexture(am.get(Asset.GAME_ORB, Texture.class));
         getBody().setType(BodyDef.BodyType.DynamicBody);
@@ -59,8 +60,12 @@ public class Orb extends Element {
 
         fragmentedActor = new FragmentedOrb(am);
         fragmentedActor.setTouchable(Touchable.disabled);
-        // fragmentedActor.setVisible(false);
         fragmentedActor.setPositionGrid(3, 3);
+
+        float pixelsPerMeter = 1 / ratioMeterPixel;
+        float width = 1;
+        originalScale = pixelsPerMeter * width / fragmentedActor.getWidth();
+        fragmentedActor.setScale(originalScale);
     }
 
     /**
@@ -115,14 +120,10 @@ public class Orb extends Element {
 
     @Override
     public void syncBody() {
-        // TODO
-        // Iguala la posicion
-
-        // Iguala solo la rotacion
+        // Iguala solo la rotacion. La posicion no es necesaria en el Orb
         if (fragmentedActor != null) {
-            // TODO
-            // La llamada a Body#setTransform peta la JVM cuando se hace Level#dispose()
-            // Comprobamos que no se ha hecho Level#dispose() antes de ejecutar Body#setTransform
+            // Fix: La llamada a Body#setTransform peta la JVM cuando se hace Level#dispose().
+            // Comprobamos que no se ha hecho Level#dispose() antes de ejecutar Body#setTransform.
             if (!disposing) {
                 getBody().setTransform(
                         getBody().getPosition().x,
@@ -164,6 +165,10 @@ public class Orb extends Element {
 
     public void setOverloaded(boolean overloaded) {
         this.overloaded = overloaded;
+    }
+
+    public float getOriginalScale() {
+        return originalScale;
     }
 
 }

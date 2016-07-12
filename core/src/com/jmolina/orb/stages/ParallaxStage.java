@@ -12,11 +12,11 @@ import com.jmolina.orb.widgets.TiledLayer;
 
 public class ParallaxStage extends Stage {
 
-    private final float PIXELS_PER_METER = Level.PIXELS_PER_METER;
     private final float LAYER_1_SPEED = 1 / 4.0f;
     private final float LAYER_2_SPEED = 1 / 8.0f;
     private final float LAYER_3_SPEED = 1 / 64.0f;
 
+    private float pixelsPerMeter;
     private TiledLayer layer1;
     private TiledLayer layer2;
     private TiledLayer layer3;
@@ -31,8 +31,10 @@ public class ParallaxStage extends Stage {
     /**
      * Constructor
      */
-    public ParallaxStage(AssetManager am, Viewport vp) {
+    public ParallaxStage(AssetManager am, Viewport vp, float ratioMeterPixel, float zoomRatio) {
         super(vp);
+
+        pixelsPerMeter = 1 / ratioMeterPixel;
 
         float width = vp.getWorldWidth();
         float height = vp.getWorldHeight();
@@ -48,6 +50,9 @@ public class ParallaxStage extends Stage {
         layer1.setPosition(-width, -height);
         layer2.setPosition(-width, -height);
         layer3.setPosition(-width, -height);
+        layer1.setScale(zoomRatio);
+        layer2.setScale(zoomRatio);
+        layer3.setScale(zoomRatio);
 
         addActor(layer3);
         addActor(layer2);
@@ -70,8 +75,8 @@ public class ParallaxStage extends Stage {
 
     private void drawLayer (TiledLayer layer, float speed, float x, float y) {
         Camera camera = getViewport().getCamera();
-        camera.position.x = x * PIXELS_PER_METER * speed;
-        camera.position.y = y * PIXELS_PER_METER * speed;
+        camera.position.x = x * pixelsPerMeter * speed;
+        camera.position.y = y * pixelsPerMeter * speed;
         camera.update();
 
         if (!getRoot().isVisible()) return;

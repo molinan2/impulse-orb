@@ -1,8 +1,10 @@
 package com.jmolina.orb.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.interfaces.SuperManager;
+import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.widgets.Option;
@@ -58,7 +60,11 @@ public class Options extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 vibration.toggle();
+
                 prefsManager.putOptionVibration(vibration.isChecked());
+
+                if (vibration.isChecked())
+                    Gdx.input.vibrate(GameManager.VIBRATION_MEDIUM);
             }
         });
 
@@ -107,6 +113,7 @@ public class Options extends Menu {
     @Override
     public void hide () {
         prefsManager.save();
+        getGameManager().updateOptions();
         super.hide();
     }
 

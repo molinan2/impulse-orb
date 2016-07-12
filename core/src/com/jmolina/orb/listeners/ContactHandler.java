@@ -1,6 +1,5 @@
 package com.jmolina.orb.listeners;
 
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -27,24 +26,10 @@ public class ContactHandler implements ContactListener {
         UserData userDataA = (UserData) fixtureA.getUserData();
         UserData userDataB = (UserData) fixtureB.getUserData();
 
-        if (fixtureA.equals(orbFixture)) {
-            if (userDataB.type == Element.Type.RED) {
-                level.destroyOrb();
-            }
-            else if (userDataB.effect == Element.Effect.EXIT) {
-                Body exitBody = fixtureB.getBody();
-                level.successGame(exitBody);
-            }
-        }
-        else if (fixtureB.equals(orbFixture)) {
-            if (userDataA.type == Element.Type.RED) {
-                level.destroyOrb();
-            }
-            else if (userDataA.effect == Element.Effect.EXIT) {
-                Body exitBody = fixtureA.getBody();
-                level.successGame(exitBody);
-            }
-        }
+        if (fixtureA.equals(orbFixture))
+            decide(userDataB);
+        else if (fixtureB.equals(orbFixture))
+            decide(userDataA);
     }
 
     @Override
@@ -60,6 +45,21 @@ public class ContactHandler implements ContactListener {
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
         // System.out.println("postsolve");
+    }
+
+    private void decide(UserData userData) {
+        if (userData.type == Element.Type.RED) {
+            level.destroyOrb();
+        }
+        else if (userData.effect == Element.Effect.EXIT) {
+            level.successGame();
+        }
+        else if (userData.type == Element.Type.BLUE) {
+            // do nothing
+        }
+        else {
+            level.collision();
+        }
     }
 
 }

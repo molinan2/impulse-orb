@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  */
 public class TiledLayer extends BaseGroup {
 
-    private final int TIMES_X = 2;
+    private final int TIMES_X = 4;
     private final int TIMES_Y = 10;
 
     private Image image;

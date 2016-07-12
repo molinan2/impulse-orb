@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.screens.Level;
@@ -26,27 +25,27 @@ public class Element {
     private final float DENSITY = 1.0f;
     private final float RESTITUTION = 0.6f;
     private final float FRICTION = 0.8f; // friction=0 evita rotaciones al chocar
-    private final float PIXELS_PER_METER = Level.PIXELS_PER_METER;
 
+    private float pixelsPerMeter;
     private AssetManager assetManager;
     private BaseActor actor;
     private Body body;
     private float width, height;
 
-    public Element(AssetManager am, World world, float x, float y, float w, float h) {
-        this(am, world, x, y, w, h, 0, Type.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody);
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float ratioMeterPixel) {
+        this(am, world, x, y, w, h, 0, Type.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
     }
 
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle) {
-        this(am, world, x, y, w, h, angle, Type.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody);
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, float ratioMeterPixel) {
+        this(am, world, x, y, w, h, angle, Type.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
     }
 
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Type type) {
-        this(am, world, x, y, w, h, angle, type, Geometry.SQUARE, BodyDef.BodyType.KinematicBody);
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Type type, float ratioMeterPixel) {
+        this(am, world, x, y, w, h, angle, type, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
     }
 
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Type type, Geometry geometry) {
-        this(am, world, x, y, w, h, angle, type, geometry, BodyDef.BodyType.KinematicBody);
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Type type, Geometry geometry, float ratioMeterPixel) {
+        this(am, world, x, y, w, h, angle, type, geometry, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
     }
 
     /**
@@ -54,17 +53,18 @@ public class Element {
      *
      * @param am AssetManager
      * @param world World
-     * @param x Position x coord
-     * @param y Position y coord
-     * @param w Width of the element
-     * @param h Heigth of the element
+     * @param x Position x coord (World units)
+     * @param y Position y coord (World units)
+     * @param w Width of the element (World units)
+     * @param h Heigth of the element (World units)
      * @param angle Rotation of the element in degrees counterclockwise
      * @param type Type
      * @param geometry Geometry
      * @param bodyType BodyDef.BodyType
      */
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Type type, Geometry geometry, BodyDef.BodyType bodyType) {
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Type type, Geometry geometry, BodyDef.BodyType bodyType, float ratioMeterPixel) {
         assetManager = am;
+        pixelsPerMeter = 1 / ratioMeterPixel;
         width = w;
         height = h;
 
@@ -207,8 +207,8 @@ public class Element {
      * Modifica la textura del actor y reajusta la escala del actor
      */
     public void setActorTexture (Texture texture) {
-        float scaleX = PIXELS_PER_METER * width / texture.getWidth();
-        float scaleY = PIXELS_PER_METER * height / texture.getHeight();
+        float scaleX = pixelsPerMeter * width / texture.getWidth();
+        float scaleY = pixelsPerMeter * height / texture.getHeight();
 
         actor.setTexture(texture);
         actor.setScale(scaleX, scaleY);

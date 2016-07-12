@@ -32,7 +32,7 @@ public class OrbApp implements ApplicationListener, SuperManager {
 		prefsManager = new PrefsManager();
 		screenManager = new ScreenManager(this);
 		assetManager = new AssetManager();
-		gameManager = new GameManager();
+		gameManager = new GameManager(prefsManager);
 
 		assetManager.loadLoadScreenAssets();
 		screenManager.switchToScreen(ScreenManager.Key.LOAD, BaseScreen.Hierarchy.LOWER);
