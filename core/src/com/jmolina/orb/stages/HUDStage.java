@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
+import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.widgets.BaseGroup;
@@ -213,13 +214,13 @@ public class HUDStage extends Stage {
      * Constructor
      *
      * @param am AssetManager
-     * @param level Level Futuro GameManager
+     * @param l Level Futuro GameManager
      * @param vp Viewport
      */
-    public HUDStage(AssetManager am, Level level, Viewport vp) {
+    public HUDStage(AssetManager am, Level l, Viewport vp) {
         super(vp);
 
-        this.level = level;
+        level = l;
         background = new HUDBackground(am);
         timer = new Timer(am);
         pauseButton = new PauseButton(am);

@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.interfaces.SuperManager;
+import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
@@ -81,6 +82,7 @@ public class Menu extends BaseScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 title.clickEffect();
+                getGameManager().play(GameManager.Fx.Back);
                 switchToScreen(key, Hierarchy.HIGHER);
             }
         });

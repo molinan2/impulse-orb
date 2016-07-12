@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.interfaces.SuperManager;
+import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.widgets.Ladder;
 import com.jmolina.orb.widgets.LaunchCover;
@@ -43,6 +44,7 @@ public class LevelLaunch extends Menu {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 mainButton.clickEffect();
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(nextScreen, Hierarchy.LOWER);
             }
         });

@@ -3,6 +3,7 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.interfaces.SuperManager;
+import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.widgets.Notice;
@@ -46,6 +47,7 @@ public class Main extends BaseScreen {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 play.clickEffect();
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(LEVEL_SELECT, Hierarchy.LOWER);
             }
         });
@@ -54,6 +56,7 @@ public class Main extends BaseScreen {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 options.clickEffect();
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(OPTIONS, Hierarchy.LOWER);
             }
         });
@@ -62,6 +65,7 @@ public class Main extends BaseScreen {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 stats.clickEffect();
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(STATS, Hierarchy.LOWER);
             }
         });
@@ -70,6 +74,7 @@ public class Main extends BaseScreen {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 credits.clickEffect();
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(CREDITS, Hierarchy.LOWER);
             }
         });
@@ -78,6 +83,7 @@ public class Main extends BaseScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 exit.clickEffect();
+                getGameManager().play(GameManager.Fx.Back);
                 exitApplication();
             }
         });

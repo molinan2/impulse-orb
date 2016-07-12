@@ -12,6 +12,7 @@ public class Asset {
     private static final String APP = "app/";
     private static final String GAME = "game/";
     private static final String HUD = "hud/";
+    private static final String SOUND = "sound/";
 
     public static final String FONT_ROBOTO_BOLD_30 = FONT + "roboto_bold_30.fnt";
     public static final String FONT_ROBOTO_BOLD_45 = FONT + "roboto_bold_45.fnt";
@@ -74,5 +75,15 @@ public class Asset {
     public static final String APP_ICON_64 = APP + "icon_64.png";
     public static final String APP_ICON_32 = APP + "icon_32.png";
     public static final String APP_ICON_16 = APP + "icon_16.png";
+
+    public static final String SOUND_BACK = SOUND + "back.mp3";
+    public static final String SOUND_BUTTON = SOUND + "button.mp3";
+    public static final String SOUND_COLLISION = SOUND + "collision.mp3";
+    public static final String SOUND_DESTROY = SOUND + "destroy.mp3";
+    public static final String SOUND_EXIT = SOUND + "exit.mp3";
+    public static final String SOUND_FLING = SOUND + "fling.mp3";
+    public static final String SOUND_INIT = SOUND + "init.mp3";
+    public static final String SOUND_OPTION = SOUND + "option.mp3";
+    public static final String SOUND_TAP = SOUND + "tap.mp3";
 
 }

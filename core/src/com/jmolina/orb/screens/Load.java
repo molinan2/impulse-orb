@@ -17,9 +17,12 @@ public class Load extends BaseScreen {
     private ProgressBar bar;
     private boolean switching;
     private boolean loaded;
+    private SuperManager superManager;
 
     public Load(SuperManager sm, ScreenManager.Key key) {
         super(sm, key);
+
+        superManager = sm;
 
         this.splash = new Image(getAsset(Asset.UI_SPLASH, Texture.class));
         this.splash.setPosition(Grid.unit(2), Grid.unit(7.5f));
@@ -51,13 +54,16 @@ public class Load extends BaseScreen {
 
         if (loaded && !switching) {
             switching = true;
-            switchToScreen(MAIN, Hierarchy.LOWER);
+            switchToMenu();
         }
     }
 
-    @Override
-    public void show() {
-        // Do nothing
+    /**
+     * Llamada especial a switchToScreen para poder crear el GameManager con los assets cargados
+     */
+    private void switchToMenu() {
+        superManager.createGameManager();
+        switchToScreen(MAIN, Hierarchy.LOWER);
     }
 
 }

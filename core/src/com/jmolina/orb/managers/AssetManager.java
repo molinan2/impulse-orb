@@ -1,7 +1,9 @@
 package com.jmolina.orb.managers;
 
 // import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
@@ -11,8 +13,14 @@ import com.jmolina.orb.assets.Asset;
 
 public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 
+
+
     public static final Class ASSET_CLASS = Asset.class;
 
+
+    /**
+     * Constructor
+     */
     public AssetManager() {
         super();
     }
@@ -56,8 +64,11 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
                 Object o = field.get(c);
                 String name = o.toString();
 
-                if (name.endsWith(".fnt")){
+                if (name.endsWith(".fnt")) {
                     load(field.get(c).toString(), BitmapFont.class);
+                }
+                else if (name.endsWith(".mp3")) {
+                    load(field.get(c).toString(), Sound.class);
                 }
                 else if (name.endsWith(".png")) {
                     TextureLoader.TextureParameter parameter = new TextureLoader.TextureParameter();
@@ -72,5 +83,8 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
             }
         }
     }
+
+
+
 
 }

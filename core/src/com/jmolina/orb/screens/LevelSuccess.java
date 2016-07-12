@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.interfaces.SuperManager;
+import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Time;
 import com.jmolina.orb.widgets.BaseGroup;
@@ -57,6 +58,7 @@ public class LevelSuccess extends BaseScreen {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 button.clickEffect();
+                getGameManager().play(GameManager.Fx.Back);
                 switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
             }
         });

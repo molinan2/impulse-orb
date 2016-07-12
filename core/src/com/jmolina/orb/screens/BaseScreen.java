@@ -121,6 +121,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
 
     @Override
     public void back() {
+        getGameManager().play(GameManager.Fx.Back);
         switchToScreen(this.previousKey, Hierarchy.HIGHER);
     }
 

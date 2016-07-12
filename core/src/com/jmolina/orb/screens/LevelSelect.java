@@ -4,6 +4,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.interfaces.Visitor;
+import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.assets.Asset;
@@ -38,6 +39,7 @@ public class LevelSelect extends Menu {
         Visitor switchToLevel1 = new Visitor() {
             @Override
             public void run() {
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(LEVEL_LAUNCH_1, LOWER);
             }
         };
@@ -45,6 +47,7 @@ public class LevelSelect extends Menu {
         Visitor switchToLevel2 = new Visitor() {
             @Override
             public void run() {
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(LEVEL_LAUNCH_2, LOWER);
             }
         };
@@ -52,6 +55,7 @@ public class LevelSelect extends Menu {
         Visitor switchToLevel3 = new Visitor() {
             @Override
             public void run() {
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(LEVEL_LAUNCH_3, LOWER);
             }
         };
@@ -59,6 +63,7 @@ public class LevelSelect extends Menu {
         Visitor switchToLevel4 = new Visitor() {
             @Override
             public void run() {
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(LEVEL_LAUNCH_4, LOWER);
             }
         };
@@ -66,6 +71,7 @@ public class LevelSelect extends Menu {
         Visitor switchToLevel5 = new Visitor() {
             @Override
             public void run() {
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(LEVEL_LAUNCH_5, LOWER);
             }
         };

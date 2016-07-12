@@ -15,4 +15,6 @@ public interface SuperManager {
 
     public GameManager getGameManager();
 
+    public void createGameManager();
+
 }

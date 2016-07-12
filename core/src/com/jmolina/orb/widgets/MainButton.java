@@ -5,12 +5,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
+
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_SELECT;
 
 public class MainButton extends BaseGroup {
 
@@ -65,6 +70,17 @@ public class MainButton extends BaseGroup {
             default:
                 return getAsset(Asset.UI_BUTTON_DEFAULT, Texture.class);
         }
+    }
+
+    public void addClickListener(final Runnable callback) {
+        this.addListener(new ClickListener(){
+            @Override
+            public void clicked (InputEvent event, float x, float y) {
+                clickEffect();
+                callback.run();
+            }
+        });
+
     }
 
 }
