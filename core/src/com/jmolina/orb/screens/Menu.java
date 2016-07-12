@@ -82,7 +82,7 @@ public class Menu extends BaseScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 title.clickEffect();
-                getGameManager().play(GameManager.Fx.Back);
+                getGameManager().playFx(GameManager.Fx.Back);
                 switchToScreen(key, Hierarchy.HIGHER);
             }
         });

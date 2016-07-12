@@ -155,7 +155,7 @@ public class Level extends BaseScreen {
                     )
             ));
 
-            getGameManager().play(GameManager.Fx.Init);
+            getGameManager().playFx(GameManager.Fx.Init);
         }
     };
 
@@ -302,6 +302,7 @@ public class Level extends BaseScreen {
         ));
 
         stats.newTry();
+        getGameManager().playMusic(GameManager.Track.Game);
     }
 
     @Override
@@ -477,20 +478,20 @@ public class Level extends BaseScreen {
         if (!isGamePaused()) {
             paused = true;
             hudStage.pause();
-            getGameManager().play(GameManager.Fx.Back);
+            getGameManager().playFx(GameManager.Fx.Back);
         }
     }
 
     public void resumeGame() {
         if (!locked) {
             hudStage.resume(unpause);
-            getGameManager().play(GameManager.Fx.Button);
+            getGameManager().playFx(GameManager.Fx.Button);
         }
     }
 
     public void restartGame() {
         hudStage.restart(restart, unpause, orbIntro);
-        getGameManager().play(GameManager.Fx.Button);
+        getGameManager().playFx(GameManager.Fx.Button);
     }
 
     /**
@@ -500,7 +501,7 @@ public class Level extends BaseScreen {
     public void leaveGame() {
         unsetInputProcessor();
         saveGameStats();
-        getGameManager().play(GameManager.Fx.Back);
+        getGameManager().playFx(GameManager.Fx.Back);
         overlayStage.addAction(sequence(
                 run(new Runnable() {
                     @Override
@@ -555,7 +556,7 @@ public class Level extends BaseScreen {
                 run(new Runnable() {
                     @Override
                     public void run() {
-                        getGameManager().play(GameManager.Fx.Exit);
+                        getGameManager().playFx(GameManager.Fx.Exit);
                     }
                 }),
                 run(new Runnable() {
@@ -584,7 +585,7 @@ public class Level extends BaseScreen {
      * Acciones cuando se detecte una colision normal
      */
     public void collision() {
-        getGameManager().play(GameManager.Fx.Collision);
+        getGameManager().playFx(GameManager.Fx.Collision);
         getGameManager().vibrateShort();
     }
 
@@ -616,7 +617,7 @@ public class Level extends BaseScreen {
             }
 
             getGameManager().vibrateMedium();
-            getGameManager().play(GameManager.Fx.Tap);
+            getGameManager().playFx(GameManager.Fx.Tap);
         }
     }
 
@@ -652,7 +653,7 @@ public class Level extends BaseScreen {
             );
 
             gestureStage.drawFling();
-            getGameManager().play(GameManager.Fx.Fling);
+            getGameManager().playFx(GameManager.Fx.Fling);
         }
     }
 
@@ -697,7 +698,7 @@ public class Level extends BaseScreen {
         paused = true;
         locked = true;
         getGameManager().vibrateLong();
-        getGameManager().play(GameManager.Fx.Destroy);
+        getGameManager().playFx(GameManager.Fx.Destroy);
         stats.setAsFail(true);
         hudStage.destroyAndRestart(restart, destroyOrb, unlock, unpause, orbIntro);
     }

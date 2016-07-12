@@ -63,6 +63,7 @@ public class OrbApp implements ApplicationListener, SuperManager {
 		screenManager.dispose();
 		assetManager.clear();
 		assetManager.dispose();
+		gameManager.dispose();
 	}
 
 	public PrefsManager getPrefsManager() {

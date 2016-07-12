@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
+import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
@@ -63,6 +64,7 @@ public class Load extends BaseScreen {
      */
     private void switchToMenu() {
         superManager.createGameManager();
+        getGameManager().playMusic(GameManager.Track.Menu);
         switchToScreen(MAIN, Hierarchy.LOWER);
     }
 

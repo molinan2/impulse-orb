@@ -3,6 +3,7 @@ package com.jmolina.orb.managers;
 // import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -66,6 +67,9 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 
                 if (name.endsWith(".fnt")) {
                     load(field.get(c).toString(), BitmapFont.class);
+                }
+                else if (name.endsWith(".music.mp3")) {
+                    load(field.get(c).toString(), Music.class);
                 }
                 else if (name.endsWith(".mp3")) {
                     load(field.get(c).toString(), Sound.class);

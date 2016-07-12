@@ -1,7 +1,7 @@
 package com.jmolina.orb.managers;
 
-import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.jmolina.orb.assets.Asset;
@@ -18,12 +18,17 @@ public class GameManager {
         Back, Button, Collision, Destroy, Exit, Fling, Init, Option, Tap
     }
 
+    public enum Track {
+        Menu, Game, Success
+    }
+
     public static final int VIBRATION_SHORT = 5;
     public static final int VIBRATION_MEDIUM = 30;
     public static final int VIBRATION_LONG = 300;
     public static final float RATIO_METER_PIXEL = 0.015625f; // Grid: 12x18.5, 64 pixel/metro
     private final float ZOOM_RATIO = 1.66f;
-    private final float DEFAULT_SOUND_VOLUME = 0.2f;
+    private final float VOLUME_SOUND = 1f;
+    private final float VOLUME_MUSIC = 0.3f;
 
     private PrefsManager prefsManager;
     private SuperManager superManager;
@@ -35,6 +40,7 @@ public class GameManager {
     private int zoom = PrefsManager.OPTION_ZOOM_DEFAULT;
 
     private Sound backSound, buttonSound, collisionSound, destroySound, exitSound, flingSound, initSound, optionSound, tapSound;
+    private Music menuMusic, gameMusic, successMusic;
 
     /**
      * Constructor
@@ -44,8 +50,23 @@ public class GameManager {
         superManager = sm;
         lastSuccessfulAttempt = new Attempt();
         lastSuccessfulAttempt.setSuccessful(true);
-        updateOptions();
         createSounds();
+        createMusic();
+        updateOptions();
+    }
+
+    public void dispose() {
+        backSound.dispose();
+        buttonSound.dispose();
+        collisionSound.dispose();
+        destroySound.dispose();
+        exitSound.dispose();
+        flingSound.dispose();
+        initSound.dispose();
+        optionSound.dispose();
+        tapSound.dispose();
+        menuMusic.dispose();
+        gameMusic.dispose();
     }
 
     public void updateOptions() {
@@ -53,6 +74,11 @@ public class GameManager {
         sound = prefsManager.getOptionSound();
         music = prefsManager.getOptionMusic();
         zoom = MathUtils.clamp(prefsManager.getOptionZoom(), PrefsManager.OPTION_ZOOM_MIN, PrefsManager.OPTION_ZOOM_MAX);
+
+        // TODO
+        // Esto asume que se llama siempre desde el menu
+        if (!music) stopMusic();
+        else playMusic(Track.Menu);
     }
 
     public void setCurrentLevel (Level screen) {
@@ -117,24 +143,59 @@ public class GameManager {
         tapSound = getAsset(Asset.SOUND_TAP, Sound.class);
     }
 
-    public void play(Fx fx) {
+    private void createMusic() {
+        menuMusic = getAsset(Asset.MUSIC_MENU, Music.class);
+        gameMusic = getAsset(Asset.MUSIC_GAME, Music.class);
+        successMusic = getAsset(Asset.MUSIC_SUCCESS, Music.class);
+        menuMusic.setVolume(VOLUME_MUSIC);
+        gameMusic.setVolume(VOLUME_MUSIC);
+        successMusic.setVolume(VOLUME_MUSIC);
+    }
+
+    public void playFx(Fx fx) {
         if (sound) {
             switch (fx) {
-                case Back: backSound.play(DEFAULT_SOUND_VOLUME); break;
-                case Button: buttonSound.play(DEFAULT_SOUND_VOLUME); break;
-                case Collision: collisionSound.play(DEFAULT_SOUND_VOLUME); break;
-                case Destroy: destroySound.play(DEFAULT_SOUND_VOLUME); break;
-                case Exit: exitSound.play(DEFAULT_SOUND_VOLUME); break;
-                case Fling: flingSound.play(DEFAULT_SOUND_VOLUME); break;
-                case Init: initSound.play(DEFAULT_SOUND_VOLUME); break;
-                case Option: optionSound.play(DEFAULT_SOUND_VOLUME); break;
-                case Tap: tapSound.play(DEFAULT_SOUND_VOLUME); break;
+                case Back: backSound.play(VOLUME_SOUND); break;
+                case Button: buttonSound.play(VOLUME_SOUND); break;
+                case Collision: collisionSound.play(VOLUME_SOUND); break;
+                case Destroy: destroySound.play(VOLUME_SOUND); break;
+                case Exit: exitSound.play(VOLUME_SOUND); break;
+                case Fling: flingSound.play(VOLUME_SOUND); break;
+                case Init: initSound.play(VOLUME_SOUND); break;
+                case Option: optionSound.play(VOLUME_SOUND); break;
+                case Tap: tapSound.play(VOLUME_SOUND); break;
             }
         }
     }
 
     public synchronized <T> T getAsset (String fileName, Class<T> type) {
         return superManager.getAssetManager().get(fileName, type);
+    }
+
+    public void stopMusic() {
+        gameMusic.stop();
+        menuMusic.stop();
+        successMusic.stop();
+    }
+
+    public void playMusic(Track track) {
+        if (music) {
+            if (track == Track.Menu) {
+                successMusic.stop();
+                gameMusic.stop();
+                menuMusic.play();
+            }
+            else if (track == Track.Game) {
+                successMusic.stop();
+                menuMusic.stop();
+                gameMusic.play();
+            }
+            else if (track == Track.Success) {
+                gameMusic.stop();
+                menuMusic.stop();
+                successMusic.play();
+            }
+        }
     }
 
 }

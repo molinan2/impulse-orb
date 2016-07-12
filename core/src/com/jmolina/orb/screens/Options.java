@@ -44,8 +44,10 @@ public class Options extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 music.toggle();
-                getGameManager().play(GameManager.Fx.Option);
+                getGameManager().playFx(GameManager.Fx.Option);
                 prefsManager.putOptionMusic(music.isChecked());
+                prefsManager.save();
+                getGameManager().updateOptions();
             }
         });
 
@@ -56,7 +58,7 @@ public class Options extends Menu {
                 prefsManager.putOptionSound(sound.isChecked());
                 prefsManager.save();
                 getGameManager().updateOptions();
-                getGameManager().play(GameManager.Fx.Option);
+                getGameManager().playFx(GameManager.Fx.Option);
             }
         });
 
@@ -64,7 +66,7 @@ public class Options extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 vibration.toggle();
-                getGameManager().play(GameManager.Fx.Option);
+                getGameManager().playFx(GameManager.Fx.Option);
                 prefsManager.putOptionVibration(vibration.isChecked());
 
                 if (vibration.isChecked())
@@ -76,7 +78,7 @@ public class Options extends Menu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 online.toggle();
-                getGameManager().play(GameManager.Fx.Option);
+                getGameManager().playFx(GameManager.Fx.Option);
                 prefsManager.putOptionOnline(online.isChecked());
             }
         });
@@ -92,7 +94,7 @@ public class Options extends Menu {
                     if (actorName != null) {
                         int value = Integer.parseInt(actorName);
                         zoom.setValue(value);
-                        getGameManager().play(GameManager.Fx.Option);
+                        getGameManager().playFx(GameManager.Fx.Option);
                         prefsManager.putOptionZoom(value);
                     }
                 }

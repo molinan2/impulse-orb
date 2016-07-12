@@ -18,11 +18,6 @@ import com.jmolina.orb.widgets.LevelTitle;
 import com.jmolina.orb.widgets.MainButton;
 
 import java.text.DecimalFormat;
-import java.util.Locale;
-
-import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_1;
-import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_LAUNCH_1;
-import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_SELECT;
 
 /**
  * TODO
@@ -58,7 +53,7 @@ public class LevelSuccess extends BaseScreen {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 button.clickEffect();
-                getGameManager().play(GameManager.Fx.Back);
+                getGameManager().playFx(GameManager.Fx.Back);
                 switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
             }
         });
@@ -99,6 +94,18 @@ public class LevelSuccess extends BaseScreen {
         formatedDistance = df.format(distance) + " m";
 
         return formatedDistance;
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        getGameManager().playMusic(GameManager.Track.Success);
+    }
+
+    @Override
+    public void hide() {
+        super.hide();
+        getGameManager().playMusic(GameManager.Track.Menu);
     }
 
 }

@@ -44,7 +44,7 @@ public class LevelLaunch extends Menu {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 mainButton.clickEffect();
-                getGameManager().play(GameManager.Fx.Button);
+                getGameManager().playFx(GameManager.Fx.Button);
                 switchToScreen(nextScreen, Hierarchy.LOWER);
             }
         });
