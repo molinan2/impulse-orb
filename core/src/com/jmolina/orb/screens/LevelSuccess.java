@@ -54,7 +54,8 @@ public class LevelSuccess extends BaseScreen {
             public void clicked (InputEvent event, float x, float y) {
                 button.clickEffect();
                 getGameManager().playFx(GameManager.Fx.Back);
-                switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
+                // switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
+                switchToScreen(ScreenManager.Key.LEVEL_SELECT, Hierarchy.HIGHER);
             }
         });
 

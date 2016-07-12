@@ -515,6 +515,7 @@ public class Level extends BaseScreen {
                     @Override
                     public void run() {
                         switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
+                        getGameManager().playMusic(GameManager.Track.Menu);
                     }
                 })
         ));
