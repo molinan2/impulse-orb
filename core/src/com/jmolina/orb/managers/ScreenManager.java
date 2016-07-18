@@ -27,7 +27,12 @@ public class ScreenManager {
         OPTIONS, STATS, CREDITS, LEVEL_SELECT,
         LEVEL_LAUNCH_1, LEVEL_LAUNCH_2, LEVEL_LAUNCH_3, LEVEL_LAUNCH_4, LEVEL_LAUNCH_5,
         LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5,
-        LEVEL_SUCCESS_1, LEVEL_SUCCESS_2, LEVEL_SUCCESS_3, LEVEL_SUCCESS_4, LEVEL_SUCCESS_5
+        LEVEL_SUCCESS_1, LEVEL_SUCCESS_2, LEVEL_SUCCESS_3, LEVEL_SUCCESS_4, LEVEL_SUCCESS_5;
+
+        @Override
+        public String toString() {
+            return super.toString().replace("_", " ");
+        }
     }
 
     private SuperManager superManager;

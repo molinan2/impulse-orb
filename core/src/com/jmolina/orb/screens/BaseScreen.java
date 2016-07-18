@@ -89,10 +89,8 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     public void render(float delta) {
         clearColor();
 
-        // backgroundStage.getViewport().apply();
         backgroundStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         backgroundStage.draw();
-        // mainStage.getViewport().apply();
         mainStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         mainStage.draw();
     }
@@ -121,7 +119,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
 
     @Override
     public void back() {
-        getGameManager().playFx(GameManager.Fx.Back);
+        getGameManager().play(GameManager.Fx.Back);
         switchToScreen(this.previousKey, Hierarchy.HIGHER);
     }
 
@@ -236,39 +234,27 @@ public class BaseScreen extends ScreenAdapter implements Backable {
      * @param hierarchy Hierarchy Jerarquía de la siguiente pantalla respecto de la actual
      */
     protected Action transition(Flow flow, Hierarchy hierarchy) {
-        Action action;
-
         switch (flow) {
-            case ENTERING: action = transitionEntering(hierarchy); break;
-            case LEAVING: action = transitionLeaving(hierarchy); break;
-            default: action = UIAction.reset();
+            case ENTERING: return transitionEntering(hierarchy);
+            case LEAVING: return transitionLeaving(hierarchy);
+            default: return UIAction.reset();
         }
-
-        return action;
     }
 
     private Action transitionEntering(Hierarchy hierarchy) {
-        Action action;
-
         switch (hierarchy) {
-            case LOWER: action = UIAction.fromInside(); break;
-            case HIGHER: action = UIAction.fromOutside(); break;
-            default: action = UIAction.appear();
+            case LOWER: return UIAction.fromInside();
+            case HIGHER: return UIAction.fromOutside();
+            default: return UIAction.appear();
         }
-
-        return action;
     }
 
     private Action transitionLeaving(Hierarchy hierarchy) {
-        Action action;
-
         switch (hierarchy) {
-            case LOWER: action = UIAction.toOutside(); break;
-            case HIGHER: action = UIAction.toInside(); break;
-            default: action = UIAction.disappear();
+            case LOWER: return UIAction.toOutside();
+            case HIGHER: return UIAction.toInside();
+            default: return UIAction.disappear();
         }
-
-        return action;
     }
 
     /**

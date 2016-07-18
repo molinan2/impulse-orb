@@ -53,7 +53,7 @@ public class LevelSuccess extends BaseScreen {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 button.clickEffect();
-                getGameManager().playFx(GameManager.Fx.Back);
+                getGameManager().play(GameManager.Fx.Back);
                 // switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
                 switchToScreen(ScreenManager.Key.LEVEL_SELECT, Hierarchy.HIGHER);
             }
@@ -100,13 +100,13 @@ public class LevelSuccess extends BaseScreen {
     @Override
     public void show() {
         super.show();
-        getGameManager().playMusic(GameManager.Track.Success);
+        getGameManager().play(GameManager.Track.Success);
     }
 
     @Override
     public void hide() {
         super.hide();
-        getGameManager().playMusic(GameManager.Track.Menu);
+        getGameManager().play(GameManager.Track.Menu);
     }
 
 }

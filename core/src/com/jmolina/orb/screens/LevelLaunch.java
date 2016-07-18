@@ -22,17 +22,17 @@ public class LevelLaunch extends Menu {
     private Ladder ladderPersonal;
     private Ladder ladderOnline;
 
-    public LevelLaunch(SuperManager superManager, ScreenManager.Key key, final ScreenManager.Key nextScreen, String title) {
+    public LevelLaunch(SuperManager superManager, ScreenManager.Key key, final ScreenManager.Key level, String title) {
         super(superManager, key);
 
         setPreviousScreen(LEVEL_SELECT);
-        setTitle(nextScreen.toString().replace("_", " "));
+        setTitle(level.toString());
 
         this.title = new LevelTitle(getAssetManager(), title);
         this.cover = new LaunchCover(getAssetManager(), getAsset(Asset.UI_LAUNCH_COVER, Texture.class));
         this.mainButton = new MainButton(getAssetManager(), "GO!", MainButton.Type.Play);
-        ladderPersonal = new Ladder(getAssetManager(), getPrefsManager(), nextScreen, "Personal best");
-        ladderOnline = new Ladder(getAssetManager(), getPrefsManager(), nextScreen, "Online ladder");
+        ladderPersonal = new Ladder(getAssetManager(), getPrefsManager(), level, "Your best times");
+        ladderOnline = new Ladder(getAssetManager(), getPrefsManager(), level, "World best times");
 
         add(this.title);
         add(this.cover);
@@ -44,8 +44,8 @@ public class LevelLaunch extends Menu {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 mainButton.clickEffect();
-                getGameManager().playFx(GameManager.Fx.Button);
-                switchToScreen(nextScreen, Hierarchy.LOWER);
+                getGameManager().play(GameManager.Fx.Button);
+                switchToScreen(level, Hierarchy.LOWER);
             }
         });
     }

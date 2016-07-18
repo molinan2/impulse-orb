@@ -21,21 +21,17 @@ import com.jmolina.orb.screens.Level;
  */
 public class GameManager {
 
-    public enum Fx {
-        Back, Button, Collision, Destroy, Exit, Fling, Init, Option, Tap
-    }
-
-    public enum Track {
-        Menu, Game, Success
-    }
+    public enum Fx { Back, Button, Collision, Destroy, Exit, Fling, Init, Option, Tap }
+    public enum Track { Menu, Game, Success }
 
     public static final int VIBRATION_SHORT = 5;
     public static final int VIBRATION_MEDIUM = 30;
     public static final int VIBRATION_LONG = 300;
-    public static final float RATIO_METER_PIXEL = 0.015625f; // Grid: 12x18.5, 64 pixel/metro
-    private final float ZOOM_RATIO = 1.66f;
-    private final float VOLUME_SOUND = 1f;
-    private final float VOLUME_MUSIC = 0.3f;
+    public static final float RATIO_METER_PIXEL = 0.015625f;
+    public static final float PIXELS_PER_METER = 64f;
+    private final float ZOOM_STEP = 1.66f;
+    private final float SOUND_VOLUME = 1f;
+    private final float MUSIC_VOLUME = 0.3f;
 
     private PrefsManager prefsManager;
     private SuperManager superManager;
@@ -76,16 +72,17 @@ public class GameManager {
         gameMusic.dispose();
     }
 
+    /**
+     * Sólo se llama desde el menú (Options)
+     */
     public void updateOptions() {
         vibration = prefsManager.getOptionVibration();
         sound = prefsManager.getOptionSound();
         music = prefsManager.getOptionMusic();
         zoom = MathUtils.clamp(prefsManager.getOptionZoom(), PrefsManager.OPTION_ZOOM_MIN, PrefsManager.OPTION_ZOOM_MAX);
 
-        // TODO
-        // Esto asume que se llama siempre desde el menu
         if (!music) stopMusic();
-        else playMusic(Track.Menu);
+        else playTrack(Track.Menu);
     }
 
     public void setCurrentLevel (Level screen) {
@@ -122,18 +119,27 @@ public class GameManager {
 
     public float getRatioMeterPixel() {
         switch (zoom) {
-            case 0: return RATIO_METER_PIXEL * ZOOM_RATIO;
+            case 0: return RATIO_METER_PIXEL * ZOOM_STEP;
             case 1: return RATIO_METER_PIXEL;
-            case 2: return RATIO_METER_PIXEL / ZOOM_RATIO;
+            case 2: return RATIO_METER_PIXEL / ZOOM_STEP;
             default: return RATIO_METER_PIXEL;
         }
     }
 
-    public float getZoomRatio () {
+    public float getPixelsPerMeter() {
         switch (zoom) {
-            case 0: return 1 / ZOOM_RATIO;
+            case 0: return PIXELS_PER_METER / ZOOM_STEP;
+            case 1: return PIXELS_PER_METER;
+            case 2: return PIXELS_PER_METER * ZOOM_STEP;
+            default: return RATIO_METER_PIXEL;
+        }
+    }
+
+    public float getZoom() {
+        switch (zoom) {
+            case 0: return 1 / ZOOM_STEP;
             case 1: return 1;
-            case 2: return ZOOM_RATIO;
+            case 2: return ZOOM_STEP;
             default: return 1;
         }
     }
@@ -154,9 +160,9 @@ public class GameManager {
         menuMusic = getAsset(Asset.MUSIC_MENU, Music.class);
         gameMusic = getAsset(Asset.MUSIC_GAME, Music.class);
         successMusic = getAsset(Asset.MUSIC_SUCCESS, Music.class);
-        menuMusic.setVolume(VOLUME_MUSIC);
-        gameMusic.setVolume(VOLUME_MUSIC);
-        successMusic.setVolume(VOLUME_MUSIC);
+        menuMusic.setVolume(MUSIC_VOLUME);
+        gameMusic.setVolume(MUSIC_VOLUME);
+        successMusic.setVolume(MUSIC_VOLUME);
 
         menuMusic.setOnCompletionListener(new Music.OnCompletionListener() {
             @Override
@@ -180,18 +186,52 @@ public class GameManager {
         });
     }
 
-    public void playFx(Fx fx) {
+    public void play(Fx fx) {
+        playFx(fx);
+    }
+
+    public void play(Track track) {
+        playTrack(track);
+    }
+
+    private void playFx(Fx fx) {
         if (sound) {
             switch (fx) {
-                case Back: backSound.play(VOLUME_SOUND); break;
-                case Button: buttonSound.play(VOLUME_SOUND); break;
-                case Collision: collisionSound.play(VOLUME_SOUND); break;
-                case Destroy: destroySound.play(VOLUME_SOUND); break;
-                case Exit: exitSound.play(VOLUME_SOUND); break;
-                case Fling: flingSound.play(VOLUME_SOUND); break;
-                case Init: initSound.play(VOLUME_SOUND); break;
-                case Option: optionSound.play(VOLUME_SOUND); break;
-                case Tap: tapSound.play(VOLUME_SOUND); break;
+                case Back: backSound.play(SOUND_VOLUME); break;
+                case Button: buttonSound.play(SOUND_VOLUME); break;
+                case Collision: collisionSound.play(SOUND_VOLUME); break;
+                case Destroy: destroySound.play(SOUND_VOLUME); break;
+                case Exit: exitSound.play(SOUND_VOLUME); break;
+                case Fling: flingSound.play(SOUND_VOLUME); break;
+                case Init: initSound.play(SOUND_VOLUME); break;
+                case Option: optionSound.play(SOUND_VOLUME); break;
+                case Tap: tapSound.play(SOUND_VOLUME); break;
+            }
+        }
+    }
+
+    private void playTrack(Track track) {
+        if (music) {
+            switch (track) {
+                case Menu:
+                    successMusic.stop();
+                    gameMusic.stop();
+                    menuMusic.play();
+                    break;
+                case Game:
+                    successMusic.stop();
+                    menuMusic.stop();
+                    gameMusic.play();
+                    break;
+                case Success:
+                    gameMusic.stop();
+                    menuMusic.stop();
+                    successMusic.play();
+                    break;
+                default:
+                    gameMusic.stop();
+                    menuMusic.stop();
+                    successMusic.stop();
             }
         }
     }
@@ -204,26 +244,6 @@ public class GameManager {
         gameMusic.stop();
         menuMusic.stop();
         successMusic.stop();
-    }
-
-    public void playMusic(Track track) {
-        if (music) {
-            if (track == Track.Menu) {
-                successMusic.stop();
-                gameMusic.stop();
-                menuMusic.play();
-            }
-            else if (track == Track.Game) {
-                successMusic.stop();
-                menuMusic.stop();
-                gameMusic.play();
-            }
-            else if (track == Track.Success) {
-                gameMusic.stop();
-                menuMusic.stop();
-                successMusic.play();
-            }
-        }
     }
 
 }

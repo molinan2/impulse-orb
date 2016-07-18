@@ -35,11 +35,11 @@ public class Ladder extends BaseGroup {
     private Preferences prefs;
     private ArrayList<Float> times;
 
-    public Ladder(AssetManager am, PrefsManager pm, ScreenManager.Key levelKey, String title) {
+    public Ladder(AssetManager am, PrefsManager pm, ScreenManager.Key level, String title) {
         super(am);
 
         this.prefs = pm.getPrefs();
-        this.times = getLevelTimes(levelKey);
+        this.times = getLevelTimes(level);
 
         this.rows = new ArrayList<LadderRow>();
 

@@ -39,7 +39,7 @@ public class LevelSelect extends Menu {
         Visitor switchToLevel1 = new Visitor() {
             @Override
             public void run() {
-                getGameManager().playFx(GameManager.Fx.Button);
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(LEVEL_LAUNCH_1, LOWER);
             }
         };
@@ -47,7 +47,7 @@ public class LevelSelect extends Menu {
         Visitor switchToLevel2 = new Visitor() {
             @Override
             public void run() {
-                getGameManager().playFx(GameManager.Fx.Button);
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(LEVEL_LAUNCH_2, LOWER);
             }
         };
@@ -55,7 +55,7 @@ public class LevelSelect extends Menu {
         Visitor switchToLevel3 = new Visitor() {
             @Override
             public void run() {
-                getGameManager().playFx(GameManager.Fx.Button);
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(LEVEL_LAUNCH_3, LOWER);
             }
         };
@@ -63,7 +63,7 @@ public class LevelSelect extends Menu {
         Visitor switchToLevel4 = new Visitor() {
             @Override
             public void run() {
-                getGameManager().playFx(GameManager.Fx.Button);
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(LEVEL_LAUNCH_4, LOWER);
             }
         };
@@ -71,7 +71,7 @@ public class LevelSelect extends Menu {
         Visitor switchToLevel5 = new Visitor() {
             @Override
             public void run() {
-                getGameManager().playFx(GameManager.Fx.Button);
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(LEVEL_LAUNCH_5, LOWER);
             }
         };

@@ -31,10 +31,10 @@ public class ParallaxStage extends Stage {
     /**
      * Constructor
      */
-    public ParallaxStage(AssetManager am, Viewport vp, float ratioMeterPixel, float zoomRatio) {
+    public ParallaxStage(AssetManager am, Viewport vp, float pixelsPerMeter, float zoomRatio) {
         super(vp);
 
-        pixelsPerMeter = 1 / ratioMeterPixel;
+        this.pixelsPerMeter = pixelsPerMeter;
 
         float width = vp.getWorldWidth();
         float height = vp.getWorldHeight();

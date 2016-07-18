@@ -47,7 +47,7 @@ public class Main extends BaseScreen {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 play.clickEffect();
-                getGameManager().playFx(GameManager.Fx.Button);
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(LEVEL_SELECT, Hierarchy.LOWER);
             }
         });
@@ -56,7 +56,7 @@ public class Main extends BaseScreen {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 options.clickEffect();
-                getGameManager().playFx(GameManager.Fx.Button);
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(OPTIONS, Hierarchy.LOWER);
             }
         });
@@ -65,7 +65,7 @@ public class Main extends BaseScreen {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 stats.clickEffect();
-                getGameManager().playFx(GameManager.Fx.Button);
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(STATS, Hierarchy.LOWER);
             }
         });
@@ -74,7 +74,7 @@ public class Main extends BaseScreen {
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 credits.clickEffect();
-                getGameManager().playFx(GameManager.Fx.Button);
+                getGameManager().play(GameManager.Fx.Button);
                 switchToScreen(CREDITS, Hierarchy.LOWER);
             }
         });
@@ -83,7 +83,7 @@ public class Main extends BaseScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 exit.clickEffect();
-                getGameManager().playFx(GameManager.Fx.Back);
+                getGameManager().play(GameManager.Fx.Back);
                 exitApplication();
             }
         });

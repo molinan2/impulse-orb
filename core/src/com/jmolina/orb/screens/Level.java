@@ -45,15 +45,9 @@ import static com.jmolina.orb.managers.PrefsManager.*;
 /**
  * TODO
  * Temporalmente, esta pantalla está actuando como GameManager
- *
- * Reset: reiniciar elementos de la pantalla
- * Restart: reiniciar juego
  */
 public class Level extends BaseScreen {
 
-    /**
-     * Constants
-     */
     private static final float HALF_TAP_SQUARE_SIZE = 20.0f;
     private static final float TAP_COUNT_INTERVAL = 0.4f;
     private static final float LONG_PRESS_DURATION = 1.1f;
@@ -70,15 +64,10 @@ public class Level extends BaseScreen {
     public static final float ORB_INTRO_SEQUENCE_TIME = 1f;
     public static final float ORB_EXIT_SEQUENCE_TIME = 1f;
 
-
-
-    /**
-     * Fields
-     */
     private float ratioMeterPixel; // Grid: 12x18.5, 64 pixel/metro
+    private float pixelsPerMeter;
     private float impulseFactor;
     private float impulseMax;
-
     private World world;
     private ContactHandler contactHandler;
     private Viewport worldViewport, gestureViewport, hudViewport, parallaxViewport;
@@ -100,10 +89,6 @@ public class Level extends BaseScreen {
     private Vector2 currentOrbPosition;
     private Vector2 lastOrbPosition;
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
-
-    /**
-     * Runnables
-     */
 
     private Runnable restart = new Runnable() {
         @Override
@@ -155,7 +140,7 @@ public class Level extends BaseScreen {
                     )
             ));
 
-            getGameManager().playFx(GameManager.Fx.Init);
+            getGameManager().play(GameManager.Fx.Init);
         }
     };
 
@@ -181,6 +166,7 @@ public class Level extends BaseScreen {
         super(sm, key);
 
         ratioMeterPixel = sm.getGameManager().getRatioMeterPixel();
+        pixelsPerMeter = sm.getGameManager().getPixelsPerMeter();
         impulseFactor = 1 * getRatioMeterPixel();
         impulseMax = 40.0f;
 
@@ -193,7 +179,7 @@ public class Level extends BaseScreen {
         hudStage = new HUDStage(getAssetManager(), this, hudViewport);
         overlayStage = new OverlayStage(getAssetManager(), hudViewport); // todo Vp especifico?
         gestureStage = new GestureStage(getAssetManager(), gestureViewport, getPixelsPerMeter());
-        parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getRatioMeterPixel(), getGameManager().getZoomRatio());
+        parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getRatioMeterPixel(), getGameManager().getZoom());
         stats = new GameStats();
         currentOrbPosition = new Vector2();
         lastOrbPosition = new Vector2();
@@ -302,7 +288,7 @@ public class Level extends BaseScreen {
         ));
 
         stats.newTry();
-        getGameManager().playMusic(GameManager.Track.Game);
+        getGameManager().play(GameManager.Track.Game);
     }
 
     @Override
@@ -340,7 +326,7 @@ public class Level extends BaseScreen {
     }
 
     public float getPixelsPerMeter() {
-        return 1 / getRatioMeterPixel();
+        return pixelsPerMeter;
     }
 
     public float getWorldWidth() {
@@ -476,20 +462,20 @@ public class Level extends BaseScreen {
         if (!isGamePaused()) {
             paused = true;
             hudStage.pause();
-            getGameManager().playFx(GameManager.Fx.Back);
+            getGameManager().play(GameManager.Fx.Back);
         }
     }
 
     public void resumeGame() {
         if (!locked) {
             hudStage.resume(unpause);
-            getGameManager().playFx(GameManager.Fx.Button);
+            getGameManager().play(GameManager.Fx.Button);
         }
     }
 
     public void restartGame() {
         hudStage.restart(restart, unpause, orbIntro);
-        getGameManager().playFx(GameManager.Fx.Button);
+        getGameManager().play(GameManager.Fx.Button);
     }
 
     /**
@@ -499,7 +485,7 @@ public class Level extends BaseScreen {
     public void leaveGame() {
         unsetInputProcessor();
         saveGameStats();
-        getGameManager().playFx(GameManager.Fx.Back);
+        getGameManager().play(GameManager.Fx.Back);
         overlayStage.addAction(sequence(
                 run(new Runnable() {
                     @Override
@@ -512,7 +498,7 @@ public class Level extends BaseScreen {
                     @Override
                     public void run() {
                         switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
-                        getGameManager().playMusic(GameManager.Track.Menu);
+                        getGameManager().play(GameManager.Track.Menu);
                     }
                 })
         ));
@@ -554,7 +540,7 @@ public class Level extends BaseScreen {
                 run(new Runnable() {
                     @Override
                     public void run() {
-                        getGameManager().playFx(GameManager.Fx.Exit);
+                        getGameManager().play(GameManager.Fx.Exit);
                     }
                 }),
                 run(new Runnable() {
@@ -583,7 +569,7 @@ public class Level extends BaseScreen {
      * Acciones cuando se detecte una colision normal
      */
     public void collision() {
-        getGameManager().playFx(GameManager.Fx.Collision);
+        getGameManager().play(GameManager.Fx.Collision);
         getGameManager().vibrateShort();
     }
 
@@ -616,7 +602,7 @@ public class Level extends BaseScreen {
             }
 
             getGameManager().vibrateMedium();
-            getGameManager().playFx(GameManager.Fx.Tap);
+            getGameManager().play(GameManager.Fx.Tap);
         }
     }
 
@@ -652,7 +638,7 @@ public class Level extends BaseScreen {
             );
 
             gestureStage.drawFling();
-            getGameManager().playFx(GameManager.Fx.Fling);
+            getGameManager().play(GameManager.Fx.Fling);
         }
     }
 
@@ -697,7 +683,7 @@ public class Level extends BaseScreen {
         paused = true;
         locked = true;
         getGameManager().vibrateLong();
-        getGameManager().playFx(GameManager.Fx.Destroy);
+        getGameManager().play(GameManager.Fx.Destroy);
         stats.setAsFail(true);
         hudStage.destroyAndRestart(restart, destroyOrb, unlock, unpause, orbIntro);
     }
