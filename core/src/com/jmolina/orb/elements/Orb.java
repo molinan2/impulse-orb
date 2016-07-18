@@ -122,16 +122,14 @@ public class Orb extends Element {
     }
 
     @Override
-    public void syncActor(Viewport viewport, float worldWidth, float worldHeight, float pixelsPerMeter) {
-        super.syncActor(viewport, worldWidth, worldHeight, pixelsPerMeter);
-
+    public void syncActor(Viewport viewport) {
         if (fragments != null) {
-            float offsetX = worldWidth * 0.5f;
-            float offsetY = worldHeight * 0.5f;
+            float offsetX = viewport.getWorldWidth() * 0.5f;
+            float offsetY = viewport.getWorldHeight() * 0.5f;
 
             fragments.setPosition(
-                    pixelsPerMeter * (getBody().getPosition().x - (viewport.getCamera().position.x - offsetX)) - 0.5f * fragments.getWidth(),
-                    pixelsPerMeter * (getBody().getPosition().y - (viewport.getCamera().position.y - offsetY)) - 0.5f * fragments.getHeight()
+                    getPixelsPerMeter() * (getBody().getPosition().x - (viewport.getCamera().position.x - offsetX)) - 0.5f * fragments.getWidth(),
+                    getPixelsPerMeter() * (getBody().getPosition().y - (viewport.getCamera().position.y - offsetY)) - 0.5f * fragments.getHeight()
             );
 
             fragments.setRotation(MathUtils.radiansToDegrees * getBody().getAngle());

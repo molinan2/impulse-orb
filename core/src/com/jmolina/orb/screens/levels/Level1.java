@@ -24,15 +24,15 @@ public class Level1 extends Level {
         setPreviousScreen(ScreenManager.Key.LEVEL_LAUNCH_1);
         setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_1);
 
-        addSituation(new Situation1Start(getAssetManager(), getWorld(), getRatioMeterPixel()));
-        addSituation(new Situation101(getAssetManager(), getWorld(), getRatioMeterPixel()));
-        addSituation(new Situation102(getAssetManager(), getWorld(), getRatioMeterPixel()));
-        addSituation(new Situation103(getAssetManager(), getWorld(), getRatioMeterPixel()));
-        addSituation(new Situation104(getAssetManager(), getWorld(), getRatioMeterPixel()));
-        addSituation(new Situation105(getAssetManager(), getWorld(), getRatioMeterPixel()));
-        addSituation(new Situation106(getAssetManager(), getWorld(), getRatioMeterPixel()));
-        addSituation(new Situation107(getAssetManager(), getWorld(), getRatioMeterPixel()));
-        addSituation(new Situation1End(getAssetManager(), getWorld(), getRatioMeterPixel()));
+        addSituation(new Situation1Start(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation101(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation102(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation103(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation104(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation105(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation106(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation107(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation1End(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
         setOrbStartPosition(6, 9);
     }

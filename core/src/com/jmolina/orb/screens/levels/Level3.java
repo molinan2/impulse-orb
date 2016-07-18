@@ -16,8 +16,8 @@ public class Level3 extends Level {
         setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_3);
 
         // Temporal
-        addSituation(new Situation1Start(getAssetManager(), getWorld(), getRatioMeterPixel()));
-        addSituation(new Situation1End(getAssetManager(), getWorld(), getRatioMeterPixel()));
+        addSituation(new Situation1Start(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation1End(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
         setOrbStartPosition(6, 9);
     }

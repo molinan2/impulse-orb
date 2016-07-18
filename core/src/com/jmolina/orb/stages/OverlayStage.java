@@ -9,20 +9,16 @@ import com.jmolina.orb.widgets.StaticBackground;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-
+/**
+ * Contiene el mismo background de Menu.
+ * Para hacer un fundido Menu->Level o Level->Menu.
+ */
 public class OverlayStage extends Stage {
 
-    private Overlay overlay;
     private StaticBackground staticBackground;
 
     public OverlayStage (AssetManager am, Viewport vp) {
         super(vp);
-
-        overlay = new Overlay(am);
-        overlay.setPositionGrid(0, 0);
-        overlay.addAction(alpha(1)); // setVisible?
-        overlay.setVisible(true);
-        overlay.setTouchable(Touchable.disabled);
 
         staticBackground = new StaticBackground(am, vp.getWorldWidth(), vp.getWorldHeight());
         staticBackground.setPositionGrid(0, 0);
@@ -30,7 +26,6 @@ public class OverlayStage extends Stage {
         staticBackground.addAction(alpha(1));
         staticBackground.setVisible(true);
 
-        // addActor(overlay);
         addActor(staticBackground);
     }
 

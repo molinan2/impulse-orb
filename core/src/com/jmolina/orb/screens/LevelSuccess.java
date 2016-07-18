@@ -37,7 +37,7 @@ public class LevelSuccess extends BaseScreen {
         super(superManager, key);
         setPreviousScreen(previousKey);
 
-        Attempt attempt = getGameManager().getLastSuccessfulAttempt();
+        Attempt attempt = getGameManager().getCachedAttempt();
 
         this.title = new LevelTitle(getAssetManager(), title);
         Texture successCover = getAsset(Asset.UI_SUCCESS_COVER_01, Texture.class);

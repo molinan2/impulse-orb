@@ -13,7 +13,6 @@ public class Overlay extends BaseGroup {
     public Overlay(AssetManager am) {
         super(am);
 
-
         Texture texture = getAsset(Asset.GAME_SQUARE_WHITE, Texture.class);
         texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
         float scaleX = Level.VIEWPORT_WIDTH / texture.getWidth();

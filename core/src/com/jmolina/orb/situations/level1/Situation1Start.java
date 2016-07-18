@@ -9,8 +9,8 @@ import com.jmolina.orb.situations.SideWalledSituation;
 
 public class Situation1Start extends SideWalledSituation {
 
-    public Situation1Start(AssetManager am, World world, float ratioMeterPixel) {
-        super(am, world, ratioMeterPixel);
+    public Situation1Start(AssetManager am, World world, float pixelsPerMeter) {
+        super(am, world, pixelsPerMeter);
     }
 
     protected void createInnerElements () {
@@ -18,7 +18,7 @@ public class Situation1Start extends SideWalledSituation {
         addElement(new Init(
                 getAssetManager(), getWorld(),
                 6, 4,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
 
         // Bottom walls
@@ -26,21 +26,21 @@ public class Situation1Start extends SideWalledSituation {
                 getAssetManager(), getWorld(),
                 6, -9 + 0.5f, 12, 18, 0,
                 Element.Flavor.BLACK, Element.Geometry.SQUARE,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 -6 + 0.5f, -9 + 0.5f, 12, 18, 0,
                 Element.Flavor.BLACK, Element.Geometry.SQUARE,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 18 - 0.5f, -9 + 0.5f, 12, 18, 0,
                 Element.Flavor.BLACK, Element.Geometry.SQUARE,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
     }
 

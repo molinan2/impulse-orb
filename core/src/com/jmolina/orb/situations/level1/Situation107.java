@@ -18,7 +18,7 @@ public class Situation107 extends SideWalledSituation {
                 getAssetManager(), getWorld(),
                 3.5f, 5, 10, 1, 45,
                 Element.Flavor.GREY, Element.Geometry.SQUARE,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
 
         // Red stripe
@@ -26,7 +26,7 @@ public class Situation107 extends SideWalledSituation {
                 getAssetManager(), getWorld(),
                 8.5f, 13, 10, 1, -45,
                 Element.Flavor.RED, Element.Geometry.SQUARE,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
     }
 

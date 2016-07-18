@@ -277,6 +277,10 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         return mainStage;
     }
 
+    protected Stage getBackgroundStage() {
+        return backgroundStage;
+    }
+
     protected GameManager getGameManager() {
         return getSuperManager().getGameManager();
     }

@@ -18,7 +18,7 @@ public class Situation1End extends SideWalledSituation {
         addElement(new Exit(
                 getAssetManager(), getWorld(),
                 6, 13,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
 
         // Top walls
@@ -26,21 +26,21 @@ public class Situation1End extends SideWalledSituation {
                 getAssetManager(), getWorld(),
                 6, 27, 12, 18, 0,
                 Element.Flavor.BLACK, Element.Geometry.SQUARE,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 -6 + 0.5f, 27, 12, 18, 0,
                 Element.Flavor.BLACK, Element.Geometry.SQUARE,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 18 - 0.5f, 27, 12, 18, 0,
                 Element.Flavor.BLACK, Element.Geometry.SQUARE,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
     }
 

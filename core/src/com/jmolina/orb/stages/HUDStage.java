@@ -33,6 +33,8 @@ public class HUDStage extends Stage {
     private final float OVERLAY_FADE_TIME = ROLLER_TIME * 0.5f;
     private final Interpolation ROLLER_INTERPOLATION = Interpolation.exp5;
     private final Interpolation FADE_INTERPOLATION = Interpolation.pow2;
+    private final float HUD_BACKGROUND_X = -6f;
+    private final float HUD_BACKGROUND_Y = 16f;
 
     /**
      * Fields
@@ -161,13 +163,6 @@ public class HUDStage extends Stage {
         }
     };
 
-    private Runnable fullOverlay = new Runnable() {
-        @Override
-        public void run() {
-            overlay.addAction(alpha(1));
-        }
-    };
-
 
     /**
      * Listeners
@@ -235,7 +230,7 @@ public class HUDStage extends Stage {
         fullDistanceStat = new Stat(am, "Distance", 0, "m");
         fullDestroyedStat = new Stat(am, "Destroyed", 0, "times");
 
-        background.setPositionGrid(-6, 16);
+        background.setPositionGrid(HUD_BACKGROUND_X, HUD_BACKGROUND_Y);
         overlay.setPositionGrid(0, 0);
         timer.setPositionGrid(3, 16.5f);
         pauseButton.setPositionGrid(10, 16.5f);
@@ -316,8 +311,9 @@ public class HUDStage extends Stage {
         background.addAction(sequence(
                 run(disableTouchables),
                 run(pauseWidgets),
-                moveTo(0, Grid.unit(16f), 0),
-                moveTo(0, Grid.unit(-0.25f), ROLLER_TIME, ROLLER_INTERPOLATION),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), 0),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), ROLLER_TIME, ROLLER_INTERPOLATION),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-6), 0), // Asegura que no se vean los bordes si leaveGame
                 run(enableWidgetsVisibility),
                 run(fadeInWidgets),
                 delay(FADE_TIME),
@@ -332,8 +328,8 @@ public class HUDStage extends Stage {
                 run(fadeOutWidgets),
                 delay(FADE_TIME),
                 run(disableWidgetsVisibility),
-                moveTo(0, Grid.unit(-0.25f), 0),
-                moveTo(0, Grid.unit(16f), ROLLER_TIME, ROLLER_INTERPOLATION),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), 0),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), ROLLER_TIME, ROLLER_INTERPOLATION),
                 run(resumeWidgets),
                 run(enableTouchables),
                 run(callback)
@@ -353,8 +349,8 @@ public class HUDStage extends Stage {
                 run(fadeOutWidgets),
                 delay(FADE_TIME),
                 run(disableWidgetsVisibility),
-                moveTo(0, Grid.unit(-0.25f), 0),
-                moveTo(0, Grid.unit(16f), ROLLER_TIME, ROLLER_INTERPOLATION),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), 0),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), ROLLER_TIME, ROLLER_INTERPOLATION),
                 run(fadeInOverlay),
                 delay(OVERLAY_FADE_TIME),
                 run(resetCallabck),
@@ -386,14 +382,6 @@ public class HUDStage extends Stage {
         ));
     }
 
-    public void leave () {
-        background.clearActions();
-        background.addAction(sequence(
-                run(fadeInOverlay),
-                delay(OVERLAY_FADE_TIME)
-        ));
-    }
-
     public void setDistanceValue(float distance) {
         distanceStat.setValue(distance, "m");
     }
@@ -408,10 +396,6 @@ public class HUDStage extends Stage {
 
     public void setFullDestroyedValue(int destroyed) {
         fullDestroyedStat.setValue(destroyed, "times");
-    }
-
-    public HUDBackground getHUDBackground() {
-        return background;
     }
 
     public void setGaugeOverload(boolean overloaded) {

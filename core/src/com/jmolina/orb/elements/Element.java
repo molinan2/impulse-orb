@@ -33,20 +33,20 @@ public class Element {
     private Body body;
     private float width, height;
 
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float ratioMeterPixel) {
-        this(am, world, x, y, w, h, 0, Flavor.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float pixelsPerMeter) {
+        this(am, world, x, y, w, h, 0, Flavor.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, pixelsPerMeter);
     }
 
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, float ratioMeterPixel) {
-        this(am, world, x, y, w, h, angle, Flavor.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, float pixelsPerMeter) {
+        this(am, world, x, y, w, h, angle, Flavor.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, pixelsPerMeter);
     }
 
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, float ratioMeterPixel) {
-        this(am, world, x, y, w, h, angle, flavor, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, float pixelsPerMeter) {
+        this(am, world, x, y, w, h, angle, flavor, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, pixelsPerMeter);
     }
 
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry, float ratioMeterPixel) {
-        this(am, world, x, y, w, h, angle, flavor, geometry, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry, float pixelsPerMeter) {
+        this(am, world, x, y, w, h, angle, flavor, geometry, BodyDef.BodyType.KinematicBody, pixelsPerMeter);
     }
 
     /**
@@ -63,9 +63,9 @@ public class Element {
      * @param geometry Geometry
      * @param bodyType BodyDef.BodyType
      */
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry, BodyDef.BodyType bodyType, float ratioMeterPixel) {
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry, BodyDef.BodyType bodyType, float pixelsPerMeter) {
         assetManager = am;
-        pixelsPerMeter = 1 / ratioMeterPixel;
+        this.pixelsPerMeter = pixelsPerMeter;
         width = w;
         height = h;
 
@@ -110,12 +110,10 @@ public class Element {
     }
 
     public Vector2 getPosition () {
-        Vector2 position = new Vector2();
-
-        position.x = getBody().getPosition().x;
-        position.y = getBody().getPosition().y;
-
-        return position;
+        return new Vector2(
+                getBody().getPosition().x,
+                getBody().getPosition().y
+        );
     }
 
     public void syncBody() {
@@ -132,14 +130,14 @@ public class Element {
         }
     }
 
-    public void syncActor(Viewport viewport, float worldWidth, float worldHeight, float pixelsPerMeter) {
+    public void syncActor(Viewport viewport) {
         if (actor != null) {
-            float offsetX = worldWidth * 0.5f;
-            float offsetY = worldHeight * 0.5f;
+            float offsetX = viewport.getWorldWidth() * 0.5f;
+            float offsetY = viewport.getWorldHeight() * 0.5f;
 
             actor.setPosition(
-                    pixelsPerMeter * (body.getPosition().x - (viewport.getCamera().position.x - offsetX)) - 0.5f * actor.getWidth(),
-                    pixelsPerMeter * (body.getPosition().y - (viewport.getCamera().position.y - offsetY)) - 0.5f * actor.getHeight()
+                    getPixelsPerMeter() * (body.getPosition().x - (viewport.getCamera().position.x - offsetX)) - 0.5f * actor.getWidth(),
+                    getPixelsPerMeter() * (body.getPosition().y - (viewport.getCamera().position.y - offsetY)) - 0.5f * actor.getHeight()
             );
 
             actor.setRotation(MathUtils.radiansToDegrees * body.getAngle());
@@ -198,8 +196,8 @@ public class Element {
      * Modifica la textura del actor y reajusta la escala del actor
      */
     public void setTexture(Texture texture) {
-        float scaleX = pixelsPerMeter * width / texture.getWidth();
-        float scaleY = pixelsPerMeter * height / texture.getHeight();
+        float scaleX = getPixelsPerMeter() * width / texture.getWidth();
+        float scaleY = getPixelsPerMeter() * height / texture.getHeight();
 
         actor.setTexture(texture);
         actor.setScale(scaleX, scaleY);
@@ -231,6 +229,10 @@ public class Element {
 
     public void setAsSensor(boolean isSensor) {
         getBody().getFixtureList().first().setSensor(isSensor);
+    }
+
+    public float getPixelsPerMeter() {
+        return pixelsPerMeter;
     }
 
 }

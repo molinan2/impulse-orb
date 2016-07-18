@@ -2,7 +2,6 @@ package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
@@ -27,18 +26,7 @@ import com.jmolina.orb.stages.HUDStage;
 import com.jmolina.orb.stages.OverlayStage;
 import com.jmolina.orb.stages.ParallaxStage;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateTo;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleBy;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.jmolina.orb.managers.PrefsManager.*;
 
 
@@ -48,10 +36,12 @@ import static com.jmolina.orb.managers.PrefsManager.*;
  */
 public class Level extends BaseScreen {
 
+    public static final float ORB_INTRO_SEQUENCE_TIME = 1f;
     private static final float HALF_TAP_SQUARE_SIZE = 20.0f;
     private static final float TAP_COUNT_INTERVAL = 0.4f;
     private static final float LONG_PRESS_DURATION = 1.1f;
     private static final float MAX_FLING_DELAY = 0.15f;
+
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
     private final float WORLD_TIME_STEP = 1/60f;
     private final int WORLD_OVERSTEP_FACTOR = 8;
@@ -61,13 +51,11 @@ public class Level extends BaseScreen {
     private final float COOLING_RATE = 0.1f;
     private final float OVERLOAD_TIME = 4f;
     private final int INFINITE_Z_INDEX = 32000;
-    public static final float ORB_INTRO_SEQUENCE_TIME = 1f;
-    public static final float ORB_EXIT_SEQUENCE_TIME = 1f;
+    private final float MAX_IMPULSE = 40f;
 
-    private float ratioMeterPixel; // Grid: 12x18.5, 64 pixel/metro
+    public static final float EXIT_SEQUENCE_TIME = 1f;
     private float pixelsPerMeter;
     private float impulseFactor;
-    private float impulseMax;
     private World world;
     private ContactHandler contactHandler;
     private Viewport worldViewport, gestureViewport, hudViewport, parallaxViewport;
@@ -90,6 +78,9 @@ public class Level extends BaseScreen {
     private Vector2 lastOrbPosition;
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
 
+
+
+
     private Runnable restart = new Runnable() {
         @Override
         public void run() {
@@ -105,17 +96,6 @@ public class Level extends BaseScreen {
         }
     };
 
-    private Runnable reset = new Runnable() {
-        @Override
-        public void run() {
-            getOrb().setPosition(orbStartPosition.x, orbStartPosition.y);
-            getOrb().resetHeat();
-            getOrb().resetVelocity();
-            hudStage.resetTimer();
-            stats.reset();
-
-        }
-    };
 
     private Runnable unpause = new Runnable() {
         @Override
@@ -165,21 +145,24 @@ public class Level extends BaseScreen {
     public Level(SuperManager sm, ScreenManager.Key key) {
         super(sm, key);
 
-        ratioMeterPixel = sm.getGameManager().getRatioMeterPixel();
         pixelsPerMeter = sm.getGameManager().getPixelsPerMeter();
-        impulseFactor = 1 * getRatioMeterPixel();
-        impulseMax = 40.0f;
+        impulseFactor = 1 / getPixelsPerMeter();
 
         orbStartPosition = new Vector2();
         situations = new SnapshotArray<Situation>();
-        worldViewport = new FitViewport(getWorldWidth(), getWorldHeight(), new OrthographicCamera());
-        gestureViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera());
-        parallaxViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera());
-        hudViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera());
+
+        float worldWidth = VIEWPORT_WIDTH / getPixelsPerMeter();
+        float worldHeight = VIEWPORT_HEIGHT / getPixelsPerMeter();
+
+        worldViewport = new FitViewport(worldWidth, worldHeight);
+
+        gestureViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        parallaxViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        hudViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         hudStage = new HUDStage(getAssetManager(), this, hudViewport);
         overlayStage = new OverlayStage(getAssetManager(), hudViewport); // todo Vp especifico?
         gestureStage = new GestureStage(getAssetManager(), gestureViewport, getPixelsPerMeter());
-        parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getRatioMeterPixel(), getGameManager().getZoom());
+        parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getPixelsPerMeter(), getGameManager().getZoom());
         stats = new GameStats();
         currentOrbPosition = new Vector2();
         lastOrbPosition = new Vector2();
@@ -205,6 +188,7 @@ public class Level extends BaseScreen {
         addProcessor(gestureStage);
         addProcessor(gestureDetector);
 
+        // Punto de partida
         hudStage.addAction(sequence(
                 alpha(0),
                 scaleTo(1/1.35f, 1/1.35f, 0)
@@ -258,22 +242,19 @@ public class Level extends BaseScreen {
 
     @Override
     public void show() {
-        // super.show();
         unsetInputProcessor();
         hudStage.addAction(sequence(
                 run(new Runnable() {
                     @Override
                     public void run() {
-                        overlayStage.addAction(sequence(
-                                alpha(1)
-                        ));
+                        getBackgroundStage().addAction(alpha(1));
                     }
                 }),
                 transition(Flow.ENTERING, getHierarchy()),
                 run(new Runnable() {
                     @Override
                     public void run() {
-                        overlayStage.addAction(fadeOut(0.5f));
+                        getBackgroundStage().addAction(fadeOut(0.5f));
                     }
                 }),
                 run(orbIntro),
@@ -294,9 +275,8 @@ public class Level extends BaseScreen {
     @Override
     public void hide() {
         super.hide();
-
-        // TODO Ojo: no se puede guardar 2 veces la misma stat
-        // saveGameStats();
+        getGameManager().play(GameManager.Track.Menu);
+        // TODO: Se estan ejecutando 2 plays seguidos distintos cuando se cambia a SUCCESS SCREEN
     }
 
     @Override
@@ -321,20 +301,8 @@ public class Level extends BaseScreen {
      * Class methods
      */
 
-    public float getRatioMeterPixel() {
-        return ratioMeterPixel;
-    }
-
     public float getPixelsPerMeter() {
         return pixelsPerMeter;
-    }
-
-    public float getWorldWidth() {
-        return VIEWPORT_WIDTH * getRatioMeterPixel();
-    }
-
-    public float getWorldHeight() {
-        return VIEWPORT_HEIGHT * getRatioMeterPixel();
     }
 
     public World getWorld() {
@@ -354,12 +322,11 @@ public class Level extends BaseScreen {
     }
 
     /**
-     * TODO
      * Iguala la posicion y rotacion de los Bodies a las de sus Actors
      */
     private void syncBodies() {
         // Todos los cuerpos
-        // Por hacer
+        // TODO
 
         // Orb
         orb.syncBody();
@@ -371,20 +338,16 @@ public class Level extends BaseScreen {
     public void syncActors() {
         for (Situation situation : situations ) {
             for (Element element : situation.getElements()) {
-                element.syncActor(worldViewport, getWorldWidth(), getWorldHeight(), getPixelsPerMeter());
+                element.syncActor(worldViewport);
             }
         }
 
-        orb.syncActor(worldViewport, getWorldWidth(), getWorldHeight(), getPixelsPerMeter());
-    }
-
-    private void syncActor(Element element) {
-        element.syncActor(worldViewport, getWorldWidth(), getWorldHeight(), getPixelsPerMeter());
+        orb.syncActor(worldViewport);
     }
 
     public void addOrb(Orb orb) {
         addMainActor(orb.getActor());
-        orb.syncActor(worldViewport, getWorldWidth(), getWorldHeight(), getPixelsPerMeter());
+        orb.syncActor(worldViewport);
         orb.getActor().setZIndex(INFINITE_Z_INDEX);
     }
 
@@ -395,11 +358,11 @@ public class Level extends BaseScreen {
     public void addSituation (Situation situation) {
         this.situations.add(situation);
         int size = this.situations.size;
-        situation.setOrder(size-1);
+        situation.setPosition(size-1);
 
         for (Element element : situation.getElements()) {
             addMainActor(element.getActor());
-            syncActor(element);
+            element.syncActor(worldViewport);
         }
 
         orb.getActor().setZIndex(INFINITE_Z_INDEX);
@@ -422,16 +385,15 @@ public class Level extends BaseScreen {
         parallaxStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getMainStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         gestureStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
-        overlayStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
+        getBackgroundStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         hudStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
     }
 
     private void draw() {
         parallaxStage.draw(worldViewport.getCamera().position.x, worldViewport.getCamera().position.y);
-        // parallaxStage.draw();
         getMainStage().draw();
         gestureStage.draw();
-        overlayStage.draw();
+        getBackgroundStage().draw();
         hudStage.draw();
         // debugRenderer.render(world, worldViewport.getCamera().combined);
     }
@@ -486,22 +448,8 @@ public class Level extends BaseScreen {
         unsetInputProcessor();
         saveGameStats();
         getGameManager().play(GameManager.Fx.Back);
-        overlayStage.addAction(sequence(
-                run(new Runnable() {
-                    @Override
-                    public void run() {
-                        hudStage.getHUDBackground().setPositionGrid(-12, -18);
-                    }
-                }),
-                // fadeIn(0.35f, Interpolation.pow2),
-                run(new Runnable() {
-                    @Override
-                    public void run() {
-                        switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
-                        getGameManager().play(GameManager.Track.Menu);
-                    }
-                })
-        ));
+        getGameManager().play(GameManager.Track.Menu);
+        switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
     }
 
     @Override
@@ -510,16 +458,10 @@ public class Level extends BaseScreen {
                 run(new Runnable() {
                     @Override
                     public void run() {
-                        overlayStage.addAction(fadeIn(0.35f, Interpolation.pow2));
+                        getBackgroundStage().addAction(fadeIn(0.35f, Interpolation.pow2));
                     }
                 }),
                 delay(0.35f),
-                /*run(new Runnable() {
-                    @Override
-                    public void run() {
-                        hudStage.getHUDBackground().addAction(fadeOut(0.3f * 0.5f, Interpolation.pow2));
-                    }
-                }),*/
                 transition(Flow.LEAVING, hierarchy),
                 run(UIRunnable.setScreen(getScreenManager(), key, hierarchy))
         ));
@@ -529,33 +471,20 @@ public class Level extends BaseScreen {
      * El orbe ha alcanzado la salida
      */
     public void successGame() {
-        stats.setAsSuccess(true);
+        stats.setSuccessfull(true);
         saveGameStats();
-        saveLastAttempt();
+        cacheAttempt();
         unsetInputProcessor();
+        getGameManager().play(GameManager.Fx.Exit);
         paused = true;
         locked = true;
 
-        overlayStage.addAction(sequence(
-                run(new Runnable() {
-                    @Override
-                    public void run() {
-                        getGameManager().play(GameManager.Fx.Exit);
-                    }
-                }),
-                run(new Runnable() {
-                    @Override
-                    public void run() {
-                        getOrb().getActor().addAction(sequence(
-                                parallel(
-                                        rotateBy(360, ORB_EXIT_SEQUENCE_TIME, Interpolation.exp5Out),
-                                        scaleTo(4, 4, ORB_EXIT_SEQUENCE_TIME, Interpolation.pow2),
-                                        fadeOut(ORB_EXIT_SEQUENCE_TIME, Interpolation.pow2)
-                                )
-                        ));
-                    }
-                }),
-                delay(ORB_INTRO_SEQUENCE_TIME),
+        getOrb().getActor().addAction(sequence(
+                parallel(
+                        rotateBy(360, EXIT_SEQUENCE_TIME, Interpolation.exp5Out),
+                        scaleTo(4 * getOrb().getNaturalScale(), 4 * getOrb().getNaturalScale(), EXIT_SEQUENCE_TIME, Interpolation.pow2),
+                        fadeOut(EXIT_SEQUENCE_TIME, Interpolation.pow2)
+                ),
                 run(new Runnable() {
                     @Override
                     public void run() {
@@ -624,8 +553,8 @@ public class Level extends BaseScreen {
     }
 
     public void fling (float velocityX, float velocityY) {
-        float impulseX = MathUtils.clamp(velocityX * impulseFactor, -impulseMax, impulseMax);
-        float impulseY = MathUtils.clamp(-velocityY * impulseFactor, -impulseMax, impulseMax);
+        float impulseX = MathUtils.clamp(velocityX * impulseFactor, -MAX_IMPULSE, MAX_IMPULSE);
+        float impulseY = MathUtils.clamp(-velocityY * impulseFactor, -MAX_IMPULSE, MAX_IMPULSE);
 
         if (!isGamePaused()) {
             getOrb().unlock();
@@ -684,7 +613,7 @@ public class Level extends BaseScreen {
         locked = true;
         getGameManager().vibrateLong();
         getGameManager().play(GameManager.Fx.Destroy);
-        stats.setAsFail(true);
+        stats.setFailed(true);
         hudStage.destroyAndRestart(restart, destroyOrb, unlock, unpause, orbIntro);
     }
 
@@ -764,8 +693,8 @@ public class Level extends BaseScreen {
         return this.successScreen;
     }
 
-    private void saveLastAttempt () {
-        getGameManager().setLastSuccessfulAttempt(stats.getLastAttempt());
+    private void cacheAttempt() {
+        getGameManager().cacheAttempt(stats.getLastAttempt());
     }
 
 }

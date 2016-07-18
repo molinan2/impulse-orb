@@ -31,10 +31,6 @@ public class GameStats {
         attempts.add(attempt);
     }
 
-    public void reset() {
-        attempts = new ArrayList<Attempt>();
-    }
-
     public void addTime(float time) {
         if (hasAttemps()) {
             getLastAttemp().addTime(time);
@@ -47,13 +43,13 @@ public class GameStats {
         }
     }
 
-    public void setAsFail(boolean failed) {
+    public void setFailed(boolean failed) {
         if (hasAttemps()) {
             getLastAttemp().setFailed(failed);
         }
     }
 
-    public void setAsSuccess(boolean successful) {
+    public void setSuccessfull(boolean successful) {
         if (hasAttemps()) {
             getLastAttemp().setSuccessful(successful);
         }

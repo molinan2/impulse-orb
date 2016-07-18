@@ -18,28 +18,28 @@ public class Situation103 extends SideWalledSituation {
                 getAssetManager(), getWorld(),
                 4.5f, 3.5f, 9, 1, 0,
                 Element.Flavor.GREY, Element.Geometry.SQUARE,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 7.5f, 7.5f, 9, 1, 0,
                 Element.Flavor.GREY, Element.Geometry.SQUARE,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 4.5f, 11.5f, 9, 1, 0,
                 Element.Flavor.GREY, Element.Geometry.SQUARE,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 7.5f, 15.5f, 9, 1, 0,
                 Element.Flavor.GREY, Element.Geometry.SQUARE,
-                getRatioMeterPixel()
+                getPixelsPerMeter()
         ));
     }
 

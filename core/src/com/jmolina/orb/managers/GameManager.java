@@ -36,7 +36,9 @@ public class GameManager {
     private PrefsManager prefsManager;
     private SuperManager superManager;
     private Level currentLevel;
-    private Attempt lastSuccessfulAttempt;
+
+    /** Attempt temporal para mostrar los datos en la pantalla de Success */
+    private Attempt cachedAttempt;
     private boolean vibration = true;
     private boolean sound = true;
     private boolean music = true;
@@ -51,8 +53,8 @@ public class GameManager {
     public GameManager (SuperManager sm) {
         prefsManager = sm.getPrefsManager();
         superManager = sm;
-        lastSuccessfulAttempt = new Attempt();
-        lastSuccessfulAttempt.setSuccessful(true);
+        cachedAttempt = new Attempt();
+        cachedAttempt.setSuccessful(true);
         createSounds();
         createMusic();
         updateOptions();
@@ -89,15 +91,16 @@ public class GameManager {
         currentLevel = screen;
     }
 
-    public void setLastSuccessfulAttempt (Attempt attempt) {
+
+    public void cacheAttempt(Attempt attempt) {
         if (attempt != null) {
-            lastSuccessfulAttempt.setDistance(attempt.getDistance());
-            lastSuccessfulAttempt.setTime(attempt.getTime());
+            cachedAttempt.setDistance(attempt.getDistance());
+            cachedAttempt.setTime(attempt.getTime());
         }
     }
 
-    public Attempt getLastSuccessfulAttempt () {
-        return lastSuccessfulAttempt;
+    public Attempt getCachedAttempt() {
+        return cachedAttempt;
     }
 
     public void vibrateShort() {
