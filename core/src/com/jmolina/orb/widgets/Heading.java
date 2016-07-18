@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Var;
 
 public class Heading extends BaseGroup {
 
@@ -18,15 +19,15 @@ public class Heading extends BaseGroup {
     private Label label;
 
     public Heading(AssetManager am, String name) {
-        this(am, name, Align.left, Weight.Medium, BaseGroup.COLOR_BLUE);
+        this(am, name, Align.left, Weight.Medium, Var.COLOR_BLUE);
     }
 
     public Heading(AssetManager am, String name, int align) {
-        this(am, name, align, Weight.Medium, BaseGroup.COLOR_BLUE);
+        this(am, name, align, Weight.Medium, Var.COLOR_BLUE);
     }
 
     public Heading(AssetManager am, String name, int align, Weight weight) {
-        this(am, name, align, weight, BaseGroup.COLOR_BLUE);
+        this(am, name, align, weight, Var.COLOR_BLUE);
     }
 
     public Heading(AssetManager am, String name, int align, Weight weight, int color) {

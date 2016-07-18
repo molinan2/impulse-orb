@@ -19,10 +19,10 @@ public class Notice extends BaseGroup {
         super(am);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.fontColor = new Color(BaseGroup.COLOR_BLUE);
+        labelStyle.fontColor = new Color(Var.COLOR_BLUE);
         labelStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
-        this.author = new Label(Var.AUTHOR, labelStyle);
+        this.author = new Label(Var.APP_AUTHOR, labelStyle);
         this.author.setTouchable(Touchable.disabled);
         this.author.setPosition(Grid.unit(0), Grid.unit(0));
         this.author.setHeight(Grid.unit(0.5f));

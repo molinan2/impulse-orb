@@ -13,6 +13,7 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.utils.Time;
+import com.jmolina.orb.var.Var;
 
 import java.util.ArrayList;
 
@@ -46,7 +47,7 @@ public class Ladder extends BaseGroup {
         this.bg.setPosition(0f, 0f);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(BaseGroup.COLOR_BLUE);
+        style.fontColor = new Color(Var.COLOR_BLUE);
         style.font = getAsset(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
 
         this.title = new Label(title.toUpperCase(), style);

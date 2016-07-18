@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Var;
 
 public class Credit extends BaseGroup {
 
@@ -19,11 +20,11 @@ public class Credit extends BaseGroup {
         super(am);
 
         Label.LabelStyle bodyStyle = new Label.LabelStyle();
-        bodyStyle.fontColor = new Color(BaseGroup.COLOR_BLACK);
+        bodyStyle.fontColor = new Color(Var.COLOR_BLACK);
         bodyStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
         Label.LabelStyle headerStyle = new Label.LabelStyle();
-        headerStyle.fontColor = new Color(BaseGroup.COLOR_BLUE);
+        headerStyle.fontColor = new Color(Var.COLOR_BLUE);
         headerStyle.font = getAsset(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
 
         this.body = new Label(body, bodyStyle);

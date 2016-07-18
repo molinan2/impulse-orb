@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Var;
 
 public class Option extends BaseGroup {
 
@@ -21,7 +22,7 @@ public class Option extends BaseGroup {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(BaseGroup.COLOR_BLUE);
+        style.fontColor = new Color(Var.COLOR_BLUE);
         style.font = getAsset(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
 
         label = new Label(name, style);

@@ -10,11 +10,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.interfaces.Reseteable;
 import com.jmolina.orb.utils.Grid;
 
-public class BaseGroup extends Group implements Reseteable, Disposable {
-
-    public static final int COLOR_WHITE = 0xffffffff;
-    public static final int COLOR_BLUE = 0x2E3192ff;
-    public static final int COLOR_BLACK = 0x4D4D4Dff;
+public class BaseGroup extends Group implements Disposable {
 
     private ShaderProgram shader;
     private float brightness;
@@ -24,14 +20,15 @@ public class BaseGroup extends Group implements Reseteable, Disposable {
     public BaseGroup(AssetManager am) {
         setAssetManager(am);
 
-        // Disabling Transform (scale, rotate) improves drawing performance
-        // setTransform(false);
-
+        setTransform(true); // Disabling transform improves drawing performance
         setScale(1.0f, 1.0f);
         setOrigin(0f, 0f);
 
         brightness = 0.0f;
-        shader = new ShaderProgram(Gdx.files.internal("shader/brightness.vert"), Gdx.files.internal("shader/brightness.frag"));
+        shader = new ShaderProgram(
+                Gdx.files.internal("shader/brightness.vert"),
+                Gdx.files.internal("shader/brightness.frag")
+        );
     }
 
     @Override
@@ -52,11 +49,6 @@ public class BaseGroup extends Group implements Reseteable, Disposable {
         else {
             super.draw(batch, parentAlpha);
         }
-    }
-
-    @Override
-    public void reset() {
-
     }
 
     public AssetManager getAssetManager() {

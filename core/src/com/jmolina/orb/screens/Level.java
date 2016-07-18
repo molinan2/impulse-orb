@@ -63,7 +63,7 @@ public class Level extends BaseScreen {
     private final int WORLD_OVERSTEP_FACTOR = 8;
     private final int WORLD_VELOCITY_INTERACTIONS = 8;
     private final int WORLD_POSITION_INTERACTIONS = 3;
-    private final float ORB_MAX_LOCK_TIME = 0.5f;
+    private final float ORB_MAX_LOCK_TIME = 0.90f;
     private final float COOLING_RATE = 0.1f;
     private final float OVERLOAD_TIME = 4f;
     private final int INFINITE_Z_INDEX = 32000;
@@ -192,7 +192,7 @@ public class Level extends BaseScreen {
         hudViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera());
         hudStage = new HUDStage(getAssetManager(), this, hudViewport);
         overlayStage = new OverlayStage(getAssetManager(), hudViewport); // todo Vp especifico?
-        gestureStage = new GestureStage(gestureViewport, getAssetManager(), getRatioMeterPixel(), getGameManager().getZoomRatio());
+        gestureStage = new GestureStage(getAssetManager(), gestureViewport, getPixelsPerMeter());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getRatioMeterPixel(), getGameManager().getZoomRatio());
         stats = new GameStats();
         currentOrbPosition = new Vector2();
@@ -507,7 +507,6 @@ public class Level extends BaseScreen {
                     @Override
                     public void run() {
                         hudStage.getHUDBackground().setPositionGrid(-12, -18);
-                        hudStage.getHUDBackground().addAction(scaleBy(4,4));
                     }
                 }),
                 //fadeIn(0.35f, Interpolation.pow2),
@@ -605,6 +604,7 @@ public class Level extends BaseScreen {
         if (!isGamePaused()) {
             getOrb().increaseHeat();
             gestureStage.drawTap();
+            orbLockTimer = 0f;
             getOrb().lock();
 
             if (getOrb().isOverloaded()) {

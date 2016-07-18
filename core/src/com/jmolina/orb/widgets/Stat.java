@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Var;
 
 // No se encuentra en GWT (HTML), por lo que no se puede compilar en GWT (HTML)
 import java.text.DecimalFormat;
@@ -37,8 +38,8 @@ public class Stat extends BaseGroup {
         nameStyle = new Label.LabelStyle();
         dataStyle = new Label.LabelStyle();
 
-        nameStyle.fontColor = new Color(BaseGroup.COLOR_BLUE);
-        dataStyle.fontColor = new Color(BaseGroup.COLOR_BLACK);
+        nameStyle.fontColor = new Color(Var.COLOR_BLUE);
+        dataStyle.fontColor = new Color(Var.COLOR_BLACK);
         nameStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
         dataStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
 

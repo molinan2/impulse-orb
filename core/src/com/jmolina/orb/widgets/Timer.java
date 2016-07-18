@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.var.Var;
 
 import java.util.Locale;
 
@@ -26,7 +27,7 @@ public class Timer extends BaseGroup {
 
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(BaseGroup.COLOR_WHITE);
+        style.fontColor = new Color(Var.COLOR_WHITE);
         style.font = getAsset(Asset.FONT_ROBOTO_BOLD_90, BitmapFont.class);
 
         label = new Label(timeFormated, style);

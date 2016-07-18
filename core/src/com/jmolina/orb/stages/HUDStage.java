@@ -8,10 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
-import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.utils.Grid;
-import com.jmolina.orb.widgets.BaseGroup;
+import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.Gauge;
 import com.jmolina.orb.widgets.HUDBackground;
 import com.jmolina.orb.widgets.Heading;
@@ -231,13 +230,12 @@ public class HUDStage extends Stage {
         restartButton = new MainButton(am, "RESTART", MainButton.Type.Default);
         leaveButton = new MainButton(am, "LEAVE", MainButton.Type.Exit);
         distanceStat = new Stat(am, "Distance", 0f, "m");
-        fullHeading = new Heading(am, "Since start", Align.center, Heading.Weight.Bold, BaseGroup.COLOR_WHITE);
+        fullHeading = new Heading(am, "Since start", Align.center, Heading.Weight.Bold, Var.COLOR_WHITE);
         fullTimeStat = new Stat(am, "Time", 0, "s");
         fullDistanceStat = new Stat(am, "Distance", 0, "m");
         fullDestroyedStat = new Stat(am, "Destroyed", 0, "times");
 
         background.setPositionGrid(-6, 16);
-        background.setScaleX(2f);
         overlay.setPositionGrid(0, 0);
         timer.setPositionGrid(3, 16.5f);
         pauseButton.setPositionGrid(10, 16.5f);
@@ -276,10 +274,10 @@ public class HUDStage extends Stage {
         restartButton.addListener(restartListener);
         leaveButton.addListener(leaveListener);
 
-        distanceStat.setLabelColor(BaseGroup.COLOR_WHITE);
-        fullTimeStat.setLabelColor(BaseGroup.COLOR_WHITE);
-        fullDistanceStat.setLabelColor(BaseGroup.COLOR_WHITE);
-        fullDestroyedStat.setLabelColor(BaseGroup.COLOR_WHITE);
+        distanceStat.setLabelColor(Var.COLOR_WHITE);
+        fullTimeStat.setLabelColor(Var.COLOR_WHITE);
+        fullDistanceStat.setLabelColor(Var.COLOR_WHITE);
+        fullDestroyedStat.setLabelColor(Var.COLOR_WHITE);
 
         addActor(overlay);
         addActor(background);

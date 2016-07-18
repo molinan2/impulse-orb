@@ -10,7 +10,7 @@ import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Time;
-import com.jmolina.orb.widgets.BaseGroup;
+import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BigText;
 import com.jmolina.orb.widgets.Heading;
 import com.jmolina.orb.widgets.SuccessCover;
@@ -42,8 +42,8 @@ public class LevelSuccess extends BaseScreen {
         this.title = new LevelTitle(getAssetManager(), title);
         Texture successCover = getAsset(Asset.UI_SUCCESS_COVER_01, Texture.class);
         this.cover = new SuccessCover(getAssetManager(), successCover);
-        this.timeHeading = new Heading(getAssetManager(), "Time", Align.center, Heading.Weight.Regular, BaseGroup.COLOR_BLUE);
-        this.distanceHeading = new Heading(getAssetManager(), "Distance", Align.center, Heading.Weight.Regular, BaseGroup.COLOR_BLUE);
+        this.timeHeading = new Heading(getAssetManager(), "Time", Align.center, Heading.Weight.Regular, Var.COLOR_BLUE);
+        this.distanceHeading = new Heading(getAssetManager(), "Distance", Align.center, Heading.Weight.Regular, Var.COLOR_BLUE);
 
         this.time = new BigText(getAssetManager(), Time.formatTime(attempt.getTime()));
         this.distance = new BigText(getAssetManager(), formatDistance(attempt.getDistance()));

@@ -24,7 +24,7 @@ public class BufferedStage extends Stage {
 
     public void newTransition() {
         buffer.dispose();
-        buffer = new FrameBuffer(Pixmap.Format.RGBA8888, Var.WIDTH, Var.HEIGHT, false);
+        buffer = new FrameBuffer(Pixmap.Format.RGBA8888, Var.SCREEN_WIDTH, Var.SCREEN_HEIGHT, false);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class BufferedStage extends Stage {
 
         // Se dibuja el buffer en la pantalla
         getBatch().begin();
-        getBatch().draw(buffer.getColorBufferTexture(), 0, 0, Var.WIDTH, Var.HEIGHT, 0, 0, 1, 1);
+        getBatch().draw(buffer.getColorBufferTexture(), 0, 0, Var.SCREEN_WIDTH, Var.SCREEN_HEIGHT, 0, 0, 1, 1);
         getBatch().end();
 
         buffer.dispose();

@@ -11,11 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
-
-import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_SELECT;
+import com.jmolina.orb.var.Var;
 
 public class MainButton extends BaseGroup {
 
@@ -30,7 +28,7 @@ public class MainButton extends BaseGroup {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(BaseGroup.COLOR_BLUE);
+        style.fontColor = new Color(Var.COLOR_BLUE);
         style.font = getAsset(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
 
         label = new Label(name, style);

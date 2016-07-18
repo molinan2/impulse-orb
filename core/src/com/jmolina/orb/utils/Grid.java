@@ -1,5 +1,9 @@
 package com.jmolina.orb.utils;
 
+/**
+ * La CELL_SIZE sólo es válida en las pantallas de menú, ya que los niveles pueden tener zoom.
+ * Por tanto, esta clase sólo es útil dentro de las pantallas de menú.
+ */
 public class Grid {
 
     private final static float CELL_SIZE = 64.0f;

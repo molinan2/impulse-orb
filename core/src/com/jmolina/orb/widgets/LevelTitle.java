@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Var;
 
 public class LevelTitle extends BaseGroup {
 
@@ -22,7 +23,7 @@ public class LevelTitle extends BaseGroup {
         bg.setPosition(0f, 0f);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(BaseGroup.COLOR_WHITE);
+        style.fontColor = new Color(Var.COLOR_WHITE);
         style.font = getAssetManager().get(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
 
         this.name = new Label(name.toUpperCase(), style);
