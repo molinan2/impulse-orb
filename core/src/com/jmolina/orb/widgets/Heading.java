@@ -44,6 +44,7 @@ public class Heading extends BaseGroup {
         label.setAlignment(align);
 
         addActor(label);
+        setTransform(false);
         setHeight(Grid.unit(1));
     }
 

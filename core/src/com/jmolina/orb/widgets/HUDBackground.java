@@ -19,6 +19,7 @@ public class HUDBackground extends BaseGroup {
         addActor(image);
 
         setHeight(Grid.unit(2.5f));
+        setOrigin(image.getWidth() * 0.5f, image.getHeight() * 0.5f);
     }
 
 }

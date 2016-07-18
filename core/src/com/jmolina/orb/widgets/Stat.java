@@ -58,6 +58,7 @@ public class Stat extends BaseGroup {
 
         addActor(this.name);
         addActor(this.data);
+        setTransform(false);
         setHeight(Grid.unit(1));
     }
 

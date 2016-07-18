@@ -42,6 +42,7 @@ public class FragmentedOrb extends BaseGroup {
         addActor(fragment3);
         addActor(fragment4);
 
+        setTransform(true);
         setSize(Grid.unit(1), Grid.unit(1));
         setOrigin(getWidth() * 0.5f, getHeight() * 0.5f);
         setRotation(0);

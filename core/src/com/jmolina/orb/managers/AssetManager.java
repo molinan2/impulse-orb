@@ -68,7 +68,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
                 if (name.endsWith(".fnt")) {
                     load(field.get(c).toString(), BitmapFont.class);
                 }
-                else if (name.endsWith(".music.mp3")) {
+                else if (name.endsWith(".music.mp3") || name.endsWith(".music.ogg")) {
                     load(field.get(c).toString(), Music.class);
                 }
                 else if (name.endsWith(".mp3")) {

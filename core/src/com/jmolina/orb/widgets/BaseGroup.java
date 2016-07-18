@@ -22,12 +22,16 @@ public class BaseGroup extends Group implements Reseteable, Disposable {
     private AssetManager assetManager;
 
     public BaseGroup(AssetManager am) {
-        setScale(1.0f, 1.0f);
-        setOrigin(0f, 0f);
         setAssetManager(am);
 
+        // Disabling Transform (scale, rotate) improves drawing performance
+        // setTransform(false);
+
+        setScale(1.0f, 1.0f);
+        setOrigin(0f, 0f);
+
         brightness = 0.0f;
-        shader = new ShaderProgram( Gdx.files.internal("shader/brightness.vert"), Gdx.files.internal("shader/brightness.frag"));
+        shader = new ShaderProgram(Gdx.files.internal("shader/brightness.vert"), Gdx.files.internal("shader/brightness.frag"));
     }
 
     @Override

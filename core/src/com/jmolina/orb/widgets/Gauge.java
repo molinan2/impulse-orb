@@ -23,6 +23,7 @@ public class Gauge extends BaseGroup {
     public Gauge(AssetManager am) {
         super(am);
 
+
         background = new Image(getAsset(Asset.HUD_GAUGE_BACKGROUND, Texture.class));
         bar = new Image(getAsset(Asset.HUD_GAUGE_BAR, Texture.class));
         overload = new Image(getAsset(Asset.HUD_GAUGE_OVERLOAD, Texture.class));
@@ -40,6 +41,7 @@ public class Gauge extends BaseGroup {
         addActor(overload);
         addActor(frame);
 
+        setTransform(false);
         setSize(Grid.unit(1), Grid.unit(1.5f));
         setOrigin(background.getWidth() * 0.5f, background.getHeight() * 0.5f);
 

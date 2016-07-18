@@ -19,6 +19,7 @@ public class PauseButton extends BaseGroup {
     public PauseButton(AssetManager am) {
         super(am);
 
+
         paused = false;
         pauseDrawable = new TextureRegionDrawable(new TextureRegion(getAsset(Asset.HUD_PAUSE, Texture.class)));
         resumeDrawable = new TextureRegionDrawable(new TextureRegion(getAsset(Asset.HUD_PAUSE_RESUME, Texture.class)));
@@ -26,6 +27,8 @@ public class PauseButton extends BaseGroup {
         image.setPosition(0f, 0f);
 
         addActor(image);
+
+        setTransform(false);
         setHeight(Grid.unit(1.5f));
         setOrigin(image.getWidth() * 0.5f, image.getHeight() * 0.5f);
     }

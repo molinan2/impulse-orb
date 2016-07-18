@@ -20,7 +20,7 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.interfaces.Backable;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.stages.BackgroundStage;
-import com.jmolina.orb.stages.BaseStage;
+import com.jmolina.orb.stages.BackableStage;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -38,7 +38,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
 
     private SuperManager superManager;
     private Viewport mainViewport, backgroundViewport;
-    private BaseStage mainStage;
+    private BackableStage mainStage;
     private BackgroundStage backgroundStage;
     private Hierarchy hierarchy;
     private SnapshotArray<Actor> actors;
@@ -57,7 +57,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         actors = new SnapshotArray<Actor>();
         mainViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         backgroundViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        mainStage = new BaseStage(mainViewport, UIRunnable.backOperation(this));
+        mainStage = new BackableStage(mainViewport, UIRunnable.backOperation(this));
         backgroundStage = new BackgroundStage(getAssetManager(), backgroundViewport);
         multiplexer = new InputMultiplexer();
 

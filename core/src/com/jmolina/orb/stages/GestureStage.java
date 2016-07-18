@@ -15,6 +15,10 @@ import com.jmolina.orb.screens.Level;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
+/**
+ * TODO
+ * Hacer de fling un objeto
+ */
 public class GestureStage extends Stage {
 
     private final float VIEWPORT_WIDTH = BaseScreen.VIEWPORT_WIDTH;
@@ -61,6 +65,7 @@ public class GestureStage extends Stage {
         fling.addActor(base);
         fling.addActor(line);
         fling.addActor(arrow);
+        fling.setTransform(false);
         addActor(fling);
         fling.addAction(fadeOut(0));
     }

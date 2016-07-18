@@ -24,6 +24,7 @@ public class Timer extends BaseGroup {
     public Timer(AssetManager am) {
         super(am);
 
+
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = new Color(BaseGroup.COLOR_WHITE);
         style.font = getAsset(Asset.FONT_ROBOTO_BOLD_90, BitmapFont.class);
@@ -37,6 +38,7 @@ public class Timer extends BaseGroup {
 
         addActor(label);
 
+        setTransform(false);
         setHeight(Grid.unit(1.5f));
     }
 

@@ -75,7 +75,7 @@ public class Level extends BaseScreen {
     /**
      * Fields
      */
-    public float ratioMeterPixel; // Grid: 12x18.5, 64 pixel/metro
+    private float ratioMeterPixel; // Grid: 12x18.5, 64 pixel/metro
     private float impulseFactor;
     private float impulseMax;
 
