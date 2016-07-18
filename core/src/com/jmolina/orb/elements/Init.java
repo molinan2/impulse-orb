@@ -8,10 +8,10 @@ import com.jmolina.orb.assets.Asset;
 public class Init extends Element {
 
     public Init(AssetManager am, World world, float x, float y, float ratioMeterPixel) {
-        super(am, world, x, y, 10, 4, 0, Type.BLUE, ratioMeterPixel);
-        setActorTexture(am.get(Asset.GAME_INIT, Texture.class));
-        getBody().getFixtureList().first().setSensor(true);
-        setUserData(Type.BLUE, Effect.NONE);
+        super(am, world, x, y, 10, 4, 0, Flavor.BLUE, ratioMeterPixel);
+        setTexture(getAsset(Asset.GAME_INIT, Texture.class));
+        setAsSensor(true);
+        setUserData(Flavor.BLUE, Effect.NONE);
     }
 
 }

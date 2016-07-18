@@ -7,11 +7,11 @@ import com.jmolina.orb.elements.Element;
  */
 public class UserData {
 
-    public Element.Type type = Element.Type.GREY;
+    public Element.Flavor flavor = Element.Flavor.GREY;
     public Element.Effect effect = Element.Effect.NONE;
 
     public String toString() {
-        return type + ": " + effect + ".";
+        return flavor + ": " + effect + ".";
     }
 
 }

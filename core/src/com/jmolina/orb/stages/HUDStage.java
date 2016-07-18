@@ -213,13 +213,13 @@ public class HUDStage extends Stage {
      * Constructor
      *
      * @param am AssetManager
-     * @param l Level Futuro GameManager
+     * @param level Level Futuro GameManager
      * @param vp Viewport
      */
-    public HUDStage(AssetManager am, Level l, Viewport vp) {
+    public HUDStage(AssetManager am, Level level, Viewport vp) {
         super(vp);
 
-        level = l;
+        this.level = level;
         background = new HUDBackground(am);
         timer = new Timer(am);
         pauseButton = new PauseButton(am);

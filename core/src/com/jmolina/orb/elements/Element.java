@@ -11,20 +11,21 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.assets.Asset;
-import com.jmolina.orb.screens.Level;
+import com.jmolina.orb.data.UserData;
 
 
 public class Element {
 
-    public enum Type {BLACK, GREY, RED, BLUE}
-    public enum Effect {NONE, EXIT, DESTROY, HEAT, COOL, CUSTOM}
-    public enum Geometry {CIRCLE, SQUARE}
+    public enum Flavor { BLACK, GREY, RED, BLUE }
+    public enum Effect { NONE, EXIT, DESTROY, HEAT, COOL, CUSTOM }
+    public enum Geometry { CIRCLE, SQUARE }
 
     private final float DENSITY = 1.0f;
     private final float RESTITUTION = 0.6f;
-    private final float FRICTION = 0.8f; // friction=0 evita rotaciones al chocar
+    private final float FRICTION = 0.8f; // FRICTION = 0 evita rotaciones al colisionar
 
     private float pixelsPerMeter;
     private AssetManager assetManager;
@@ -33,19 +34,19 @@ public class Element {
     private float width, height;
 
     public Element(AssetManager am, World world, float x, float y, float w, float h, float ratioMeterPixel) {
-        this(am, world, x, y, w, h, 0, Type.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
+        this(am, world, x, y, w, h, 0, Flavor.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
     }
 
     public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, float ratioMeterPixel) {
-        this(am, world, x, y, w, h, angle, Type.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
+        this(am, world, x, y, w, h, angle, Flavor.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
     }
 
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Type type, float ratioMeterPixel) {
-        this(am, world, x, y, w, h, angle, type, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, float ratioMeterPixel) {
+        this(am, world, x, y, w, h, angle, flavor, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
     }
 
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Type type, Geometry geometry, float ratioMeterPixel) {
-        this(am, world, x, y, w, h, angle, type, geometry, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry, float ratioMeterPixel) {
+        this(am, world, x, y, w, h, angle, flavor, geometry, BodyDef.BodyType.KinematicBody, ratioMeterPixel);
     }
 
     /**
@@ -58,11 +59,11 @@ public class Element {
      * @param w Width of the element (World units)
      * @param h Heigth of the element (World units)
      * @param angle Rotation of the element in degrees counterclockwise
-     * @param type Type
+     * @param flavor Flavor
      * @param geometry Geometry
      * @param bodyType BodyDef.BodyType
      */
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Type type, Geometry geometry, BodyDef.BodyType bodyType, float ratioMeterPixel) {
+    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry, BodyDef.BodyType bodyType, float ratioMeterPixel) {
         assetManager = am;
         pixelsPerMeter = 1 / ratioMeterPixel;
         width = w;
@@ -71,6 +72,7 @@ public class Element {
         FixtureDef fixtureDef = new FixtureDef();
         BodyDef bodyDef = new BodyDef();
         actor = new BaseActor();
+        actor.setRotation(angle);
 
         fixtureDef.density = DENSITY;
         fixtureDef.restitution = RESTITUTION;
@@ -79,16 +81,12 @@ public class Element {
         bodyDef.type = bodyType;
         bodyDef.position.set(x, y);
         bodyDef.angle = angle * MathUtils.degreesToRadians;
-
         body = world.createBody(bodyDef);
         body.createFixture(fixtureDef);
         fixtureDef.shape.dispose();
 
-        setUserData(type);
-
-        Texture texture = createTexture(geometry, type);
-        setActorTexture(texture);
-        actor.setRotation(angle);
+        setUserData(flavor);
+        setTexture(createTexture(geometry, flavor));
     }
 
     public synchronized <T> T getAsset (String fileName) {
@@ -99,7 +97,7 @@ public class Element {
         return this.assetManager.get(fileName, type);
     }
 
-    public BaseActor getActor() {
+    public Actor getActor() {
         return actor;
     }
 
@@ -107,12 +105,8 @@ public class Element {
         return body;
     }
 
-    /**
-     * Grid position
-     */
     public void setPosition(float x, float y) {
-        getBody().setTransform(x, y, getBody().getAngle()
-        );
+        getBody().setTransform(x, y, getBody().getAngle());
     }
 
     public Vector2 getPosition () {
@@ -125,13 +119,16 @@ public class Element {
     }
 
     public void syncBody() {
-        // TODO
         // Iguala la posicion
+        // TODO
 
-        // Iguala solo la rotacion
-        // TODO Esto generara un error de Java al hacer dispose()
+        // Iguala la rotacion
         if (actor != null && body != null) {
-            body.setTransform(body.getPosition().x, body.getPosition().y, MathUtils.degreesToRadians * actor.getRotation());
+            body.setTransform(
+                    body.getPosition().x,
+                    body.getPosition().y,
+                    MathUtils.degreesToRadians * actor.getRotation()
+            );
         }
     }
 
@@ -163,50 +160,44 @@ public class Element {
         return shape;
     }
 
-    /**
-     * TODO
-     *
-     * Es confuso que no tengan correlacion los tipos con las texturas que se cargan
-     * La textura deberia ser un parametro. Si no se pasa textura, se utiliza este metodo
-     */
-    private Texture createTexture (Geometry geometry, Type type) {
-        /*
-        if (type == Type.BLUE) {
-            return getAsset(Asset.GAME_EXIT, Texture.class);
+    private Texture createTexture(Geometry geometry, Flavor flavor) {
+        switch (geometry) {
+            case CIRCLE: return circleTexture(flavor);
+            case SQUARE: return squareTexture(flavor);
+            default: return squareTexture(flavor);
         }
-        */
+    }
 
-        if (geometry == Geometry.CIRCLE) {
-            switch (type) {
-                case BLACK: return getAsset(Asset.GAME_CIRCLE_BLACK, Texture.class);
-                case GREY: return getAsset(Asset.GAME_CIRCLE_GREY, Texture.class);
-                case RED: return getAsset(Asset.GAME_CIRCLE_RED, Texture.class);
-            }
+    private Texture circleTexture(Flavor flavor) {
+        switch (flavor) {
+            case BLACK: return getAsset(Asset.GAME_CIRCLE_BLACK, Texture.class);
+            case GREY: return getAsset(Asset.GAME_CIRCLE_GREY, Texture.class);
+            case RED: return getAsset(Asset.GAME_CIRCLE_RED, Texture.class);
+            default: return getAsset(Asset.GAME_CIRCLE_GREY, Texture.class);
         }
-        else if (geometry == Geometry.SQUARE) {
-            switch (type) {
-                case BLACK: return getAsset(Asset.GAME_SQUARE_BLACK, Texture.class);
-                case GREY: return getAsset(Asset.GAME_SQUARE_GREY, Texture.class);
-                case RED: return getAsset(Asset.GAME_SQUARE_RED, Texture.class);
-            }
-        }
+    }
 
-        return getAsset(Asset.GAME_SQUARE_GREY, Texture.class); // No deberia ocurrir
+    private Texture squareTexture(Flavor flavor) {
+        switch (flavor) {
+            case BLACK: return getAsset(Asset.GAME_SQUARE_BLACK, Texture.class);
+            case GREY: return getAsset(Asset.GAME_SQUARE_GREY, Texture.class);
+            case RED: return getAsset(Asset.GAME_SQUARE_RED, Texture.class);
+            default: return getAsset(Asset.GAME_SQUARE_GREY, Texture.class);
+        }
     }
 
     private Shape createShape (Geometry geometry, float width, float height) {
         switch (geometry) {
             case SQUARE: return square(width, height);
             case CIRCLE: return circle(width);
+            default: return square(width, height);
         }
-
-        return square(width, height); // No deberia ocurrir
     }
 
     /**
      * Modifica la textura del actor y reajusta la escala del actor
      */
-    public void setActorTexture (Texture texture) {
+    public void setTexture(Texture texture) {
         float scaleX = pixelsPerMeter * width / texture.getWidth();
         float scaleY = pixelsPerMeter * height / texture.getHeight();
 
@@ -214,21 +205,21 @@ public class Element {
         actor.setScale(scaleX, scaleY);
     }
 
-    public void setUserData(Type type) {
-        com.jmolina.orb.data.UserData userData = new com.jmolina.orb.data.UserData();
+    public void setUserData(Flavor flavor) {
+        UserData userData = new UserData();
 
-        if (type == Type.RED)
+        if (flavor == Flavor.RED)
             userData.effect = Effect.DESTROY;
         else
             userData.effect = Effect.NONE;
 
-        userData.type = type;
+        userData.flavor = flavor;
         body.getFixtureList().first().setUserData(userData);
     }
 
-    public void setUserData(Type type, Effect effect) {
-        com.jmolina.orb.data.UserData userData = new com.jmolina.orb.data.UserData();
-        userData.type = type;
+    public void setUserData(Flavor flavor, Effect effect) {
+        UserData userData = new UserData();
+        userData.flavor = flavor;
         userData.effect = effect;
         body.getFixtureList().first().setUserData(userData);
     }
@@ -236,6 +227,10 @@ public class Element {
     public void resetAngle() {
         actor.setRotation(0);
         body.setTransform(body.getPosition().x, body.getPosition().y, 0);
+    }
+
+    public void setAsSensor(boolean isSensor) {
+        getBody().getFixtureList().first().setSensor(isSensor);
     }
 
 }

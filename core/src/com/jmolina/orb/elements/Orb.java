@@ -1,17 +1,12 @@
 package com.jmolina.orb.elements;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jmolina.orb.assets.Asset;
-import com.jmolina.orb.widgets.FragmentedOrb;
+import com.jmolina.orb.widgets.OrbFragments;
 
 /**
  * TODO
@@ -29,11 +24,11 @@ import com.jmolina.orb.widgets.FragmentedOrb;
  * Habria que refactorizar (BasicElement -> Orb, BasicElement -> Element -> (Todos))
  *
  * TODO
- * Cuando se llegue a Overload, que se ponga naranja (cambio de textura en FragmentedOrb
+ * Cuando se llegue a Overload, que se ponga naranja (cambio de textura en OrbFragments
  */
 public class Orb extends Element {
 
-    private final float DIAMETER = 1f;
+    private final float DIAMETER = 1.0f;
     private final float INFINITE_DAMPING = 10000f;
     public static final float HEAT_MIN = 0f;
     public static final float HEAT_MAX = 1f;
@@ -43,33 +38,23 @@ public class Orb extends Element {
     private boolean locked = false;
     private boolean overloaded = false;
     private float heat = 0f;
-    private FragmentedOrb fragmentedActor;
-    private float originalScale;
+    private float naturalScale;
+    private OrbFragments fragments;
 
     public boolean disposing = false;
 
-    public Orb(AssetManager am, World world, float ratioMeterPixel) {
-        super(am, world, 6, 2, 1f, 1f, 0, Type.GREY, Geometry.CIRCLE, ratioMeterPixel);
+    public Orb(AssetManager am, World world, float pixelsPerMeter) {
+        super(am, world, 6, 2, 1f, 1f, 0, Flavor.GREY, Geometry.CIRCLE, BodyDef.BodyType.DynamicBody, pixelsPerMeter);
 
-        getActor().setTexture(am.get(Asset.GAME_ORB, Texture.class));
-        getBody().setType(BodyDef.BodyType.DynamicBody);
+        getBody().setSleepingAllowed(false); // Evita que se quede dormido. ¡La Gravedad no despierta!
 
-        // Evita que se quede dormido después de lock().
-        // ¡La Gravedad no despierta a un objeto dormido!
-        getBody().setSleepingAllowed(false);
-
-        fragmentedActor = new FragmentedOrb(am);
-        fragmentedActor.setTouchable(Touchable.disabled);
-        fragmentedActor.setPositionGrid(3, 3);
-
-        float pixelsPerMeter = 1 / ratioMeterPixel;
-        float width = 1;
-        originalScale = pixelsPerMeter * width / fragmentedActor.getWidth();
-        fragmentedActor.setScale(originalScale);
+        fragments = new OrbFragments(am);
+        naturalScale = pixelsPerMeter * DIAMETER / fragments.getWidth();
+        fragments.setScale(naturalScale);
     }
 
     /**
-     * Anula las fuerzas que afectan al Orb aplicando un amortiguamente infinito.
+     * Anula las fuerzas que afectan al Orb aplicando un amortiguamiento infinito
      */
     public void lock() {
         locked = true;
@@ -114,21 +99,23 @@ public class Orb extends Element {
         return heat;
     }
 
-    public Actor getFragmentedActor() {
-        return fragmentedActor;
+
+    @Override
+    public Actor getActor() {
+        return fragments;
     }
 
     @Override
     public void syncBody() {
         // Iguala solo la rotacion. La posicion no es necesaria en el Orb
-        if (fragmentedActor != null) {
+        if (fragments != null) {
             // Fix: La llamada a Body#setTransform peta la JVM cuando se hace Level#dispose().
             // Comprobamos que no se ha hecho Level#dispose() antes de ejecutar Body#setTransform.
             if (!disposing) {
                 getBody().setTransform(
                         getBody().getPosition().x,
                         getBody().getPosition().y,
-                        MathUtils.degreesToRadians * fragmentedActor.getRotation()
+                        MathUtils.degreesToRadians * fragments.getRotation()
                 );
             }
         }
@@ -138,25 +125,25 @@ public class Orb extends Element {
     public void syncActor(Viewport viewport, float worldWidth, float worldHeight, float pixelsPerMeter) {
         super.syncActor(viewport, worldWidth, worldHeight, pixelsPerMeter);
 
-        if (fragmentedActor != null) {
+        if (fragments != null) {
             float offsetX = worldWidth * 0.5f;
             float offsetY = worldHeight * 0.5f;
 
-            fragmentedActor.setPosition(
-                    pixelsPerMeter * (getBody().getPosition().x - (viewport.getCamera().position.x - offsetX)) - 0.5f * fragmentedActor.getWidth(),
-                    pixelsPerMeter * (getBody().getPosition().y - (viewport.getCamera().position.y - offsetY)) - 0.5f * fragmentedActor.getHeight()
+            fragments.setPosition(
+                    pixelsPerMeter * (getBody().getPosition().x - (viewport.getCamera().position.x - offsetX)) - 0.5f * fragments.getWidth(),
+                    pixelsPerMeter * (getBody().getPosition().y - (viewport.getCamera().position.y - offsetY)) - 0.5f * fragments.getHeight()
             );
 
-            fragmentedActor.setRotation(MathUtils.radiansToDegrees * getBody().getAngle());
+            fragments.setRotation(MathUtils.radiansToDegrees * getBody().getAngle());
         }
     }
 
     public void destroy() {
-        fragmentedActor.destroy();
+        fragments.destroy();
     }
 
     public void resetFragments() {
-        fragmentedActor.reset();
+        fragments.reset();
     }
 
     public boolean isOverloaded() {
@@ -167,8 +154,8 @@ public class Orb extends Element {
         this.overloaded = overloaded;
     }
 
-    public float getOriginalScale() {
-        return originalScale;
+    public float getNaturalScale() {
+        return naturalScale;
     }
 
 }

@@ -17,14 +17,14 @@ public class Situation104 extends SideWalledSituation {
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 4f, 5f, 4, 4, 0,
-                Element.Type.GREY, Element.Geometry.CIRCLE,
+                Element.Flavor.GREY, Element.Geometry.CIRCLE,
                 getRatioMeterPixel()
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 8f, 12f, 4, 4, 0,
-                Element.Type.GREY, Element.Geometry.CIRCLE,
+                Element.Flavor.GREY, Element.Geometry.CIRCLE,
                 getRatioMeterPixel()
         ));
     }

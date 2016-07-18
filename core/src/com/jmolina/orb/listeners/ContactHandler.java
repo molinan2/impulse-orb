@@ -48,13 +48,13 @@ public class ContactHandler implements ContactListener {
     }
 
     private void decide(UserData userData) {
-        if (userData.type == Element.Type.RED) {
+        if (userData.flavor == Element.Flavor.RED) {
             level.destroyOrb();
         }
         else if (userData.effect == Element.Effect.EXIT) {
             level.successGame();
         }
-        else if (userData.type == Element.Type.BLUE) {
+        else if (userData.flavor == Element.Flavor.BLUE) {
             // do nothing
         }
         else {

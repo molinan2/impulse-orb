@@ -3,13 +3,14 @@ package com.jmolina.orb.widgets;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.assets.Asset;
 import com.jmolina.orb.utils.Grid;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.addAction;
 
 
 /**
@@ -20,22 +21,22 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.addAction;
  * 3: Bottom left
  * 4: Bottom right
  */
-public class FragmentedOrb extends BaseGroup {
+public class OrbFragments extends BaseGroup {
+
+    private final float ANIMATION_TIME = 2.0f;
 
     private Image fragment1;
     private Image fragment2;
     private Image fragment3;
     private Image fragment4;
 
-    public FragmentedOrb(AssetManager am) {
+    public OrbFragments(AssetManager am) {
         super(am);
 
         fragment1 = new Image(getAsset(Asset.GAME_ORB_FRAGMENT_1, Texture.class));
         fragment2 = new Image(getAsset(Asset.GAME_ORB_FRAGMENT_2, Texture.class));
         fragment3 = new Image(getAsset(Asset.GAME_ORB_FRAGMENT_3, Texture.class));
         fragment4 = new Image(getAsset(Asset.GAME_ORB_FRAGMENT_4, Texture.class));
-
-        reset();
 
         addActor(fragment1);
         addActor(fragment2);
@@ -44,9 +45,11 @@ public class FragmentedOrb extends BaseGroup {
 
         setTransform(true);
         setSize(Grid.unit(1), Grid.unit(1));
-        setOrigin(getWidth() * 0.5f, getHeight() * 0.5f);
+        setOrigin(0.5f * getWidth(), 0.5f * getHeight());
         setRotation(0);
-        setScale(1, 1);
+        setScale(1);
+
+        reset();
     }
 
     public float randomDistance() {
@@ -58,35 +61,14 @@ public class FragmentedOrb extends BaseGroup {
     }
 
     public void destroy() {
-        addAction(parallel(
-                run(new Runnable() {
-                    @Override
-                    public void run() {
-                        fragment1.addAction(parallel(
-                                Actions.rotateBy(randomAngle(), 2),
-                                Actions.moveBy(randomDistance(), randomDistance(), 2)
-                        ));
+        fragment1.addAction(destruction());
+        fragment2.addAction(destruction());
+        fragment3.addAction(destruction());
+        fragment4.addAction(destruction());
 
-                        fragment2.addAction(parallel(
-                                Actions.rotateBy(randomAngle(), 2),
-                                Actions.moveBy(randomDistance(), randomDistance(), 2)
-                        ));
-
-                        fragment3.addAction(parallel(
-                                Actions.rotateBy(randomAngle(), 2),
-                                Actions.moveBy(randomDistance(), randomDistance(), 2)
-                        ));
-
-                        fragment4.addAction(parallel(
-                                Actions.rotateBy(randomAngle(), 2),
-                                Actions.moveBy(randomDistance(), randomDistance(), 2)
-                        ));
-                    }
-                }),
-                sequence(
-                        delay(0.3f),
-                        fadeOut(1f, Interpolation.pow2In)
-                )
+        addAction(sequence(
+                delay(0.25f * ANIMATION_TIME),
+                fadeOut(0.5f * ANIMATION_TIME, Interpolation.pow2In)
         ));
     }
 
@@ -115,15 +97,17 @@ public class FragmentedOrb extends BaseGroup {
         fragment2.setRotation(0);
         fragment3.setRotation(0);
         fragment4.setRotation(0);
-        fragment1.setOrigin(fragment1.getWidth()/2, fragment1.getHeight()/2);
-        fragment2.setOrigin(fragment2.getWidth()/2, fragment2.getHeight()/2);
-        fragment3.setOrigin(fragment3.getWidth()/2, fragment3.getHeight()/2);
-        fragment4.setOrigin(fragment4.getWidth()/2, fragment4.getHeight()/2);
-
-        // fragment1.setScale(scale);
-        // fragment2.setScale(scale);
-        // fragment3.setScale(scale);
-        // fragment4.setScale(scale);
+        fragment1.setOrigin(0.5f * fragment1.getWidth(), 0.5f * fragment1.getHeight());
+        fragment2.setOrigin(0.5f * fragment2.getWidth(), 0.5f * fragment2.getHeight());
+        fragment3.setOrigin(0.5f * fragment3.getWidth(), 0.5f * fragment3.getHeight());
+        fragment4.setOrigin(0.5f * fragment4.getWidth(), 0.5f * fragment4.getHeight());
     };
+
+    private Action destruction() {
+        return new ParallelAction(
+                Actions.rotateBy(randomAngle(), ANIMATION_TIME),
+                Actions.moveBy(randomDistance(), randomDistance(), ANIMATION_TIME)
+        );
+    }
 
 }

@@ -17,7 +17,7 @@ public class Situation107 extends SideWalledSituation {
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 3.5f, 5, 10, 1, 45,
-                Element.Type.GREY, Element.Geometry.SQUARE,
+                Element.Flavor.GREY, Element.Geometry.SQUARE,
                 getRatioMeterPixel()
         ));
 
@@ -25,7 +25,7 @@ public class Situation107 extends SideWalledSituation {
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 8.5f, 13, 10, 1, -45,
-                Element.Type.RED, Element.Geometry.SQUARE,
+                Element.Flavor.RED, Element.Geometry.SQUARE,
                 getRatioMeterPixel()
         ));
     }

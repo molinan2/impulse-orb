@@ -142,15 +142,15 @@ public class Level extends BaseScreen {
     private Runnable orbIntro = new Runnable() {
         @Override
         public void run() {
-            getOrb().getFragmentedActor().addAction(sequence(
+            getOrb().getActor().addAction(sequence(
                     parallel(
-                            scaleBy(4 * getOrb().getOriginalScale(), 4 * getOrb().getOriginalScale(), 0),
+                            scaleBy(4 * getOrb().getNaturalScale(), 4 * getOrb().getNaturalScale(), 0),
                             rotateTo(0, 0),
                             alpha(0)
                     ),
                     parallel(
                             rotateTo(360, ORB_INTRO_SEQUENCE_TIME, Interpolation.exp5),
-                            scaleTo(getOrb().getOriginalScale(), getOrb().getOriginalScale(), ORB_INTRO_SEQUENCE_TIME, Interpolation.pow2),
+                            scaleTo(getOrb().getNaturalScale(), getOrb().getNaturalScale(), ORB_INTRO_SEQUENCE_TIME, Interpolation.pow2),
                             fadeIn(ORB_INTRO_SEQUENCE_TIME, Interpolation.pow2)
                     )
             ));
@@ -162,7 +162,7 @@ public class Level extends BaseScreen {
     private Runnable orbExit = new Runnable() {
         @Override
         public void run() {
-            getOrb().getFragmentedActor().addAction(sequence(
+            getOrb().getActor().addAction(sequence(
                     parallel(
                             rotateBy(360, ORB_INTRO_SEQUENCE_TIME, Interpolation.exp5Out),
                             scaleTo(4, 4, ORB_INTRO_SEQUENCE_TIME, Interpolation.pow2),
@@ -199,7 +199,7 @@ public class Level extends BaseScreen {
         lastOrbPosition = new Vector2();
 
         world = new World(WORLD_GRAVITY, true);
-        orb = new Orb(getAssetManager(), getWorld(), getRatioMeterPixel());
+        orb = new Orb(getAssetManager(), getWorld(), getPixelsPerMeter());
         contactHandler = new ContactHandler(this);
         world.setContactListener(contactHandler);
 
@@ -397,8 +397,7 @@ public class Level extends BaseScreen {
     }
 
     public void addOrb(Orb orb) {
-        //addMainActor(orb.getActor());
-        addMainActor(orb.getFragmentedActor());
+        addMainActor(orb.getActor());
         orb.syncActor(worldViewport, getWorldWidth(), getWorldHeight(), getPixelsPerMeter());
         orb.getActor().setZIndex(INFINITE_Z_INDEX);
     }
@@ -418,7 +417,6 @@ public class Level extends BaseScreen {
         }
 
         orb.getActor().setZIndex(INFINITE_Z_INDEX);
-        orb.getFragmentedActor().setZIndex(INFINITE_Z_INDEX);
     }
 
     public SnapshotArray<Situation> getSituations () {
@@ -509,7 +507,7 @@ public class Level extends BaseScreen {
                         hudStage.getHUDBackground().setPositionGrid(-12, -18);
                     }
                 }),
-                //fadeIn(0.35f, Interpolation.pow2),
+                // fadeIn(0.35f, Interpolation.pow2),
                 run(new Runnable() {
                     @Override
                     public void run() {
@@ -562,7 +560,7 @@ public class Level extends BaseScreen {
                 run(new Runnable() {
                     @Override
                     public void run() {
-                        getOrb().getFragmentedActor().addAction(sequence(
+                        getOrb().getActor().addAction(sequence(
                                 parallel(
                                         rotateBy(360, ORB_EXIT_SEQUENCE_TIME, Interpolation.exp5Out),
                                         scaleTo(4, 4, ORB_EXIT_SEQUENCE_TIME, Interpolation.pow2),

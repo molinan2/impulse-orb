@@ -25,21 +25,21 @@ public class Situation1Start extends SideWalledSituation {
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 6, -9 + 0.5f, 12, 18, 0,
-                Element.Type.BLACK, Element.Geometry.SQUARE,
+                Element.Flavor.BLACK, Element.Geometry.SQUARE,
                 getRatioMeterPixel()
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 -6 + 0.5f, -9 + 0.5f, 12, 18, 0,
-                Element.Type.BLACK, Element.Geometry.SQUARE,
+                Element.Flavor.BLACK, Element.Geometry.SQUARE,
                 getRatioMeterPixel()
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 18 - 0.5f, -9 + 0.5f, 12, 18, 0,
-                Element.Type.BLACK, Element.Geometry.SQUARE,
+                Element.Flavor.BLACK, Element.Geometry.SQUARE,
                 getRatioMeterPixel()
         ));
     }
