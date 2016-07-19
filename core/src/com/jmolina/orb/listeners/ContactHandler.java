@@ -49,7 +49,7 @@ public class ContactHandler implements ContactListener {
 
     private void decide(UserData userData) {
         if (userData.flavor == Element.Flavor.RED) {
-            level.destroy();
+            level.destroyEvent();
         }
         else if (userData.effect == Element.Effect.EXIT) {
             level.successGame();
@@ -58,7 +58,7 @@ public class ContactHandler implements ContactListener {
             // do nothing
         }
         else {
-            level.collision();
+            level.collisionEvent();
         }
     }
 

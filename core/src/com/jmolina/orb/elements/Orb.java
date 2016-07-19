@@ -14,7 +14,7 @@ import com.jmolina.orb.widgets.OrbFragments;
  * TODO
  * Heat:
  * Cuando se llegue al 100%, se mantiene bloqueado (OVERLOAD) al 100% durante X segundos.
- * Si estando en estado OVERLOAD se recibe otro tap, el orbe se destruye.
+ * Si estando en estado OVERLOAD se recibe otro tapEvent, el orbe se destruye.
  * Pasados X segundos, se reanuda el COOLING.
  *
  * TODO

@@ -47,7 +47,7 @@ public class Options extends Menu {
                 getGameManager().play(GameManager.Fx.Option);
                 prefsManager.putOptionMusic(music.isChecked());
                 prefsManager.save();
-                getGameManager().updateOptions();
+                getGameManager().fetchOptions();
             }
         });
 
@@ -57,7 +57,7 @@ public class Options extends Menu {
                 sound.toggle();
                 prefsManager.putOptionSound(sound.isChecked());
                 prefsManager.save();
-                getGameManager().updateOptions();
+                getGameManager().fetchOptions();
                 getGameManager().play(GameManager.Fx.Option);
             }
         });
@@ -70,7 +70,7 @@ public class Options extends Menu {
                 prefsManager.putOptionVibration(vibration.isChecked());
 
                 if (vibration.isChecked())
-                    Gdx.input.vibrate(50);
+                    getGameManager().vibrate(GameManager.Length.Medium);
             }
         });
 
@@ -121,7 +121,7 @@ public class Options extends Menu {
     @Override
     public void hide () {
         prefsManager.save();
-        getGameManager().updateOptions();
+        getGameManager().fetchOptions();
         super.hide();
     }
 

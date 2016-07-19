@@ -13,13 +13,13 @@ public class GestureHandler extends GestureDetector.GestureAdapter {
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        level.tap();
+        level.tapEvent();
         return false;
     }
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        level.fling(velocityX, velocityY);
+        level.flingEvent(velocityX, velocityY);
         return false;
     }
 

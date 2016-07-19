@@ -9,6 +9,7 @@ import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.var.Var;
+import com.sun.glass.ui.Window;
 
 /**
  * TODO
@@ -18,12 +19,13 @@ import com.jmolina.orb.var.Var;
  *
  * TODO
  * Trasladar aqui los metodos de control implementados en Level: pause, resume, restart,
- * destroy, increaseGauge gauge, decrease gauge,...
+ * destroyEvent, increaseGauge gauge, decrease gauge,...
  */
 public class GameManager {
 
     public enum Fx { Back, Button, Collision, Destroy, Exit, Fling, Init, Option, Tap }
     public enum Track { Menu, Game, Success }
+    public enum Length { Short, Medium, Long }
 
     private final float PIXELS_PER_METER = Var.GRID_CELL_SIZE;
     private final float ZOOM_MULTIPLIER = 1.66f;
@@ -35,7 +37,6 @@ public class GameManager {
 
     private SuperManager superManager;
     private PrefsManager prefsManager;
-    private Level currentLevel;
     private Attempt cachedAttempt; // Cachea las stats para mostrarlas en Success
     private boolean vibration = true;
     private boolean sound = true;
@@ -43,6 +44,7 @@ public class GameManager {
     private int zoom = PrefsManager.OPTION_ZOOM_DEFAULT;
     private Sound backSound, buttonSound, collisionSound, destroySound, exitSound, flingSound, initSound, optionSound, tapSound;
     private Music menuMusic, gameMusic, successMusic;
+    private Level currentLevel;
 
     /**
      * Constructor
@@ -54,7 +56,7 @@ public class GameManager {
         cachedAttempt.setSuccessful(true);
         createSounds();
         createMusic();
-        updateOptions();
+        fetchOptions();
     }
 
     public void dispose() {
@@ -74,7 +76,7 @@ public class GameManager {
     /**
      * Sólo se llama desde el menú (Options)
      */
-    public void updateOptions() {
+    public void fetchOptions() {
         vibration = prefsManager.getOptionVibration();
         sound = prefsManager.getOptionSound();
         music = prefsManager.getOptionMusic();
@@ -83,11 +85,6 @@ public class GameManager {
         if (!music) stopMusic();
         else playTrack(Track.Menu);
     }
-
-    public void setCurrentLevel (Level screen) {
-        currentLevel = screen;
-    }
-
 
     public void cacheAttempt(Attempt attempt) {
         if (attempt != null) {
@@ -100,16 +97,13 @@ public class GameManager {
         return cachedAttempt;
     }
 
-    public void vibrateShort() {
-        vibrate(VIBRATION_SHORT);
-    }
-
-    public void vibrateMedium() {
-        vibrate(VIBRATION_MEDIUM);
-    }
-
-    public void vibrateLong() {
-        vibrate(VIBRATION_LONG);
+    public void vibrate(Length length) {
+        switch (length) {
+            case Short: vibrate(VIBRATION_SHORT); break;
+            case Medium: vibrate(VIBRATION_MEDIUM); break;
+            case Long: vibrate(VIBRATION_LONG); break;
+            default: vibrate(VIBRATION_MEDIUM); break;
+        }
     }
 
     private void vibrate(int duration) {
@@ -208,14 +202,20 @@ public class GameManager {
         }
     }
 
-    public synchronized <T> T getAsset (String fileName, Class<T> type) {
+    private synchronized <T> T getAsset (String fileName, Class<T> type) {
         return superManager.getAssetManager().get(fileName, type);
     }
 
-    public void stopMusic() {
+    private void stopMusic() {
         gameMusic.stop();
         menuMusic.stop();
         successMusic.stop();
     }
+
+    public void setCurrentLevel(Level level) {
+        currentLevel = level;
+    }
+
+    
 
 }

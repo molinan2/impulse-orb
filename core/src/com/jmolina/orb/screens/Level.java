@@ -475,26 +475,26 @@ public class Level extends BaseScreen {
         getOrb().outro(switchToSuccess);
     }
 
-    
+
     /**
      * Eventos
      */
 
-    public void collision() {
+    public void collisionEvent() {
         getGameManager().play(GameManager.Fx.Collision);
-        getGameManager().vibrateShort();
+        getGameManager().vibrate(GameManager.Length.Short);
     }
 
-    public void tap() {
+    public void tapEvent() {
         if (!isGameInactive()) {
             getOrb().lock();
             getOrb().increaseHeat();
             gestureStage.drawTap();
-            getGameManager().vibrateMedium();
+            getGameManager().vibrate(GameManager.Length.Medium);
             getGameManager().play(GameManager.Fx.Tap);
 
             if (getOrb().isOverloaded()) {
-                destroy();
+                destroyEvent();
             }
             else if (getOrb().isHeatMaxed()) {
                 getOrb().setOverloaded(true);
@@ -503,7 +503,7 @@ public class Level extends BaseScreen {
         }
     }
 
-    public void fling (float velocityX, float velocityY) {
+    public void flingEvent(float velocityX, float velocityY) {
         float impulseX = MathUtils.clamp(velocityX * impulseFactor, -GESTURE_MAX_FLING_IMPULSE, GESTURE_MAX_FLING_IMPULSE);
         float impulseY = MathUtils.clamp(-velocityY * impulseFactor, -GESTURE_MAX_FLING_IMPULSE, GESTURE_MAX_FLING_IMPULSE);
 
@@ -522,10 +522,10 @@ public class Level extends BaseScreen {
         }
     }
 
-    public void destroy() {
+    public void destroyEvent() {
         lockGame();
         stats.setFailed(true);
-        getGameManager().vibrateLong();
+        getGameManager().vibrate(GameManager.Length.Long);
         getGameManager().play(GameManager.Fx.Destroy);
         hudStage.destroy(orbDestroy, reset, orbIntro, unlock, unpause);
     }
