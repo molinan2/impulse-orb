@@ -13,6 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
  * Deberia recibir las dimensiones del Level para ajustarse a ellas. Si las Situation son finalmente
  * de altura fija (18u), bastaria con recibir el numero de situations (corresponderia al TIMES_Y).
  * Actualmente tiene un valor de Region suficientemente alto
+ *
+ * TODO
+ * Actualmente, considera texturas de 4x4 unidades
  */
 public class TiledLayer extends BaseGroup {
 

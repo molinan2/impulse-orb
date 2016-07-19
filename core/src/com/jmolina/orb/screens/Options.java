@@ -70,7 +70,7 @@ public class Options extends Menu {
                 prefsManager.putOptionVibration(vibration.isChecked());
 
                 if (vibration.isChecked())
-                    Gdx.input.vibrate(GameManager.VIBRATION_MEDIUM);
+                    Gdx.input.vibrate(50);
             }
         });
 
@@ -105,7 +105,7 @@ public class Options extends Menu {
     @Override
     public void show() {
         super.show();
-        updateScreenOptions();
+        updateOptions();
     }
 
     @Override
@@ -125,7 +125,7 @@ public class Options extends Menu {
         super.hide();
     }
 
-    private void updateScreenOptions() {
+    private void updateOptions() {
         music.setChecked(prefsManager.getOptionMusic());
         sound.setChecked(prefsManager.getOptionSound());
         vibration.setChecked(prefsManager.getOptionVibration());

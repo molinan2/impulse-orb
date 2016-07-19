@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Grid;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Var;
 

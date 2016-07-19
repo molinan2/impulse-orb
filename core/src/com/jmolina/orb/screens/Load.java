@@ -7,7 +7,7 @@ import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Grid;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.ProgressBar;
 
 import static com.jmolina.orb.managers.ScreenManager.Key.*;

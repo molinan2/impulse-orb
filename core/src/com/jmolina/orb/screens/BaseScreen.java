@@ -21,14 +21,15 @@ import com.jmolina.orb.interfaces.Backable;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.stages.BackgroundStage;
 import com.jmolina.orb.stages.BackableStage;
+import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class BaseScreen extends ScreenAdapter implements Backable {
 
-    public final static float VIEWPORT_HEIGHT = 1184.0f;
-    public final static float VIEWPORT_WIDTH = 768.0f;
-    public final float MIN_DELTA_TIME = 1/60f;
+    public final static float VIEWPORT_WIDTH = Var.SCREEN_WIDTH;
+    public final static float VIEWPORT_HEIGHT = Var.SCREEN_HEIGHT;
+    public final float MIN_DELTA_TIME = Var.FPS;
 
     /** Jerarquía de esta pantalla respecto de la siguiente */
     public enum Hierarchy { LOWER, HIGHER }
@@ -62,8 +63,8 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         multiplexer = new InputMultiplexer();
 
         mainStage.getRoot().setOrigin(VIEWPORT_WIDTH * 0.5f, VIEWPORT_HEIGHT * 0.5f);
-        mainStage.getRoot().setScale(1f, 1f);
         mainStage.getRoot().setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        mainStage.getRoot().setScale(1f);
         mainStage.getRoot().setPosition(0f, 0f);
         addProcessor(mainStage);
 

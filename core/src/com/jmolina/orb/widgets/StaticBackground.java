@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Asset;
 
 /**
  * Background tilable ajustable

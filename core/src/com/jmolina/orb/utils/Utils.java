@@ -9,7 +9,7 @@ public class Utils {
      * Formatea el tiempo en MM:SS.DD
      */
     public static String formatTime(float time) {
-        String formattedDistance = "";
+        String formattedTime = "";
 
         int minutes = (int) (time / 60f);
         int seconds = (int) (time - minutes * 60f);
@@ -19,9 +19,9 @@ public class Utils {
         String secondsString = String.format(new Locale(""), "%02d", seconds);
         String decimalsString = String.format(new Locale(""), "%02d", decimals);
 
-        formattedDistance = minutesString + ":" + secondsString + "." + decimalsString;
+        formattedTime = minutesString + ":" + secondsString + "." + decimalsString;
 
-        return formattedDistance;
+        return formattedTime;
     }
 
     /**

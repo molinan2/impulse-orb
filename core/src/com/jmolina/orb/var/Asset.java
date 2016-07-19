@@ -1,4 +1,4 @@
-package com.jmolina.orb.assets;
+package com.jmolina.orb.var;
 
 // Arroja una Exception al ejecutar la version GWT (HTML)
 

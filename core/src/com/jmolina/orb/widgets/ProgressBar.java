@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.utils.Grid;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
 public class ProgressBar extends BaseGroup implements Disposable {

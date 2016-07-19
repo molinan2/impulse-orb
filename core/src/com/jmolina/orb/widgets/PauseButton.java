@@ -2,11 +2,10 @@ package com.jmolina.orb.widgets;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.utils.Grid;
 
 public class PauseButton extends BaseGroup {

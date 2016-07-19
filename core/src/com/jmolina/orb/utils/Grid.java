@@ -1,13 +1,10 @@
 package com.jmolina.orb.utils;
 
-/**
- * La CELL_SIZE sólo es válida en las pantallas de menú, ya que los niveles pueden tener zoom.
- * Por tanto, esta clase sólo es útil dentro de las pantallas de menú.
- * Edit: por algún motivo, sí que funciona bien en Levels con distinto zoom
- */
+import com.jmolina.orb.var.Var;
+
 public class Grid {
 
-    private final static float CELL_SIZE = 64.0f;
+    private final static float CELL_SIZE = Var.GRID_CELL_SIZE;
 
     /**
      * Translates grid cells to pixels
@@ -30,7 +27,7 @@ public class Grid {
     }
 
     /**
-     * Equivalent to Var.VIEWPORT_HEIGHT
+     * Height of the grid viewport
      *
      * @return float
      */
@@ -39,7 +36,7 @@ public class Grid {
     }
 
     /**
-     * Equivalent to Var.VIEWPORT_WIDTH
+     * Width of the grid viewport
      *
      * @return float
      */

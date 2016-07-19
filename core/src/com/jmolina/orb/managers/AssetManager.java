@@ -1,7 +1,6 @@
 package com.jmolina.orb.managers;
 
 // import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -10,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Field;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Asset;
 
 public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 

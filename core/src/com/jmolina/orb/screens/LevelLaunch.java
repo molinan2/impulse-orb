@@ -3,7 +3,7 @@ package com.jmolina.orb.screens;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;

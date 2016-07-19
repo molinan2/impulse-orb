@@ -4,10 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.screens.Level;
+import com.jmolina.orb.var.Var;
 
 /**
  * TODO
@@ -24,26 +25,22 @@ public class GameManager {
     public enum Fx { Back, Button, Collision, Destroy, Exit, Fling, Init, Option, Tap }
     public enum Track { Menu, Game, Success }
 
-    public static final int VIBRATION_SHORT = 5;
-    public static final int VIBRATION_MEDIUM = 30;
-    public static final int VIBRATION_LONG = 300;
-    public static final float RATIO_METER_PIXEL = 0.015625f;
-    public static final float PIXELS_PER_METER = 64f;
-    private final float ZOOM_STEP = 1.66f;
+    private final float PIXELS_PER_METER = Var.GRID_CELL_SIZE;
+    private final float ZOOM_MULTIPLIER = 1.66f;
+    private final int VIBRATION_SHORT = 5;
+    private final int VIBRATION_MEDIUM = 30;
+    private final int VIBRATION_LONG = 300;
     private final float SOUND_VOLUME = 1f;
     private final float MUSIC_VOLUME = 0.3f;
 
-    private PrefsManager prefsManager;
     private SuperManager superManager;
+    private PrefsManager prefsManager;
     private Level currentLevel;
-
-    /** Attempt temporal para mostrar los datos en la pantalla de Success */
-    private Attempt cachedAttempt;
+    private Attempt cachedAttempt; // Cachea las stats para mostrarlas en Success
     private boolean vibration = true;
     private boolean sound = true;
     private boolean music = true;
     private int zoom = PrefsManager.OPTION_ZOOM_DEFAULT;
-
     private Sound backSound, buttonSound, collisionSound, destroySound, exitSound, flingSound, initSound, optionSound, tapSound;
     private Music menuMusic, gameMusic, successMusic;
 
@@ -120,30 +117,12 @@ public class GameManager {
             Gdx.input.vibrate(duration);
     }
 
-    public float getRatioMeterPixel() {
-        switch (zoom) {
-            case 0: return RATIO_METER_PIXEL * ZOOM_STEP;
-            case 1: return RATIO_METER_PIXEL;
-            case 2: return RATIO_METER_PIXEL / ZOOM_STEP;
-            default: return RATIO_METER_PIXEL;
-        }
-    }
-
     public float getPixelsPerMeter() {
         switch (zoom) {
-            case 0: return PIXELS_PER_METER / ZOOM_STEP;
+            case 0: return PIXELS_PER_METER / ZOOM_MULTIPLIER;
             case 1: return PIXELS_PER_METER;
-            case 2: return PIXELS_PER_METER * ZOOM_STEP;
-            default: return RATIO_METER_PIXEL;
-        }
-    }
-
-    public float getZoom() {
-        switch (zoom) {
-            case 0: return 1 / ZOOM_STEP;
-            case 1: return 1;
-            case 2: return ZOOM_STEP;
-            default: return 1;
+            case 2: return PIXELS_PER_METER * ZOOM_MULTIPLIER;
+            default: return PIXELS_PER_METER;
         }
     }
 
@@ -167,26 +146,16 @@ public class GameManager {
         gameMusic.setVolume(MUSIC_VOLUME);
         successMusic.setVolume(MUSIC_VOLUME);
 
-        menuMusic.setOnCompletionListener(new Music.OnCompletionListener() {
+        Music.OnCompletionListener replay = new Music.OnCompletionListener() {
             @Override
             public void onCompletion(Music music) {
                 music.play();
             }
-        });
+        };
 
-        gameMusic.setOnCompletionListener(new Music.OnCompletionListener() {
-            @Override
-            public void onCompletion(Music music) {
-                music.play();
-            }
-        });
-
-        successMusic.setOnCompletionListener(new Music.OnCompletionListener() {
-            @Override
-            public void onCompletion(Music music) {
-                music.play();
-            }
-        });
+        menuMusic.setOnCompletionListener(replay);
+        gameMusic.setOnCompletionListener(replay);
+        successMusic.setOnCompletionListener(replay);
     }
 
     public void play(Fx fx) {

@@ -7,7 +7,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.utils.Utils;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Var;
 
@@ -15,22 +16,17 @@ import java.util.Locale;
 
 public class Timer extends BaseGroup {
 
-    private final String DEFAULT_TEXT = "00:00.00";
-
     private Label label;
-    private boolean paused = false;
-    private float time = 0f;
-    private String timeFormated = DEFAULT_TEXT;
+    private float time;
 
     public Timer(AssetManager am) {
         super(am);
-
 
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = new Color(Var.COLOR_WHITE);
         style.font = getAsset(Asset.FONT_ROBOTO_BOLD_90, BitmapFont.class);
 
-        label = new Label(timeFormated, style);
+        label = new Label("", style);
         label.setTouchable(Touchable.disabled);
         label.setPosition(0, 0);
         label.setHeight(Grid.unit(1.5f));
@@ -41,22 +37,12 @@ public class Timer extends BaseGroup {
 
         setTransform(false);
         setHeight(Grid.unit(1.5f));
+        reset();
     }
 
     public void update() {
-        if (!paused) {
-            time += Gdx.graphics.getRawDeltaTime();
-            updateTimeFormated(time);
-            label.setText(timeFormated);
-        }
-    }
-
-    public void pause() {
-        paused = true;
-    }
-
-    public void resume() {
-        paused = false;
+        time += Gdx.graphics.getRawDeltaTime();
+        updateLabel();
     }
 
     public float getTime () {
@@ -65,23 +51,11 @@ public class Timer extends BaseGroup {
 
     public void reset() {
         time = 0f;
-        timeFormated = DEFAULT_TEXT;
+        updateLabel();
     }
 
-    public String getTimeFormated () {
-        return timeFormated;
-    }
-
-    private void updateTimeFormated (float time) {
-        int minutes = (int) (time / 60f);
-        int seconds = (int) (time - minutes * 60f);
-        int decimals = (int) ((time - minutes * 60f - (float) seconds) * 100f);
-
-        String minutesString = String.format(new Locale(""), "%02d", minutes);
-        String secondsString = String.format(new Locale(""), "%02d", seconds);
-        String decimalsString = String.format(new Locale(""), "%02d", decimals);
-
-        timeFormated = minutesString + ":" + secondsString + "." + decimalsString;
+    private void updateLabel() {
+        label.setText(Utils.formatTime(time));
     }
 
 }

@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Asset;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 

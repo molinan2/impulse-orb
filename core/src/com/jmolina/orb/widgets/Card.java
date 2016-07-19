@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.interfaces.Visitor;
 import com.jmolina.orb.utils.Grid;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;

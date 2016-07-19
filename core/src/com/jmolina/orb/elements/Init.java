@@ -3,7 +3,7 @@ package com.jmolina.orb.elements;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Asset;
 
 public class Init extends Element {
 

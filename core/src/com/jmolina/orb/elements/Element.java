@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.data.UserData;
 
 
@@ -220,11 +220,6 @@ public class Element {
         userData.flavor = flavor;
         userData.effect = effect;
         body.getFixtureList().first().setUserData(userData);
-    }
-
-    public void resetAngle() {
-        actor.setRotation(0);
-        body.setTransform(body.getPosition().x, body.getPosition().y, 0);
     }
 
     public void setAsSensor(boolean isSensor) {

@@ -7,7 +7,7 @@ import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.var.Var;
 
-public class PauseContent extends BaseGroup {
+public class PauseMenu extends BaseGroup {
 
     private Level gameManager;
     private MainButton resumeButton, restartButton, leaveButton;
@@ -15,7 +15,7 @@ public class PauseContent extends BaseGroup {
     private Stat distanceStat, fullTimeStat, fullDistanceStat, fullDestroyedStat;
     private ClickListener resumeListener, restartListener, leaveListener;
 
-    public PauseContent(AssetManager am, Level gm) {
+    public PauseMenu(AssetManager am, Level gm) {
         super(am);
 
         gameManager = gm;
@@ -33,7 +33,7 @@ public class PauseContent extends BaseGroup {
         resumeListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (getGameManager().isGamePaused())
+                if (getGameManager().isGameInactive())
                     getGameManager().resumeGame();
 
                 event.cancel();

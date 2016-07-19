@@ -5,9 +5,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jmolina.orb.assets.Asset;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.managers.AssetManager;
-import com.jmolina.orb.screens.Level;
+import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.TiledLayer;
 
 public class ParallaxStage extends Stage {
@@ -22,7 +23,7 @@ public class ParallaxStage extends Stage {
     private TiledLayer layer3;
 
     /**
-     * FIX: evita que se dibuje la Stage después de haber llamado a dispose(), ya que
+     * DirtyFix: evita que se dibuje la Stage después de haber llamado a dispose(), ya que
      * Level#render() continúa ejecutándose al menos 1 frame después de Level#dispose().
      * Moar: https://bitbucket.org/molinan2/orb2/issues/38/crash
      */
@@ -31,28 +32,32 @@ public class ParallaxStage extends Stage {
     /**
      * Constructor
      */
-    public ParallaxStage(AssetManager am, Viewport vp, float pixelsPerMeter, float zoomRatio) {
-        super(vp);
+    public ParallaxStage(AssetManager assetManager, Viewport viewport, float pixelsPerMeter) {
+        super(viewport);
 
         this.pixelsPerMeter = pixelsPerMeter;
 
-        float width = vp.getWorldWidth();
-        float height = vp.getWorldHeight();
+        float width = viewport.getWorldWidth();
+        float height = viewport.getWorldHeight();
 
-        Texture layer1Texture = am.get(Asset.GAME_PARALLAX_LAYER_1, Texture.class);
-        Texture layer2Texture = am.get(Asset.GAME_PARALLAX_LAYER_2, Texture.class);
-        Texture layer3Texture = am.get(Asset.GAME_PARALLAX_LAYER_3, Texture.class);
+        Texture layer1Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_1, Texture.class);
+        Texture layer2Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_2, Texture.class);
+        Texture layer3Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_3, Texture.class);
 
-        layer1 = new TiledLayer(am, layer1Texture, width, height);
-        layer2 = new TiledLayer(am, layer2Texture, width, height);
-        layer3 = new TiledLayer(am, layer3Texture, width, height);
+        layer1 = new TiledLayer(assetManager, layer1Texture, width, height);
+        layer2 = new TiledLayer(assetManager, layer2Texture, width, height);
+        layer3 = new TiledLayer(assetManager, layer3Texture, width, height);
 
         layer1.setPosition(-width, -height);
         layer2.setPosition(-width, -height);
         layer3.setPosition(-width, -height);
-        layer1.setScale(zoomRatio);
-        layer2.setScale(zoomRatio);
-        layer3.setScale(zoomRatio);
+
+        // Tiene en cuenta el tamaño global de unidad del grid
+        float scale  = pixelsPerMeter / Var.GRID_CELL_SIZE;
+
+        layer1.setScale(scale);
+        layer2.setScale(scale);
+        layer3.setScale(scale);
 
         addActor(layer3);
         addActor(layer2);

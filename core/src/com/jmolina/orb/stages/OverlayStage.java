@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
-import com.jmolina.orb.widgets.Overlay;
 import com.jmolina.orb.widgets.StaticBackground;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
