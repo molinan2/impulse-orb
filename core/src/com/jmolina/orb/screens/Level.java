@@ -1,7 +1,6 @@
 package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.data.GameStats;
-import com.jmolina.orb.data.PersonalTimes;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
@@ -28,7 +26,6 @@ import com.jmolina.orb.stages.ParallaxStage;
 import com.jmolina.orb.utils.Utils;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
-import static com.jmolina.orb.managers.PrefsManager.*;
 
 
 /**
@@ -38,11 +35,13 @@ import static com.jmolina.orb.managers.PrefsManager.*;
 public class Level extends BaseScreen {
 
     public static final float INTRO_SEQUENCE_TIME = 1f;
-    private static final float HALF_TAP_SQUARE_SIZE = 20.0f;
-    private static final float TAP_COUNT_INTERVAL = 0.4f;
-    private static final float LONG_PRESS_DURATION = 1.1f;
-    private static final float MAX_FLING_DELAY = 0.15f;
+    public static final float EXIT_SEQUENCE_TIME = 1f;
+    public static final float BACKGROUND_FADE_TIME = 0.5f;
 
+    private final float HALF_TAP_SQUARE_SIZE = 20.0f;
+    private final float TAP_COUNT_INTERVAL = 0.4f;
+    private final float LONG_PRESS_DURATION = 1.1f;
+    private final float MAX_FLING_DELAY = 0.15f;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
     private final float WORLD_TIME_STEP = 1/60f;
     private final int WORLD_OVERSTEP_FACTOR = 4;
@@ -53,95 +52,26 @@ public class Level extends BaseScreen {
     private final float OVERLOAD_TIME = 4f;
     private final int INFINITE_Z_INDEX = 32000;
     private final float MAX_IMPULSE = 40f;
-    public static final float EXIT_SEQUENCE_TIME = 1f;
-    public static final float BACKGROUND_FADE_TIME = 0.5f;
 
-    private float pixelsPerMeter;
-    private float impulseFactor;
+    private float pixelsPerMeter, impulseFactor, orbLockTimer = 0f, orbOverloadTimer = 0f;
+    private boolean paused = true;
+    private boolean locked = false; // If locked = true, game cannot be unpaused
     private World world;
     private ContactHandler contactHandler;
     private Viewport worldViewport, gestureViewport, hudViewport, parallaxViewport;
     private GestureStage gestureStage;
-    private ParallaxStage parallaxStage;
-    private HUDStage hudStage;
     private GestureDetector gestureDetector;
     private GestureHandler gestureHandler;
+    private ParallaxStage parallaxStage;
+    private HUDStage hudStage;
     private SnapshotArray<Situation> situations;
     private Orb orb;
-    private float orbLockTimer = 0f;
-    private float orbOverloadTimer = 0f;
-    private boolean paused = true;
-    private boolean locked = false; // If locked = true, game cannot be unpaused
     private Vector2 orbStartPosition, currentOrbPosition, lastOrbPosition;
     private GameStats stats;
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
     // private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
-
-    private Runnable reset = new Runnable() {
-        @Override
-        public void run() {
-            getOrb().reset(orbStartPosition.x, orbStartPosition.y);
-            hudStage.reset();
-            stats.newTry();
-        }
-    };
-
-    private Runnable unpause = new Runnable() {
-        @Override
-        public void run() {
-            paused = false;
-        }
-    };
-
-    private Runnable unlock = new Runnable() {
-        @Override
-        public void run() {
-            locked = false;
-        }
-    };
-
-    private Runnable intro = new Runnable() {
-        @Override
-        public void run() {
-            getOrb().getActor().addAction(sequence(
-                    parallel(
-                            scaleBy(4 * getOrb().getNaturalScale(), 4 * getOrb().getNaturalScale(), 0),
-                            rotateTo(0, 0),
-                            alpha(0)
-                    ),
-                    parallel(
-                            rotateTo(360, INTRO_SEQUENCE_TIME, Interpolation.exp5),
-                            scaleTo(getOrb().getNaturalScale(), getOrb().getNaturalScale(), INTRO_SEQUENCE_TIME, Interpolation.pow2),
-                            fadeIn(INTRO_SEQUENCE_TIME, Interpolation.pow2)
-                    )
-            ));
-
-            getGameManager().play(GameManager.Fx.Init);
-        }
-    };
-
-    private Runnable fadeInBackground = new Runnable() {
-        @Override
-        public void run() {
-            getBackgroundStage().addAction(fadeIn(UIAction.DURATION, Interpolation.pow2));
-        }
-    };
-
-    private Runnable fadeOutBackground = new Runnable() {
-        @Override
-        public void run() {
-            getBackgroundStage().addAction(fadeOut(BACKGROUND_FADE_TIME));
-        }
-    };
-
-    private Runnable destroy = new Runnable() {
-        @Override
-        public void run() {
-            getOrb().destroy();
-        }
-    };
-
+    private Runnable introRun, resetRun, unpauseRun, unlockRun, destroyRun, fadeInBackgroundRun, fadeOutBackgroundRun;
 
 
     /**
@@ -191,6 +121,74 @@ public class Level extends BaseScreen {
         addProcessor(hudStage);
         addProcessor(gestureStage);
         addProcessor(gestureDetector);
+
+        createRunnables();
+    }
+
+
+    private void createRunnables() {
+        introRun = new Runnable() {
+            @Override
+            public void run() {
+                getOrb().getActor().addAction(sequence(
+                        parallel(
+                                scaleBy(4 * getOrb().getNaturalScale(), 4 * getOrb().getNaturalScale(), 0),
+                                rotateTo(0, 0),
+                                alpha(0)
+                        ),
+                        parallel(
+                                rotateTo(360, INTRO_SEQUENCE_TIME, Interpolation.exp5),
+                                scaleTo(getOrb().getNaturalScale(), getOrb().getNaturalScale(), INTRO_SEQUENCE_TIME, Interpolation.pow2),
+                                fadeIn(INTRO_SEQUENCE_TIME, Interpolation.pow2)
+                        )
+                ));
+                getGameManager().play(GameManager.Fx.Init);
+            }
+        };
+
+        resetRun = new Runnable() {
+            @Override
+            public void run() {
+                getOrb().reset(orbStartPosition.x, orbStartPosition.y);
+                hudStage.reset();
+                stats.newTry();
+            }
+        };
+
+        unpauseRun = new Runnable() {
+            @Override
+            public void run() {
+                paused = false;
+            }
+        };
+
+        unlockRun = new Runnable() {
+            @Override
+            public void run() {
+                locked = false;
+            }
+        };
+
+        destroyRun = new Runnable() {
+            @Override
+            public void run() {
+                getOrb().destroy();
+            }
+        };
+
+        fadeInBackgroundRun = new Runnable() {
+            @Override
+            public void run() {
+                getBackgroundStage().addAction(fadeIn(UIAction.DURATION, Interpolation.pow2));
+            }
+        };
+
+        fadeOutBackgroundRun = new Runnable() {
+            @Override
+            public void run() {
+                getBackgroundStage().addAction(fadeOut(BACKGROUND_FADE_TIME));
+            }
+        };
     }
 
 
@@ -239,11 +237,11 @@ public class Level extends BaseScreen {
                 alpha(0),
                 scaleTo(UIAction.SMALL, UIAction.SMALL),
                 transition(Flow.ENTERING, getHierarchy()),
-                run(fadeOutBackground),
-                run(intro),
+                run(fadeOutBackgroundRun),
+                run(introRun),
                 delay(Math.max(BACKGROUND_FADE_TIME, INTRO_SEQUENCE_TIME)),
                 run(UIRunnable.setInputProcessor(getProcessor())),
-                run(unpause)
+                run(unpauseRun)
         ));
     }
 
@@ -269,7 +267,7 @@ public class Level extends BaseScreen {
     @Override
     public void switchToScreen(final ScreenManager.Key key, final Hierarchy hierarchy) {
         hudStage.addAction(sequence(
-                run(fadeInBackground),
+                run(fadeInBackgroundRun),
                 delay(UIAction.DURATION),
                 transition(Flow.LEAVING, hierarchy),
                 run(UIRunnable.setScreen(getScreenManager(), key, hierarchy))
@@ -446,7 +444,7 @@ public class Level extends BaseScreen {
             hudStage.setFullDestroyedValue(stats.fails());
         }
     }
-    
+
 
     /**
      * Metodos de GameManager
@@ -462,13 +460,13 @@ public class Level extends BaseScreen {
 
     public void resumeGame() {
         if (!locked) {
-            hudStage.resume(unpause);
+            hudStage.resume(unpauseRun);
             getGameManager().play(GameManager.Fx.Button);
         }
     }
 
     public void restartGame() {
-        hudStage.restart(reset, intro, unpause);
+        hudStage.restart(resetRun, introRun, unpauseRun);
         getGameManager().play(GameManager.Fx.Button);
     }
 
@@ -560,7 +558,7 @@ public class Level extends BaseScreen {
         stats.setFailed(true);
         getGameManager().vibrateLong();
         getGameManager().play(GameManager.Fx.Destroy);
-        hudStage.destroyAndRestart(destroy, reset, intro, unlock, unpause);
+        hudStage.destroyAndRestart(destroyRun, resetRun, introRun, unlockRun, unpauseRun);
     }
 
 }

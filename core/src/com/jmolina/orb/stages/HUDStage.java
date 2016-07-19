@@ -5,19 +5,15 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.utils.Grid;
-import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.Gauge;
 import com.jmolina.orb.widgets.HUDBackground;
-import com.jmolina.orb.widgets.Heading;
-import com.jmolina.orb.widgets.MainButton;
 import com.jmolina.orb.widgets.Overlay;
 import com.jmolina.orb.widgets.PauseButton;
-import com.jmolina.orb.widgets.Stat;
+import com.jmolina.orb.widgets.PauseContent;
 import com.jmolina.orb.widgets.Timer;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -39,10 +35,11 @@ public class HUDStage extends Stage {
     private Gauge gauge;
     private Timer timer;
     private PauseButton pauseButton;
-    private MainButton resumeButton, restartButton, leaveButton;
-    private Heading fullHeading;
-    private Stat distanceStat, fullTimeStat, fullDistanceStat, fullDestroyedStat;
-
+    private PauseContent pauseContent;
+    private Runnable enableTouchables, disableTouchables, pauseWidgets, resumeWidgets,
+            fadeInWidgets, fadeOutWidgets, enableWidgetsVisibility, disableWidgetsVisibility,
+            fadeInOverlay, fadeOutOverlay;
+    private ClickListener toggleListener, resumeListener, restartListener, leaveListener;
 
     /**
      * Constructor
@@ -55,35 +52,11 @@ public class HUDStage extends Stage {
         super(vp);
 
         gameManager = gm;
-        background = new HUDBackground(am);
-        timer = new Timer(am);
-        pauseButton = new PauseButton(am);
-        gauge = new Gauge(am);
-        overlay = new Overlay(am);
-        resumeButton = new MainButton(am, "RESUME", MainButton.Type.Play);
-        restartButton = new MainButton(am, "RESTART", MainButton.Type.Default);
-        leaveButton = new MainButton(am, "LEAVE", MainButton.Type.Exit);
-        distanceStat = new Stat(am, "Distance", 0f, "m");
-        fullHeading = new Heading(am, "Since start", Align.center, Heading.Weight.Bold, Var.COLOR_WHITE);
-        fullTimeStat = new Stat(am, "Time", 0, "s");
-        fullDistanceStat = new Stat(am, "Distance", 0, "m");
-        fullDestroyedStat = new Stat(am, "Destroyed", 0, "times");
 
-        initializeActors();
-
-        addActor(overlay);
-        addActor(background);
-        addActor(timer);
-        addActor(pauseButton);
-        addActor(gauge);
-        addActor(resumeButton);
-        addActor(restartButton);
-        addActor(leaveButton);
-        addActor(distanceStat);
-        addActor(fullHeading);
-        addActor(fullTimeStat);
-        addActor(fullDistanceStat);
-        addActor(fullDestroyedStat);
+        createListeners();
+        createActors(am, gm);
+        addActors();
+        createRunnables();
 
         getRoot().setOrigin(vp.getWorldWidth() * 0.5f, vp.getWorldHeight() * 0.5f);
         getRoot().setScale(1f, 1f);
@@ -91,50 +64,123 @@ public class HUDStage extends Stage {
         getRoot().setPosition(0f, 0f);
     }
 
-    private void initializeActors() {
+    private void createActors(AssetManager am, Level gm) {
+        background = new HUDBackground(am);
+        timer = new Timer(am);
+        pauseButton = new PauseButton(am);
+        gauge = new Gauge(am);
+        overlay = new Overlay(am);
+        pauseContent = new PauseContent(am, gm);
+
         background.setPositionGrid(HUD_BACKGROUND_X, HUD_BACKGROUND_Y);
         overlay.setPositionGrid(0, 0);
         timer.setPositionGrid(3, 16.5f);
         pauseButton.setPositionGrid(10, 16.5f);
         gauge.setPositionGrid(0.5f, 16.5f);
-        resumeButton.setPositionGrid(2, 12.5f);
-        restartButton.setPositionGrid(2, 10);
-        leaveButton.setPositionGrid(2, 7.5f);
-        distanceStat.setPositionGrid(1, 5);
-        fullHeading.setPositionGrid(1, 4);
-        fullTimeStat.setPositionGrid(1, 3);
-        fullDistanceStat.setPositionGrid(1, 2);
-        fullDestroyedStat.setPositionGrid(1, 1);
+        pauseContent.setPositionGrid(0, 0);
 
         overlay.addAction(alpha(0));
-
-        resumeButton.setVisible(false);
-        restartButton.setVisible(false);
-        leaveButton.setVisible(false);
-        distanceStat.setVisible(false);
-        fullHeading.setVisible(false);
-        fullTimeStat.setVisible(false);
-        fullDistanceStat.setVisible(false);
-        fullDestroyedStat.setVisible(false);
-
-        resumeButton.addAction(alpha(0));
-        restartButton.addAction(alpha(0));
-        leaveButton.addAction(alpha(0));
-        distanceStat.addAction(alpha(0));
-        fullHeading.addAction(alpha(0));
-        fullTimeStat.addAction(alpha(0));
-        fullDistanceStat.addAction(alpha(0));
-        fullDestroyedStat.addAction(alpha(0));
+        pauseContent.setVisible(false);
+        pauseContent.addAction(alpha(0));
 
         pauseButton.addListener(toggleListener);
-        resumeButton.addListener(resumeListener);
-        restartButton.addListener(restartListener);
-        leaveButton.addListener(leaveListener);
+    }
 
-        distanceStat.setLabelColor(Var.COLOR_WHITE);
-        fullTimeStat.setLabelColor(Var.COLOR_WHITE);
-        fullDistanceStat.setLabelColor(Var.COLOR_WHITE);
-        fullDestroyedStat.setLabelColor(Var.COLOR_WHITE);
+    private void addActors() {
+        addActor(overlay);
+        addActor(background);
+        addActor(timer);
+        addActor(pauseButton);
+        addActor(gauge);
+        addActor(pauseContent);
+    }
+
+    private void createRunnables() {
+        enableTouchables = new Runnable() {
+            @Override
+            public void run() {
+                pauseButton.setTouchable(Touchable.enabled);
+                pauseContent.setTouchable(Touchable.enabled);
+            }
+        };
+
+        disableTouchables = new Runnable() {
+            @Override
+            public void run() {
+                pauseButton.setTouchable(Touchable.disabled);
+                pauseContent.setTouchable(Touchable.disabled);
+            }
+        };
+
+        pauseWidgets = new Runnable() {
+            @Override
+            public void run() {
+                pauseButton.pause();
+            }
+        };
+
+        resumeWidgets = new Runnable() {
+            @Override
+            public void run() {
+                pauseButton.resume();
+            }
+        };
+
+        fadeInWidgets = new Runnable() {
+            @Override
+            public void run() {
+                pauseContent.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
+            }
+        };
+
+        fadeOutWidgets = new Runnable() {
+            @Override
+            public void run() {
+                pauseContent.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
+            }
+        };
+
+        enableWidgetsVisibility = new Runnable() {
+            @Override
+            public void run() {
+                pauseContent.setVisible(true);
+            }
+        };
+
+        disableWidgetsVisibility = new Runnable() {
+            @Override
+            public void run() {
+                pauseContent.setVisible(false);
+            }
+        };
+
+        fadeInOverlay = new Runnable() {
+            @Override
+            public void run() {
+                overlay.addAction(fadeIn(OVERLAY_FADE_TIME, FADE_INTERPOLATION));
+            }
+        };
+
+        fadeOutOverlay = new Runnable() {
+            @Override
+            public void run() {
+                overlay.addAction(fadeOut(OVERLAY_FADE_TIME, FADE_INTERPOLATION));
+            }
+        };
+    }
+
+    private void createListeners() {
+        toggleListener = new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (!getGameManager().isGamePaused())
+                    getGameManager().pauseGame();
+                else
+                    getGameManager().resumeGame();
+
+                event.cancel();
+            }
+        };
     }
 
     public void updateTimer() {
@@ -226,19 +272,19 @@ public class HUDStage extends Stage {
     }
 
     public void setDistanceValue(float distance) {
-        distanceStat.setValue(distance, "m");
+        pauseContent.setDistanceValue(distance);
     }
 
     public void setFullDistanceValue(float distance) {
-        fullDistanceStat.setValue(distance, "m");
+        pauseContent.setFullDistanceValue(distance);
     }
 
     public void setFullTimeValue(float time) {
-        fullTimeStat.setValue(time, "s");
+        pauseContent.setFullTimeValue(time);
     }
 
     public void setFullDestroyedValue(int destroyed) {
-        fullDestroyedStat.setValue(destroyed, "times");
+        pauseContent.setFullDestroyedValue(destroyed);
     }
 
     public void setGaugeOverload(boolean overloaded) {
@@ -260,158 +306,5 @@ public class HUDStage extends Stage {
     private Level getGameManager() {
         return this.gameManager;
     }
-
-
-
-    /**
-     * Runnables
-     */
-
-    private Runnable enableTouchables = new Runnable() {
-        @Override
-        public void run() {
-            pauseButton.setTouchable(Touchable.enabled);
-            resumeButton.setTouchable(Touchable.enabled);
-            restartButton.setTouchable(Touchable.enabled);
-            leaveButton.setTouchable(Touchable.enabled);
-        }
-    };
-
-    private Runnable disableTouchables = new Runnable() {
-        @Override
-        public void run() {
-            pauseButton.setTouchable(Touchable.disabled);
-            resumeButton.setTouchable(Touchable.disabled);
-            restartButton.setTouchable(Touchable.disabled);
-            leaveButton.setTouchable(Touchable.disabled);
-        }
-    };
-
-    private Runnable pauseWidgets = new Runnable() {
-        @Override
-        public void run() {
-            pauseButton.pause();
-        }
-    };
-
-    private Runnable resumeWidgets = new Runnable() {
-        @Override
-        public void run() {
-            pauseButton.resume();
-        }
-    };
-
-    private Runnable fadeInWidgets = new Runnable() {
-        @Override
-        public void run() {
-            resumeButton.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
-            restartButton.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
-            leaveButton.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
-            distanceStat.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
-            fullHeading.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
-            fullTimeStat.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
-            fullDistanceStat.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
-            fullDestroyedStat.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
-        }
-    };
-
-    private Runnable fadeOutWidgets = new Runnable() {
-        @Override
-        public void run() {
-            resumeButton.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
-            restartButton.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
-            leaveButton.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
-            distanceStat.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
-            fullHeading.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
-            fullTimeStat.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
-            fullDistanceStat.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
-            fullDestroyedStat.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
-        }
-    };
-
-    private Runnable enableWidgetsVisibility = new Runnable() {
-        @Override
-        public void run() {
-            resumeButton.setVisible(true);
-            restartButton.setVisible(true);
-            leaveButton.setVisible(true);
-            distanceStat.setVisible(true);
-            fullHeading.setVisible(true);
-            fullTimeStat.setVisible(true);
-            fullDistanceStat.setVisible(true);
-            fullDestroyedStat.setVisible(true);
-        }
-    };
-
-    private Runnable disableWidgetsVisibility = new Runnable() {
-        @Override
-        public void run() {
-            resumeButton.setVisible(false);
-            restartButton.setVisible(false);
-            leaveButton.setVisible(false);
-            distanceStat.setVisible(false);
-            fullHeading.setVisible(false);
-            fullTimeStat.setVisible(false);
-            fullDistanceStat.setVisible(false);
-            fullDestroyedStat.setVisible(false);
-        }
-    };
-
-    private Runnable fadeInOverlay = new Runnable() {
-        @Override
-        public void run() {
-            overlay.addAction(fadeIn(OVERLAY_FADE_TIME, FADE_INTERPOLATION));
-        }
-    };
-
-    private Runnable fadeOutOverlay = new Runnable() {
-        @Override
-        public void run() {
-            overlay.addAction(fadeOut(OVERLAY_FADE_TIME, FADE_INTERPOLATION));
-        }
-    };
-
-
-    /**
-     * Listeners
-     */
-
-    private ClickListener toggleListener = new ClickListener(){
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-            if (!getGameManager().isGamePaused())
-                getGameManager().pauseGame();
-            else
-                getGameManager().resumeGame();
-
-            event.cancel();
-        }
-    };
-
-    private ClickListener resumeListener = new ClickListener(){
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-            if (getGameManager().isGamePaused())
-                getGameManager().resumeGame();
-
-            event.cancel();
-        }
-    };
-
-    private ClickListener restartListener = new ClickListener(){
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-            getGameManager().restartGame();
-            event.cancel();
-        }
-    };
-
-    private ClickListener leaveListener = new ClickListener(){
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-            getGameManager().leaveGame();
-            event.cancel();
-        }
-    };
 
 }
