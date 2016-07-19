@@ -1,9 +1,13 @@
 package com.jmolina.orb.utils;
 
+import com.badlogic.gdx.math.Vector2;
 import java.util.Locale;
 
-public class Time {
+public class Utils {
 
+    /**
+     * Formatea el tiempo en MM:SS.DD
+     */
     public static String formatTime(float time) {
         String formattedDistance = "";
 
@@ -18,6 +22,18 @@ public class Time {
         formattedDistance = minutesString + ":" + secondsString + "." + decimalsString;
 
         return formattedDistance;
+    }
+
+    /**
+     * Distancia entre 2 puntos
+     */
+    public static float distance(Vector2 pointA, Vector2 pointB) {
+        Vector2 inter = new Vector2(
+                pointB.x - pointA.x,
+                pointB.y - pointA.y
+        );
+
+        return (float) Math.sqrt(Math.pow(inter.x, 2) + Math.pow(inter.y, 2));
     }
 
 }

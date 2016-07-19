@@ -24,36 +24,244 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class HUDStage extends Stage {
 
-    /**
-     * Constants
-     */
-
     private final float FADE_TIME = 0.2f;
     private final float ROLLER_TIME = 0.75f;
+    private final float DESTROY_TIME = 1.3f;
     private final float OVERLAY_FADE_TIME = ROLLER_TIME * 0.5f;
     private final Interpolation ROLLER_INTERPOLATION = Interpolation.exp5;
     private final Interpolation FADE_INTERPOLATION = Interpolation.pow2;
     private final float HUD_BACKGROUND_X = -6f;
     private final float HUD_BACKGROUND_Y = 16f;
 
-    /**
-     * Fields
-     */
-
+    private Level gameManager; // TODO: Debe ser un GameManager
+    private Overlay overlay;
     private HUDBackground background;
+    private Gauge gauge;
     private Timer timer;
     private PauseButton pauseButton;
-    private Gauge gauge;
-    private Overlay overlay;
-    private MainButton resumeButton;
-    private MainButton restartButton;
-    private MainButton leaveButton;
-    private Stat distanceStat;
+    private MainButton resumeButton, restartButton, leaveButton;
     private Heading fullHeading;
-    private Stat fullTimeStat;
-    private Stat fullDistanceStat;
-    private Stat fullDestroyedStat;
-    private Level level;
+    private Stat distanceStat, fullTimeStat, fullDistanceStat, fullDestroyedStat;
+
+
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param gm Level Futuro GameManager
+     * @param vp Viewport
+     */
+    public HUDStage(AssetManager am, Level gm, Viewport vp) {
+        super(vp);
+
+        gameManager = gm;
+        background = new HUDBackground(am);
+        timer = new Timer(am);
+        pauseButton = new PauseButton(am);
+        gauge = new Gauge(am);
+        overlay = new Overlay(am);
+        resumeButton = new MainButton(am, "RESUME", MainButton.Type.Play);
+        restartButton = new MainButton(am, "RESTART", MainButton.Type.Default);
+        leaveButton = new MainButton(am, "LEAVE", MainButton.Type.Exit);
+        distanceStat = new Stat(am, "Distance", 0f, "m");
+        fullHeading = new Heading(am, "Since start", Align.center, Heading.Weight.Bold, Var.COLOR_WHITE);
+        fullTimeStat = new Stat(am, "Time", 0, "s");
+        fullDistanceStat = new Stat(am, "Distance", 0, "m");
+        fullDestroyedStat = new Stat(am, "Destroyed", 0, "times");
+
+        initializeActors();
+
+        addActor(overlay);
+        addActor(background);
+        addActor(timer);
+        addActor(pauseButton);
+        addActor(gauge);
+        addActor(resumeButton);
+        addActor(restartButton);
+        addActor(leaveButton);
+        addActor(distanceStat);
+        addActor(fullHeading);
+        addActor(fullTimeStat);
+        addActor(fullDistanceStat);
+        addActor(fullDestroyedStat);
+
+        getRoot().setOrigin(vp.getWorldWidth() * 0.5f, vp.getWorldHeight() * 0.5f);
+        getRoot().setScale(1f, 1f);
+        getRoot().setSize(vp.getWorldWidth(), vp.getWorldHeight());
+        getRoot().setPosition(0f, 0f);
+    }
+
+    private void initializeActors() {
+        background.setPositionGrid(HUD_BACKGROUND_X, HUD_BACKGROUND_Y);
+        overlay.setPositionGrid(0, 0);
+        timer.setPositionGrid(3, 16.5f);
+        pauseButton.setPositionGrid(10, 16.5f);
+        gauge.setPositionGrid(0.5f, 16.5f);
+        resumeButton.setPositionGrid(2, 12.5f);
+        restartButton.setPositionGrid(2, 10);
+        leaveButton.setPositionGrid(2, 7.5f);
+        distanceStat.setPositionGrid(1, 5);
+        fullHeading.setPositionGrid(1, 4);
+        fullTimeStat.setPositionGrid(1, 3);
+        fullDistanceStat.setPositionGrid(1, 2);
+        fullDestroyedStat.setPositionGrid(1, 1);
+
+        overlay.addAction(alpha(0));
+
+        resumeButton.setVisible(false);
+        restartButton.setVisible(false);
+        leaveButton.setVisible(false);
+        distanceStat.setVisible(false);
+        fullHeading.setVisible(false);
+        fullTimeStat.setVisible(false);
+        fullDistanceStat.setVisible(false);
+        fullDestroyedStat.setVisible(false);
+
+        resumeButton.addAction(alpha(0));
+        restartButton.addAction(alpha(0));
+        leaveButton.addAction(alpha(0));
+        distanceStat.addAction(alpha(0));
+        fullHeading.addAction(alpha(0));
+        fullTimeStat.addAction(alpha(0));
+        fullDistanceStat.addAction(alpha(0));
+        fullDestroyedStat.addAction(alpha(0));
+
+        pauseButton.addListener(toggleListener);
+        resumeButton.addListener(resumeListener);
+        restartButton.addListener(restartListener);
+        leaveButton.addListener(leaveListener);
+
+        distanceStat.setLabelColor(Var.COLOR_WHITE);
+        fullTimeStat.setLabelColor(Var.COLOR_WHITE);
+        fullDistanceStat.setLabelColor(Var.COLOR_WHITE);
+        fullDestroyedStat.setLabelColor(Var.COLOR_WHITE);
+    }
+
+    public void updateTimer() {
+        timer.update();
+    }
+
+    private void resetTimer() {
+        timer.reset();
+    }
+
+    public void setGaugeLevel(float level) {
+        gauge.setLevel(level);
+    }
+
+    public void pause() {
+        background.clearActions();
+        background.addAction(sequence(
+                run(disableTouchables),
+                run(pauseWidgets),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), 0),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), ROLLER_TIME, ROLLER_INTERPOLATION),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-6), 0), // Asegura que no se vean los bordes si leaveGame()
+                run(enableWidgetsVisibility),
+                run(fadeInWidgets),
+                delay(FADE_TIME),
+                run(enableTouchables)
+        ));
+    }
+
+    public void resume(final Runnable callback) {
+        background.clearActions();
+        background.addAction(sequence(
+                run(disableTouchables),
+                run(fadeOutWidgets),
+                delay(FADE_TIME),
+                run(disableWidgetsVisibility),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), 0),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), ROLLER_TIME, ROLLER_INTERPOLATION),
+                run(resumeWidgets),
+                run(enableTouchables),
+                run(callback)
+        ));
+    }
+
+    /**
+     * Secuencia de acciones visuales para reiniciar un juego
+     *
+     * @param reset Restea todos los elementos a su estado inicial
+     * @param unpause Despausa el juego
+     */
+    public void restart (Runnable reset, Runnable intro, Runnable unpause) {
+        background.clearActions();
+        background.addAction(sequence(
+                run(disableTouchables),
+                run(fadeOutWidgets),
+                delay(FADE_TIME),
+                run(disableWidgetsVisibility),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), 0),
+                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), ROLLER_TIME, ROLLER_INTERPOLATION),
+                run(fadeInOverlay),
+                delay(OVERLAY_FADE_TIME),
+                run(reset),
+                run(intro),
+                run(fadeOutOverlay),
+                delay(Math.max(OVERLAY_FADE_TIME, Level.INTRO_SEQUENCE_TIME)),
+                run(resumeWidgets),
+                run(enableTouchables),
+                run(unpause)
+        ));
+    }
+
+    public void destroyAndRestart(Runnable destroy, Runnable reset, Runnable intro, Runnable unlock, Runnable unpause) {
+        background.clearActions();
+        background.addAction(sequence(
+                run(disableTouchables),
+                run(destroy),
+                delay(DESTROY_TIME),
+                run(fadeInOverlay),
+                delay(OVERLAY_FADE_TIME),
+                run(reset),
+                run(intro),
+                run(fadeOutOverlay),
+                delay(Math.max(OVERLAY_FADE_TIME, Level.INTRO_SEQUENCE_TIME)),
+                run(resumeWidgets),
+                run(enableTouchables),
+                run(unlock),
+                run(unpause)
+        ));
+    }
+
+    public void setDistanceValue(float distance) {
+        distanceStat.setValue(distance, "m");
+    }
+
+    public void setFullDistanceValue(float distance) {
+        fullDistanceStat.setValue(distance, "m");
+    }
+
+    public void setFullTimeValue(float time) {
+        fullTimeStat.setValue(time, "s");
+    }
+
+    public void setFullDestroyedValue(int destroyed) {
+        fullDestroyedStat.setValue(destroyed, "times");
+    }
+
+    public void setGaugeOverload(boolean overloaded) {
+        gauge.setOverloaded(overloaded);
+    }
+
+    private void resetGauge() {
+        gauge.reset();
+    }
+
+    public void reset() {
+        resetTimer();
+        resetGauge();
+    }
+
+    /**
+     * Temporalmente, devuelve el Level
+     */
+    private Level getGameManager() {
+        return this.gameManager;
+    }
+
+
 
     /**
      * Runnables
@@ -79,17 +287,17 @@ public class HUDStage extends Stage {
         }
     };
 
-    private Runnable resumeWidgets = new Runnable() {
-        @Override
-        public void run() {
-            pauseButton.resume();
-        }
-    };
-
     private Runnable pauseWidgets = new Runnable() {
         @Override
         public void run() {
             pauseButton.pause();
+        }
+    };
+
+    private Runnable resumeWidgets = new Runnable() {
+        @Override
+        public void run() {
+            pauseButton.resume();
         }
     };
 
@@ -171,8 +379,10 @@ public class HUDStage extends Stage {
     private ClickListener toggleListener = new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            if (!level.isGamePaused()) level.pauseGame();
-            else level.resumeGame();
+            if (!getGameManager().isGamePaused())
+                getGameManager().pauseGame();
+            else
+                getGameManager().resumeGame();
 
             event.cancel();
         }
@@ -181,7 +391,8 @@ public class HUDStage extends Stage {
     private ClickListener resumeListener = new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            if (level.isGamePaused()) level.resumeGame();
+            if (getGameManager().isGamePaused())
+                getGameManager().resumeGame();
 
             event.cancel();
         }
@@ -190,7 +401,7 @@ public class HUDStage extends Stage {
     private ClickListener restartListener = new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            level.restartGame();
+            getGameManager().restartGame();
             event.cancel();
         }
     };
@@ -198,212 +409,9 @@ public class HUDStage extends Stage {
     private ClickListener leaveListener = new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            level.leaveGame();
+            getGameManager().leaveGame();
             event.cancel();
         }
     };
-
-
-    /**
-     * Constructor
-     *
-     * @param am AssetManager
-     * @param level Level Futuro GameManager
-     * @param vp Viewport
-     */
-    public HUDStage(AssetManager am, Level level, Viewport vp) {
-        super(vp);
-
-        this.level = level;
-        background = new HUDBackground(am);
-        timer = new Timer(am);
-        pauseButton = new PauseButton(am);
-        gauge = new Gauge(am);
-        overlay = new Overlay(am);
-
-        resumeButton = new MainButton(am, "RESUME", MainButton.Type.Play);
-        restartButton = new MainButton(am, "RESTART", MainButton.Type.Default);
-        leaveButton = new MainButton(am, "LEAVE", MainButton.Type.Exit);
-        distanceStat = new Stat(am, "Distance", 0f, "m");
-        fullHeading = new Heading(am, "Since start", Align.center, Heading.Weight.Bold, Var.COLOR_WHITE);
-        fullTimeStat = new Stat(am, "Time", 0, "s");
-        fullDistanceStat = new Stat(am, "Distance", 0, "m");
-        fullDestroyedStat = new Stat(am, "Destroyed", 0, "times");
-
-        background.setPositionGrid(HUD_BACKGROUND_X, HUD_BACKGROUND_Y);
-        overlay.setPositionGrid(0, 0);
-        timer.setPositionGrid(3, 16.5f);
-        pauseButton.setPositionGrid(10, 16.5f);
-        gauge.setPositionGrid(0.5f, 16.5f);
-        resumeButton.setPositionGrid(2, 12.5f);
-        restartButton.setPositionGrid(2, 10);
-        leaveButton.setPositionGrid(2, 7.5f);
-        distanceStat.setPositionGrid(1, 5);
-        fullHeading.setPositionGrid(1, 4);
-        fullTimeStat.setPositionGrid(1, 3);
-        fullDistanceStat.setPositionGrid(1, 2);
-        fullDestroyedStat.setPositionGrid(1, 1);
-
-        overlay.addAction(alpha(0)); // todo Borrarlo?
-
-        resumeButton.setVisible(false);
-        restartButton.setVisible(false);
-        leaveButton.setVisible(false);
-        distanceStat.setVisible(false);
-        fullHeading.setVisible(false);
-        fullTimeStat.setVisible(false);
-        fullDistanceStat.setVisible(false);
-        fullDestroyedStat.setVisible(false);
-
-        resumeButton.addAction(alpha(0));
-        restartButton.addAction(alpha(0));
-        leaveButton.addAction(alpha(0));
-        distanceStat.addAction(alpha(0));
-        fullHeading.addAction(alpha(0));
-        fullTimeStat.addAction(alpha(0));
-        fullDistanceStat.addAction(alpha(0));
-        fullDestroyedStat.addAction(alpha(0));
-
-        pauseButton.addListener(toggleListener);
-        resumeButton.addListener(resumeListener);
-        restartButton.addListener(restartListener);
-        leaveButton.addListener(leaveListener);
-
-        distanceStat.setLabelColor(Var.COLOR_WHITE);
-        fullTimeStat.setLabelColor(Var.COLOR_WHITE);
-        fullDistanceStat.setLabelColor(Var.COLOR_WHITE);
-        fullDestroyedStat.setLabelColor(Var.COLOR_WHITE);
-
-        addActor(overlay);
-        addActor(background);
-        addActor(timer);
-        addActor(pauseButton);
-        addActor(gauge);
-        addActor(resumeButton);
-        addActor(restartButton);
-        addActor(leaveButton);
-        addActor(distanceStat);
-        addActor(fullHeading);
-        addActor(fullTimeStat);
-        addActor(fullDistanceStat);
-        addActor(fullDestroyedStat);
-
-        getRoot().setOrigin(vp.getWorldWidth() * 0.5f, vp.getWorldHeight() * 0.5f);
-        getRoot().setScale(1f, 1f);
-        getRoot().setSize(vp.getWorldWidth(), vp.getWorldHeight());
-        getRoot().setPosition(0f, 0f);
-    }
-
-    public void updateTimer() {
-        timer.update();
-    }
-
-    public void resetTimer() {
-        timer.reset();
-    }
-
-    public void setGaugeLevel(float level) {
-        gauge.setLevel(level);
-    }
-
-    public void pause () {
-        background.clearActions();
-        background.addAction(sequence(
-                run(disableTouchables),
-                run(pauseWidgets),
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), 0),
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), ROLLER_TIME, ROLLER_INTERPOLATION),
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-6), 0), // Asegura que no se vean los bordes si leaveGame
-                run(enableWidgetsVisibility),
-                run(fadeInWidgets),
-                delay(FADE_TIME),
-                run(enableTouchables)
-        ));
-    }
-
-    public void resume (final Runnable callback) {
-        background.clearActions();
-        background.addAction(sequence(
-                run(disableTouchables),
-                run(fadeOutWidgets),
-                delay(FADE_TIME),
-                run(disableWidgetsVisibility),
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), 0),
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), ROLLER_TIME, ROLLER_INTERPOLATION),
-                run(resumeWidgets),
-                run(enableTouchables),
-                run(callback)
-        ));
-    }
-
-    /**
-     * Secuencia de acciones visuales para reiniciar un juego
-     *
-     * @param resetCallabck Restea todos los elementos a su estado inicial
-     * @param unpauseCallback Despausa el juego
-     */
-    public void restart (Runnable resetCallabck, Runnable unpauseCallback, Runnable orbIntroCallback) {
-        background.clearActions();
-        background.addAction(sequence(
-                run(disableTouchables),
-                run(fadeOutWidgets),
-                delay(FADE_TIME),
-                run(disableWidgetsVisibility),
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), 0),
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), ROLLER_TIME, ROLLER_INTERPOLATION),
-                run(fadeInOverlay),
-                delay(OVERLAY_FADE_TIME),
-                run(resetCallabck),
-                run(orbIntroCallback),
-                run(fadeOutOverlay),
-                delay(Math.max(OVERLAY_FADE_TIME, Level.ORB_INTRO_SEQUENCE_TIME)),
-                run(resumeWidgets),
-                run(enableTouchables),
-                run(unpauseCallback)
-        ));
-    }
-
-    public void destroyAndRestart(Runnable callbackReset, Runnable callbackDestroyOrb, Runnable callbackUnpause, Runnable callbackUndestroy, Runnable callbackOrbIntro) {
-        background.clearActions();
-        background.addAction(sequence(
-                run(disableTouchables),
-                run(callbackDestroyOrb),
-                delay(1.3f),
-                run(fadeInOverlay),
-                delay(OVERLAY_FADE_TIME),
-                run(callbackReset),
-                run(callbackOrbIntro),
-                run(fadeOutOverlay),
-                delay(Math.max(OVERLAY_FADE_TIME, Level.ORB_INTRO_SEQUENCE_TIME)),
-                run(resumeWidgets),
-                run(enableTouchables),
-                run(callbackUndestroy),
-                run(callbackUnpause)
-        ));
-    }
-
-    public void setDistanceValue(float distance) {
-        distanceStat.setValue(distance, "m");
-    }
-
-    public void setFullDistanceValue(float distance) {
-        fullDistanceStat.setValue(distance, "m");
-    }
-
-    public void setFullTimeValue(float time) {
-        fullTimeStat.setValue(time, "s");
-    }
-
-    public void setFullDestroyedValue(int destroyed) {
-        fullDestroyedStat.setValue(destroyed, "times");
-    }
-
-    public void setGaugeOverload(boolean overloaded) {
-        gauge.setOverloaded(overloaded);
-    }
-
-    public void resetGauge() {
-        gauge.reset();
-    }
 
 }

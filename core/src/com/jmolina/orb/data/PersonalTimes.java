@@ -50,12 +50,10 @@ public class PersonalTimes {
     /**
      * Guarda en disco los 3 primeros tiempos
      */
-    public void save() {
+    public void put() {
         if (times.size() > 0) prefs.putFloat(LADDER_1, times.get(0));
         if (times.size() > 1) prefs.putFloat(LADDER_2, times.get(1));
         if (times.size() > 2) prefs.putFloat(LADDER_3, times.get(2));
-
-        prefs.flush();
     }
 
     private void detectLevel() {

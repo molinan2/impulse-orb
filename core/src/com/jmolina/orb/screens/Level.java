@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.data.GameStats;
 import com.jmolina.orb.data.PersonalTimes;
 import com.jmolina.orb.elements.Element;
@@ -23,8 +24,8 @@ import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
-import com.jmolina.orb.stages.OverlayStage;
 import com.jmolina.orb.stages.ParallaxStage;
+import com.jmolina.orb.utils.Utils;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.jmolina.orb.managers.PrefsManager.*;
@@ -36,7 +37,7 @@ import static com.jmolina.orb.managers.PrefsManager.*;
  */
 public class Level extends BaseScreen {
 
-    public static final float ORB_INTRO_SEQUENCE_TIME = 1f;
+    public static final float INTRO_SEQUENCE_TIME = 1f;
     private static final float HALF_TAP_SQUARE_SIZE = 20.0f;
     private static final float TAP_COUNT_INTERVAL = 0.4f;
     private static final float LONG_PRESS_DURATION = 1.1f;
@@ -44,7 +45,7 @@ public class Level extends BaseScreen {
 
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
     private final float WORLD_TIME_STEP = 1/60f;
-    private final int WORLD_OVERSTEP_FACTOR = 8;
+    private final int WORLD_OVERSTEP_FACTOR = 4;
     private final int WORLD_VELOCITY_INTERACTIONS = 8;
     private final int WORLD_POSITION_INTERACTIONS = 3;
     private final float ORB_MAX_LOCK_TIME = 0.90f;
@@ -52,8 +53,9 @@ public class Level extends BaseScreen {
     private final float OVERLOAD_TIME = 4f;
     private final int INFINITE_Z_INDEX = 32000;
     private final float MAX_IMPULSE = 40f;
-
     public static final float EXIT_SEQUENCE_TIME = 1f;
+    public static final float BACKGROUND_FADE_TIME = 0.5f;
+
     private float pixelsPerMeter;
     private float impulseFactor;
     private World world;
@@ -61,7 +63,6 @@ public class Level extends BaseScreen {
     private Viewport worldViewport, gestureViewport, hudViewport, parallaxViewport;
     private GestureStage gestureStage;
     private ParallaxStage parallaxStage;
-    private OverlayStage overlayStage;
     private HUDStage hudStage;
     private GestureDetector gestureDetector;
     private GestureHandler gestureHandler;
@@ -71,31 +72,20 @@ public class Level extends BaseScreen {
     private float orbOverloadTimer = 0f;
     private boolean paused = true;
     private boolean locked = false; // If locked = true, game cannot be unpaused
-    private Vector2 orbStartPosition;
-    // private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
+    private Vector2 orbStartPosition, currentOrbPosition, lastOrbPosition;
     private GameStats stats;
-    private Vector2 currentOrbPosition;
-    private Vector2 lastOrbPosition;
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
+    // private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
 
-
-
-    private Runnable restart = new Runnable() {
+    private Runnable reset = new Runnable() {
         @Override
         public void run() {
-            getOrb().setPosition(orbStartPosition.x, orbStartPosition.y);
-            getOrb().resetAngle();
-            getOrb().resetHeat();
-            getOrb().resetVelocity();
-            getOrb().resetFragments();
-            getOrb().setOverloaded(false);
-            hudStage.resetTimer();
-            hudStage.resetGauge();
+            getOrb().reset(orbStartPosition.x, orbStartPosition.y);
+            hudStage.reset();
             stats.newTry();
         }
     };
-
 
     private Runnable unpause = new Runnable() {
         @Override
@@ -104,7 +94,14 @@ public class Level extends BaseScreen {
         }
     };
 
-    private Runnable orbIntro = new Runnable() {
+    private Runnable unlock = new Runnable() {
+        @Override
+        public void run() {
+            locked = false;
+        }
+    };
+
+    private Runnable intro = new Runnable() {
         @Override
         public void run() {
             getOrb().getActor().addAction(sequence(
@@ -114,9 +111,9 @@ public class Level extends BaseScreen {
                             alpha(0)
                     ),
                     parallel(
-                            rotateTo(360, ORB_INTRO_SEQUENCE_TIME, Interpolation.exp5),
-                            scaleTo(getOrb().getNaturalScale(), getOrb().getNaturalScale(), ORB_INTRO_SEQUENCE_TIME, Interpolation.pow2),
-                            fadeIn(ORB_INTRO_SEQUENCE_TIME, Interpolation.pow2)
+                            rotateTo(360, INTRO_SEQUENCE_TIME, Interpolation.exp5),
+                            scaleTo(getOrb().getNaturalScale(), getOrb().getNaturalScale(), INTRO_SEQUENCE_TIME, Interpolation.pow2),
+                            fadeIn(INTRO_SEQUENCE_TIME, Interpolation.pow2)
                     )
             ));
 
@@ -124,18 +121,27 @@ public class Level extends BaseScreen {
         }
     };
 
-    private Runnable orbExit = new Runnable() {
+    private Runnable fadeInBackground = new Runnable() {
         @Override
         public void run() {
-            getOrb().getActor().addAction(sequence(
-                    parallel(
-                            rotateBy(360, ORB_INTRO_SEQUENCE_TIME, Interpolation.exp5Out),
-                            scaleTo(4, 4, ORB_INTRO_SEQUENCE_TIME, Interpolation.pow2),
-                            fadeOut(ORB_INTRO_SEQUENCE_TIME, Interpolation.pow2)
-                    )
-            ));
+            getBackgroundStage().addAction(fadeIn(UIAction.DURATION, Interpolation.pow2));
         }
     };
+
+    private Runnable fadeOutBackground = new Runnable() {
+        @Override
+        public void run() {
+            getBackgroundStage().addAction(fadeOut(BACKGROUND_FADE_TIME));
+        }
+    };
+
+    private Runnable destroy = new Runnable() {
+        @Override
+        public void run() {
+            getOrb().destroy();
+        }
+    };
+
 
 
     /**
@@ -153,14 +159,12 @@ public class Level extends BaseScreen {
 
         float worldWidth = VIEWPORT_WIDTH / getPixelsPerMeter();
         float worldHeight = VIEWPORT_HEIGHT / getPixelsPerMeter();
-
         worldViewport = new FitViewport(worldWidth, worldHeight);
 
         gestureViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         parallaxViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         hudViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         hudStage = new HUDStage(getAssetManager(), this, hudViewport);
-        overlayStage = new OverlayStage(getAssetManager(), hudViewport); // todo Vp especifico?
         gestureStage = new GestureStage(getAssetManager(), gestureViewport, getPixelsPerMeter());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getPixelsPerMeter(), getGameManager().getZoom());
         stats = new GameStats();
@@ -187,30 +191,15 @@ public class Level extends BaseScreen {
         addProcessor(hudStage);
         addProcessor(gestureStage);
         addProcessor(gestureDetector);
-
-        // Punto de partida
-        hudStage.addAction(sequence(
-                alpha(0),
-                scaleTo(1/1.35f, 1/1.35f, 0)
-        ));
     }
 
 
-    /**
-     * Screen Overrides
-     */
-
-    /**
-     * TODO
-     * Este método es muy lento para Android y se ralentiza.
-     * Los métodos más lentos son syncActors() [4] y draw() [20]
-     */
     @Override
     public void render(float delta) {
         clearColor();
         act();
         syncBodies();
-        stepSimulation();
+        stepWorld();
         followCamera();
         syncActors();
         updateLockTime();
@@ -232,7 +221,6 @@ public class Level extends BaseScreen {
     @Override
     public void dispose() {
         orb.disposing = true;
-        overlayStage.dispose();
         hudStage.dispose();
         gestureStage.dispose();
         parallaxStage.dispose();
@@ -243,33 +231,20 @@ public class Level extends BaseScreen {
     @Override
     public void show() {
         unsetInputProcessor();
-        hudStage.addAction(sequence(
-                run(new Runnable() {
-                    @Override
-                    public void run() {
-                        getBackgroundStage().addAction(alpha(1));
-                    }
-                }),
-                transition(Flow.ENTERING, getHierarchy()),
-                run(new Runnable() {
-                    @Override
-                    public void run() {
-                        getBackgroundStage().addAction(fadeOut(0.5f));
-                    }
-                }),
-                run(orbIntro),
-                delay(Math.max(0.5f, ORB_INTRO_SEQUENCE_TIME)),
-                run(UIRunnable.setInputProcessor(getProcessor())),
-                run(new Runnable() {
-                    @Override
-                    public void run() {
-                        paused = false;
-                    }
-                })
-        ));
-
+        getBackgroundStage().addAction(alpha(1));
         stats.newTry();
         getGameManager().play(GameManager.Track.Game);
+
+        hudStage.addAction(sequence(
+                alpha(0),
+                scaleTo(UIAction.SMALL, UIAction.SMALL),
+                transition(Flow.ENTERING, getHierarchy()),
+                run(fadeOutBackground),
+                run(intro),
+                delay(Math.max(BACKGROUND_FADE_TIME, INTRO_SEQUENCE_TIME)),
+                run(UIRunnable.setInputProcessor(getProcessor())),
+                run(unpause)
+        ));
     }
 
     @Override
@@ -285,15 +260,20 @@ public class Level extends BaseScreen {
         pauseGame();
     }
 
-
-    /**
-     * Backable methods
-     */
-
     @Override
     public void back() {
         if (!isGamePaused()) pauseGame();
         else resumeGame();
+    }
+
+    @Override
+    public void switchToScreen(final ScreenManager.Key key, final Hierarchy hierarchy) {
+        hudStage.addAction(sequence(
+                run(fadeInBackground),
+                delay(UIAction.DURATION),
+                transition(Flow.LEAVING, hierarchy),
+                run(UIRunnable.setScreen(getScreenManager(), key, hierarchy))
+        ));
     }
 
 
@@ -301,48 +281,23 @@ public class Level extends BaseScreen {
      * Class methods
      */
 
-    public float getPixelsPerMeter() {
-        return pixelsPerMeter;
+    public void setSuccessScreen(ScreenManager.Key key) {
+        this.successScreen = key;
     }
 
-    public World getWorld() {
-        return world;
+    public ScreenManager.Key getSuccessScreen() {
+        return this.successScreen;
     }
 
-    public void stepSimulation() {
-        for (int i=0; i<WORLD_OVERSTEP_FACTOR; i++) {
-            if (!isGamePaused()) {
-                world.step(
-                        WORLD_TIME_STEP / (float) WORLD_OVERSTEP_FACTOR,
-                        WORLD_VELOCITY_INTERACTIONS,
-                        WORLD_POSITION_INTERACTIONS
-                );
-            }
-        }
+    public void setOrbStartPosition (float x, float y) {
+        orbStartPosition.set(x, y);
+        getOrb().setPosition(orbStartPosition.x, orbStartPosition.y);
+        currentOrbPosition.set(x, y);
+        lastOrbPosition.set(x, y);
     }
 
-    /**
-     * Iguala la posicion y rotacion de los Bodies a las de sus Actors
-     */
-    private void syncBodies() {
-        // Todos los cuerpos
-        // TODO
-
-        // Orb
-        orb.syncBody();
-    }
-
-    /**
-     * Iguala la posicion y rotacion de los Actors a las de sus Bodies
-     */
-    public void syncActors() {
-        for (Situation situation : situations ) {
-            for (Element element : situation.getElements()) {
-                element.syncActor(worldViewport);
-            }
-        }
-
-        orb.syncActor(worldViewport);
+    public boolean isGamePaused() {
+        return paused;
     }
 
     public void addOrb(Orb orb) {
@@ -372,9 +327,48 @@ public class Level extends BaseScreen {
         return this.situations;
     }
 
+    public float getPixelsPerMeter() {
+        return pixelsPerMeter;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
     /**
-     * Hace que la camara siga al Orb, igualando su posicion
+     * Render methods
      */
+
+    public void stepWorld() {
+        for (int i=0; i<WORLD_OVERSTEP_FACTOR; i++) {
+            if (!isGamePaused()) {
+                world.step(
+                        WORLD_TIME_STEP / (float) WORLD_OVERSTEP_FACTOR,
+                        WORLD_VELOCITY_INTERACTIONS,
+                        WORLD_POSITION_INTERACTIONS
+                );
+            }
+        }
+    }
+
+    private void syncBodies() {
+        // Todos los cuerpos
+        // TODO
+
+        // Orb
+        orb.syncBody();
+    }
+
+    public void syncActors() {
+        for (Situation situation : situations ) {
+            for (Element element : situation.getElements()) {
+                element.syncActor(worldViewport);
+            }
+        }
+
+        orb.syncActor(worldViewport);
+    }
+
     private void followCamera() {
         worldViewport.getCamera().position.x = orb.getBody().getPosition().x;
         worldViewport.getCamera().position.y = orb.getBody().getPosition().y;
@@ -399,13 +393,6 @@ public class Level extends BaseScreen {
     }
 
     /**
-     * Metodos de GameManager
-     *
-     * TODO
-     * Mover a GameManager
-     */
-
-    /**
      * Desbloquea el Orb transcurrido el tiempo de bloqueo.
      */
     private void updateLockTime() {
@@ -419,6 +406,51 @@ public class Level extends BaseScreen {
             }
         }
     }
+
+    public void updateHeat() {
+        if (!isGamePaused()) {
+            hudStage.setGaugeLevel(getOrb().getHeat());
+
+            if (getOrb().isOverloaded()) {
+                orbOverloadTimer = MathUtils.clamp(orbOverloadTimer - Gdx.graphics.getRawDeltaTime(), 0f, OVERLOAD_TIME);
+                if (orbOverloadTimer == 0f) {
+                    getOrb().setOverloaded(false);
+                    hudStage.setGaugeOverload(false);
+                }
+            } else {
+                float decrement = COOLING_RATE * Gdx.graphics.getRawDeltaTime();
+                getOrb().decreaseHeat(decrement);
+            }
+        }
+    }
+
+    public void updateTimer() {
+        if (!isGamePaused()) {
+            hudStage.updateTimer();
+        }
+    }
+
+    public void updateGameStats() {
+        if (!isGamePaused()) {
+            float distance;
+
+            currentOrbPosition = getOrb().getPosition();
+            distance = Utils.distance(currentOrbPosition, lastOrbPosition);
+            lastOrbPosition = currentOrbPosition;
+
+            stats.addTime(Gdx.graphics.getRawDeltaTime());
+            stats.addDistance(distance);
+            hudStage.setDistanceValue(stats.getCurrentDistance());
+            hudStage.setFullDistanceValue(stats.fullDistance());
+            hudStage.setFullTimeValue(stats.fullTime());
+            hudStage.setFullDestroyedValue(stats.fails());
+        }
+    }
+    
+
+    /**
+     * Metodos de GameManager
+     */
 
     public void pauseGame() {
         if (!isGamePaused()) {
@@ -436,44 +468,22 @@ public class Level extends BaseScreen {
     }
 
     public void restartGame() {
-        hudStage.restart(restart, unpause, orbIntro);
+        hudStage.restart(reset, intro, unpause);
         getGameManager().play(GameManager.Fx.Button);
     }
 
-    /**
-     * Abandono manual del juego.
-     * Sólo puede ocurrir desde el menú de pausa
-     */
     public void leaveGame() {
         unsetInputProcessor();
-        saveGameStats();
+        getPrefsManager().saveGameStats(stats, getKey());
         getGameManager().play(GameManager.Fx.Back);
         getGameManager().play(GameManager.Track.Menu);
         switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
     }
 
-    @Override
-    public void switchToScreen(final ScreenManager.Key key, final Hierarchy hierarchy) {
-        hudStage.addAction(sequence(
-                run(new Runnable() {
-                    @Override
-                    public void run() {
-                        getBackgroundStage().addAction(fadeIn(0.35f, Interpolation.pow2));
-                    }
-                }),
-                delay(0.35f),
-                transition(Flow.LEAVING, hierarchy),
-                run(UIRunnable.setScreen(getScreenManager(), key, hierarchy))
-        ));
-    }
-
-    /**
-     * El orbe ha alcanzado la salida
-     */
     public void successGame() {
         stats.setSuccessfull(true);
-        saveGameStats();
-        cacheAttempt();
+        getPrefsManager().saveGameStats(stats, getKey());
+        getGameManager().cacheAttempt(stats.getLastAttempt());
         unsetInputProcessor();
         getGameManager().play(GameManager.Fx.Exit);
         paused = true;
@@ -495,22 +505,12 @@ public class Level extends BaseScreen {
     }
 
     /**
-     * Acciones cuando se detecte una colision normal
+     * Eventos
      */
+
     public void collision() {
         getGameManager().play(GameManager.Fx.Collision);
         getGameManager().vibrateShort();
-    }
-
-    public boolean isGamePaused() {
-        return paused;
-    }
-
-    public void setOrbStartPosition (float x, float y) {
-        orbStartPosition.set(x, y);
-        getOrb().setPosition(orbStartPosition.x, orbStartPosition.y);
-        currentOrbPosition.set(x, y);
-        lastOrbPosition.set(x, y);
     }
 
     public void tap() {
@@ -521,7 +521,7 @@ public class Level extends BaseScreen {
             getOrb().lock();
 
             if (getOrb().isOverloaded()) {
-                destroyOrb();
+                destroy();
             }
 
             if (getOrb().getHeat() == Orb.HEAT_MAX) {
@@ -532,23 +532,6 @@ public class Level extends BaseScreen {
 
             getGameManager().vibrateMedium();
             getGameManager().play(GameManager.Fx.Tap);
-        }
-    }
-
-    public void updateHeat() {
-        if (!isGamePaused()) {
-            hudStage.setGaugeLevel(getOrb().getHeat());
-
-            if (getOrb().isOverloaded()) {
-                orbOverloadTimer = MathUtils.clamp(orbOverloadTimer - Gdx.graphics.getRawDeltaTime(), 0f, OVERLOAD_TIME);
-                if (orbOverloadTimer == 0f) {
-                    getOrb().setOverloaded(false);
-                    hudStage.setGaugeOverload(false);
-                }
-            } else {
-                float decrement = COOLING_RATE * Gdx.graphics.getRawDeltaTime();
-                getOrb().decreaseHeat(decrement);
-            }
         }
     }
 
@@ -571,130 +554,13 @@ public class Level extends BaseScreen {
         }
     }
 
-    public void updateTimer() {
-        if (!isGamePaused()) {
-            hudStage.updateTimer();
-        }
-    }
-
-    public void updateGameStats() {
-        if (!isGamePaused()) {
-            float distance;
-
-            currentOrbPosition = getOrb().getPosition();
-            distance = distance(currentOrbPosition, lastOrbPosition);
-            lastOrbPosition = currentOrbPosition;
-
-            stats.addTime(Gdx.graphics.getRawDeltaTime());
-            stats.addDistance(distance);
-            hudStage.setDistanceValue(stats.getCurrentDistance());
-            hudStage.setFullDistanceValue(stats.fullDistance());
-            hudStage.setFullTimeValue(stats.fullTime());
-            hudStage.setFullDestroyedValue(stats.fails());
-        }
-    }
-
-    public void destroyOrb() {
-        Runnable unlock = new Runnable() {
-            @Override
-            public void run() {
-                locked = false;
-            }
-        };
-
-        Runnable destroyOrb = new Runnable() {
-            @Override
-            public void run() {
-                getOrb().destroy();
-            }
-        };
-
+    public void destroy() {
         paused = true;
         locked = true;
+        stats.setFailed(true);
         getGameManager().vibrateLong();
         getGameManager().play(GameManager.Fx.Destroy);
-        stats.setFailed(true);
-        hudStage.destroyAndRestart(restart, destroyOrb, unlock, unpause, orbIntro);
-    }
-
-    /**
-     * Distancia entre 2 puntos
-     */
-    private float distance(Vector2 pointA, Vector2 pointB) {
-        Vector2 inter = new Vector2(
-                pointB.x - pointA.x,
-                pointB.y - pointA.y
-        );
-
-        return (float) Math.sqrt(Math.pow(inter.x, 2) + Math.pow(inter.y, 2));
-    }
-
-    /**
-     * TODO
-     * Esto debería hacerse en el PrefsManager
-     */
-    private void saveGameStats() {
-        Preferences prefs = getPrefsManager().getPrefs();
-
-        if (!stats.isEmpty()) {
-            prefs.putFloat(STAT_TIME, prefs.getFloat(STAT_TIME) + stats.fullTime());
-            prefs.putFloat(STAT_DISTANCE, prefs.getFloat(STAT_DISTANCE) + stats.fullDistance());
-            prefs.putInteger(STAT_FAILS, prefs.getInteger(STAT_FAILS) + stats.fails());
-            prefs.putInteger(STAT_SUCCESSES, prefs.getInteger(STAT_SUCCESSES) + stats.successes());
-
-            int completedAttempts = stats.completedAttempts().size();
-
-            if (completedAttempts > 0) {
-                float minTimeAlive = stats.minTimeAlive();
-                float minDistanceAlive = stats.minDistanceAlive();
-                float maxTimeAlive = stats.maxTimeAlive();
-                float maxDistanceAlive = stats.maxDistanceAlive();
-                float avgTimeAlive = stats.averageTimeAlive();
-                float avgDistanceAlive = stats.averageDistanceAlive();
-
-                int savedAttempts = prefs.getInteger(STAT_COMPLETED_ATTEMPTS);
-                float savedAvgTimeAlive = prefs.getFloat(STAT_AVG_TIME_ALIVE);
-                float savedAvgDistanceAlive = prefs.getFloat(STAT_AVG_DISTANCE_ALIVE);
-
-                if (minTimeAlive < prefs.getFloat(STAT_MIN_TIME_ALIVE) || savedAttempts == 0)
-                    prefs.putFloat(STAT_MIN_TIME_ALIVE, minTimeAlive);
-
-                if (minDistanceAlive < prefs.getFloat(STAT_MIN_DISTANCE_ALIVE) || savedAttempts == 0)
-                    prefs.putFloat(STAT_MIN_DISTANCE_ALIVE, minDistanceAlive);
-
-                if (maxTimeAlive > prefs.getFloat(STAT_MAX_TIME_ALIVE))
-                    prefs.putFloat(STAT_MAX_TIME_ALIVE, maxTimeAlive);
-
-                if (maxDistanceAlive > prefs.getFloat(STAT_MAX_DISTANCE_ALIVE))
-                    prefs.putFloat(STAT_MAX_DISTANCE_ALIVE, maxDistanceAlive);
-
-                float wAvgTimeAlive = ((float) savedAttempts * savedAvgTimeAlive + completedAttempts * avgTimeAlive) / ((float) savedAttempts + completedAttempts);
-                float wAvgDistanceAlive = ((float) savedAttempts * savedAvgDistanceAlive + completedAttempts * avgDistanceAlive) / ((float) savedAttempts + completedAttempts);
-
-                prefs.putFloat(STAT_AVG_TIME_ALIVE, wAvgTimeAlive);
-                prefs.putFloat(STAT_AVG_DISTANCE_ALIVE, wAvgDistanceAlive);
-                prefs.putInteger(STAT_COMPLETED_ATTEMPTS, prefs.getInteger(STAT_COMPLETED_ATTEMPTS) + completedAttempts);
-            }
-
-            // Guarda los mejores tiempos
-            PersonalTimes personalTimes = new PersonalTimes(prefs, getKey());
-            personalTimes.addAttempt(stats.getLastAttempt());
-            personalTimes.save();
-        }
-
-        getPrefsManager().save();
-    }
-
-    public void setSuccessScreen(ScreenManager.Key key) {
-        this.successScreen = key;
-    }
-
-    public ScreenManager.Key getSuccessScreen() {
-        return this.successScreen;
-    }
-
-    private void cacheAttempt() {
-        getGameManager().cacheAttempt(stats.getLastAttempt());
+        hudStage.destroyAndRestart(destroy, reset, intro, unlock, unpause);
     }
 
 }

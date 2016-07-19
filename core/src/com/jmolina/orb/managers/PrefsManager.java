@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.MathUtils;
 import com.jmolina.orb.OrbApp;
+import com.jmolina.orb.data.GameStats;
+import com.jmolina.orb.data.PersonalTimes;
 import com.jmolina.orb.var.Var;
 
 public class PrefsManager {
@@ -45,7 +47,6 @@ public class PrefsManager {
     public static final String LADDER_5_1 = "ladder_5_1";
     public static final String LADDER_5_2 = "ladder_5_2";
     public static final String LADDER_5_3 = "ladder_5_3";
-
 
     private Preferences prefs;
 
@@ -141,12 +142,54 @@ public class PrefsManager {
         getPrefs().flush();
     }
 
-    public int getOptionZoomMin () {
-        return OPTION_ZOOM_MIN;
-    }
+    public void saveGameStats(GameStats stats, ScreenManager.Key level) {
+        if (!stats.isEmpty()) {
+            prefs.putFloat(STAT_TIME, prefs.getFloat(STAT_TIME) + stats.fullTime());
+            prefs.putFloat(STAT_DISTANCE, prefs.getFloat(STAT_DISTANCE) + stats.fullDistance());
+            prefs.putInteger(STAT_FAILS, prefs.getInteger(STAT_FAILS) + stats.fails());
+            prefs.putInteger(STAT_SUCCESSES, prefs.getInteger(STAT_SUCCESSES) + stats.successes());
 
-    public int getOptionZoomMax () {
-        return OPTION_ZOOM_MAX;
+            int completedAttempts = stats.completedAttempts().size();
+
+            if (completedAttempts > 0) {
+                float minTimeAlive = stats.minTimeAlive();
+                float maxTimeAlive = stats.maxTimeAlive();
+                float avgTimeAlive = stats.averageTimeAlive();
+                float minDistanceAlive = stats.minDistanceAlive();
+                float maxDistanceAlive = stats.maxDistanceAlive();
+                float avgDistanceAlive = stats.averageDistanceAlive();
+
+                int savedAttempts = prefs.getInteger(STAT_COMPLETED_ATTEMPTS);
+                float savedAvgTimeAlive = prefs.getFloat(STAT_AVG_TIME_ALIVE);
+                float savedAvgDistanceAlive = prefs.getFloat(STAT_AVG_DISTANCE_ALIVE);
+
+                if (minTimeAlive < prefs.getFloat(STAT_MIN_TIME_ALIVE) || savedAttempts == 0)
+                    prefs.putFloat(STAT_MIN_TIME_ALIVE, minTimeAlive);
+
+                if (minDistanceAlive < prefs.getFloat(STAT_MIN_DISTANCE_ALIVE) || savedAttempts == 0)
+                    prefs.putFloat(STAT_MIN_DISTANCE_ALIVE, minDistanceAlive);
+
+                if (maxTimeAlive > prefs.getFloat(STAT_MAX_TIME_ALIVE))
+                    prefs.putFloat(STAT_MAX_TIME_ALIVE, maxTimeAlive);
+
+                if (maxDistanceAlive > prefs.getFloat(STAT_MAX_DISTANCE_ALIVE))
+                    prefs.putFloat(STAT_MAX_DISTANCE_ALIVE, maxDistanceAlive);
+
+                float wAvgTimeAlive = ((float) savedAttempts * savedAvgTimeAlive + completedAttempts * avgTimeAlive) / ((float) savedAttempts + completedAttempts);
+                float wAvgDistanceAlive = ((float) savedAttempts * savedAvgDistanceAlive + completedAttempts * avgDistanceAlive) / ((float) savedAttempts + completedAttempts);
+
+                prefs.putFloat(STAT_AVG_TIME_ALIVE, wAvgTimeAlive);
+                prefs.putFloat(STAT_AVG_DISTANCE_ALIVE, wAvgDistanceAlive);
+                prefs.putInteger(STAT_COMPLETED_ATTEMPTS, prefs.getInteger(STAT_COMPLETED_ATTEMPTS) + completedAttempts);
+            }
+
+            // Guarda los mejores tiempos
+            PersonalTimes personalTimes = new PersonalTimes(prefs, level);
+            personalTimes.addAttempt(stats.getLastAttempt());
+            personalTimes.put();
+
+            save();
+        }
     }
 
 }

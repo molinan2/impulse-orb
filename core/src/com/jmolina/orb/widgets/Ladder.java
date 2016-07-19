@@ -12,7 +12,7 @@ import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.assets.Asset;
-import com.jmolina.orb.utils.Time;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Var;
 
 import java.util.ArrayList;
@@ -84,7 +84,7 @@ public class Ladder extends BaseGroup {
         float time = times.get(index);
 
         if (time > 0)
-            return Time.formatTime(time);
+            return Utils.formatTime(time);
         else
             return "--";
     }

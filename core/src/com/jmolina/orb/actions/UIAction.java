@@ -8,9 +8,9 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class UIAction {
 
-    private static final float SCALE_FACTOR = 1.35f;
-    private static final float LARGE = SCALE_FACTOR;
-    private static final float SMALL = 1 / SCALE_FACTOR;
+    public static final float SCALE_FACTOR = 1.35f;
+    public static final float LARGE = SCALE_FACTOR;
+    public static final float SMALL = 1 / SCALE_FACTOR;
 
     public static final float DURATION = 0.3f;
     public static final Interpolation IN = Interpolation.pow2In;

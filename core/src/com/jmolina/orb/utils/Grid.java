@@ -3,6 +3,7 @@ package com.jmolina.orb.utils;
 /**
  * La CELL_SIZE sólo es válida en las pantallas de menú, ya que los niveles pueden tener zoom.
  * Por tanto, esta clase sólo es útil dentro de las pantallas de menú.
+ * Edit: por algún motivo, sí que funciona bien en Levels con distinto zoom
  */
 public class Grid {
 

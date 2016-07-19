@@ -109,7 +109,7 @@ public class Orb extends Element {
     public void syncBody() {
         // Iguala solo la rotacion. La posicion no es necesaria en el Orb
         if (fragments != null) {
-            // Fix: La llamada a Body#setTransform peta la JVM cuando se hace Level#dispose().
+            // DirtyFix: La llamada a Body#setTransform peta la JVM cuando se hace Level#dispose().
             // Comprobamos que no se ha hecho Level#dispose() antes de ejecutar Body#setTransform.
             if (!disposing) {
                 getBody().setTransform(
@@ -154,6 +154,15 @@ public class Orb extends Element {
 
     public float getNaturalScale() {
         return naturalScale;
+    }
+
+    public void reset(float x, float y) {
+        setPosition(x, y);
+        resetAngle();
+        resetHeat();
+        resetVelocity();
+        resetFragments();
+        setOverloaded(false);
     }
 
 }

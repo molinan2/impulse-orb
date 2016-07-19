@@ -8,7 +8,7 @@ import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.assets.Asset;
-import com.jmolina.orb.utils.Time;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.widgets.Card;
 
 import static com.jmolina.orb.managers.ScreenManager.Key.*;
@@ -103,7 +103,7 @@ public class LevelSelect extends Menu {
         float time = getBestTime(key);
 
         if (time > 0)
-            return Time.formatTime(getBestTime(key));
+            return Utils.formatTime(getBestTime(key));
         else
             return "--";
     }

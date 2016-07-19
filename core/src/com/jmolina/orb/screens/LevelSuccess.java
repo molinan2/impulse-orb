@@ -9,7 +9,7 @@ import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.utils.Time;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BigText;
 import com.jmolina.orb.widgets.Heading;
@@ -45,7 +45,7 @@ public class LevelSuccess extends BaseScreen {
         this.timeHeading = new Heading(getAssetManager(), "Time", Align.center, Heading.Weight.Regular, Var.COLOR_BLUE);
         this.distanceHeading = new Heading(getAssetManager(), "Distance", Align.center, Heading.Weight.Regular, Var.COLOR_BLUE);
 
-        this.time = new BigText(getAssetManager(), Time.formatTime(attempt.getTime()));
+        this.time = new BigText(getAssetManager(), Utils.formatTime(attempt.getTime()));
         this.distance = new BigText(getAssetManager(), formatDistance(attempt.getDistance()));
 
         this.button = new MainButton(getAssetManager(), "BACK", MainButton.Type.Default);
