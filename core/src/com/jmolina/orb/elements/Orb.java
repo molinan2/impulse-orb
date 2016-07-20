@@ -11,22 +11,7 @@ import com.jmolina.orb.actions.GameAction;
 import com.jmolina.orb.widgets.OrbFragments;
 
 /**
- * TODO
- * Heat:
- * Cuando se llegue al 100%, se mantiene bloqueado (OVERLOAD) al 100% durante X segundos.
- * Si estando en estado OVERLOAD se recibe otro tapEvent, el orbe se destruye.
- * Pasados X segundos, se reanuda el COOLING.
- *
- * TODO
- * Pintar de rojo intermitente la barra cuando este overload
- * Comprobar en level que esta overload. Si esta overload, disminuir el tiempo de overload, pero no la barra
- *
- * TODO
- * Los Override denotan que Orb no deriva exactamente de Element
- * Habria que refactorizar (BasicElement -> Orb, BasicElement -> Element -> (Todos))
- *
- * TODO
- * Cuando se llegue a Overload, que se ponga naranja (cambio de textura en OrbFragments
+ * TODO: De color naranja cuando esté en Overload
  */
 public class Orb extends Element {
 
@@ -118,9 +103,11 @@ public class Orb extends Element {
         return fragments;
     }
 
+    /**
+     * Iguala sólo la rotación. La posición no es necesaria en el Orb, ya que la cámara lo sigue.
+     */
     @Override
     public void syncBody() {
-        // Iguala solo la rotacion. La posicion no es necesaria en el Orb
         if (fragments != null) {
             // DirtyFix: La llamada a Body#setTransform peta la JVM cuando se hace Level#dispose().
             // Comprobamos que no se ha hecho Level#dispose() antes de ejecutar Body#setTransform.

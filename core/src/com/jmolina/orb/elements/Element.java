@@ -117,8 +117,7 @@ public class Element {
     }
 
     public void syncBody() {
-        // Iguala la posicion
-        // TODO
+        // TODO: Igualar la posicion
 
         // Iguala la rotacion
         if (actor != null && body != null) {

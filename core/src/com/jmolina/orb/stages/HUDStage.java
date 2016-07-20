@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
@@ -29,36 +30,35 @@ public class HUDStage extends Stage {
     private final float HUD_BACKGROUND_X = -6f;
     private final float HUD_BACKGROUND_Y = 16f;
 
-    private Level gameManager; // TODO: Debe ser un GameManager
+    private Level level;
     private Curtain curtain;
     private HUDBackground background;
     private Gauge gauge;
     private Timer timer;
     private PauseButton pauseButton;
     private PauseMenu pauseMenu;
-    private Runnable enableTouchables, resumeWidgets, fadeInWidgets, fadeOutWidgets,
-            enableWidgetsVisibility, disableWidgetsVisibility, fadeInOverlay, fadeOutOverlay;
+    private Runnable enableTouchables, toggleButton, enableMenuVisibility, disableMenuVisibility;
     private ClickListener toggleListener;
 
     /**
      * Constructor
      *
-     * @param am AssetManager
-     * @param gm Level Futuro GameManager
-     * @param vp Viewport
+     * @param assetManager AssetManager
+     * @param level Level Futuro GameManager
+     * @param viewport Viewport
      */
-    public HUDStage(AssetManager am, Level gm, Viewport vp) {
-        super(vp);
+    public HUDStage(AssetManager assetManager, Level level, Viewport viewport) {
+        super(viewport);
 
-        gameManager = gm;
+        this.level = level;
 
         createListeners();
-        createActors(am, gm);
+        createActors(assetManager, level);
         addActors();
         createRunnables();
 
-        getRoot().setOrigin(vp.getWorldWidth() * 0.5f, vp.getWorldHeight() * 0.5f);
-        getRoot().setSize(vp.getWorldWidth(), vp.getWorldHeight());
+        getRoot().setOrigin(viewport.getWorldWidth() * 0.5f, viewport.getWorldHeight() * 0.5f);
+        getRoot().setSize(viewport.getWorldWidth(), viewport.getWorldHeight());
         getRoot().setScale(1f);
         getRoot().setPosition(0f, 0f);
     }
@@ -103,52 +103,24 @@ public class HUDStage extends Stage {
             }
         };
 
-        resumeWidgets = new Runnable() {
+        toggleButton = new Runnable() {
             @Override
             public void run() {
                 pauseButton.resume();
             }
         };
 
-        fadeInWidgets = new Runnable() {
-            @Override
-            public void run() {
-                pauseMenu.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION));
-            }
-        };
-
-        fadeOutWidgets = new Runnable() {
-            @Override
-            public void run() {
-                pauseMenu.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION));
-            }
-        };
-
-        enableWidgetsVisibility = new Runnable() {
+        enableMenuVisibility = new Runnable() {
             @Override
             public void run() {
                 pauseMenu.setVisible(true);
             }
         };
 
-        disableWidgetsVisibility = new Runnable() {
+        disableMenuVisibility = new Runnable() {
             @Override
             public void run() {
                 pauseMenu.setVisible(false);
-            }
-        };
-
-        fadeInOverlay = new Runnable() {
-            @Override
-            public void run() {
-                curtain.addAction(fadeIn(OVERLAY_FADE_TIME, FADE_INTERPOLATION));
-            }
-        };
-
-        fadeOutOverlay = new Runnable() {
-            @Override
-            public void run() {
-                curtain.addAction(fadeOut(OVERLAY_FADE_TIME, FADE_INTERPOLATION));
             }
         };
     }
@@ -157,10 +129,10 @@ public class HUDStage extends Stage {
         toggleListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (!getGameManager().isGameInactive())
-                    getGameManager().pauseGame();
+                if (!getLevel().isGameLocked())
+                    getLevel().pauseGame();
                 else
-                    getGameManager().resumeGame();
+                    getLevel().resumeGame();
 
                 event.cancel();
             }
@@ -176,70 +148,69 @@ public class HUDStage extends Stage {
                 moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), 0),
                 moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), ROLLER_TIME, ROLLER_INTERPOLATION),
                 moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-6), 0), // Asegura que no se vean los bordes si leaveGame()
-                run(enableWidgetsVisibility),
-                run(fadeInWidgets),
+                run(enableMenuVisibility),
+                Actions.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION), pauseMenu),
                 delay(FADE_TIME),
                 run(enableTouchables)
         ));
     }
 
-    public void resume(final Runnable callback) {
+    public void resume(final Runnable unlock) {
         pauseButton.pause();
         pauseButton.setTouchable(Touchable.disabled);
         pauseMenu.setTouchable(Touchable.disabled);
         background.clearActions();
         background.addAction(sequence(
-                run(fadeOutWidgets),
+                Actions.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION), pauseMenu),
                 delay(FADE_TIME),
-                run(disableWidgetsVisibility),
+                run(disableMenuVisibility),
                 moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), 0),
                 moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), ROLLER_TIME, ROLLER_INTERPOLATION),
-                run(resumeWidgets),
+                run(toggleButton),
                 run(enableTouchables),
-                run(callback)
+                run(unlock)
         ));
     }
 
-    public void restart (Runnable reset, Runnable intro, Runnable unpause) {
+    public void restart (Runnable reset, Runnable intro, Runnable unlock) {
         pauseButton.pause();
         pauseButton.setTouchable(Touchable.disabled);
         pauseMenu.setTouchable(Touchable.disabled);
         background.clearActions();
         background.addAction(sequence(
-                run(fadeOutWidgets),
+                Actions.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION), pauseMenu),
                 delay(FADE_TIME),
-                run(disableWidgetsVisibility),
+                run(disableMenuVisibility),
                 moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), 0),
                 moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), ROLLER_TIME, ROLLER_INTERPOLATION),
-                run(fadeInOverlay),
+                Actions.addAction(fadeIn(OVERLAY_FADE_TIME, FADE_INTERPOLATION), curtain),
                 delay(OVERLAY_FADE_TIME),
                 run(reset),
                 run(intro),
-                run(fadeOutOverlay),
+                Actions.addAction(fadeOut(OVERLAY_FADE_TIME, FADE_INTERPOLATION), curtain),
                 delay(Math.max(OVERLAY_FADE_TIME, Level.INTRO_SEQUENCE_TIME)),
-                run(resumeWidgets),
+                run(toggleButton),
                 run(enableTouchables),
-                run(unpause)
+                run(unlock)
         ));
     }
 
-    public void destroy(Runnable destroy, Runnable reset, Runnable intro, Runnable unlock, Runnable unpause) {
+    public void destroy(Runnable destroy, Runnable reset, Runnable intro, Runnable unlock) {
         pauseButton.setTouchable(Touchable.disabled);
         pauseMenu.setTouchable(Touchable.disabled);
         background.clearActions();
         background.addAction(sequence(
                 run(destroy),
                 delay(DESTROY_TIME),
-                run(fadeInOverlay),
+                Actions.addAction(fadeIn(OVERLAY_FADE_TIME, FADE_INTERPOLATION), curtain),
                 delay(OVERLAY_FADE_TIME),
                 run(reset),
                 run(intro),
-                run(fadeOutOverlay),
+                Actions.addAction(fadeOut(OVERLAY_FADE_TIME, FADE_INTERPOLATION), curtain),
                 delay(Math.max(OVERLAY_FADE_TIME, Level.INTRO_SEQUENCE_TIME)),
-                run(resumeWidgets),
+                run(toggleButton),
                 run(enableTouchables),
-                run(unlock),
-                run(unpause)
+                run(unlock)
         ));
     }
 
@@ -276,11 +247,8 @@ public class HUDStage extends Stage {
         gauge.reset();
     }
 
-    /**
-     * Temporalmente, devuelve el Level
-     */
-    private Level getGameManager() {
-        return this.gameManager;
+    private Level getLevel() {
+        return level;
     }
 
 }

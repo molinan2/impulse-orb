@@ -7,10 +7,7 @@ import com.jmolina.orb.elements.Element;
 
 /**
  * Una lista de elementos creados y configurados, posicionados respecto a (0,0)
- * Mide 18x12 (alto x ancho)
- *
- * TODO
- * Que carguen de JSON
+ * Mide 18x12 unidades (alto x ancho)
  */
 public abstract class Situation {
 

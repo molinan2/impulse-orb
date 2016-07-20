@@ -62,6 +62,8 @@ public class ParallaxStage extends Stage {
         addActor(layer3);
         addActor(layer2);
         addActor(layer1);
+
+        getRoot().setTransform(false);
     }
 
     @Override

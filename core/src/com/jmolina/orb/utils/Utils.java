@@ -28,12 +28,12 @@ public class Utils {
      * Distancia entre 2 puntos
      */
     public static float distance(Vector2 pointA, Vector2 pointB) {
-        Vector2 inter = new Vector2(
+        Vector2 segment = new Vector2(
                 pointB.x - pointA.x,
                 pointB.y - pointA.y
         );
 
-        return (float) Math.sqrt(Math.pow(inter.x, 2) + Math.pow(inter.y, 2));
+        return (float) Math.sqrt(Math.pow(segment.x, 2) + Math.pow(segment.y, 2));
     }
 
 }

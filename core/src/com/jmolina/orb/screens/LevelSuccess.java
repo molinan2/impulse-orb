@@ -20,8 +20,9 @@ import com.jmolina.orb.widgets.MainButton;
 import java.text.DecimalFormat;
 
 /**
- * TODO
- * Texto de "You have unlocked NEXT LEVEL"
+ * TODO: Texto de "You have unlocked NEXT LEVEL"
+ * TODO: Posición en el ranking si llega al podio
+ * TODO: Estrellitas de tipo NADEO (bronze, silver, gold, developer)
  */
 public class LevelSuccess extends BaseScreen {
 
@@ -54,7 +55,6 @@ public class LevelSuccess extends BaseScreen {
             public void clicked (InputEvent event, float x, float y) {
                 button.clickEffect();
                 getGameManager().play(GameManager.Fx.Back);
-                // switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
                 switchToScreen(ScreenManager.Key.LEVEL_SELECT, Hierarchy.HIGHER);
             }
         });
@@ -90,11 +90,7 @@ public class LevelSuccess extends BaseScreen {
 
     private String formatDistance(float distance) {
         DecimalFormat df = new DecimalFormat("###.##");
-        String formatedDistance = "";
-
-        formatedDistance = df.format(distance) + " m";
-
-        return formatedDistance;
+        return df.format(distance) + " m";
     }
 
     @Override

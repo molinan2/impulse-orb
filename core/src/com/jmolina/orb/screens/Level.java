@@ -29,10 +29,6 @@ import com.jmolina.orb.var.Var;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 
-/**
- * TODO
- * Temporalmente, esta pantalla está actuando como GameManager
- */
 public class Level extends BaseScreen {
 
     public static final float INTRO_SEQUENCE_TIME = 1f;
@@ -46,13 +42,13 @@ public class Level extends BaseScreen {
     private final float GESTURE_MAX_FLING_IMPULSE = 40f;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
     private final float WORLD_TIME_STEP = Var.FPS;
-    private final int WORLD_OVERSTEP_FACTOR = 4;
+    private final int WORLD_OVERSTEP_FACTOR = 1;
     private final int WORLD_VELOCITY_INTERACTIONS = 8;
     private final int WORLD_POSITION_INTERACTIONS = 3;
     private final int INFINITE_Z_INDEX = 32000;
 
     private float pixelsPerMeter, impulseFactor;
-    private boolean paused, locked;
+    private boolean locked;
     private World world;
     private ContactHandler contactHandler;
     private Viewport worldViewport, gestureViewport, hudViewport, parallaxViewport;
@@ -66,9 +62,7 @@ public class Level extends BaseScreen {
     private Vector2 orbStartPosition, currentOrbPosition, lastOrbPosition;
     private GameStats stats;
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
-    // private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
-
-    private Runnable orbIntro, reset, unpause, unlock, orbDestroy, fadeInBackground, fadeOutBackground, switchToSuccess;
+    private Runnable orbIntro, reset, unlock, orbDestroy, fadeInBackground, fadeOutBackground, switchToSuccess;
 
 
     /**
@@ -77,8 +71,6 @@ public class Level extends BaseScreen {
      */
     public Level(SuperManager sm, ScreenManager.Key key) {
         super(sm, key);
-
-        paused = false;
 
         pixelsPerMeter = getGameManager().getPixelsPerMeter();
         impulseFactor = 1 / getPixelsPerMeter();
@@ -137,13 +129,6 @@ public class Level extends BaseScreen {
                 getOrb().reset(orbStartPosition.x, orbStartPosition.y);
                 getHUDStage().reset();
                 stats.newTry();
-            }
-        };
-
-        unpause = new Runnable() {
-            @Override
-            public void run() {
-                paused = false;
             }
         };
 
@@ -243,7 +228,7 @@ public class Level extends BaseScreen {
     public void hide() {
         super.hide();
         getGameManager().play(GameManager.Track.Menu);
-        // TODO: Se estan ejecutando 2 plays seguidos distintos cuando se cambia a SUCCESS SCREEN
+        // TODO: Se ejecutan 2 plays seguidos distintos cuando se cambia a SUCCESS SCREEN
     }
 
     @Override
@@ -254,7 +239,7 @@ public class Level extends BaseScreen {
 
     @Override
     public void back() {
-        if (!isGameInactive()) pauseGame();
+        if (!isGameLocked()) pauseGame();
         else resumeGame();
     }
 
@@ -346,7 +331,7 @@ public class Level extends BaseScreen {
 
     public void stepWorld() {
         for (int i=0; i<WORLD_OVERSTEP_FACTOR; i++) {
-            if (!isGameInactive()) {
+            if (!isGameLocked()) {
                 world.step(
                         WORLD_TIME_STEP / (float) WORLD_OVERSTEP_FACTOR,
                         WORLD_VELOCITY_INTERACTIONS,
@@ -357,8 +342,7 @@ public class Level extends BaseScreen {
     }
 
     private void syncBodies() {
-        // Todos los cuerpos
-        // TODO
+        // TODO: Sincronizar elementos
 
         // Orb
         orb.syncBody();
@@ -381,7 +365,6 @@ public class Level extends BaseScreen {
     }
 
     private void act() {
-        getParallaxStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getMainStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getGestureStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getBackgroundStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
@@ -394,7 +377,6 @@ public class Level extends BaseScreen {
         getGestureStage().draw();
         getBackgroundStage().draw();
         getHUDStage().draw();
-        // debugRenderer.render(world, worldViewport.getCamera().combined);
     }
 
     /**
@@ -402,13 +384,13 @@ public class Level extends BaseScreen {
      */
 
     private void updateOrbLockTime() {
-        if (!isGameInactive()) {
+        if (!isGameLocked()) {
             getOrb().updateLockTime();
         }
     }
 
     private void updateHeat() {
-        if (!isGameInactive()) {
+        if (!isGameLocked()) {
             getOrb().updateHeat();
             getHUDStage().setGaugeLevel(getOrb().getHeat());
             getHUDStage().setGaugeOverload(getOrb().isOverloaded());
@@ -416,13 +398,13 @@ public class Level extends BaseScreen {
     }
 
     private void updateTimer() {
-        if (!isGameInactive()) {
+        if (!isGameLocked()) {
             getHUDStage().updateTimer();
         }
     }
 
     private void updateStats() {
-        if (!isGameInactive()) {
+        if (!isGameLocked()) {
             currentOrbPosition = getOrb().getPosition();
             float distance = Utils.distance(currentOrbPosition, lastOrbPosition);
             lastOrbPosition = currentOrbPosition;
@@ -441,38 +423,22 @@ public class Level extends BaseScreen {
      */
 
     public void pauseGame() {
-        if (!isGameInactive()) {
-            paused = true;
+        if (!isGameLocked()) {
+            lockGame();
             getHUDStage().pause();
             getGameManager().play(GameManager.Fx.Back);
         }
     }
 
     public void resumeGame() {
-        if (!isGameLocked()) {
-            getHUDStage().resume(unpause);
+        if (isGameLocked()) {
+            getHUDStage().resume(unlock);
             getGameManager().play(GameManager.Fx.Button);
         }
     }
 
-    public boolean isGameInactive() {
-        return paused || locked;
-    }
-
-    public boolean isGameLocked() {
-        return locked;
-    }
-
-    public void lockGame() {
-        locked = true;
-    }
-
-    public void unlockGame() {
-        locked = false;
-    }
-
     public void restartGame() {
-        getHUDStage().restart(reset, orbIntro, unpause);
+        getHUDStage().restart(reset, orbIntro, unlock);
         getGameManager().play(GameManager.Fx.Button);
     }
 
@@ -494,6 +460,18 @@ public class Level extends BaseScreen {
         getOrb().outro(switchToSuccess);
     }
 
+    public void lockGame() {
+        locked = true;
+    }
+
+    public void unlockGame() {
+        locked = false;
+    }
+
+    public boolean isGameLocked() {
+        return locked;
+    }
+
 
     /**
      * Eventos
@@ -505,7 +483,7 @@ public class Level extends BaseScreen {
     }
 
     public void tapEvent() {
-        if (!isGameInactive()) {
+        if (!isGameLocked()) {
             getOrb().lock();
             getOrb().increaseHeat();
             getGestureStage().drawTap();
@@ -526,7 +504,7 @@ public class Level extends BaseScreen {
         float impulseX = MathUtils.clamp(velocityX * impulseFactor, -GESTURE_MAX_FLING_IMPULSE, GESTURE_MAX_FLING_IMPULSE);
         float impulseY = MathUtils.clamp(-velocityY * impulseFactor, -GESTURE_MAX_FLING_IMPULSE, GESTURE_MAX_FLING_IMPULSE);
 
-        if (!isGameInactive()) {
+        if (!isGameLocked()) {
             getOrb().unlock();
             getOrb().getBody().applyLinearImpulse(
                     impulseX,
@@ -546,7 +524,7 @@ public class Level extends BaseScreen {
         getStats().setFailed(true);
         getGameManager().vibrate(GameManager.Length.Long);
         getGameManager().play(GameManager.Fx.Destroy);
-        getHUDStage().destroy(orbDestroy, reset, orbIntro, unlock, unpause);
+        getHUDStage().destroy(orbDestroy, reset, orbIntro, unlock);
     }
 
 }

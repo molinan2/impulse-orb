@@ -83,8 +83,6 @@ public class Options extends Menu {
             }
         });
 
-        // TODO
-        // Que el evento lo tire MultiOption, indicando el dato en algun campo de event
         zoom.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {

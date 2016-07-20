@@ -15,8 +15,7 @@ import com.jmolina.orb.var.Var;
 import java.text.DecimalFormat;
 
 /**
- * TODO
- * Hacer que conserve la unidad para que no haya que especificarla en cada setValue
+ * TODO: Que conserve la unidad para no tener que especificarla en cada setValue
  */
 public class Stat extends BaseGroup {
 

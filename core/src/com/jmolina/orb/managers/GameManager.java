@@ -11,16 +11,6 @@ import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.var.Var;
 import com.sun.glass.ui.Window;
 
-/**
- * TODO
- * Clase para la Musica, que lleve la cuenta de la pista en reproduccion actual
- * y sea capaz de parar el resto, ver si hay alguna en reproduccion y si concuerda con la pantalla.
- * Capaz de hacer fadeIn y fadeOut.
- *
- * TODO
- * Trasladar aqui los metodos de control implementados en Level: pause, resume, restart,
- * destroyEvent, increaseGauge gauge, decrease gauge,...
- */
 public class GameManager {
 
     public enum Fx { Back, Button, Collision, Destroy, Exit, Fling, Init, Option, Tap }
@@ -37,14 +27,13 @@ public class GameManager {
 
     private SuperManager superManager;
     private PrefsManager prefsManager;
-    private Attempt cachedAttempt; // Cachea las stats para mostrarlas en Success
+    private Attempt cachedAttempt;
     private boolean vibration = true;
     private boolean sound = true;
     private boolean music = true;
     private int zoom = PrefsManager.OPTION_ZOOM_DEFAULT;
     private Sound backSound, buttonSound, collisionSound, destroySound, exitSound, flingSound, initSound, optionSound, tapSound;
     private Music menuMusic, gameMusic, successMusic;
-    private Level currentLevel;
 
     /**
      * Constructor
@@ -211,16 +200,5 @@ public class GameManager {
         menuMusic.stop();
         successMusic.stop();
     }
-
-    public void setCurrentLevel(Level level) {
-        currentLevel = level;
-    }
-
-
-
-
-
-
-
 
 }

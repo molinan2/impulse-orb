@@ -9,32 +9,31 @@ import com.jmolina.orb.var.Var;
 
 public class PauseMenu extends BaseGroup {
 
-    private Level gameManager;
+    private Level level;
     private MainButton resumeButton, restartButton, leaveButton;
     private Heading fullHeading;
     private Stat distanceStat, fullTimeStat, fullDistanceStat, fullDestroyedStat;
     private ClickListener resumeListener, restartListener, leaveListener;
 
-    public PauseMenu(AssetManager am, Level gm) {
-        super(am);
+    public PauseMenu(AssetManager assetManager, Level level) {
+        super(assetManager);
 
-        gameManager = gm;
-
+        this.level = level;
         createListeners();
         createActors();
         addActors();
     }
 
-    private Level getGameManager() {
-        return this.gameManager;
+    private Level getLevel() {
+        return this.level;
     }
 
     private void createListeners() {
         resumeListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (getGameManager().isGameInactive())
-                    getGameManager().resumeGame();
+                if (getLevel().isGameLocked())
+                    getLevel().resumeGame();
 
                 event.cancel();
             }
@@ -43,7 +42,7 @@ public class PauseMenu extends BaseGroup {
         restartListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                getGameManager().restartGame();
+                getLevel().restartGame();
                 event.cancel();
             }
         };
@@ -51,7 +50,7 @@ public class PauseMenu extends BaseGroup {
         leaveListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                getGameManager().leaveGame();
+                getLevel().leaveGame();
                 event.cancel();
             }
         };

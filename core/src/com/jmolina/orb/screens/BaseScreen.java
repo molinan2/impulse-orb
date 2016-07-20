@@ -206,11 +206,6 @@ public class BaseScreen extends ScreenAdapter implements Backable {
 
     /**
      * Ejecuta la animacion de salida y termina la aplicacion
-     *
-     * TODO
-     * Las pantallas no deberian salir por si mismas, sino solicitar a un controller salir de
-     * la aplicacion, y el controller debe devolver una respuesta. Si es positiva, la pantalla
-     * anima su salida; si no, deberia mostrar algun feedback. Pero no va a ser asi...
      */
     public void exitApplication() {
         clearRootActions();

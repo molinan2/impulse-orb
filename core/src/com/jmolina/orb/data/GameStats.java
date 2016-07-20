@@ -2,9 +2,6 @@ package com.jmolina.orb.data;
 
 import java.util.ArrayList;
 
-/**
- * ATTEMPT: Un Attempt se considera COMPLETO cuando el Orb alcanza la salida o es destruido.
- */
 public class GameStats {
 
     public static final float ERROR = -1.0f;
@@ -20,10 +17,7 @@ public class GameStats {
     }
 
     private boolean hasAttemps () {
-        if (attempts.size() != 0)
-            return true;
-        else
-            return false;
+        return attempts.size() != 0;
     }
 
     public void newTry() {
@@ -251,12 +245,7 @@ public class GameStats {
         }
     }
 
-    /**
-     * Igual a getCurrentAttempt
-     *
-     * TODO
-     * No se deberia llamar con attemps vacio. Deberia lanzar una excepcion
-     */
+    // TODO: No se deberia llamar si attemps esta vacio. Arrojar una excepcion
     public Attempt getLastAttempt() {
         if (!isEmpty())
             return attempts.get(attempts.size()-1);

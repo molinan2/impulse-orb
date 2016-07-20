@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Disposable;
-import com.jmolina.orb.interfaces.Reseteable;
 import com.jmolina.orb.utils.Grid;
 
 public class BaseGroup extends Group implements Disposable {
@@ -33,9 +32,7 @@ public class BaseGroup extends Group implements Disposable {
 
     @Override
     public void draw (Batch batch, float parentAlpha) {
-        // TODO
-        // Soporte preliminar click feedback con shader.
-        // Solo se renderiza el shader cuando brightness > 0
+        // TODO: Click feedback preliminar con shader.
         if (brightness > 0) {
             float variance = 0.03f;
             brightness = MathUtils.clamp(brightness - variance, 0f, 1f);
@@ -69,9 +66,7 @@ public class BaseGroup extends Group implements Disposable {
     }
 
     public void clickEffect() {
-        // TODO
-        // Soporte preliminar click feedback con shader
-        this.brightness = 0.5f;
+        brightness = 0.5f;
     }
 
     public void setPositionGrid (float x, float y) {
