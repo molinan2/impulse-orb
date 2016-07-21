@@ -6,7 +6,7 @@ import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.ProgressBar;
 
@@ -26,10 +26,10 @@ public class Load extends BaseScreen {
         superManager = sm;
 
         this.splash = new Image(getAsset(Asset.UI_SPLASH, Texture.class));
-        this.splash.setPosition(Grid.unit(2), Grid.unit(7.5f));
+        this.splash.setPosition(Utils.cell(2), Utils.cell(7.5f));
 
         this.bar = new ProgressBar(getAssetManager());
-        this.bar.setPosition(Grid.unit(2), Grid.unit(3.5f));
+        this.bar.setPosition(Utils.cell(2), Utils.cell(3.5f));
 
         addMainActor(this.splash);
         addMainActor(this.bar);

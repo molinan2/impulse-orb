@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
@@ -40,13 +40,13 @@ public class Heading extends BaseGroup {
         label = new Label(name, style);
         label.setTouchable(Touchable.disabled);
         label.setPosition(0f, 0f);
-        label.setHeight(Grid.unit(1));
-        label.setWidth(Grid.unit(10f));
+        label.setHeight(Utils.cell(1));
+        label.setWidth(Utils.cell(10f));
         label.setAlignment(align);
 
         addActor(label);
         setTransform(false);
-        setHeight(Grid.unit(1));
+        setHeight(Utils.cell(1));
     }
 
     @Override

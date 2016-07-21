@@ -104,10 +104,10 @@ public class Orb extends Element {
     }
 
     /**
-     * Iguala sólo la rotación. La posición no es necesaria en el Orb, ya que la cámara lo sigue.
+     * No se sincroniza la posición, ya que la cámara siempre sigue.
      */
     @Override
-    public void syncBody() {
+    public void syncBody(Viewport viewport) {
         if (fragments != null) {
             // DirtyFix: La llamada a Body#setTransform peta la JVM cuando se hace Level#dispose().
             // Comprobamos que no se ha hecho Level#dispose() antes de ejecutar Body#setTransform.

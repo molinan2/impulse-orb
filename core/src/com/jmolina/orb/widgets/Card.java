@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.interfaces.Visitor;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
@@ -48,7 +48,7 @@ public class Card extends BaseGroup {
         background.setPosition(0f, 0f);
         cover.setPosition(0f, 0f);
         coverWhite.setPosition(0f, 0f);
-        lock.setPosition(Grid.unit(1.75f), Grid.unit(1));
+        lock.setPosition(Utils.cell(1.75f), Utils.cell(1));
 
         Label.LabelStyle titleStyle = new Label.LabelStyle();
         titleStyle.fontColor = new Color(Var.COLOR_BLUE);
@@ -56,9 +56,9 @@ public class Card extends BaseGroup {
 
         this.title = new Label(title, titleStyle);
         this.title.setTouchable(Touchable.disabled);
-        this.title.setPosition(Grid.unit(5), Grid.unit(3));
-        this.title.setHeight(Grid.unit(1));
-        this.title.setWidth(Grid.unit(4.75f));
+        this.title.setPosition(Utils.cell(5), Utils.cell(3));
+        this.title.setHeight(Utils.cell(1));
+        this.title.setWidth(Utils.cell(4.75f));
         this.title.setAlignment(Align.right);
 
         Label.LabelStyle timeStyle = new Label.LabelStyle();
@@ -67,16 +67,16 @@ public class Card extends BaseGroup {
 
         this.personal = new Label("Best   " + personal, timeStyle);
         this.personal.setTouchable(Touchable.disabled);
-        this.personal.setPosition(Grid.unit(5), Grid.unit(0));
-        this.personal.setHeight(Grid.unit(0.75f));
-        this.personal.setWidth(Grid.unit(4.75f));
+        this.personal.setPosition(Utils.cell(5), Utils.cell(0));
+        this.personal.setHeight(Utils.cell(0.75f));
+        this.personal.setWidth(Utils.cell(4.75f));
         this.personal.setAlignment(Align.right);
 
         this.world = new Label("World   " + world, timeStyle);
         this.world.setTouchable(Touchable.disabled);
-        this.world.setPosition(Grid.unit(5), Grid.unit(0.75f));
-        this.world.setHeight(Grid.unit(0.75f));
-        this.world.setWidth(Grid.unit(4.75f));
+        this.world.setPosition(Utils.cell(5), Utils.cell(0.75f));
+        this.world.setHeight(Utils.cell(0.75f));
+        this.world.setWidth(Utils.cell(4.75f));
         this.world.setAlignment(Align.right);
 
         addActor(this.background);
@@ -87,7 +87,7 @@ public class Card extends BaseGroup {
         addActor(this.personal);
         // addActor(this.world);
 
-        setHeight(Grid.unit(4));
+        setHeight(Utils.cell(4));
 
         if (isLocked()) lock();
         else unlock();

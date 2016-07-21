@@ -3,8 +3,8 @@ package com.jmolina.orb.widgets;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.utils.Grid;
 
 public class HUDBackground extends BaseGroup {
 
@@ -18,7 +18,7 @@ public class HUDBackground extends BaseGroup {
 
         addActor(image);
 
-        setHeight(Grid.unit(2.5f));
+        setHeight(Utils.cell(2.5f));
         setOrigin(image.getWidth() * 0.5f, image.getHeight() * 0.5f);
     }
 

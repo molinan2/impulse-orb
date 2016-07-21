@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.utils.Grid;
 
 import java.util.Locale;
 
@@ -32,7 +32,7 @@ public class FrameTime extends BaseGroup {
         label.setTouchable(Touchable.disabled);
         label.setAlignment(Align.right);
         label.setPosition(0f, 0f);
-        label.setSize(Grid.unit(4), Grid.unit(1f));
+        label.setSize(Utils.cell(4), Utils.cell(1f));
 
         setHeight(label.getPrefHeight());
         addActor(label);

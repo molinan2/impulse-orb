@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
@@ -32,7 +32,7 @@ public class MultiOption extends BaseGroup {
         label = new Label(name, style);
         label.setTouchable(Touchable.disabled);
         label.setPosition(0f, 0f);
-        label.setHeight(Grid.unit(1.5f));
+        label.setHeight(Utils.cell(1.5f));
 
         checkboxes = new ArrayList<Checkbox>();
         checkboxes.add(new Checkbox(getAssetManager(), false));
@@ -41,18 +41,18 @@ public class MultiOption extends BaseGroup {
 
         setValue(value);
 
-        checkboxes.get(0).setPosition(Grid.unit(5.5f), 0f);
+        checkboxes.get(0).setPosition(Utils.cell(5.5f), 0f);
         checkboxes.get(0).setName("0");
-        checkboxes.get(1).setPosition(Grid.unit(7), 0f);
+        checkboxes.get(1).setPosition(Utils.cell(7), 0f);
         checkboxes.get(1).setName("1");
-        checkboxes.get(2).setPosition(Grid.unit(8.5f), 0f);
+        checkboxes.get(2).setPosition(Utils.cell(8.5f), 0f);
         checkboxes.get(2).setName("2");
 
         addActor(label);
         addActor(checkboxes.get(0));
         addActor(checkboxes.get(1));
         addActor(checkboxes.get(2));
-        setHeight(Grid.unit(1.5f));
+        setHeight(Utils.cell(1.5f));
         setTouchable(Touchable.childrenOnly);
     }
 

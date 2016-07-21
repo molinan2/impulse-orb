@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Var;
@@ -51,8 +50,8 @@ public class Ladder extends BaseGroup {
         style.font = getAsset(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
 
         this.title = new Label(title.toUpperCase(), style);
-        this.title.setPosition(Grid.unit(0.5f), Grid.unit(3.125f));
-        this.title.setSize(Grid.unit(2), Grid.unit(0.5f));
+        this.title.setPosition(Utils.cell(0.5f), Utils.cell(3.125f));
+        this.title.setSize(Utils.cell(2), Utils.cell(0.5f));
         this.title.setAlignment(Align.left);
 
         this.rows.add(new LadderRow(getAssetManager(), "1", getLevelTime(0), "MyUserName", "(13)"));
@@ -62,7 +61,7 @@ public class Ladder extends BaseGroup {
         addActor(this.bg);
         addActor(this.title);
         addLadderRows(rows);
-        setHeight(Grid.unit(4));
+        setHeight(Utils.cell(4));
     }
 
     @Override
@@ -75,7 +74,7 @@ public class Ladder extends BaseGroup {
 
     private void addLadderRows(ArrayList<LadderRow> rows) {
         for (int i=0; i<rows.size(); i++) {
-            rows.get(i).setPosition(Grid.unit(0.5f), Grid.unit(2f - i * 0.75f));
+            rows.get(i).setPosition(Utils.cell(0.5f), Utils.cell(2f - i * 0.75f));
             addActor(rows.get(i));
         }
     }

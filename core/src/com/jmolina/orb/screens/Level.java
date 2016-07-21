@@ -5,6 +5,7 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -35,7 +36,7 @@ public class Level extends BaseScreen {
     public static final float EXIT_SEQUENCE_TIME = 1.2f;
     public static final float BACKGROUND_FADE_TIME = 0.5f;
 
-    private final float GESTURE_HALF_TAP_SQUARE_SIZE = 20.0f;
+    private final float GESTURE_HALF_TAP_SQUARE_SIZE = 10.0f;
     private final float GESTURE_TAP_COUNT_INTERVAL = 0.4f;
     private final float GESTURE_LONG_PRESS_DURATION = 1.1f;
     private final float GESTURE_MAX_FLING_DELAY = 0.1f;
@@ -63,6 +64,8 @@ public class Level extends BaseScreen {
     private GameStats stats;
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
     private Runnable orbIntro, reset, unlock, orbDestroy, fadeInBackground, fadeOutBackground, switchToSuccess;
+
+    private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
 
     /**
@@ -172,6 +175,7 @@ public class Level extends BaseScreen {
     @Override
     public void render(float delta) {
         clearColor();
+        syncActors();
         act();
         syncBodies();
         stepWorld();
@@ -342,14 +346,17 @@ public class Level extends BaseScreen {
     }
 
     private void syncBodies() {
-        // TODO: Sincronizar elementos
+        for (Situation situation : situations) {
+            for (Element element : situation.getElements()) {
+                element.syncBody(worldViewport);
+            }
+        }
 
-        // Orb
-        orb.syncBody();
+        orb.syncBody(worldViewport);
     }
 
     public void syncActors() {
-        for (Situation situation : situations ) {
+        for (Situation situation : situations) {
             for (Element element : situation.getElements()) {
                 element.syncActor(worldViewport);
             }
@@ -376,6 +383,7 @@ public class Level extends BaseScreen {
         getMainStage().draw();
         getGestureStage().draw();
         getBackgroundStage().draw();
+        debugRenderer.render(world, worldViewport.getCamera().combined);
         getHUDStage().draw();
     }
 

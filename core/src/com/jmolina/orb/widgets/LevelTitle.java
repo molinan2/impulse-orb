@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
@@ -27,15 +27,15 @@ public class LevelTitle extends BaseGroup {
         style.font = getAssetManager().get(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
 
         this.name = new Label(name.toUpperCase(), style);
-        this.name.setPosition(Grid.unit(0), Grid.unit(0));
-        this.name.setSize(Grid.unit(10), Grid.unit(1));
+        this.name.setPosition(Utils.cell(0), Utils.cell(0));
+        this.name.setSize(Utils.cell(10), Utils.cell(1));
         this.name.setAlignment(Align.center);
 
         addActor(this.bg);
         addActor(this.name);
 
-        setHeight(Grid.unit(1));
-        setWidth(Grid.unit(10));
+        setHeight(Utils.cell(1));
+        setWidth(Utils.cell(10));
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
@@ -25,9 +25,9 @@ public class Title extends BaseGroup {
 
         label = new Label(name, style);
         label.setTouchable(Touchable.disabled);
-        label.setPosition(Grid.unit(3), 0f);
-        label.setHeight(Grid.unit(2));
-        label.setWidth(Grid.unit(7));
+        label.setPosition(Utils.cell(3), 0f);
+        label.setHeight(Utils.cell(2));
+        label.setWidth(Utils.cell(7));
         label.setAlignment(Align.left);
 
         button = new Back(getAssetManager());

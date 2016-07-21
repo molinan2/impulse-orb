@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Disposable;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 
 public class BaseGroup extends Group implements Disposable {
 
@@ -70,7 +70,7 @@ public class BaseGroup extends Group implements Disposable {
     }
 
     public void setPositionGrid (float x, float y) {
-        setPosition(Grid.unit(x), Grid.unit(y));
+        setPosition(Utils.cell(x), Utils.cell(y));
     }
 
 }

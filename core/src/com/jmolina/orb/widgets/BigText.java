@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Var;
 
 public class BigText extends BaseGroup {
@@ -24,12 +24,12 @@ public class BigText extends BaseGroup {
         this.label = new Label(text, style);
         this.label.setTouchable(Touchable.disabled);
         this.label.setPosition(0f, 0f);
-        this.label.setHeight(Grid.unit(1.5f));
-        this.label.setWidth(Grid.unit(10f));
+        this.label.setHeight(Utils.cell(1.5f));
+        this.label.setWidth(Utils.cell(10f));
         this.label.setAlignment(Align.center);
 
         addActor(this.label);
-        setHeight(Grid.unit(1.5f));
+        setHeight(Utils.cell(1.5f));
     }
 
     @Override

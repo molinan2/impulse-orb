@@ -3,7 +3,7 @@ package com.jmolina.orb.widgets;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 
 public class SuccessCover extends BaseGroup {
 
@@ -14,7 +14,7 @@ public class SuccessCover extends BaseGroup {
 
         greeting = new Image(greetingTexture);
         addActor(greeting);
-        setSize(Grid.unit(10), Grid.unit(4));
+        setSize(Utils.cell(10), Utils.cell(4));
     }
 
     @Override

@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.utils.Grid;
 
 public class PauseButton extends BaseGroup {
 
@@ -28,7 +28,7 @@ public class PauseButton extends BaseGroup {
         addActor(image);
 
         setTransform(false);
-        setHeight(Grid.unit(1.5f));
+        setHeight(Utils.cell(1.5f));
         setOrigin(image.getWidth() * 0.5f, image.getHeight() * 0.5f);
     }
 

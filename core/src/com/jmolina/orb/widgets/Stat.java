@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
@@ -46,21 +46,21 @@ public class Stat extends BaseGroup {
         this.name = new Label(name, nameStyle);
         this.name.setTouchable(Touchable.disabled);
         this.name.setPosition(0f, 0f);
-        this.name.setHeight(Grid.unit(1));
-        this.name.setWidth(Grid.unit(6));
+        this.name.setHeight(Utils.cell(1));
+        this.name.setWidth(Utils.cell(6));
         this.name.setAlignment(Align.left);
 
         this.data = new Label(formatStat(value, unit), dataStyle);
         this.data.setTouchable(Touchable.disabled);
-        this.data.setPosition(Grid.unit(6), 0f);
-        this.data.setHeight(Grid.unit(1));
-        this.data.setWidth(Grid.unit(4));
+        this.data.setPosition(Utils.cell(6), 0f);
+        this.data.setHeight(Utils.cell(1));
+        this.data.setWidth(Utils.cell(4));
         this.data.setAlignment(Align.right);
 
         addActor(this.name);
         addActor(this.data);
         setTransform(false);
-        setHeight(Grid.unit(1));
+        setHeight(Utils.cell(1));
     }
 
     @Override

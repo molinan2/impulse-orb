@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
@@ -34,7 +34,7 @@ public class MainButton extends BaseGroup {
         label = new Label(name, style);
         label.setTouchable(Touchable.disabled);
         label.setPosition(0f, 0f);
-        label.setSize(Grid.unit(8), Grid.unit(1.5f));
+        label.setSize(Utils.cell(8), Utils.cell(1.5f));
         label.setAlignment(Align.center);
 
         this.bg = new Image(getBgTexture(type));
@@ -43,7 +43,7 @@ public class MainButton extends BaseGroup {
         addActor(bg);
         addActor(label);
 
-        setHeight(Grid.unit(1.5f));
+        setHeight(Utils.cell(1.5f));
         setOrigin(bg.getWidth() * 0.5f, bg.getHeight() * 0.5f);
     }
 

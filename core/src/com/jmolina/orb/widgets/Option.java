@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
@@ -28,14 +28,14 @@ public class Option extends BaseGroup {
         label = new Label(name, style);
         label.setTouchable(Touchable.disabled);
         label.setPosition(0f, 0f);
-        label.setHeight(Grid.unit(1.5f));
+        label.setHeight(Utils.cell(1.5f));
 
         checkbox = new Checkbox(getAssetManager(), checked);
-        checkbox.setPosition(Grid.unit(8.5f), 0f);
+        checkbox.setPosition(Utils.cell(8.5f), 0f);
 
         addActor(label);
         addActor(checkbox);
-        setHeight(Grid.unit(1.5f));
+        setHeight(Utils.cell(1.5f));
         setTouchable(Touchable.childrenOnly);
     }
 

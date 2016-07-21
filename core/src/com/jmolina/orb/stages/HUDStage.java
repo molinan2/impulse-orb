@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.screens.Level;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.widgets.Gauge;
 import com.jmolina.orb.widgets.HUDBackground;
 import com.jmolina.orb.widgets.Curtain;
@@ -145,9 +145,9 @@ public class HUDStage extends Stage {
         pauseMenu.setTouchable(Touchable.disabled);
         background.clearActions();
         background.addAction(sequence(
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), 0),
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), ROLLER_TIME, ROLLER_INTERPOLATION),
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-6), 0), // Asegura que no se vean los bordes si leaveGame()
+                moveTo(Utils.cell(HUD_BACKGROUND_X), Utils.cell(HUD_BACKGROUND_Y), 0),
+                moveTo(Utils.cell(HUD_BACKGROUND_X), Utils.cell(-0.25f), ROLLER_TIME, ROLLER_INTERPOLATION),
+                moveTo(Utils.cell(HUD_BACKGROUND_X), Utils.cell(-6), 0), // Asegura que no se vean los bordes si leaveGame()
                 run(enableMenuVisibility),
                 Actions.addAction(fadeIn(FADE_TIME, FADE_INTERPOLATION), pauseMenu),
                 delay(FADE_TIME),
@@ -164,8 +164,8 @@ public class HUDStage extends Stage {
                 Actions.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION), pauseMenu),
                 delay(FADE_TIME),
                 run(disableMenuVisibility),
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), 0),
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), ROLLER_TIME, ROLLER_INTERPOLATION),
+                moveTo(Utils.cell(HUD_BACKGROUND_X), Utils.cell(-0.25f), 0),
+                moveTo(Utils.cell(HUD_BACKGROUND_X), Utils.cell(HUD_BACKGROUND_Y), ROLLER_TIME, ROLLER_INTERPOLATION),
                 run(toggleButton),
                 run(enableTouchables),
                 run(unlock)
@@ -181,8 +181,8 @@ public class HUDStage extends Stage {
                 Actions.addAction(fadeOut(FADE_TIME, FADE_INTERPOLATION), pauseMenu),
                 delay(FADE_TIME),
                 run(disableMenuVisibility),
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(-0.25f), 0),
-                moveTo(Grid.unit(HUD_BACKGROUND_X), Grid.unit(HUD_BACKGROUND_Y), ROLLER_TIME, ROLLER_INTERPOLATION),
+                moveTo(Utils.cell(HUD_BACKGROUND_X), Utils.cell(-0.25f), 0),
+                moveTo(Utils.cell(HUD_BACKGROUND_X), Utils.cell(HUD_BACKGROUND_Y), ROLLER_TIME, ROLLER_INTERPOLATION),
                 Actions.addAction(fadeIn(OVERLAY_FADE_TIME, FADE_INTERPOLATION), curtain),
                 delay(OVERLAY_FADE_TIME),
                 run(reset),

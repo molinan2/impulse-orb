@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.data.UserData;
+import com.jmolina.orb.var.Var;
 
 
 public class Element {
@@ -116,19 +118,29 @@ public class Element {
         );
     }
 
-    public void syncBody() {
-        // TODO: Igualar la posicion
-
-        // Iguala la rotacion
+    /**
+     * Sincroniza la posición y rotación del cuerpo físico con las del actor
+     *
+     * @param viewport Viewport del mundo físico
+     */
+    public void syncBody(Viewport viewport) {
         if (actor != null && body != null) {
+            float offsetX = 0.5f * Var.SCREEN_WIDTH;
+            float offsetY = 0.5f * Var.SCREEN_HEIGHT;
+
             body.setTransform(
-                    body.getPosition().x,
-                    body.getPosition().y,
+                    (actor.getX() + actor.getOriginX() - offsetX) / getPixelsPerMeter() + viewport.getCamera().position.x,
+                    (actor.getY() + actor.getOriginY() - offsetY) / getPixelsPerMeter() + viewport.getCamera().position.y,
                     MathUtils.degreesToRadians * actor.getRotation()
             );
         }
     }
 
+    /**
+     * Sincroniza la posición y rotación del actor con las del cuerpo físico
+     *
+     * @param viewport Viewport del mundo físico
+     */
     public void syncActor(Viewport viewport) {
         if (actor != null) {
             float offsetX = viewport.getWorldWidth() * 0.5f;

@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.utils.Grid;
 
 public class Gauge extends BaseGroup {
 
@@ -42,7 +42,7 @@ public class Gauge extends BaseGroup {
         addActor(frame);
 
         setTransform(false);
-        setSize(Grid.unit(1), Grid.unit(1.5f));
+        setSize(Utils.cell(1), Utils.cell(1.5f));
         setOrigin(background.getWidth() * 0.5f, background.getHeight() * 0.5f);
 
         reset();

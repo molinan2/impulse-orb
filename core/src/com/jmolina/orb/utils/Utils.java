@@ -1,9 +1,13 @@
 package com.jmolina.orb.utils;
 
 import com.badlogic.gdx.math.Vector2;
+import com.jmolina.orb.var.Var;
+
 import java.util.Locale;
 
 public class Utils {
+
+    private final static float CELL_SIZE = Var.GRID_CELL_SIZE;
 
     /**
      * Formatea el tiempo en MM:SS.DD
@@ -36,4 +40,23 @@ public class Utils {
         return (float) Math.sqrt(Math.pow(segment.x, 2) + Math.pow(segment.y, 2));
     }
 
+    /**
+     * Translates grid cells to pixels
+     *
+     * @param cells int
+     * @return float
+     */
+    public static float cell(int cells) {
+        return (float) cells * CELL_SIZE;
+    }
+
+    /**
+     * Translates grid cells to pixels
+     *
+     * @param cells float
+     * @return float
+     */
+    public static float cell(float cells) {
+        return cells * CELL_SIZE;
+    }
 }

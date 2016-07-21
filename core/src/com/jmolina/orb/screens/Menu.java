@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.Title;
 
@@ -25,11 +25,11 @@ public class Menu extends BaseScreen {
         super(superManager, key);
 
         title = new Title(getAssetManager(), "");
-        title.setPosition(Grid.unit(1), Grid.unit(15.5f));
+        title.setPosition(Utils.cell(1), Utils.cell(15.5f));
 
         table = new Table();
         table.top();
-        table.setPosition(Grid.unit(1), 0f);
+        table.setPosition(Utils.cell(1), 0f);
 
         ScrollPane.ScrollPaneStyle style = new ScrollPane.ScrollPaneStyle();
         style.vScrollKnob = new TextureRegionDrawable(new TextureRegion(
@@ -38,7 +38,7 @@ public class Menu extends BaseScreen {
         scrollPane = new ScrollPane(table);
         scrollPane.setStyle(style);
         scrollPane.setWidth(VIEWPORT_WIDTH);
-        scrollPane.setHeight(Grid.unit(14));
+        scrollPane.setHeight(Utils.cell(14));
         scrollPane.setPosition(0f, 0f);
 
         addMainActor(title);
@@ -67,9 +67,9 @@ public class Menu extends BaseScreen {
         getTable().row();
         getTable()
                 .add(actor)
-                .width(width * Grid.unit(1))
+                .width(width * Utils.cell(1))
                 .expandX()
-                .padBottom(bottomPadding * Grid.unit(1));
+                .padBottom(bottomPadding * Utils.cell(1));
 
         registerActor(actor);
     }

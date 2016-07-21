@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.widgets.Notice;
 import com.jmolina.orb.widgets.MainButton;
 import com.jmolina.orb.widgets.GameTitle;
@@ -28,8 +28,8 @@ public class Main extends BaseScreen {
         gameTitle = new GameTitle(getAssetManager());
         notice = new Notice(getAssetManager());
 
-        gameTitle.setPosition(Grid.unit(1), Grid.unit(14.5f));
-        notice.setPosition(Grid.unit(1), Grid.unit(0.5f));
+        gameTitle.setPosition(Utils.cell(1), Utils.cell(14.5f));
+        notice.setPosition(Utils.cell(1), Utils.cell(0.5f));
 
         play = new MainButton(getAssetManager(), "PLAY", MainButton.Type.Play);
         options = new MainButton(getAssetManager(), "OPTIONS", MainButton.Type.Default);
@@ -37,11 +37,11 @@ public class Main extends BaseScreen {
         credits = new MainButton(getAssetManager(), "CREDITS", MainButton.Type.Default);
         exit = new MainButton(getAssetManager(), "EXIT", MainButton.Type.Exit);
 
-        play.setPosition(Grid.unit(2), Grid.unit(11));
-        options.setPosition(Grid.unit(2), Grid.unit(9));
-        stats.setPosition(Grid.unit(2), Grid.unit(7));
-        credits.setPosition(Grid.unit(2), Grid.unit(5));
-        exit.setPosition(Grid.unit(2), Grid.unit(3));
+        play.setPosition(Utils.cell(2), Utils.cell(11));
+        options.setPosition(Utils.cell(2), Utils.cell(9));
+        stats.setPosition(Utils.cell(2), Utils.cell(7));
+        credits.setPosition(Utils.cell(2), Utils.cell(5));
+        exit.setPosition(Utils.cell(2), Utils.cell(3));
 
         play.addListener(new ClickListener(){
             @Override

@@ -4,6 +4,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.jmolina.orb.elements.Element;
+import com.jmolina.orb.utils.Utils;
+import com.jmolina.orb.var.Var;
 
 /**
  * Una lista de elementos creados y configurados, posicionados respecto a (0,0)
@@ -17,13 +19,14 @@ public abstract class Situation {
     private AssetManager assetManager;
     private World world;
     private SnapshotArray<Element> elements;
-    private float pixelsPerMeter;
+    private float pixelsPerMeter, cellSizeCorrectionFactor;
 
     public Situation(AssetManager am, World world, float pixelsPerMeter) {
         this.pixelsPerMeter = pixelsPerMeter;
         this.elements = new SnapshotArray<Element>();
         this.assetManager = am;
         this.world = world;
+        this.cellSizeCorrectionFactor = pixelsPerMeter / Var.GRID_CELL_SIZE;
 
         createElements();
     }
@@ -61,6 +64,16 @@ public abstract class Situation {
 
     public synchronized <T> T getAsset (String fileName, Class<T> type) {
         return getAssetManager().get(fileName, type);
+    }
+
+    /**
+     * Convierte el tamaño de celdas a píxeles, corrigiéndolo según el nivel de zoom
+     *
+     * @param value Valor en unidades de celda básica (64 px)
+     * @return Valor en píxeles
+     */
+    protected float cells(float value) {
+        return Utils.cell(value * cellSizeCorrectionFactor);
     }
 
 }

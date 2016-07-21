@@ -9,10 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Var;
-
-import java.util.Locale;
 
 public class Timer extends BaseGroup {
 
@@ -29,14 +26,14 @@ public class Timer extends BaseGroup {
         label = new Label("", style);
         label.setTouchable(Touchable.disabled);
         label.setPosition(0, 0);
-        label.setHeight(Grid.unit(1.5f));
-        label.setWidth(Grid.unit(6));
+        label.setHeight(Utils.cell(1.5f));
+        label.setWidth(Utils.cell(6));
         label.setAlignment(Align.center);
 
         addActor(label);
 
         setTransform(false);
-        setHeight(Grid.unit(1.5f));
+        setHeight(Utils.cell(1.5f));
         reset();
     }
 

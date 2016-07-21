@@ -3,7 +3,7 @@ package com.jmolina.orb.widgets;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 
 public class LaunchCover extends BaseGroup {
 
@@ -14,7 +14,7 @@ public class LaunchCover extends BaseGroup {
 
         cover = new Image(coverTexture);
         addActor(cover);
-        setHeight(Grid.unit(5));
+        setHeight(Utils.cell(5));
     }
 
     @Override

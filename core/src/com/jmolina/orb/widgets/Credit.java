@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.jmolina.orb.utils.Grid;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
@@ -30,7 +30,7 @@ public class Credit extends BaseGroup {
         this.body = new Label(body, bodyStyle);
         this.body.setTouchable(Touchable.disabled);
         this.body.setPosition(0f, 0f);
-        this.body.setWidth(Grid.unit(10));
+        this.body.setWidth(Utils.cell(10));
         this.body.setWrap(true);
         this.body.setAlignment(Align.topLeft);
         this.body.setHeight(this.body.getPrefHeight());
@@ -38,7 +38,7 @@ public class Credit extends BaseGroup {
         this.header = new Label(header, headerStyle);
         this.header.setTouchable(Touchable.disabled);
         this.header.setPosition(0f, this.body.getPrefHeight());
-        this.header.setSize(Grid.unit(10), Grid.unit(1));
+        this.header.setSize(Utils.cell(10), Utils.cell(1));
         this.header.setAlignment(Align.topLeft);
 
         addActor(this.header);
