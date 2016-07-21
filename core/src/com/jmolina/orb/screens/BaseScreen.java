@@ -25,6 +25,10 @@ import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
+/**
+ * Clase base para todas las pantallas de la aplicación. Renderiza los elementos y se ocupa de las
+ * transiciones entre pantallas.
+ */
 public class BaseScreen extends ScreenAdapter implements Backable {
 
     public final static float VIEWPORT_WIDTH = Var.SCREEN_WIDTH;
@@ -88,7 +92,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
 
     @Override
     public void render(float delta) {
-        clearColor();
+        clear();
 
         backgroundStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         backgroundStage.draw();
@@ -133,7 +137,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         return this.key;
     }
 
-    protected void clearColor() {
+    protected void clear() {
         Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }

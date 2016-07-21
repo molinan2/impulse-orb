@@ -129,7 +129,7 @@ public class HUDStage extends Stage {
         toggleListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (!getLevel().isGameLocked())
+                if (!getLevel().isLocked())
                     getLevel().pauseGame();
                 else
                     getLevel().resumeGame();

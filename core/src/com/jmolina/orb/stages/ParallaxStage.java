@@ -23,13 +23,6 @@ public class ParallaxStage extends Stage {
     private TiledLayer layer3;
 
     /**
-     * DirtyFix: evita que se dibuje la Stage después de haber llamado a dispose(), ya que
-     * Level#render() continúa ejecutándose al menos 1 frame después de Level#dispose().
-     * Moar: https://bitbucket.org/molinan2/orb2/issues/38/crash
-     */
-    private boolean disposing = false;
-
-    /**
      * Constructor
      */
     public ParallaxStage(AssetManager assetManager, Viewport viewport, float pixelsPerMeter) {
@@ -66,18 +59,10 @@ public class ParallaxStage extends Stage {
         getRoot().setTransform(false);
     }
 
-    @Override
-    public void dispose() {
-        disposing = true;
-        super.dispose();
-    }
-
     public void draw(float x, float y) {
-        if (!disposing) {
-            drawLayer(layer3, LAYER_3_SPEED, x, y);
-            drawLayer(layer2, LAYER_2_SPEED, x, y);
-            drawLayer(layer1, LAYER_1_SPEED, x, y);
-        }
+        drawLayer(layer3, LAYER_3_SPEED, x, y);
+        drawLayer(layer2, LAYER_2_SPEED, x, y);
+        drawLayer(layer1, LAYER_1_SPEED, x, y);
     }
 
     private void drawLayer (TiledLayer layer, float speed, float x, float y) {

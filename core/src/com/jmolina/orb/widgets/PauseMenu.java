@@ -32,7 +32,7 @@ public class PauseMenu extends BaseGroup {
         resumeListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (getLevel().isGameLocked())
+                if (getLevel().isLocked())
                     getLevel().resumeGame();
 
                 event.cancel();

@@ -7,11 +7,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.data.GameStats;
+import com.jmolina.orb.data.ScreenFlag;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
@@ -30,6 +32,12 @@ import com.jmolina.orb.var.Var;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 
+/**
+ * {@inheritDoc}
+ * Clase base para los niveles del juego. Permite su construcción a partir de {@link Situation}s.
+ * Renderiza todos los elementos del juego y los sincroniza con el mundo físico. Controla los
+ * eventos del juego.
+ */
 public class Level extends BaseScreen {
 
     public static final float INTRO_SEQUENCE_TIME = 1f;
@@ -43,7 +51,7 @@ public class Level extends BaseScreen {
     private final float GESTURE_MAX_FLING_IMPULSE = 40f;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
     private final float WORLD_TIME_STEP = Var.FPS;
-    private final int WORLD_OVERSTEP_FACTOR = 1;
+    private final int WORLD_STEP_MULTIPLIER = 2;
     private final int WORLD_VELOCITY_INTERACTIONS = 8;
     private final int WORLD_POSITION_INTERACTIONS = 3;
     private final int INFINITE_Z_INDEX = 32000;
@@ -60,25 +68,28 @@ public class Level extends BaseScreen {
     private HUDStage hudStage;
     private SnapshotArray<Situation> situations;
     private Orb orb;
-    private Vector2 orbStartPosition, currentOrbPosition, lastOrbPosition;
+    private Vector2 orbStartPosition, lastOrbPosition;
     private GameStats stats;
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
-    private Runnable orbIntro, reset, unlock, orbDestroy, fadeInBackground, fadeOutBackground, switchToSuccess;
+    private Runnable orbIntro, orbDestroy, reset, unlock, toSuccess;
+    private ScreenFlag screenFlag;
 
     private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
 
     /**
      * Constructor
+     *
      * @param sm SuperManager
+     * @param key Clave correspondiente a la pantalla actual
      */
     public Level(SuperManager sm, ScreenManager.Key key) {
         super(sm, key);
 
+        screenFlag = new ScreenFlag();
         pixelsPerMeter = getGameManager().getPixelsPerMeter();
         impulseFactor = 1 / getPixelsPerMeter();
         orbStartPosition = new Vector2();
-        currentOrbPosition = new Vector2();
         lastOrbPosition = new Vector2();
         situations = new SnapshotArray<Situation>();
         stats = new GameStats();
@@ -93,7 +104,7 @@ public class Level extends BaseScreen {
         gestureStage = new GestureStage(getAssetManager(), gestureViewport, getPixelsPerMeter());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getPixelsPerMeter());
         world = new World(WORLD_GRAVITY, true);
-        orb = new Orb(getAssetManager(), getWorld(), getPixelsPerMeter());
+        setOrb(new Orb(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
         contactHandler = new ContactHandler(this);
         world.setContactListener(contactHandler);
@@ -110,13 +121,14 @@ public class Level extends BaseScreen {
         addProcessor(hudStage);
         addProcessor(gestureStage);
         addProcessor(gestureDetector);
-        addOrb(orb);
 
         createRunnables();
-        lockGame();
+        lock();
     }
 
-
+    /**
+     * Crea los runables que se utilizarán como callbacks
+     */
     private void createRunnables() {
         orbIntro = new Runnable() {
             @Override
@@ -138,7 +150,7 @@ public class Level extends BaseScreen {
         unlock = new Runnable() {
             @Override
             public void run() {
-                unlockGame();
+                unlock();
             }
         };
 
@@ -149,45 +161,38 @@ public class Level extends BaseScreen {
             }
         };
 
-        fadeInBackground = new Runnable() {
+        toSuccess = new Runnable() {
             @Override
             public void run() {
-                getBackgroundStage().addAction(fadeIn(UIAction.DURATION, Interpolation.pow2));
-            }
-        };
-
-        fadeOutBackground = new Runnable() {
-            @Override
-            public void run() {
-                getBackgroundStage().addAction(alpha(1));
-                getBackgroundStage().addAction(fadeOut(BACKGROUND_FADE_TIME));
-            }
-        };
-
-        switchToSuccess = new Runnable() {
-            @Override
-            public void run() {
-                switchToScreen(getSuccessScreen(), Hierarchy.HIGHER);
+                switchToScreen(getSuccessScreen(), Hierarchy.LOWER);
             }
         };
     }
 
+    /**
+     * Renderiza el nivel de juego
+     *
+     * @param delta Tiempo de frame
+     */
     @Override
     public void render(float delta) {
-        clearColor();
+        clear();
         syncActors();
         act();
         syncBodies();
-        stepWorld();
+        step();
         followCamera();
         syncActors();
-        updateOrbLockTime();
-        updateHeat();
-        updateTimer();
-        updateStats();
+        update();
         draw();
+
+        checkScreenSwitch();
     }
 
+    /**
+     * {@inheritDoc}
+     * Actualiza los viewports del juego
+     */
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
@@ -197,9 +202,12 @@ public class Level extends BaseScreen {
         parallaxViewport.update(width, height);
     }
 
+    /**
+     * {@inheritDoc}
+     * Libera la memoria
+     */
     @Override
     public void dispose() {
-        getOrb().disposing = true;
         getHUDStage().dispose();
         getGestureStage().dispose();
         getParallaxStage().dispose();
@@ -207,19 +215,22 @@ public class Level extends BaseScreen {
         super.dispose();
     }
 
+    /**
+     * Ejecuta la transición de entrada en el nivel e inicializa las estadísticas
+     */
     @Override
     public void show() {
         unsetInputProcessor();
-        getBackgroundStage().addAction(alpha(1));
-        stats.newTry();
         getGameManager().play(GameManager.Track.Game);
+        stats.newTry();
+        getBackgroundStage().addAction(alpha(1));
         getOrb().getActor().addAction(alpha(0));
 
         getHUDStage().addAction(sequence(
                 alpha(0),
                 scaleTo(UIAction.SMALL, UIAction.SMALL),
                 transition(Flow.ENTERING, getHierarchy()),
-                run(fadeOutBackground),
+                Actions.addAction(sequence(alpha(1), fadeOut(BACKGROUND_FADE_TIME)), getBackgroundStage().getRoot()),
                 delay(0.5f * BACKGROUND_FADE_TIME),
                 run(orbIntro),
                 delay(Math.max(BACKGROUND_FADE_TIME, INTRO_SEQUENCE_TIME)),
@@ -228,89 +239,182 @@ public class Level extends BaseScreen {
         ));
     }
 
+    /**
+     * {@inheritDoc}
+     * Reproduce la música de pantallas de menú
+     *
+     * TODO: Se ejecutan 2 plays seguidos cuando se cambia a SUCCESS SCREEN
+     */
     @Override
     public void hide() {
         super.hide();
         getGameManager().play(GameManager.Track.Menu);
-        // TODO: Se ejecutan 2 plays seguidos distintos cuando se cambia a SUCCESS SCREEN
     }
 
+    /**
+     * {@inheritDoc}
+     * Inicia el menú de pausa
+     */
     @Override
     public void pause() {
         super.pause();
         pauseGame();
     }
 
+    /**
+     * Si el juego estaba en marcha, lo pausa y muestra el menú de pausa. Si estaba pausado, lo
+     * despausa y continúa.
+     */
     @Override
     public void back() {
-        if (!isGameLocked()) pauseGame();
+        if (!isLocked()) pauseGame();
         else resumeGame();
     }
 
+    /**
+     * Cambia a la pantalla {@link #key}
+     *
+     * @param screen Identificador de la siguiente pantalla
+     * @param hierarchy Jerarquía de la siguiente pantalla respecto de la actual
+     */
     @Override
-    public void switchToScreen(final ScreenManager.Key key, final Hierarchy hierarchy) {
+    public void switchToScreen(final ScreenManager.Key screen, final Hierarchy hierarchy) {
+
+        Runnable flag = new Runnable() {
+            @Override
+            public void run() {
+                screenFlag.enable(screen, hierarchy);
+            }
+        };
+
         getHUDStage().addAction(sequence(
-                run(fadeInBackground),
+                Actions.addAction(fadeIn(UIAction.DURATION, Interpolation.pow2), getBackgroundStage().getRoot()),
                 delay(UIAction.DURATION),
                 transition(Flow.LEAVING, hierarchy),
-                run(UIRunnable.setScreen(getScreenManager(), key, hierarchy))
+                run(flag)
         ));
+    }
+
+    /**
+     * Ejecuta un cambio inmediato de pantalla. Este método debe llamarse al final del
+     * {@link #render(float)} para evitar excepciones de acceso a memoria. El cambio sólo se
+     * ejecutará si se ha marcado la {@link #screenFlag}.
+     */
+    private void checkScreenSwitch() {
+        if (screenFlag.isEnabled())
+            getScreenManager().switchToScreen(screenFlag.getScreen(), screenFlag.getHierarchy());
     }
 
 
     /**
-     * Class methods
+     * Devuelve el valor actual de {@link #pixelsPerMeter}
+     *
+     * @return {@link #pixelsPerMeter}
      */
-
     public float getPixelsPerMeter() {
         return pixelsPerMeter;
     }
 
+    /**
+     * Devuelve el mundo Box2D
+     *
+     * @return {@link #world}
+     */
     public World getWorld() {
         return world;
     }
 
+    /**
+     * Devuelve la Stage del fondo de scroll parallax
+     *
+     * @return {@link #parallaxStage}
+     */
     public ParallaxStage getParallaxStage() {
         return parallaxStage;
     }
 
+    /**
+     * Devuelve la Stage de dibujado de gestos
+     *
+     * @return {@link #gestureStage}
+     */
     public GestureStage getGestureStage() {
         return gestureStage;
     }
 
+    /**
+     * Devuelve la Stage del HUD
+     *
+     * @return {@link #hudStage}
+     */
     public HUDStage getHUDStage() {
         return hudStage;
     }
 
+    /**
+     * Devuelve las estadísticas del juego en curso
+     *
+     * @return {@link #stats}
+     */
     public GameStats getStats() {
         return stats;
     }
 
+    /**
+     * Guarda la pantalla de éxito correspondiente a este nivel
+     */
     public void setSuccessScreen(ScreenManager.Key key) {
         this.successScreen = key;
     }
 
+    /**
+     * Obtiene la pantalla de éxito correspondiente a este nivel
+     *
+     * @return {@link #successScreen}
+     */
     public ScreenManager.Key getSuccessScreen() {
         return this.successScreen;
     }
 
-    public void addOrb(Orb orb) {
+    /**
+     * Setea el {@link #orb} a la Stage principal
+     *
+     * @param orb {@link Orb}
+     */
+    public void setOrb(Orb orb) {
         addMainActor(orb.getActor());
         orb.syncActor(worldViewport);
         orb.getActor().setZIndex(INFINITE_Z_INDEX);
+        this.orb = orb;
     }
 
+    /**
+     * Obtiene el {@link Orb} de la pantalla de juego actual
+     *
+     * @return {@link #orb}
+     */
     public Orb getOrb () {
         return orb;
     }
 
+    /**
+     * Setea la posición de incio del {@link #orb} en el nivel actual
+     *
+     * @param x Coordenada x del mundo
+     * @param y Coordenada y del mundo
+     */
     public void setOrbStartPosition (float x, float y) {
-        orbStartPosition.set(x, y);
         getOrb().setPosition(x, y);
-        currentOrbPosition.set(x, y);
+        orbStartPosition.set(x, y);
         lastOrbPosition.set(x, y);
     }
 
+    /**
+     * Añade una situación al nivel actual y añade todos sus actores. El {@link Orb} siempre queda
+     * por encima.
+     *
+     * @param situation {@link Situation}
+     */
     public void addSituation (Situation situation) {
         situations.add(situation);
         int size = situations.size;
@@ -324,20 +428,26 @@ public class Level extends BaseScreen {
         getOrb().getActor().setZIndex(INFINITE_Z_INDEX);
     }
 
+    /**
+     * Devuelve el array de situaciones del nivel actual
+     *
+     * @return SnapshotArray de {@link Situation}s
+     */
     public SnapshotArray<Situation> getSituations () {
         return situations;
     }
 
 
     /**
-     * Render methods
+     * Avanza la simulación
+     *
+     * Se calcularán {@link #WORLD_STEP_MULTIPLIER} pasos por cada frame
      */
-
-    public void stepWorld() {
-        for (int i=0; i<WORLD_OVERSTEP_FACTOR; i++) {
-            if (!isGameLocked()) {
+    public void step() {
+        for (int i = 0; i< WORLD_STEP_MULTIPLIER; i++) {
+            if (!isLocked()) {
                 world.step(
-                        WORLD_TIME_STEP / (float) WORLD_OVERSTEP_FACTOR,
+                        WORLD_TIME_STEP / (float) WORLD_STEP_MULTIPLIER,
                         WORLD_VELOCITY_INTERACTIONS,
                         WORLD_POSITION_INTERACTIONS
                 );
@@ -345,6 +455,9 @@ public class Level extends BaseScreen {
         }
     }
 
+    /**
+     * Sincroniza la posición y rotación de los cuerpos con las de sus actores
+     */
     private void syncBodies() {
         for (Situation situation : situations) {
             for (Element element : situation.getElements()) {
@@ -355,6 +468,9 @@ public class Level extends BaseScreen {
         orb.syncBody(worldViewport);
     }
 
+    /**
+     * Sincroniza la posición y rotación de los actores con las de sus cuerpos
+     */
     public void syncActors() {
         for (Situation situation : situations) {
             for (Element element : situation.getElements()) {
@@ -365,12 +481,18 @@ public class Level extends BaseScreen {
         getOrb().syncActor(worldViewport);
     }
 
+    /**
+     * Centra la cámara en el Orb
+     */
     private void followCamera() {
         worldViewport.getCamera().position.x = getOrb().getBody().getPosition().x;
         worldViewport.getCamera().position.y = getOrb().getBody().getPosition().y;
         worldViewport.getCamera().update();
     }
 
+    /**
+     * Ejecuta un paso más las Actions de cada actor
+     */
     private void act() {
         getMainStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getGestureStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
@@ -378,6 +500,9 @@ public class Level extends BaseScreen {
         getHUDStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
     }
 
+    /**
+     * Dibuja todos los actores
+     */
     private void draw() {
         getParallaxStage().draw(worldViewport.getCamera().position.x, worldViewport.getCamera().position.y);
         getMainStage().draw();
@@ -388,68 +513,88 @@ public class Level extends BaseScreen {
     }
 
     /**
-     * Render checks and updates
+     * Render update
+     * Comprueba y actualiza datos y estados, si el juego no está bloqueado
      */
+    private void update() {
+        if (isLocked()) return;
 
-    private void updateOrbLockTime() {
-        if (!isGameLocked()) {
-            getOrb().updateLockTime();
-        }
-    }
-
-    private void updateHeat() {
-        if (!isGameLocked()) {
-            getOrb().updateHeat();
-            getHUDStage().setGaugeLevel(getOrb().getHeat());
-            getHUDStage().setGaugeOverload(getOrb().isOverloaded());
-        }
-    }
-
-    private void updateTimer() {
-        if (!isGameLocked()) {
-            getHUDStage().updateTimer();
-        }
-    }
-
-    private void updateStats() {
-        if (!isGameLocked()) {
-            currentOrbPosition = getOrb().getPosition();
-            float distance = Utils.distance(currentOrbPosition, lastOrbPosition);
-            lastOrbPosition = currentOrbPosition;
-
-            getStats().addTime(Gdx.graphics.getRawDeltaTime());
-            getStats().addDistance(distance);
-            getHUDStage().setDistanceValue(stats.getCurrentDistance());
-            getHUDStage().setFullDistanceValue(stats.fullDistance());
-            getHUDStage().setFullTimeValue(stats.fullTime());
-            getHUDStage().setFullDestroyedValue(stats.fails());
-        }
+        updateHeat();
+        updateFreeze();
+        updateTimer();
+        updateStats();
     }
 
     /**
-     * Metodos de GameManager
+     * Actualiza el calor y su indicador
      */
+    private void updateHeat() {
+        getOrb().updateHeat();
+        getHUDStage().setGaugeLevel(getOrb().getHeat());
+        getHUDStage().setGaugeOverload(getOrb().isOverloaded());
+    }
 
+    /**
+     * Actualiza el tiempo de congelación del Orb
+     */
+    private void updateFreeze() {
+        getOrb().updateFreezeTime();
+    }
+
+    /**
+     * Actualiza el cronómetro
+     */
+    private void updateTimer() {
+        getHUDStage().updateTimer();
+    }
+
+    /**
+     * Actualiza las estadísticas y su visualización
+     */
+    private void updateStats() {
+        float distance = Utils.distance(getOrb().getPosition(), lastOrbPosition);
+        lastOrbPosition = getOrb().getPosition();
+
+        getStats().addTime(Gdx.graphics.getRawDeltaTime());
+        getStats().addDistance(distance);
+        getHUDStage().setDistanceValue(stats.getCurrentDistance());
+        getHUDStage().setFullDistanceValue(stats.fullDistance());
+        getHUDStage().setFullTimeValue(stats.fullTime());
+        getHUDStage().setFullDestroyedValue(stats.fails());
+    }
+
+    /**
+     * Inicia el menú de pausa del juego
+     */
     public void pauseGame() {
-        if (!isGameLocked()) {
-            lockGame();
+        if (!isLocked()) {
+            lock();
             getHUDStage().pause();
             getGameManager().play(GameManager.Fx.Back);
         }
     }
 
+    /**
+     * Reanuda el juego desde el menú de pausa
+     */
     public void resumeGame() {
-        if (isGameLocked()) {
+        if (isLocked()) {
             getHUDStage().resume(unlock);
             getGameManager().play(GameManager.Fx.Button);
         }
     }
 
+    /**
+     * Reinicia el juego desde el menú de pausa
+     */
     public void restartGame() {
         getHUDStage().restart(reset, orbIntro, unlock);
         getGameManager().play(GameManager.Fx.Button);
     }
 
+    /**
+     * Abandona el juego desde el menú de pausa
+     */
     public void leaveGame() {
         unsetInputProcessor();
         getPrefsManager().saveGameStats(stats, getKey());
@@ -458,48 +603,67 @@ public class Level extends BaseScreen {
         switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
     }
 
+    /**
+     * Completa el juego, guardando las estadísticas y lanzando la pantalla de Success
+     */
     public void successGame() {
-        lockGame();
+        lock();
         getStats().setSuccessfull(true);
         getPrefsManager().saveGameStats(stats, getKey());
         getGameManager().cacheAttempt(stats.getLastAttempt());
         unsetInputProcessor();
         getGameManager().play(GameManager.Fx.Exit);
-        getOrb().outro(switchToSuccess);
+        getOrb().outro(toSuccess);
     }
 
-    public void lockGame() {
+    /**
+     * Bloquea el juego.
+     *
+     * Mientras el juego está bloqueado, no se pueden actualizar datos ni estados, ni activar o
+     * desactivar el menú de pausa.
+     */
+    public void lock() {
         locked = true;
     }
 
-    public void unlockGame() {
+    /**
+     * Desbloquea el juego
+     */
+    public void unlock() {
         locked = false;
     }
 
-    public boolean isGameLocked() {
+    /**
+     * Devuelve true si el juego está bloqueado
+     *
+     * @return {@link #locked}
+     */
+    public boolean isLocked() {
         return locked;
     }
 
 
     /**
-     * Eventos
+     * Reproduce el sonido y la vibración correspondientes a una colisión
      */
-
-    public void collisionEvent() {
+    public void collide() {
         getGameManager().play(GameManager.Fx.Collision);
         getGameManager().vibrate(GameManager.Length.Short);
     }
 
-    public void tapEvent() {
-        if (!isGameLocked()) {
-            getOrb().lock();
+    /**
+     * Ejecuta un freeze sobre el {@link Orb} y dibuja su animación
+     */
+    public void freeze() {
+        if (!isLocked()) {
+            getOrb().freeze();
             getOrb().increaseHeat();
             getGestureStage().drawTap();
             getGameManager().vibrate(GameManager.Length.Medium);
             getGameManager().play(GameManager.Fx.Tap);
 
             if (getOrb().isOverloaded()) {
-                destroyEvent();
+                destroy();
             }
             else if (getOrb().isHeatMaxed()) {
                 getOrb().setOverloaded(true);
@@ -508,12 +672,18 @@ public class Level extends BaseScreen {
         }
     }
 
-    public void flingEvent(float velocityX, float velocityY) {
+    /**
+     * Ejecuta un impulso sobre el {@link Orb} y dibuja su animación
+     *
+     * @param velocityX Velocidad recogida por el {@link GestureHandler} para la coordenada x
+     * @param velocityY Velocidad recogida por el {@link GestureHandler} para la coordenada y
+     */
+    public void impulse(float velocityX, float velocityY) {
         float impulseX = MathUtils.clamp(velocityX * impulseFactor, -GESTURE_MAX_FLING_IMPULSE, GESTURE_MAX_FLING_IMPULSE);
         float impulseY = MathUtils.clamp(-velocityY * impulseFactor, -GESTURE_MAX_FLING_IMPULSE, GESTURE_MAX_FLING_IMPULSE);
 
-        if (!isGameLocked()) {
-            getOrb().unlock();
+        if (!isLocked()) {
+            getOrb().unfreeze();
             getOrb().getBody().applyLinearImpulse(
                     impulseX,
                     impulseY,
@@ -527,8 +697,11 @@ public class Level extends BaseScreen {
         }
     }
 
-    public void destroyEvent() {
-        lockGame();
+    /**
+     * Destruye el {@link Orb}, dibuja su animación y reinicia el juego
+     */
+    public void destroy() {
+        lock();
         getStats().setFailed(true);
         getGameManager().vibrate(GameManager.Length.Long);
         getGameManager().play(GameManager.Fx.Destroy);

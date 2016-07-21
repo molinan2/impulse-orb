@@ -22,19 +22,18 @@ public class Orb extends Element {
     private final float HEAT_INCREMENT = 0.2f;
     private final float OVERLOAD_TIME = 3f;
     private final float COOLING_RATE = 0.1f;
-    private final float LOCK_TIME = 0.90f;
+    private final float FREEZE_TIME = 0.90f;
 
-    private boolean locked, overloaded;
-    private float heat, naturalScale, lockTime, overloadTime;
+    private boolean frozen, overloaded;
+    private float heat, naturalScale, freezeTime, overloadTime;
     private OrbFragments fragments;
-    public boolean disposing = false; // DirtyFix
 
     public Orb(AssetManager am, World world, float pixelsPerMeter) {
-        // No puedo pasarle DIAMETER al constructor de super()
+        // No se pueden pasar constantes al constructor de super() antes de inicializar el objeto
         super(am, world, 6, 2, 1f, 1f, 0, Flavor.GREY, Geometry.CIRCLE, BodyDef.BodyType.DynamicBody, pixelsPerMeter);
 
         heat = 0f;
-        locked = overloaded = false;
+        frozen = overloaded = false;
         fragments = new OrbFragments(am);
         naturalScale = pixelsPerMeter * DIAMETER / fragments.getWidth();
         fragments.setScale(naturalScale);
@@ -44,15 +43,15 @@ public class Orb extends Element {
     /**
      * Anula las fuerzas que afectan al Orb aplicando un amortiguamiento infinito
      */
-    public void lock() {
-        locked = true;
+    public void freeze() {
+        frozen = true;
         getBody().setLinearDamping(INFINITE_DAMPING);
         getBody().setAngularDamping(INFINITE_DAMPING);
     }
 
-    public void unlock() {
-        locked = false;
-        lockTime = 0f;
+    public void unfreeze() {
+        frozen = false;
+        freezeTime = 0f;
         getBody().setLinearDamping(0);
         getBody().setAngularDamping(0);
     }
@@ -62,8 +61,8 @@ public class Orb extends Element {
         getBody().setAngularVelocity(0);
     }
 
-    public boolean isLocked() {
-        return locked;
+    public boolean isFrozen() {
+        return frozen;
     }
 
     public void increaseHeat() {
@@ -109,15 +108,11 @@ public class Orb extends Element {
     @Override
     public void syncBody(Viewport viewport) {
         if (fragments != null) {
-            // DirtyFix: La llamada a Body#setTransform peta la JVM cuando se hace Level#dispose().
-            // Comprobamos que no se ha hecho Level#dispose() antes de ejecutar Body#setTransform.
-            if (!disposing) {
-                getBody().setTransform(
-                        getBody().getPosition().x,
-                        getBody().getPosition().y,
-                        MathUtils.degreesToRadians * fragments.getRotation()
-                );
-            }
+            getBody().setTransform(
+                    getBody().getPosition().x,
+                    getBody().getPosition().y,
+                    MathUtils.degreesToRadians * fragments.getRotation()
+            );
         }
     }
 
@@ -164,7 +159,7 @@ public class Orb extends Element {
         resetHeat();
         resetVelocity();
         fragments.reset();
-        unlock();
+        unfreeze();
     }
 
     public void intro() {
@@ -175,12 +170,12 @@ public class Orb extends Element {
         getActor().addAction(GameAction.orbOutro(this, switchToSuccess));
     }
 
-    public void updateLockTime() {
-        if (isLocked()) {
-            lockTime += Gdx.graphics.getRawDeltaTime();
+    public void updateFreezeTime() {
+        if (isFrozen()) {
+            freezeTime += Gdx.graphics.getRawDeltaTime();
 
-            if (lockTime > LOCK_TIME)
-                unlock();
+            if (freezeTime > FREEZE_TIME)
+                unfreeze();
         }
     }
 
