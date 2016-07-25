@@ -25,7 +25,7 @@ public class Orb extends Element {
 
     private boolean frozen, overloaded;
     private float heat, naturalScale, freezeTime, overloadTime;
-    private OrbFragments fragments;
+    private Fragments fragments;
 
     public Orb(AssetManager am, World world, float pixelsPerMeter) {
         // No se pueden pasar constantes al constructor de super() antes de inicializar el objeto
@@ -33,10 +33,11 @@ public class Orb extends Element {
 
         heat = 0f;
         frozen = overloaded = false;
-        fragments = new OrbFragments(am);
+        fragments = new Fragments(am);
         naturalScale = pixelsPerMeter * DIAMETER / fragments.getWidth();
         fragments.setScale(naturalScale);
         getBody().setSleepingAllowed(false); // Evita que se quede dormido. ¡La Gravedad no despierta!
+        setActor(fragments);
     }
 
     /**
@@ -93,41 +94,6 @@ public class Orb extends Element {
 
     public boolean isHeatMaxed() {
         return getHeat() >= HEAT_MAX;
-    }
-
-
-    @Override
-    public Actor getActor() {
-        return fragments;
-    }
-
-    /**
-     * No se sincroniza la posición, ya que la cámara siempre sigue.
-     */
-    @Override
-    public void syncBody(Viewport viewport) {
-        if (fragments != null) {
-            getBody().setTransform(
-                    getBody().getPosition().x,
-                    getBody().getPosition().y,
-                    MathUtils.degreesToRadians * fragments.getRotation()
-            );
-        }
-    }
-
-    @Override
-    public void syncActor(Viewport viewport) {
-        if (fragments != null) {
-            float offsetX = viewport.getWorldWidth() * 0.5f;
-            float offsetY = viewport.getWorldHeight() * 0.5f;
-
-            fragments.setPosition(
-                    getPixelsPerMeter() * (getBody().getPosition().x - (viewport.getCamera().position.x - offsetX)) - 0.5f * fragments.getWidth(),
-                    getPixelsPerMeter() * (getBody().getPosition().y - (viewport.getCamera().position.y - offsetY)) - 0.5f * fragments.getHeight()
-            );
-
-            fragments.setRotation(MathUtils.radiansToDegrees * getBody().getAngle());
-        }
     }
 
     public void destroy() {

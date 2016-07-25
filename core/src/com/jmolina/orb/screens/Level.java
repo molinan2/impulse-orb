@@ -464,7 +464,7 @@ public class Level extends BaseScreen {
             }
         }
 
-        orb.syncBody(worldViewport);
+        orb.syncBody(worldViewport, false, true);
     }
 
     /**

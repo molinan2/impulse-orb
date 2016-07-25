@@ -22,7 +22,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  * 3: Bottom left
  * 4: Bottom right
  */
-public class OrbFragments extends BaseGroup {
+public class Fragments extends BaseGroup {
 
     private final float ANIMATION_TIME = 2.0f;
 
@@ -32,7 +32,7 @@ public class OrbFragments extends BaseGroup {
     private Image fragment3;
     private Image fragment4;
 
-    public OrbFragments(AssetManager am) {
+    public Fragments(AssetManager am) {
         super(am);
 
         explosion = new Image(getAsset(Asset.GAME_CIRCLE_RED, Texture.class));
