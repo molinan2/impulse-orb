@@ -74,7 +74,7 @@ public class Level extends BaseScreen {
     private Runnable orbIntro, orbDestroy, reset, unlock, toSuccess;
     private ScreenFlag screenFlag;
 
-    private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
+    // private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
 
     /**
@@ -508,7 +508,7 @@ public class Level extends BaseScreen {
         getMainStage().draw();
         getGestureStage().draw();
         getBackgroundStage().draw();
-        debugRenderer.render(world, worldViewport.getCamera().combined);
+        // debugRenderer.render(world, worldViewport.getCamera().combined);
         getHUDStage().draw();
     }
 

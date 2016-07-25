@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Init;
 import com.jmolina.orb.situations.SideWalledSituation;
-import com.jmolina.orb.utils.Utils;
 
 
 public class Situation1Start extends SideWalledSituation {
@@ -27,11 +26,9 @@ public class Situation1Start extends SideWalledSituation {
 
         addElement(rotable);
 
-        float correctionFactor = getPixelsPerMeter() / Utils.cell(1);
-
         rotable.getActor().addAction(Actions.repeat(RepeatAction.FOREVER, Actions.rotateBy(360, 4)));
         rotable.getActor().addAction(Actions.moveBy(cells(4), 0, 1f));
-        // todo es necesario corregir los desplazamientos de las acciones por zoom
+
 
 
 

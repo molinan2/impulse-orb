@@ -29,23 +29,10 @@ public class Element {
     private final float RESTITUTION = 0.6f;
     private final float FRICTION = 0.8f; // FRICTION = 0 evita rotaciones al colisionar
 
-    private float pixelsPerMeter;
     private AssetManager assetManager;
     private BaseActor actor;
     private Body body;
-    private float width, height;
-
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float pixelsPerMeter) {
-        this(am, world, x, y, w, h, 0, Flavor.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, pixelsPerMeter);
-    }
-
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, float pixelsPerMeter) {
-        this(am, world, x, y, w, h, angle, Flavor.GREY, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, pixelsPerMeter);
-    }
-
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, float pixelsPerMeter) {
-        this(am, world, x, y, w, h, angle, flavor, Geometry.SQUARE, BodyDef.BodyType.KinematicBody, pixelsPerMeter);
-    }
+    private float pixelsPerMeter;
 
     public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry, float pixelsPerMeter) {
         this(am, world, x, y, w, h, angle, flavor, geometry, BodyDef.BodyType.KinematicBody, pixelsPerMeter);
@@ -68,8 +55,6 @@ public class Element {
     public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry, BodyDef.BodyType bodyType, float pixelsPerMeter) {
         assetManager = am;
         this.pixelsPerMeter = pixelsPerMeter;
-        width = w;
-        height = h;
 
         FixtureDef fixtureDef = new FixtureDef();
         BodyDef bodyDef = new BodyDef();
@@ -79,7 +64,7 @@ public class Element {
         fixtureDef.density = DENSITY;
         fixtureDef.restitution = RESTITUTION;
         fixtureDef.friction = FRICTION;
-        fixtureDef.shape = createShape(geometry, width, height);
+        fixtureDef.shape = createShape(geometry, w, h);
         bodyDef.type = bodyType;
         bodyDef.position.set(x, y);
         bodyDef.angle = angle * MathUtils.degreesToRadians;
@@ -88,7 +73,7 @@ public class Element {
         fixtureDef.shape.dispose();
 
         setUserData(flavor);
-        setTexture(createTexture(geometry, flavor));
+        setTexture(createTexture(geometry, flavor), w, h);
     }
 
     public synchronized <T> T getAsset (String fileName) {
@@ -206,7 +191,7 @@ public class Element {
     /**
      * Modifica la textura del actor y reajusta la escala del actor
      */
-    public void setTexture(Texture texture) {
+    public void setTexture(Texture texture, float width, float height) {
         float scaleX = getPixelsPerMeter() * width / texture.getWidth();
         float scaleY = getPixelsPerMeter() * height / texture.getHeight();
 

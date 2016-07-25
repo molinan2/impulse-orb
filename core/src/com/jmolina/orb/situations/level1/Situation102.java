@@ -5,6 +5,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.situations.SideWalledSituation;
 
+import static com.jmolina.orb.elements.Element.*;
+
 
 public class Situation102 extends SideWalledSituation {
 
@@ -17,28 +19,28 @@ public class Situation102 extends SideWalledSituation {
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 0, 7, 7, 7, 45,
-                Element.Flavor.GREY, Element.Geometry.SQUARE,
+                Flavor.GREY, Geometry.SQUARE,
                 getPixelsPerMeter()
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 2.5f, 9.5f, 7, 0.5f, -45,
-                Element.Flavor.RED, Element.Geometry.SQUARE,
+                Flavor.RED, Geometry.SQUARE,
                 getPixelsPerMeter()
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 12, 12, 7, 7, -45,
-                Element.Flavor.GREY, Element.Geometry.SQUARE,
+                Flavor.GREY, Geometry.SQUARE,
                 getPixelsPerMeter()
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 9.5f, 14.5f, 7, 0.5f, 45,
-                Element.Flavor.RED, Element.Geometry.SQUARE,
+                Flavor.RED, Geometry.SQUARE,
                 getPixelsPerMeter()
         ));
     }

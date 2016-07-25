@@ -67,9 +67,9 @@ public abstract class Situation {
     }
 
     /**
-     * Convierte el tamaño de celdas a píxeles, corrigiéndolo según el nivel de zoom
+     * Convierte de unidades del mundo a píxeles. Tiene en cuenta el valor de zoom.
      *
-     * @param value Valor en unidades de celda básica (64 px)
+     * @param value Valor en unidades del mundo
      * @return Valor en píxeles
      */
     protected float cells(float value) {
