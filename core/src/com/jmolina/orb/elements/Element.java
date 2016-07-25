@@ -4,7 +4,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -33,6 +32,7 @@ public class Element {
     private BaseActor actor;
     private Body body;
     private float pixelsPerMeter;
+    private UserData userData;
 
     public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry, float pixelsPerMeter) {
         this(am, world, x, y, w, h, angle, flavor, geometry, BodyDef.BodyType.KinematicBody, pixelsPerMeter);
@@ -56,11 +56,12 @@ public class Element {
         assetManager = am;
         this.pixelsPerMeter = pixelsPerMeter;
 
+        userData = new UserData();
         FixtureDef fixtureDef = new FixtureDef();
         BodyDef bodyDef = new BodyDef();
         actor = new BaseActor();
-        actor.setRotation(angle);
 
+        actor.setRotation(angle);
         fixtureDef.density = DENSITY;
         fixtureDef.restitution = RESTITUTION;
         fixtureDef.friction = FRICTION;
@@ -70,6 +71,7 @@ public class Element {
         bodyDef.angle = angle * MathUtils.degreesToRadians;
         body = world.createBody(bodyDef);
         body.createFixture(fixtureDef);
+        body.getFixtureList().first().setUserData(userData);
         fixtureDef.shape.dispose();
 
         setUserData(flavor);
@@ -200,22 +202,19 @@ public class Element {
     }
 
     public void setUserData(Flavor flavor) {
-        UserData userData = new UserData();
+        Effect effect;
 
-        if (flavor == Flavor.RED)
-            userData.effect = Effect.DESTROY;
-        else
-            userData.effect = Effect.NONE;
+        switch (flavor) {
+            case RED: effect = Effect.DESTROY; break;
+            default: effect = Effect.NONE;
+        }
 
-        userData.flavor = flavor;
-        body.getFixtureList().first().setUserData(userData);
+        setUserData(flavor, effect);
     }
 
     public void setUserData(Flavor flavor, Effect effect) {
-        UserData userData = new UserData();
         userData.flavor = flavor;
         userData.effect = effect;
-        body.getFixtureList().first().setUserData(userData);
     }
 
     public void setAsSensor(boolean isSensor) {

@@ -5,7 +5,6 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.SnapshotArray;
@@ -642,13 +641,20 @@ public class Level extends BaseScreen {
         return locked;
     }
 
+    public void collide() {
+        collide(false);
+    }
 
     /**
      * Reproduce el sonido y la vibración correspondientes a una colisión
      */
-    public void collide() {
-        getGameManager().play(GameManager.Fx.Collision);
+    public void collide(boolean isWall) {
         getGameManager().vibrate(GameManager.Length.Short);
+
+        if (isWall)
+            getGameManager().play(GameManager.Fx.WallCollision);
+        else
+            getGameManager().play(GameManager.Fx.ElementCollision);
     }
 
     /**

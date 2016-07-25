@@ -7,13 +7,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.interfaces.SuperManager;
-import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.var.Var;
-import com.sun.glass.ui.Window;
 
 public class GameManager {
 
-    public enum Fx { Back, Button, Collision, Destroy, Exit, Fling, Init, Option, Tap }
+    public enum Fx { Back, Button, ElementCollision, WallCollision, Destroy, Exit, Fling, Init, Option, Tap }
     public enum Track { Menu, Game, Success }
     public enum Length { Short, Medium, Long }
 
@@ -32,7 +30,7 @@ public class GameManager {
     private boolean sound = true;
     private boolean music = true;
     private int zoom = PrefsManager.OPTION_ZOOM_DEFAULT;
-    private Sound backSound, buttonSound, collisionSound, destroySound, exitSound, flingSound, initSound, optionSound, tapSound;
+    private Sound backSound, buttonSound, elementCollisionSound, wallCollisionSound, destroySound, exitSound, flingSound, initSound, optionSound, tapSound;
     private Music menuMusic, gameMusic, successMusic;
 
     /**
@@ -51,7 +49,8 @@ public class GameManager {
     public void dispose() {
         backSound.dispose();
         buttonSound.dispose();
-        collisionSound.dispose();
+        elementCollisionSound.dispose();
+        wallCollisionSound.dispose();
         destroySound.dispose();
         exitSound.dispose();
         flingSound.dispose();
@@ -96,8 +95,9 @@ public class GameManager {
     }
 
     private void vibrate(int duration) {
-        if (vibration)
-            Gdx.input.vibrate(duration);
+        if (!vibration) return;
+
+        Gdx.input.vibrate(duration);
     }
 
     public float getPixelsPerMeter() {
@@ -112,7 +112,8 @@ public class GameManager {
     private void createSounds() {
         backSound = getAsset(Asset.SOUND_BACK, Sound.class);
         buttonSound = getAsset(Asset.SOUND_BUTTON, Sound.class);
-        collisionSound = getAsset(Asset.SOUND_COLLISION, Sound.class);
+        elementCollisionSound = getAsset(Asset.SOUND_ELEMENT_COLLISION, Sound.class);
+        wallCollisionSound = getAsset(Asset.SOUND_WALL_COLLISION, Sound.class);
         destroySound = getAsset(Asset.SOUND_DESTROY, Sound.class);
         exitSound = getAsset(Asset.SOUND_EXIT, Sound.class);
         flingSound = getAsset(Asset.SOUND_FLING, Sound.class);
@@ -150,44 +151,45 @@ public class GameManager {
     }
 
     private void playFx(Fx fx) {
-        if (sound) {
-            switch (fx) {
-                case Back: backSound.play(SOUND_VOLUME); break;
-                case Button: buttonSound.play(SOUND_VOLUME); break;
-                case Collision: collisionSound.play(SOUND_VOLUME); break;
-                case Destroy: destroySound.play(SOUND_VOLUME); break;
-                case Exit: exitSound.play(SOUND_VOLUME); break;
-                case Fling: flingSound.play(SOUND_VOLUME); break;
-                case Init: initSound.play(SOUND_VOLUME); break;
-                case Option: optionSound.play(SOUND_VOLUME); break;
-                case Tap: tapSound.play(SOUND_VOLUME); break;
-            }
+        if (!sound) return;
+
+        switch (fx) {
+            case Back: backSound.play(SOUND_VOLUME); break;
+            case Button: buttonSound.play(SOUND_VOLUME); break;
+            case ElementCollision: elementCollisionSound.play(SOUND_VOLUME); break;
+            case WallCollision: wallCollisionSound.play(SOUND_VOLUME); break;
+            case Destroy: destroySound.play(SOUND_VOLUME); break;
+            case Exit: exitSound.play(SOUND_VOLUME); break;
+            case Fling: flingSound.play(SOUND_VOLUME); break;
+            case Init: initSound.play(SOUND_VOLUME); break;
+            case Option: optionSound.play(SOUND_VOLUME); break;
+            case Tap: tapSound.play(SOUND_VOLUME); break;
         }
     }
 
     private void playTrack(Track track) {
-        if (music) {
-            switch (track) {
-                case Menu:
-                    successMusic.stop();
-                    gameMusic.stop();
-                    menuMusic.play();
-                    break;
-                case Game:
-                    successMusic.stop();
-                    menuMusic.stop();
-                    gameMusic.play();
-                    break;
-                case Success:
-                    gameMusic.stop();
-                    menuMusic.stop();
-                    successMusic.play();
-                    break;
-                default:
-                    gameMusic.stop();
-                    menuMusic.stop();
-                    successMusic.stop();
-            }
+        if (!music) return;
+
+        switch (track) {
+            case Menu:
+                successMusic.stop();
+                gameMusic.stop();
+                menuMusic.play();
+                break;
+            case Game:
+                successMusic.stop();
+                menuMusic.stop();
+                gameMusic.play();
+                break;
+            case Success:
+                gameMusic.stop();
+                menuMusic.stop();
+                successMusic.play();
+                break;
+            default:
+                gameMusic.stop();
+                menuMusic.stop();
+                successMusic.stop();
         }
     }
 

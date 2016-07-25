@@ -79,7 +79,8 @@ public class Asset {
 
     public static final String SOUND_BACK = SOUND + "back.mp3";
     public static final String SOUND_BUTTON = SOUND + "button.mp3";
-    public static final String SOUND_COLLISION = SOUND + "collision.mp3";
+    public static final String SOUND_ELEMENT_COLLISION = SOUND + "collision_element.mp3";
+    public static final String SOUND_WALL_COLLISION = SOUND + "collision_wall.mp3";
     public static final String SOUND_DESTROY = SOUND + "destroy.mp3";
     public static final String SOUND_EXIT = SOUND + "exit.mp3";
     public static final String SOUND_FLING = SOUND + "fling.mp3";

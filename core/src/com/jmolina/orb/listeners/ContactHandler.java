@@ -57,6 +57,9 @@ public class ContactHandler implements ContactListener {
         else if (userData.flavor == Element.Flavor.BLUE) {
             // do nothing
         }
+        else if (userData.flavor == Element.Flavor.BLACK) {
+            level.collide(true);
+        }
         else {
             level.collide();
         }
