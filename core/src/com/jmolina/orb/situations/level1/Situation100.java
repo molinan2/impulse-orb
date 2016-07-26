@@ -26,10 +26,6 @@ public class Situation100 extends SideWalledSituation {
         rotable.addDisplacement(0.25f, 4);
         addElement(rotable);
 
-        //rotable.getActor().addAction(Actions.repeat(RepeatAction.FOREVER, Actions.rotateBy(360, 4)));
-        //rotable.getActor().addAction(Actions.moveBy(cells(4), 0, 1f));
-
-
 
 
 

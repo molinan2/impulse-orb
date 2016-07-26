@@ -37,6 +37,15 @@ public class GestureStage extends Stage {
         addActor(fling);
     }
 
+    /**
+     * TODO: FrameBuffer.
+     * Cuando se llame a drawFling:
+     * - Se borra el FrameBuffer
+     * - Se renderiza la flecha actual en el FrameBuffer
+     * - Se quita la visualización de la flecha
+     * - Se aplica la Action al FrameBuffer
+     * El FrameBuffer es una Image añadida permanentemente a la Stage
+     */
     public void drawFling() {
         tap.reset();
         fling.set(start, end);

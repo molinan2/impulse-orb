@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -14,6 +16,7 @@ import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.data.GameStats;
 import com.jmolina.orb.data.ScreenFlag;
 import com.jmolina.orb.elements.Element;
+import com.jmolina.orb.elements.MovingElement;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
@@ -143,6 +146,14 @@ public class Level extends BaseScreen {
                 getOrb().reset(orbStartPosition.x, orbStartPosition.y);
                 getHUDStage().reset();
                 stats.newTry();
+
+                for (Situation situation : getSituations()) {
+                    for (Element element : situation.getElements()) {
+                        if (element instanceof MovingElement) {
+                            ((MovingElement)element).reset();
+                        }
+                    }
+                }
             }
         };
 
@@ -177,7 +188,7 @@ public class Level extends BaseScreen {
     public void render(float delta) {
         clear();
         syncActors();
-        act();
+        act(delta);
         syncBodies();
         step();
         followCamera();
@@ -220,22 +231,7 @@ public class Level extends BaseScreen {
     @Override
     public void show() {
         unsetInputProcessor();
-        getGameManager().play(GameManager.Track.Game);
-        stats.newTry();
-        getBackgroundStage().addAction(alpha(1));
-        getOrb().getActor().addAction(alpha(0));
-
-        getHUDStage().addAction(sequence(
-                alpha(0),
-                scaleTo(UIAction.SMALL, UIAction.SMALL),
-                transition(Flow.ENTERING, getHierarchy()),
-                Actions.addAction(sequence(alpha(1), fadeOut(BACKGROUND_FADE_TIME)), getBackgroundStage().getRoot()),
-                delay(0.5f * BACKGROUND_FADE_TIME),
-                run(orbIntro),
-                delay(INTRO_SEQUENCE_TIME),
-                run(UIRunnable.setInputProcessor(getProcessor())),
-                run(unlock)
-        ));
+        firstGame();
     }
 
     /**
@@ -492,8 +488,14 @@ public class Level extends BaseScreen {
     /**
      * Ejecuta un paso más las Actions de cada actor
      */
-    private void act() {
-        getMainStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
+    private void act(float delta) {
+        if (!isLocked()){
+            getMainStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
+        }
+        else {
+            getOrb().getActor().act(delta);
+        }
+
         getGestureStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getBackgroundStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getHUDStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
@@ -560,6 +562,25 @@ public class Level extends BaseScreen {
         getHUDStage().setFullDistanceValue(stats.fullDistance());
         getHUDStage().setFullTimeValue(stats.fullTime());
         getHUDStage().setFullDestroyedValue(stats.fails());
+    }
+
+    private void firstGame() {
+        stats.newTry();
+        getGameManager().play(GameManager.Track.Game);
+        getBackgroundStage().addAction(alpha(1));
+        getOrb().getActor().addAction(alpha(0));
+
+        getHUDStage().addAction(sequence(
+                alpha(0),
+                scaleTo(UIAction.SMALL, UIAction.SMALL),
+                transition(Flow.ENTERING, getHierarchy()),
+                Actions.addAction(sequence(alpha(1), fadeOut(BACKGROUND_FADE_TIME)), getBackgroundStage().getRoot()),
+                delay(0.5f * BACKGROUND_FADE_TIME),
+                run(orbIntro),
+                delay(INTRO_SEQUENCE_TIME),
+                run(UIRunnable.setInputProcessor(getProcessor())),
+                run(unlock)
+        ));
     }
 
     /**

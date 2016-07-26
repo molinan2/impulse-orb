@@ -3,7 +3,8 @@ package com.jmolina.orb.var;
 // Arroja una Exception al ejecutar la version GWT (HTML)
 
 /**
- * Primera clase de assets. Se crearan mas cuando se creen pantallas de juego
+ * Assets principales. {@link com.jmolina.orb.managers.AssetManager} precarga automáticamente todos
+ * los assets mediante Reflection.
  */
 public class Asset {
 
@@ -63,6 +64,7 @@ public class Asset {
     public static final String GAME_PARALLAX_LAYER_3 = GAME + "parallax_layer_03.png";
     public static final String GAME_EXIT = GAME + "exit.png";
     public static final String GAME_INIT = GAME + "init.png";
+    public static final String GAME_HEAT = GAME + "heat.png";
 
     public static final String HUD_BACKGROUND = HUD + "hud_background.png";
     public static final String HUD_PAUSE = HUD + "hud_pause.png";

@@ -3,6 +3,7 @@ package com.jmolina.orb.elements;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Var;
 
@@ -17,6 +18,10 @@ public class MovingElement extends Element {
     private final Interpolation INTERPOLATION = Interpolation.sine;
 
     private float zoomCorrectionFactor;
+    private float x, y, angle;
+    private float rotationFrequency, displacementFrequency, displaceToX, displaceToY;
+    private boolean clockwise;
+    private boolean skipBodySync;
 
     /**
      * {@inheritDoc}
@@ -26,6 +31,33 @@ public class MovingElement extends Element {
     public MovingElement(AssetManager am, World world, float ppm, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
         super(am, world, ppm, geometry, flavor, x, y, w, h, angle);
         this.zoomCorrectionFactor = ppm / Var.GRID_CELL_SIZE;
+        this.x = x;
+        this.y = y;
+        this.angle = angle;
+
+        this.rotationFrequency = 0f;
+        this.displacementFrequency = 0f;
+        this.displaceToX = 0f;
+        this.displaceToY = 0f;
+        this.clockwise = true;
+        this.skipBodySync = false; // A true para saltar bodySync para poder hacer reset
+    }
+
+    @Override
+    public void syncBody(Viewport viewport) {
+        syncBody(viewport, true, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Ignora la sincronización de Actor a Body si {@link #skipBodySync} está a true.
+     * Si la ignora, desactiva {@link #skipBodySync}, de modo que sólo estará a true durante 1 frame.
+     */
+    @Override
+    public void syncBody(Viewport viewport, boolean position, boolean angle) {
+        if (!skipBodySync) super.syncBody(viewport, position, angle);
+        else skipBodySync = false;
     }
 
     /**
@@ -35,6 +67,9 @@ public class MovingElement extends Element {
      * @param clockwise A true si la rotación es en sentido horario
      */
     public void addRotation(float frequency, boolean clockwise) {
+        this.rotationFrequency = frequency;
+        this.clockwise = clockwise;
+
         float sign = clockwise ? -1f : 1f;
         float duration = 1 / frequency;
 
@@ -56,6 +91,10 @@ public class MovingElement extends Element {
      * @param y Coordenada Y destino (en unidades del mundo)
      */
     public void addDisplacement(float frequency, float x, float y) {
+        this.displacementFrequency = frequency;
+        this.displaceToX = x;
+        this.displaceToY = y;
+
         float halfDuration = 1 / (2 * frequency);
 
         this.getActor().addAction(forever(
@@ -76,8 +115,25 @@ public class MovingElement extends Element {
      * @param cells Valor en unidades del mundo
      * @return Valor en píxeles
      */
-    protected float toPixels(float cells) {
+    private float toPixels(float cells) {
         return this.zoomCorrectionFactor * Utils.cell(cells);
+    }
+
+    /**
+     * Devuelve el Element a su posición y rotación iniciales.
+     * Es necesario desactivar temporalmente (1 frame) la sincronización del Body con el Actor
+     * para poder posicionar el Element según sus coordenadas del mundo.
+     */
+    public void reset() {
+        getActor().clearActions();
+        getBody().setTransform(
+                this.x,
+                this.y,
+                this.angle
+        );
+        addRotation(rotationFrequency, clockwise);
+        addDisplacement(displacementFrequency, displaceToX, displaceToY);
+        skipBodySync = true;
     }
 
 }
