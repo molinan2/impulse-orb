@@ -13,10 +13,7 @@ import com.jmolina.orb.var.Asset;
 
 public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 
-
-
     public static final Class ASSET_CLASS = Asset.class;
-
 
     /**
      * Constructor
@@ -42,6 +39,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 
     /**
      * Precarga todos los assets en una clase usando reflection
+     *
      * @param c Class
      */
     public void preloadAll(Class c) {
@@ -64,6 +62,7 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
                 Object o = field.get(c);
                 String name = o.toString();
 
+                // TODO: implementar una función decisora para las extensiones
                 if (name.endsWith(".fnt")) {
                     load(field.get(c).toString(), BitmapFont.class);
                 }
@@ -86,8 +85,5 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
             }
         }
     }
-
-
-
 
 }

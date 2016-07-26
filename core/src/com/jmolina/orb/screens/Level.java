@@ -232,7 +232,7 @@ public class Level extends BaseScreen {
                 Actions.addAction(sequence(alpha(1), fadeOut(BACKGROUND_FADE_TIME)), getBackgroundStage().getRoot()),
                 delay(0.5f * BACKGROUND_FADE_TIME),
                 run(orbIntro),
-                delay(Math.max(BACKGROUND_FADE_TIME, INTRO_SEQUENCE_TIME)),
+                delay(INTRO_SEQUENCE_TIME),
                 run(UIRunnable.setInputProcessor(getProcessor())),
                 run(unlock)
         ));

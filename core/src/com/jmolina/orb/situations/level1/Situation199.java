@@ -24,20 +24,17 @@ public class Situation199 extends SideWalledSituation {
         // Top walls
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 6, 27, 12, 18, 0,
-                Element.Geometry.SQUARE, Element.Flavor.BLACK
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK, 6, 27, 12, 18, 0
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), -6 + 0.5f, 27, 12, 18, 0,
-                Element.Geometry.SQUARE, Element.Flavor.BLACK
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK, -6 + 0.5f, 27, 12, 18, 0
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 18 - 0.5f, 27, 12, 18, 0,
-                Element.Geometry.SQUARE, Element.Flavor.BLACK
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK, 18 - 0.5f, 27, 12, 18, 0
         ));
     }
 

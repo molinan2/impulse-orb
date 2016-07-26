@@ -66,14 +66,4 @@ public abstract class Situation {
         return getAssetManager().get(fileName, type);
     }
 
-    /**
-     * Convierte de unidades del mundo a píxeles. Tiene en cuenta el valor de zoom.
-     *
-     * @param value Valor en unidades del mundo
-     * @return Valor en píxeles
-     */
-    protected float cells(float value) {
-        return Utils.cell(value * cellSizeCorrectionFactor);
-    }
-
 }

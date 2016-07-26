@@ -16,15 +16,13 @@ public class Situation107 extends SideWalledSituation {
         // Grey stripe
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 3.5f, 5, 10, 1, 45,
-                Element.Geometry.SQUARE, Element.Flavor.GREY
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.GREY, 3.5f, 5, 10, 1, 45
         ));
 
         // Red stripe
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 8.5f, 13, 10, 1, -45,
-                Element.Geometry.SQUARE, Element.Flavor.RED
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.RED, 8.5f, 13, 10, 1, -45
         ));
     }
 

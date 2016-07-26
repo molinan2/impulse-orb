@@ -2,10 +2,9 @@ package com.jmolina.orb.situations.level1;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Init;
+import com.jmolina.orb.elements.MovingElement;
 import com.jmolina.orb.situations.SideWalledSituation;
 
 
@@ -17,16 +16,18 @@ public class Situation100 extends SideWalledSituation {
 
     protected void createInnerElements () {
         // Test Rotable
-        Element rotable = new Element(
-                getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 6, 8, 2, 2, 0,
-                Element.Geometry.SQUARE, Element.Flavor.GREY
+        MovingElement rotable = new MovingElement(
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                Element.Geometry.SQUARE, Element.Flavor.GREY,
+                6, 8, 2, 2, 0
         );
 
+        rotable.addRotation(0.5f);
+        rotable.addDisplacement(0.25f, 4);
         addElement(rotable);
 
-        rotable.getActor().addAction(Actions.repeat(RepeatAction.FOREVER, Actions.rotateBy(360, 4)));
-        rotable.getActor().addAction(Actions.moveBy(cells(4), 0, 1f));
+        //rotable.getActor().addAction(Actions.repeat(RepeatAction.FOREVER, Actions.rotateBy(360, 4)));
+        //rotable.getActor().addAction(Actions.moveBy(cells(4), 0, 1f));
 
 
 
@@ -34,36 +35,35 @@ public class Situation100 extends SideWalledSituation {
 
         // Test (0,0)
         addElement(new Element(
-                getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 0, 0, 1, 1, 0,
-                Element.Geometry.SQUARE, Element.Flavor.GREY
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                Element.Geometry.SQUARE, Element.Flavor.GREY,
+                0, 0, 1, 1, 0
         ));
 
 
         // Init
         addElement(new Init(
-                getAssetManager(), getWorld(),
-                6, 4,
-                getPixelsPerMeter()
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                6, 4
         ));
 
         // Bottom walls
         addElement(new Element(
-                getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 6, -9 + 0.5f, 12, 18, 0,
-                Element.Geometry.SQUARE, Element.Flavor.BLACK
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                Element.Geometry.SQUARE, Element.Flavor.BLACK,
+                6, -9 + 0.5f, 12, 18, 0
         ));
 
         addElement(new Element(
-                getAssetManager(), getWorld(),
-                getPixelsPerMeter(), -6 + 0.5f, -9 + 0.5f, 12, 18, 0,
-                Element.Geometry.SQUARE, Element.Flavor.BLACK
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                Element.Geometry.SQUARE, Element.Flavor.BLACK,
+                -6 + 0.5f, -9 + 0.5f, 12, 18, 0
         ));
 
         addElement(new Element(
-                getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 18 - 0.5f, -9 + 0.5f, 12, 18, 0,
-                Element.Geometry.SQUARE, Element.Flavor.BLACK
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                Element.Geometry.SQUARE, Element.Flavor.BLACK,
+                18 - 0.5f, -9 + 0.5f, 12, 18, 0
         ));
     }
 

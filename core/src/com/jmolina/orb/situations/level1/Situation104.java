@@ -16,14 +16,12 @@ public class Situation104 extends SideWalledSituation {
         // Obstacle balls
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 4f, 5f, 4, 4, 0,
-                Element.Geometry.CIRCLE, Element.Flavor.GREY
+                getPixelsPerMeter(), Element.Geometry.CIRCLE, Element.Flavor.GREY, 4f, 5f, 4, 4, 0
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 8f, 12f, 4, 4, 0,
-                Element.Geometry.CIRCLE, Element.Flavor.GREY
+                getPixelsPerMeter(), Element.Geometry.CIRCLE, Element.Flavor.GREY, 8f, 12f, 4, 4, 0
         ));
     }
 

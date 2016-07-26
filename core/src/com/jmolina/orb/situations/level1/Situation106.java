@@ -16,14 +16,12 @@ public class Situation106 extends SideWalledSituation {
         // Red boxes
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 0, 7, 7, 7, 45,
-                Element.Geometry.SQUARE, Element.Flavor.RED
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.RED, 0, 7, 7, 7, 45
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 12, 12, 7, 7, 45,
-                Element.Geometry.SQUARE, Element.Flavor.RED
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.RED, 12, 12, 7, 7, 45
         ));
     }
 

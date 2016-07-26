@@ -18,26 +18,22 @@ public class Situation102 extends SideWalledSituation {
         // Lateral boxes
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 0, 7, 7, 7, 45,
-                Geometry.SQUARE, Flavor.GREY
+                getPixelsPerMeter(), Geometry.SQUARE, Flavor.GREY, 0, 7, 7, 7, 45
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 2.5f, 9.5f, 7, 0.5f, -45,
-                Geometry.SQUARE, Flavor.RED
+                getPixelsPerMeter(), Geometry.SQUARE, Flavor.RED, 2.5f, 9.5f, 7, 0.5f, -45
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 12, 12, 7, 7, -45,
-                Geometry.SQUARE, Flavor.GREY
+                getPixelsPerMeter(), Geometry.SQUARE, Flavor.GREY, 12, 12, 7, 7, -45
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 9.5f, 14.5f, 7, 0.5f, 45,
-                Geometry.SQUARE, Flavor.RED
+                getPixelsPerMeter(), Geometry.SQUARE, Flavor.RED, 9.5f, 14.5f, 7, 0.5f, 45
         ));
     }
 

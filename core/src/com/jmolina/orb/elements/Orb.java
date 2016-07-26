@@ -2,10 +2,12 @@ package com.jmolina.orb.elements;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.jmolina.orb.actions.GameAction;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 /**
  * TODO: De color naranja cuando esté en Overload
@@ -17,16 +19,18 @@ public class Orb extends Element {
     private final float HEAT_MIN = 0f;
     private final float HEAT_MAX = 1f;
     private final float HEAT_INCREMENT = 0.2f;
-    private final float OVERLOAD_TIME = 3f;
     private final float COOLING_RATE = 0.1f;
+    private final float OVERLOAD_TIME = 3f;
     private final float FREEZE_TIME = 0.90f;
+    public static final float INTRO_TIME = 1f;
+    public static final float OUTRO_TIME = 1.2f;
 
     private boolean frozen, overloaded;
     private float heat, naturalScale, freezeTime, overloadTime;
     private Fragments fragments;
 
     public Orb(AssetManager am, World world, float pixelsPerMeter) {
-        super(am, world, pixelsPerMeter, 6, 2, 1f, 1f, 0, Geometry.CIRCLE, Flavor.GREY, BodyDef.BodyType.DynamicBody);
+        super(am, world, pixelsPerMeter, Geometry.CIRCLE, Flavor.GREY, BodyDef.BodyType.DynamicBody, 6, 2, 1f, 1f, 0);
 
         heat = 0f;
         frozen = overloaded = false;
@@ -125,11 +129,29 @@ public class Orb extends Element {
     }
 
     public void intro() {
-        getActor().addAction(GameAction.orbIntro(this));
+        getActor().addAction(sequence(
+                parallel(
+                        scaleBy(4 * this.getNaturalScale(), 4 * this.getNaturalScale(), 0),
+                        rotateTo(0, 0),
+                        alpha(0)
+                ),
+                parallel(
+                        rotateTo(360, INTRO_TIME, Interpolation.exp5),
+                        scaleTo(this.getNaturalScale(), this.getNaturalScale(), INTRO_TIME, Interpolation.pow2),
+                        fadeIn(INTRO_TIME, Interpolation.pow2)
+                )
+        ));
     }
 
-    public void outro(Runnable switchToSuccess) {
-        getActor().addAction(GameAction.orbOutro(this, switchToSuccess));
+    public void outro(Runnable toSuccess) {
+        getActor().addAction(sequence(
+                parallel(
+                        rotateBy(1080, OUTRO_TIME, Interpolation.pow2Out),
+                        scaleTo(4 * this.getNaturalScale(), 4 * this.getNaturalScale(), OUTRO_TIME, Interpolation.pow2),
+                        fadeOut(OUTRO_TIME, Interpolation.pow2)
+                ),
+                run(toSuccess)
+        ));
     }
 
     public void updateFreezeTime() {

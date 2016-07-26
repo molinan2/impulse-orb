@@ -19,14 +19,14 @@ public abstract class SideWalledSituation extends Situation {
         // Side walls
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), -6 + 0.5f, 9, 12, 18, 0,
-                Element.Geometry.SQUARE, Element.Flavor.BLACK
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK,
+                -6 + 0.5f, 9, 12, 18, 0
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), 12 + 6 - 0.5f, 9, 12, 18, 0,
-                Element.Geometry.SQUARE, Element.Flavor.BLACK
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK,
+                12 + 6 - 0.5f, 9, 12, 18, 0
         ));
     }
 

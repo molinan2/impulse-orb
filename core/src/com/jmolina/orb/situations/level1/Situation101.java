@@ -17,21 +17,18 @@ public class Situation101 extends SideWalledSituation {
         // Obstacle ball
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                6, 14, 4, 4, 0,
-                WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY
+                WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY, 6, 14, 4, 4, 0
         ));
 
         // Lateral red boxes
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                0.75f, 10, 0.5f, 4, 0,
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED, 0.75f, 10, 0.5f, 4, 0
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                11.25f, 10, 0.5f, 4, 0,
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED, 11.25f, 10, 0.5f, 4, 0
         ));
     }
 
