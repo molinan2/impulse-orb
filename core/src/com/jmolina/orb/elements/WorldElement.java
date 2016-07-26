@@ -22,6 +22,7 @@ public class WorldElement {
     private final float RESTITUTION = 0.6f;
     private final float FRICTION = 0.8f; // FRICTION = 0 evita rotaciones al colisionar
 
+    private float width, height;
     private Body body;
     private UserData userData;
 
@@ -43,44 +44,47 @@ public class WorldElement {
         FixtureDef fixtureDef = new FixtureDef();
         BodyDef bodyDef = new BodyDef();
 
+        width = w;
+        height = h;
+        setUserData(flavor);
+
         fixtureDef.density = DENSITY;
         fixtureDef.restitution = RESTITUTION;
         fixtureDef.friction = FRICTION;
-        fixtureDef.shape = createShape(geometry, w, h);
+        fixtureDef.shape = createShape(geometry);
         bodyDef.type = type;
         bodyDef.position.set(x, y);
         bodyDef.angle = angle * MathUtils.degreesToRadians;
         body = world.createBody(bodyDef);
         body.createFixture(fixtureDef);
-        body.getFixtureList().first().setUserData(userData);
+        body.getFixtureList().first().setUserData(getUserData());
         fixtureDef.shape.dispose();
 
-        setUserData(flavor);
     }
 
-    private Shape createShape (Geometry geometry, float width, float height) {
+    private Shape createShape (Geometry geometry) {
         switch (geometry) {
-            case SQUARE: return square(width, height);
-            case CIRCLE: return circle(width);
-            default: return square(width, height);
+            case SQUARE: return square();
+            case CIRCLE: return circle();
+            default: return square();
         }
     }
 
-    private Shape square(float width, float height) {
+    private Shape square() {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f * width, 0.5f * height);
 
         return shape;
     }
 
-    private Shape circle(float diameter) {
+    private Shape circle() {
         CircleShape shape = new CircleShape();
-        shape.setRadius(0.5f * diameter);
+        shape.setRadius(0.5f * width);
 
         return shape;
     }
 
-    public void setUserData(Flavor flavor) {
+    private void setUserData(Flavor flavor) {
         Effect effect;
 
         switch (flavor) {
@@ -88,11 +92,11 @@ public class WorldElement {
             default: effect = Effect.NONE;
         }
 
-        setUserData(flavor, effect);
+        userData.flavor = flavor;
+        userData.effect = effect;
     }
 
-    public void setUserData(Flavor flavor, Effect effect) {
-        userData.flavor = flavor;
+    public void setEffect(Effect effect) {
         userData.effect = effect;
     }
 
@@ -100,8 +104,8 @@ public class WorldElement {
         return userData;
     }
 
-    public void setAsSensor(boolean isSensor) {
-        getBody().getFixtureList().first().setSensor(isSensor);
+    public void setAsSensor(boolean sensor) {
+        getBody().getFixtureList().first().setSensor(sensor);
     }
 
     public Body getBody() {
@@ -117,6 +121,14 @@ public class WorldElement {
                 getBody().getPosition().x,
                 getBody().getPosition().y
         );
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
     }
 
 }

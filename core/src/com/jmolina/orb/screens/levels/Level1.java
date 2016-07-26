@@ -3,7 +3,7 @@ package com.jmolina.orb.screens.levels;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.screens.Level;
-import com.jmolina.orb.situations.level1.Situation1Start;
+import com.jmolina.orb.situations.level1.Situation100;
 import com.jmolina.orb.situations.level1.Situation101;
 import com.jmolina.orb.situations.level1.Situation102;
 import com.jmolina.orb.situations.level1.Situation103;
@@ -11,7 +11,7 @@ import com.jmolina.orb.situations.level1.Situation104;
 import com.jmolina.orb.situations.level1.Situation105;
 import com.jmolina.orb.situations.level1.Situation106;
 import com.jmolina.orb.situations.level1.Situation107;
-import com.jmolina.orb.situations.level1.Situation1End;
+import com.jmolina.orb.situations.level1.Situation199;
 
 
 public class Level1 extends Level {
@@ -24,7 +24,7 @@ public class Level1 extends Level {
         setPreviousScreen(ScreenManager.Key.LEVEL_LAUNCH_1);
         setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_1);
 
-        addSituation(new Situation1Start(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation100(getAssetManager(), getWorld(), getPixelsPerMeter()));
         addSituation(new Situation101(getAssetManager(), getWorld(), getPixelsPerMeter()));
         addSituation(new Situation102(getAssetManager(), getWorld(), getPixelsPerMeter()));
         addSituation(new Situation103(getAssetManager(), getWorld(), getPixelsPerMeter()));
@@ -32,7 +32,7 @@ public class Level1 extends Level {
         addSituation(new Situation105(getAssetManager(), getWorld(), getPixelsPerMeter()));
         addSituation(new Situation106(getAssetManager(), getWorld(), getPixelsPerMeter()));
         addSituation(new Situation107(getAssetManager(), getWorld(), getPixelsPerMeter()));
-        addSituation(new Situation1End(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation199(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
         setOrbStartPosition(6, 9);
     }

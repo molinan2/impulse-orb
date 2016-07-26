@@ -16,23 +16,20 @@ public class Situation105 extends SideWalledSituation {
         // Center box obstacle with red borders
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                6, 10, 4, 4, 45,
-                Element.Flavor.GREY, Element.Geometry.SQUARE,
-                getPixelsPerMeter()
+                getPixelsPerMeter(), 6, 10, 4, 4, 45,
+                Element.Geometry.SQUARE, Element.Flavor.GREY
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                7.5f, 11.5f, 4, 0.5f, -45,
-                Element.Flavor.RED, Element.Geometry.SQUARE,
-                getPixelsPerMeter()
+                getPixelsPerMeter(), 7.5f, 11.5f, 4, 0.5f, -45,
+                Element.Geometry.SQUARE, Element.Flavor.RED
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                4.5f, 8.5f, 4, 0.5f, -45,
-                Element.Flavor.RED, Element.Geometry.SQUARE,
-                getPixelsPerMeter()
+                getPixelsPerMeter(), 4.5f, 8.5f, 4, 0.5f, -45,
+                Element.Geometry.SQUARE, Element.Flavor.RED
         ));
     }
 

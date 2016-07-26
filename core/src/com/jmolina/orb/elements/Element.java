@@ -13,7 +13,8 @@ import com.jmolina.orb.var.Var;
 
 /**
  * Un Elemento incluye un cuerpo físico ({@link com.badlogic.gdx.physics.box2d.Body}) situado en el
- * mundo de Box2D y asociado a un {@link Actor} situado en Scene2D.
+ * mundo de Box2D y asociado a un {@link Actor} situado en Scene2D. El cuerpo físico pertenece a la
+ * "capa de simulación" y el actor a la "capa de visualización".
  */
 public class Element extends WorldElement {
 
@@ -21,42 +22,63 @@ public class Element extends WorldElement {
     private Actor actor;
     private float pixelsPerMeter;
 
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry, float pixelsPerMeter) {
-        this(am, world, x, y, w, h, angle, flavor, geometry, BodyDef.BodyType.KinematicBody, pixelsPerMeter);
+    public Element(AssetManager am, World world, float pixelsPerMeter, float x, float y, float w, float h, float angle, Geometry geometry, Flavor flavor) {
+        this(am, world, pixelsPerMeter, x, y, w, h, angle, geometry, flavor, BodyDef.BodyType.KinematicBody);
     }
 
     /**
-     * Constructor
+     * Constructor con textura por defecto
+     */
+    public Element(AssetManager am, World world, float pixelsPerMeter, float x, float y, float w, float h, float angle, Geometry geometry, Flavor flavor, BodyDef.BodyType type) {
+        super(world, x, y, w, h, angle, flavor, geometry, type);
+
+        this.assetManager = am;
+        this.pixelsPerMeter = pixelsPerMeter;
+        this.actor = new BaseActor();
+        setTexture(defaultTexture(geometry, flavor));
+    }
+
+    /**
+     * Constructor completo con textura específica
      *
      * @param am AssetManager
-     * @param world World
+     * @param world Box2D World which the Element's body will be added to
+     * @param texture Visible Element texture
      * @param x Position x coord (World units)
      * @param y Position y coord (World units)
      * @param w Width of the element (World units)
      * @param h Heigth of the element (World units)
-     * @param angle Rotation of the element in degrees counterclockwise
-     * @param flavor Flavor
-     * @param geometry Geometry
-     * @param type BodyDef.BodyType
+     * @param angle Initial angle of the Element in degrees counterclockwise
+     * @param geometry {@link Geometry}
+     * @param flavor {@link Flavor}
+     * @param type {@link BodyDef.BodyType}: Static, Kinematic or Dynamic
      */
-    public Element(AssetManager am, World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry, BodyDef.BodyType type, float pixelsPerMeter) {
+    public Element(AssetManager am, World world, Texture texture, float pixelsPerMeter, float x, float y, float w, float h, float angle, Geometry geometry, Flavor flavor, BodyDef.BodyType type) {
         super(world, x, y, w, h, angle, flavor, geometry, type);
 
-        assetManager = am;
+        this.assetManager = am;
         this.pixelsPerMeter = pixelsPerMeter;
-
-        actor = new BaseActor();
-        setTexture(createTexture(geometry, flavor), w, h);
+        this.actor = new BaseActor();
+        setTexture(texture);
     }
 
+    /**
+     * Gets the AssetManager
+     */
     private AssetManager getAssetManager() {
         return assetManager;
     }
 
+    /**
+     * Gets the current actor
+     */
     public Actor getActor() {
         return actor;
     }
 
+    /**
+     * Replaces the current actor. Used only by {@link Orb}
+     */
     public void setActor(Actor actor) {
         this.actor = actor;
     }
@@ -69,12 +91,14 @@ public class Element extends WorldElement {
      * Sincroniza la posición y rotación del cuerpo físico con las del actor
      *
      * @param viewport Viewport del mundo físico
+     * @param position A 'true' si hay que sincronizar la posición
+     * @param angle A 'true' si hay que sincronizar el ángulo/rotación
      */
-    public void syncBody(Viewport viewport, boolean syncPosition, boolean syncAngle) {
+    public void syncBody(Viewport viewport, boolean position, boolean angle) {
         if (actor == null || getBody() == null) return;
 
-        if (syncPosition) syncBodyPosition(viewport);
-        if (syncAngle) syncBodyAngle();
+        if (position) syncBodyPosition(viewport);
+        if (angle) syncBodyAngle();
     }
 
     private void syncBodyPosition(Viewport viewport) {
@@ -142,7 +166,7 @@ public class Element extends WorldElement {
         actor.setRotation(actorRotation);
     }
 
-    private Texture createTexture(Geometry geometry, Flavor flavor) {
+    private Texture defaultTexture(Geometry geometry, Flavor flavor) {
         switch (geometry) {
             case CIRCLE: return circleTexture(flavor);
             case SQUARE: return squareTexture(flavor);
@@ -168,21 +192,12 @@ public class Element extends WorldElement {
         }
     }
 
-    private void setTexture(Texture texture, float width, float height) {
-        float scaleX = getPixelsPerMeter() * width / texture.getWidth();
-        float scaleY = getPixelsPerMeter() * height / texture.getHeight();
+    private void setTexture(Texture texture) {
+        float scaleX = getPixelsPerMeter() * getWidth() / texture.getWidth();
+        float scaleY = getPixelsPerMeter() * getHeight() / texture.getHeight();
 
         ((BaseActor)actor).setTexture(texture);
         actor.setScale(scaleX, scaleY);
-    }
-
-    /**
-     * Modifica la textura del actor y reajusta la escala del actor
-     */
-    public void updateTexture(Texture texture, float width, float height) {
-        if (actor instanceof BaseActor) {
-            setTexture(texture, width, height);
-        }
     }
 
     public float getPixelsPerMeter() {

@@ -9,9 +9,9 @@ import com.jmolina.orb.elements.Init;
 import com.jmolina.orb.situations.SideWalledSituation;
 
 
-public class Situation1Start extends SideWalledSituation {
+public class Situation100 extends SideWalledSituation {
 
-    public Situation1Start(AssetManager am, World world, float pixelsPerMeter) {
+    public Situation100(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter);
     }
 
@@ -19,9 +19,8 @@ public class Situation1Start extends SideWalledSituation {
         // Test Rotable
         Element rotable = new Element(
                 getAssetManager(), getWorld(),
-                6, 8, 2, 2, 0,
-                Element.Flavor.GREY, Element.Geometry.SQUARE,
-                getPixelsPerMeter()
+                getPixelsPerMeter(), 6, 8, 2, 2, 0,
+                Element.Geometry.SQUARE, Element.Flavor.GREY
         );
 
         addElement(rotable);
@@ -36,9 +35,8 @@ public class Situation1Start extends SideWalledSituation {
         // Test (0,0)
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                0, 0, 1, 1, 0,
-                Element.Flavor.GREY, Element.Geometry.SQUARE,
-                getPixelsPerMeter()
+                getPixelsPerMeter(), 0, 0, 1, 1, 0,
+                Element.Geometry.SQUARE, Element.Flavor.GREY
         ));
 
 
@@ -52,23 +50,20 @@ public class Situation1Start extends SideWalledSituation {
         // Bottom walls
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                6, -9 + 0.5f, 12, 18, 0,
-                Element.Flavor.BLACK, Element.Geometry.SQUARE,
-                getPixelsPerMeter()
+                getPixelsPerMeter(), 6, -9 + 0.5f, 12, 18, 0,
+                Element.Geometry.SQUARE, Element.Flavor.BLACK
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                -6 + 0.5f, -9 + 0.5f, 12, 18, 0,
-                Element.Flavor.BLACK, Element.Geometry.SQUARE,
-                getPixelsPerMeter()
+                getPixelsPerMeter(), -6 + 0.5f, -9 + 0.5f, 12, 18, 0,
+                Element.Geometry.SQUARE, Element.Flavor.BLACK
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                18 - 0.5f, -9 + 0.5f, 12, 18, 0,
-                Element.Flavor.BLACK, Element.Geometry.SQUARE,
-                getPixelsPerMeter()
+                getPixelsPerMeter(), 18 - 0.5f, -9 + 0.5f, 12, 18, 0,
+                Element.Geometry.SQUARE, Element.Flavor.BLACK
         ));
     }
 

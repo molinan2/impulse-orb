@@ -5,8 +5,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actions.GameAction;
 
 /**
@@ -28,16 +26,15 @@ public class Orb extends Element {
     private Fragments fragments;
 
     public Orb(AssetManager am, World world, float pixelsPerMeter) {
-        // No se pueden pasar constantes al constructor de super() antes de inicializar el objeto
-        super(am, world, 6, 2, 1f, 1f, 0, Flavor.GREY, Geometry.CIRCLE, BodyDef.BodyType.DynamicBody, pixelsPerMeter);
+        super(am, world, pixelsPerMeter, 6, 2, 1f, 1f, 0, Geometry.CIRCLE, Flavor.GREY, BodyDef.BodyType.DynamicBody);
 
         heat = 0f;
         frozen = overloaded = false;
         fragments = new Fragments(am);
         naturalScale = pixelsPerMeter * DIAMETER / fragments.getWidth();
         fragments.setScale(naturalScale);
-        getBody().setSleepingAllowed(false); // Evita que se quede dormido. ¡La Gravedad no despierta!
         setActor(fragments);
+        getBody().setSleepingAllowed(false); // Evita que se quede dormido. ¡La Gravedad no despierta!
     }
 
     /**
