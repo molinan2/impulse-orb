@@ -1,17 +1,14 @@
 package com.jmolina.orb.data;
 
-import com.jmolina.orb.elements.Element;
+import com.jmolina.orb.elements.WorldElement;
 
 /**
- * Datos de usuario para guardarlos como UserData en un Fixture
+ * Datos de usuario para guardarlos mediante {@link com.badlogic.gdx.physics.box2d.Fixture#setUserData(Object)}
+ * en el Fixture de cada Body.
  */
 public class UserData {
 
-    public Element.Flavor flavor = Element.Flavor.GREY;
-    public Element.Effect effect = Element.Effect.NONE;
-
-    public String toString() {
-        return flavor + ": " + effect + ".";
-    }
+    public WorldElement.Flavor flavor;
+    public WorldElement.Effect effect;
 
 }

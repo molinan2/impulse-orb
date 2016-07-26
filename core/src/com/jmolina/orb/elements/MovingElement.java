@@ -19,9 +19,9 @@ public class MovingElement extends Element {
 
     private float zoomCorrectionFactor;
     private float x, y, angle;
-    private float rotationFrequency, displacementFrequency, displaceToX, displaceToY;
-    private boolean clockwise;
-    private boolean skipBodySync;
+    private float rotationFrequency, displacementFrequency, displacementX, displacementY;
+    private boolean rotationClockwise;
+    private boolean skipBodySync; // Skip bodySync on the next frame, allowing positioning in World units
 
     /**
      * {@inheritDoc}
@@ -36,11 +36,11 @@ public class MovingElement extends Element {
         this.angle = angle;
 
         this.rotationFrequency = 0f;
+        this.rotationClockwise = true;
         this.displacementFrequency = 0f;
-        this.displaceToX = 0f;
-        this.displaceToY = 0f;
-        this.clockwise = true;
-        this.skipBodySync = false; // A true para saltar bodySync para poder hacer reset
+        this.displacementX = 0f;
+        this.displacementY = 0f;
+        this.skipBodySync = false;
     }
 
     @Override
@@ -56,8 +56,8 @@ public class MovingElement extends Element {
      */
     @Override
     public void syncBody(Viewport viewport, boolean position, boolean angle) {
-        if (!skipBodySync) super.syncBody(viewport, position, angle);
-        else skipBodySync = false;
+        if (skippingBodySync()) skipBodySync(false);
+        else super.syncBody(viewport, position, angle);
     }
 
     /**
@@ -68,7 +68,7 @@ public class MovingElement extends Element {
      */
     public void addRotation(float frequency, boolean clockwise) {
         this.rotationFrequency = frequency;
-        this.clockwise = clockwise;
+        this.rotationClockwise = clockwise;
 
         float sign = clockwise ? -1f : 1f;
         float duration = 1 / frequency;
@@ -92,8 +92,8 @@ public class MovingElement extends Element {
      */
     public void addDisplacement(float frequency, float x, float y) {
         this.displacementFrequency = frequency;
-        this.displaceToX = x;
-        this.displaceToY = y;
+        this.displacementX = x;
+        this.displacementY = y;
 
         float halfDuration = 1 / (2 * frequency);
 
@@ -131,9 +131,17 @@ public class MovingElement extends Element {
                 this.y,
                 this.angle
         );
-        addRotation(rotationFrequency, clockwise);
-        addDisplacement(displacementFrequency, displaceToX, displaceToY);
-        skipBodySync = true;
+        addRotation(rotationFrequency, rotationClockwise);
+        addDisplacement(displacementFrequency, displacementX, displacementY);
+        skipBodySync(true);
+    }
+
+    private void skipBodySync(boolean enabled) {
+        this.skipBodySync = enabled;
+    }
+
+    private boolean skippingBodySync() {
+        return this.skipBodySync;
     }
 
 }

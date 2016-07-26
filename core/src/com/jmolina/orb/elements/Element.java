@@ -12,9 +12,11 @@ import com.jmolina.orb.var.Var;
 
 
 /**
- * Un Elemento incluye un cuerpo físico ({@link com.badlogic.gdx.physics.box2d.Body}) situado en el
- * mundo de Box2D y asociado a un {@link Actor} situado en Scene2D. El cuerpo físico pertenece a la
- * "capa de simulación" y el actor a la "capa de visualización".
+ * Unión de WorldElement y SceneElement (hipotética, porque Java no admite herencia múltiple).
+ *
+ * Un Element incluye un cuerpo físico ({@link com.badlogic.gdx.physics.box2d.Body}) situado en el
+ * mundo de Box2D, asociado a un {@link Actor} situado en la Scene2D. El cuerpo Body pertenece a la
+ * "capa de simulación" y el Actor a la "capa de visualización".
  */
 public class Element extends WorldElement {
 

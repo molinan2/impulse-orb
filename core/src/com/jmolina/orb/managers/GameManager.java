@@ -11,7 +11,7 @@ import com.jmolina.orb.var.Var;
 
 public class GameManager {
 
-    public enum Fx { Back, Button, ElementCollision, WallCollision, Destroy, Exit, Fling, Init, Option, Tap }
+    public enum Fx { Back, Button, ElementCollision, WallCollision, Destroy, Exit, Fling, Init, Option, Tap, Tick }
     public enum Track { Menu, Game, Success }
     public enum Length { Short, Medium, Long }
 
@@ -30,7 +30,8 @@ public class GameManager {
     private boolean sound = true;
     private boolean music = true;
     private int zoom = PrefsManager.OPTION_ZOOM_DEFAULT;
-    private Sound backSound, buttonSound, elementCollisionSound, wallCollisionSound, destroySound, exitSound, flingSound, initSound, optionSound, tapSound;
+    private Sound backSound, buttonSound, elementCollisionSound, wallCollisionSound, destroySound,
+            exitSound, flingSound, initSound, optionSound, tapSound, tickSound;
     private Music menuMusic, gameMusic, successMusic;
 
     /**
@@ -57,6 +58,7 @@ public class GameManager {
         initSound.dispose();
         optionSound.dispose();
         tapSound.dispose();
+        tickSound.dispose();
         menuMusic.dispose();
         gameMusic.dispose();
     }
@@ -120,6 +122,7 @@ public class GameManager {
         initSound = getAsset(Asset.SOUND_INIT, Sound.class);
         optionSound = getAsset(Asset.SOUND_OPTION, Sound.class);
         tapSound = getAsset(Asset.SOUND_TAP, Sound.class);
+        tickSound = getAsset(Asset.SOUND_TICK, Sound.class);
     }
 
     private void createMusic() {
@@ -164,6 +167,8 @@ public class GameManager {
             case Init: initSound.play(SOUND_VOLUME); break;
             case Option: optionSound.play(SOUND_VOLUME); break;
             case Tap: tapSound.play(SOUND_VOLUME); break;
+            case Tick: tickSound.play(SOUND_VOLUME); break;
+            default:
         }
     }
 

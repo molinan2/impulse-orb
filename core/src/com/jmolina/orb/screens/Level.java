@@ -43,7 +43,6 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 public class Level extends BaseScreen {
 
     public static final float INTRO_SEQUENCE_TIME = 1f;
-    public static final float EXIT_SEQUENCE_TIME = 1.2f;
     public static final float BACKGROUND_FADE_TIME = 0.5f;
 
     private final float GESTURE_HALF_TAP_SQUARE_SIZE = 10.0f;
@@ -57,9 +56,11 @@ public class Level extends BaseScreen {
     private final int WORLD_VELOCITY_INTERACTIONS = 8;
     private final int WORLD_POSITION_INTERACTIONS = 3;
     private final int INFINITE_Z_INDEX = 32000;
+    private final float TICK_AMOUNT = 0.2f;
+    private final float TICK_TIME = 0.75f;
 
-    private float pixelsPerMeter, impulseFactor;
-    private boolean locked;
+    private float pixelsPerMeter, impulseFactor, tickTimer;
+    private boolean locked, ticking;
     private World world;
     private ContactHandler contactHandler;
     private Viewport worldViewport, gestureViewport, hudViewport, parallaxViewport;
@@ -126,6 +127,7 @@ public class Level extends BaseScreen {
 
         createRunnables();
         lock();
+        setTicking(false);
     }
 
     /**
@@ -149,9 +151,7 @@ public class Level extends BaseScreen {
 
                 for (Situation situation : getSituations()) {
                     for (Element element : situation.getElements()) {
-                        if (element instanceof MovingElement) {
-                            ((MovingElement)element).reset();
-                        }
+                        if (element instanceof MovingElement) ((MovingElement)element).reset();
                     }
                 }
             }
@@ -527,12 +527,47 @@ public class Level extends BaseScreen {
     }
 
     /**
-     * Actualiza el calor y su indicador
+     * Actualiza el calor y su indicador. El calor puede estar generado por un
+     * {@link GestureHandler#tap(float, float, int, int)} o por {@link #ticking}.
      */
     private void updateHeat() {
+        if (isTicking()) {
+            this.tickTimer += Gdx.graphics.getRawDeltaTime();
+
+            if (this.tickTimer > TICK_TIME)
+                tick();
+        }
+
         getOrb().updateHeat();
         getHUDStage().setGaugeLevel(getOrb().getHeat());
         getHUDStage().setGaugeOverload(getOrb().isOverloaded());
+    }
+
+    /**
+     * Ejecuta un tick de calentamiento en el {@link Orb}. Este tick puede implicar overload y
+     * destroy.
+     */
+    private void tick() {
+        getGameManager().play(GameManager.Fx.Tick);
+
+        if (getOrb().isOverloaded()) {
+            destroy();
+            return;
+        }
+
+        getOrb().increaseHeat(TICK_AMOUNT);
+        this.tickTimer = 0f;
+
+        if (getOrb().isHeatMaxed())
+            overload();
+    }
+
+    /**
+     * Activa la sobrecarga (overload) del Orb y actualizando la visualización del HUD.
+     */
+    private void overload() {
+        getOrb().setOverloaded(true);
+        getHUDStage().setGaugeOverload(true);
     }
 
     /**
@@ -689,13 +724,10 @@ public class Level extends BaseScreen {
             getGameManager().vibrate(GameManager.Length.Medium);
             getGameManager().play(GameManager.Fx.Tap);
 
-            if (getOrb().isOverloaded()) {
+            if (getOrb().isOverloaded())
                 destroy();
-            }
-            else if (getOrb().isHeatMaxed()) {
-                getOrb().setOverloaded(true);
-                getHUDStage().setGaugeOverload(true);
-            }
+            else if (getOrb().isHeatMaxed())
+                overload();
         }
     }
 
@@ -733,6 +765,23 @@ public class Level extends BaseScreen {
         getGameManager().vibrate(GameManager.Length.Long);
         getGameManager().play(GameManager.Fx.Destroy);
         getHUDStage().destroy(orbDestroy, reset, orbIntro, unlock);
+    }
+
+    /**
+     * Activa o desactiva el incremento continuo de calor del {@link Orb}
+     */
+    public void setTicking(boolean ticking) {
+        this.ticking = ticking;
+        this.tickTimer = 0f;
+
+        if (ticking) tick();
+    }
+
+    /**
+     * Devuelve true si el {@link Orb} está en una zona caliente ({@link #ticking}).
+     */
+    private boolean isTicking() {
+        return this.ticking;
     }
 
 }

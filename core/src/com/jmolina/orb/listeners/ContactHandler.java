@@ -5,8 +5,8 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.data.UserData;
+import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.screens.Level;
 
 public class ContactHandler implements ContactListener {
@@ -27,14 +27,22 @@ public class ContactHandler implements ContactListener {
         UserData userDataB = (UserData) fixtureB.getUserData();
 
         if (fixtureA.equals(orbFixture))
-            decide(userDataB);
+            decideStart(userDataB);
         else if (fixtureB.equals(orbFixture))
-            decide(userDataA);
+            decideStart(userDataA);
     }
 
     @Override
     public void endContact(Contact contact) {
-        // System.out.println("end");
+        Fixture fixtureA = contact.getFixtureA();
+        Fixture fixtureB = contact.getFixtureB();
+        UserData userDataA = (UserData) fixtureA.getUserData();
+        UserData userDataB = (UserData) fixtureB.getUserData();
+
+        if (fixtureA.equals(orbFixture))
+            decideEnd(userDataB);
+        else if (fixtureB.equals(orbFixture))
+            decideEnd(userDataA);
     }
 
     @Override
@@ -47,21 +55,27 @@ public class ContactHandler implements ContactListener {
         // System.out.println("postsolve");
     }
 
-    private void decide(UserData userData) {
-        if (userData.flavor == Element.Flavor.RED) {
-            level.destroy();
+    private void decideStart(UserData userData) {
+        switch (userData.effect) {
+            case EXIT: level.successGame(); return;
+            case DESTROY: level.destroy(); return;
+            case HEAT: level.setTicking(true); return;
+            default: decideOnFlavor(userData.flavor);
         }
-        else if (userData.effect == Element.Effect.EXIT) {
-            level.successGame();
+    }
+
+    private void decideOnFlavor(WorldElement.Flavor flavor) {
+        switch (flavor) {
+            case BLACK: level.collide(true); return;
+            case GREY: level.collide(false); return;
+            default:
         }
-        else if (userData.flavor == Element.Flavor.BLUE) {
-            // do nothing
-        }
-        else if (userData.flavor == Element.Flavor.BLACK) {
-            level.collide(true);
-        }
-        else {
-            level.collide();
+    }
+
+    private void decideEnd(UserData userData) {
+        switch (userData.effect) {
+            case HEAT: level.setTicking(false); return;
+            default:
         }
     }
 

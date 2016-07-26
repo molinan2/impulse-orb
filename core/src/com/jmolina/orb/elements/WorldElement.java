@@ -14,8 +14,33 @@ import com.jmolina.orb.data.UserData;
 
 public class WorldElement {
 
+    /**
+     * Flavor
+     *
+     * BLACK: Muro o escenario estático
+     * GREY: Elementos kinéticos
+     * RED: Elementos destructivos
+     * BLUE: Elementos etéreos
+     */
     public enum Flavor { BLACK, GREY, RED, BLUE }
+
+    /**
+     * Effect
+     *
+     * NONE: Sin efecto
+     * EXIT: Provoca la salida del nivel
+     * DESTROY: Provoca la destrucción del orbe
+     * HEAT: Provoca el calentamiento del orbe
+     * COOL: Provoca el enfriamiento del orbe
+     */
     public enum Effect { NONE, EXIT, DESTROY, HEAT, COOL, CUSTOM }
+
+    /**
+     * Geometry
+     *
+     * CIRCLE: Elemento elíptico
+     * SQUARE: Elemento rectangular
+     */
     public enum Geometry { CIRCLE, SQUARE }
 
     private final float DENSITY = 1.0f;
