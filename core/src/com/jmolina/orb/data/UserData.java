@@ -10,5 +10,10 @@ public class UserData {
 
     public WorldElement.Flavor flavor;
     public WorldElement.Effect effect;
+    public Tick tick;
+
+    public UserData() {
+        tick = new Tick();
+    }
 
 }

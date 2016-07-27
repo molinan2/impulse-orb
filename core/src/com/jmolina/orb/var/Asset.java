@@ -92,6 +92,7 @@ public class Asset {
     public static final String SOUND_OPTION = SOUND + "option.mp3";
     public static final String SOUND_TAP = SOUND + "tap.mp3";
     public static final String SOUND_TICK = SOUND + "tick.mp3";
+    public static final String SOUND_WARNING = SOUND + "warning.mp3";
 
     public static final String MUSIC_GAME = MUSIC + "game.music.ogg";
     public static final String MUSIC_MENU = MUSIC + "menu.music.ogg";

@@ -16,6 +16,9 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
  */
 public class Heater extends BaseElement {
 
+    private final float TICK_AMOUNT = 0.2f;
+    private final float TICK_PERIOD = 0.75f;
+
     /**
      * {@inheritDoc}
      *
@@ -24,10 +27,13 @@ public class Heater extends BaseElement {
     public Heater(AssetManager am, World world, float ppm, float x, float y) {
         super(am, world, am.get(Asset.GAME_HEAT, Texture.class), ppm,
                 Geometry.SQUARE, Flavor.BLUE, BodyDef.BodyType.KinematicBody,
-                x, y, 10, 10, 0);
+                x, y, 10, 10, 0
+        );
 
         setAsSensor(true);
         setEffect(Effect.HEAT);
+        getUserData().tick.amount = TICK_AMOUNT;
+        getUserData().tick.period = TICK_PERIOD;
     }
 
 }

@@ -51,8 +51,11 @@ public class Movable extends BaseElement {
     /**
      * {@inheritDoc}
      *
-     * Ignora la sincronización de Actor a Body si {@link #skipBodySync} está a true.
+     * Ignora la sincronización de Actor a Body si {@link #skippingBodySync()} es true.
      * Si la ignora, desactiva {@link #skipBodySync}, de modo que sólo estará a true durante 1 frame.
+     * <p>
+     * Es necesario para poder resetear la posición del actor en base a las coordenadas originales
+     * del Element dentro del mundo.
      */
     @Override
     public void syncBody(Viewport viewport, boolean position, boolean angle) {

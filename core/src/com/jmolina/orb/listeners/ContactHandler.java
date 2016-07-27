@@ -59,7 +59,7 @@ public class ContactHandler implements ContactListener {
         switch (userData.effect) {
             case EXIT: level.successGame(); return;
             case DESTROY: level.destroy(); return;
-            case HEAT: level.setTicking(true); return;
+            case HEAT: level.enableTicking(userData.tick); return;
             default: decideOnFlavor(userData.flavor);
         }
     }
@@ -74,7 +74,7 @@ public class ContactHandler implements ContactListener {
 
     private void decideEnd(UserData userData) {
         switch (userData.effect) {
-            case HEAT: level.setTicking(false); return;
+            case HEAT: level.disableTicking(); return;
             default:
         }
     }

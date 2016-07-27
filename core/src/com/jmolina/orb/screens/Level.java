@@ -5,7 +5,6 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.SnapshotArray;
@@ -14,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.data.GameStats;
 import com.jmolina.orb.data.ScreenFlag;
+import com.jmolina.orb.data.Tick;
 import com.jmolina.orb.elements.BaseElement;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.Orb;
@@ -55,10 +55,9 @@ public class Level extends BaseScreen {
     private final int WORLD_VELOCITY_INTERACTIONS = 8;
     private final int WORLD_POSITION_INTERACTIONS = 3;
     private final int INFINITE_Z_INDEX = 32000;
-    private final float TICK_AMOUNT = 0.2f;
-    private final float TICK_TIME = 0.75f;
 
-    private float pixelsPerMeter, impulseFactor, tickTimer;
+    private Tick tick;
+    private float pixelsPerMeter, impulseFactor;
     private boolean locked, ticking;
     private World world;
     private ContactHandler contactHandler;
@@ -88,6 +87,7 @@ public class Level extends BaseScreen {
     public Level(SuperManager sm, ScreenManager.Key key) {
         super(sm, key);
 
+        tick = new Tick();
         screenFlag = new ScreenFlag();
         pixelsPerMeter = getGameManager().getPixelsPerMeter();
         impulseFactor = 1 / getPixelsPerMeter();
@@ -126,7 +126,7 @@ public class Level extends BaseScreen {
 
         createRunnables();
         lock();
-        setTicking(false);
+        disableTicking();
     }
 
     /**
@@ -358,7 +358,7 @@ public class Level extends BaseScreen {
      * Guarda la pantalla de éxito correspondiente a este nivel
      */
     public void setSuccessScreen(ScreenManager.Key key) {
-        this.successScreen = key;
+        successScreen = key;
     }
 
     /**
@@ -367,7 +367,7 @@ public class Level extends BaseScreen {
      * @return {@link #successScreen}
      */
     public ScreenManager.Key getSuccessScreen() {
-        return this.successScreen;
+        return successScreen;
     }
 
     /**
@@ -531,10 +531,12 @@ public class Level extends BaseScreen {
      */
     private void updateHeat() {
         if (isTicking()) {
-            this.tickTimer += Gdx.graphics.getRawDeltaTime();
+            tick.update(Gdx.graphics.getRawDeltaTime());
 
-            if (this.tickTimer > TICK_TIME)
+            if (tick.expired()) {
+                tick.reset();
                 tick();
+            }
         }
 
         getOrb().updateHeat();
@@ -672,10 +674,10 @@ public class Level extends BaseScreen {
     /**
      * Reproduce el sonido y la vibración correspondientes a una colisión
      */
-    public void collide(boolean isWall) {
+    public void collide(boolean wall) {
         getGameManager().vibrate(GameManager.Length.Short);
 
-        if (isWall)
+        if (wall)
             getGameManager().play(GameManager.Fx.WallCollision);
         else
             getGameManager().play(GameManager.Fx.ElementCollision);
@@ -740,21 +742,30 @@ public class Level extends BaseScreen {
     }
 
     /**
-     * Activa o desactiva el incremento continuo de calor del {@link Orb}.
-     * Al empezar el ticking (entrar en una zona caliente), siempre hay un tick.
+     * Activa el incremento continuo de calor del {@link Orb} (ticking). Al empezar (entrar en una
+     * zona caliente), siempre ocurre un tick.
      */
-    public void setTicking(boolean ticking) {
-        this.ticking = ticking;
-        this.tickTimer = 0f;
+    public void enableTicking(Tick tick) {
+        this.tick.amount = tick.amount;
+        this.tick.period = tick.period;
+        tick.reset();
+        ticking = true;
+        tick();
+    }
 
-        if (ticking) tick();
+    /**
+     * Desactiva el ticking.
+     */
+    public void disableTicking() {
+        ticking = false;
+        tick.reset();
     }
 
     /**
      * Devuelve true si el {@link Orb} está en una zona caliente ({@link #ticking}).
      */
     private boolean isTicking() {
-        return this.ticking;
+        return ticking;
     }
 
     /**
@@ -769,8 +780,7 @@ public class Level extends BaseScreen {
             return;
         }
 
-        getOrb().increaseHeat(TICK_AMOUNT);
-        this.tickTimer = 0f;
+        getOrb().increaseHeat(tick.amount);
 
         if (getOrb().isHeatMaxed())
             overload();
@@ -782,6 +792,7 @@ public class Level extends BaseScreen {
     private void overload() {
         getOrb().setOverloaded(true);
         getHUDStage().setGaugeOverload(true);
+        getGameManager().play(GameManager.Fx.Warning);
     }
 
 }
