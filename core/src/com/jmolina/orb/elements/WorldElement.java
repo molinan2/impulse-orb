@@ -84,7 +84,7 @@ public class WorldElement {
         bodyDef.angle = angle * MathUtils.degreesToRadians;
         body = world.createBody(bodyDef);
         body.createFixture(fixtureDef);
-        body.getFixtureList().first().setUserData(getUserData());
+        body.setUserData(getUserData());
         fixtureDef.shape.dispose();
     }
 
