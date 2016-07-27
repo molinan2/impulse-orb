@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jmolina.orb.actors.BaseActor;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
@@ -18,25 +19,25 @@ import com.jmolina.orb.var.Var;
  * mundo de Box2D, asociado a un {@link Actor} situado en la Scene2D. El cuerpo Body pertenece a la
  * "capa de simulación" y el Actor a la "capa de visualización".
  */
-public class Element extends WorldElement {
+public class BaseElement extends WorldElement {
 
     private AssetManager assetManager;
     private Actor actor;
     private float pixelsPerMeter;
 
-    public Element(AssetManager am, World world, float pixelsPerMeter, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
+    public BaseElement(AssetManager am, World world, float pixelsPerMeter, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
         this(am, world, pixelsPerMeter, geometry, flavor, BodyDef.BodyType.KinematicBody, x, y, w, h, angle);
     }
 
     /**
      * Constructor con textura por defecto
      */
-    public Element(AssetManager am, World world, float pixelsPerMeter, Geometry geometry, Flavor flavor, BodyDef.BodyType type, float x, float y, float w, float h, float angle) {
+    public BaseElement(AssetManager am, World world, float pixelsPerMeter, Geometry geometry, Flavor flavor, BodyDef.BodyType type, float x, float y, float w, float h, float angle) {
         super(world, x, y, w, h, angle, flavor, geometry, type);
 
         this.assetManager = am;
         this.pixelsPerMeter = pixelsPerMeter;
-        this.actor = new BaseActor();
+        this.actor = new com.jmolina.orb.actors.BaseActor();
         setTexture(defaultTexture(geometry, flavor));
     }
 
@@ -54,12 +55,12 @@ public class Element extends WorldElement {
      * @param h Heigth of the element (World units)
      * @param angle Initial angle of the Element in degrees counterclockwise
      */
-    public Element(AssetManager am, World world, Texture texture, float pixelsPerMeter, Geometry geometry, Flavor flavor, BodyDef.BodyType type, float x, float y, float w, float h, float angle) {
+    public BaseElement(AssetManager am, World world, Texture texture, float pixelsPerMeter, Geometry geometry, Flavor flavor, BodyDef.BodyType type, float x, float y, float w, float h, float angle) {
         super(world, x, y, w, h, angle, flavor, geometry, type);
 
         this.assetManager = am;
         this.pixelsPerMeter = pixelsPerMeter;
-        this.actor = new BaseActor();
+        this.actor = new com.jmolina.orb.actors.BaseActor();
         setTexture(texture);
     }
 
@@ -163,7 +164,6 @@ public class Element extends WorldElement {
 
     private void syncActorRotation() {
         float actorRotation = MathUtils.radiansToDegrees * getBody().getAngle();
-
         actor.setRotation(actorRotation);
     }
 
@@ -171,6 +171,7 @@ public class Element extends WorldElement {
         switch (geometry) {
             case CIRCLE: return circleTexture(flavor);
             case SQUARE: return squareTexture(flavor);
+            case TRIANGLE: return triangleTexture(flavor);
             default: return squareTexture(flavor);
         }
     }
@@ -193,12 +194,30 @@ public class Element extends WorldElement {
         }
     }
 
+    private Texture triangleTexture(Flavor flavor) {
+        switch (flavor) {
+            case GREY: return getAssetManager().get(Asset.GAME_TRIANGLE_GREY, Texture.class);
+            case RED: return getAssetManager().get(Asset.GAME_TRIANGLE_RED, Texture.class);
+            default: return getAssetManager().get(Asset.GAME_TRIANGLE_GREY, Texture.class);
+        }
+    }
+
     private void setTexture(Texture texture) {
         float scaleX = getPixelsPerMeter() * getWidth() / texture.getWidth();
         float scaleY = getPixelsPerMeter() * getHeight() / texture.getHeight();
 
         ((BaseActor)actor).setTexture(texture);
         actor.setScale(scaleX, scaleY);
+
+        // Corrección específica para la textura del triángulo, que es distinta para que el origen
+        // del actor coincida con el centroide del triángulo equilátero
+        if (getGeometry() == Geometry.TRIANGLE) {
+            float correction = 400f / 344f;
+            actor.setScale(
+                    actor.getScaleX() * correction,
+                    actor.getScaleY() * correction
+            );
+        }
     }
 
     public float getPixelsPerMeter() {

@@ -17,7 +17,7 @@ public class WorldElement {
     /**
      * Flavor
      *
-     * BLACK: Muro o escenario estático
+     * BLACK: Elementos estáticos (muros y escenarios estáticos)
      * GREY: Elementos kinéticos
      * RED: Elementos destructivos
      * BLUE: Elementos etéreos
@@ -31,17 +31,17 @@ public class WorldElement {
      * EXIT: Provoca la salida del nivel
      * DESTROY: Provoca la destrucción del orbe
      * HEAT: Provoca el calentamiento del orbe
-     * COOL: Provoca el enfriamiento del orbe
      */
-    public enum Effect { NONE, EXIT, DESTROY, HEAT, COOL, CUSTOM }
+    public enum Effect { NONE, EXIT, DESTROY, HEAT, CUSTOM }
 
     /**
      * Geometry
      *
      * CIRCLE: Elemento elíptico
      * SQUARE: Elemento rectangular
+     * TRIANGLE: Elemento triangular equilátero
      */
-    public enum Geometry { CIRCLE, SQUARE }
+    public enum Geometry { CIRCLE, SQUARE, TRIANGLE }
 
     private final float DENSITY = 1.0f;
     private final float RESTITUTION = 0.6f;
@@ -50,6 +50,7 @@ public class WorldElement {
     private float width, height;
     private Body body;
     private UserData userData;
+    private Geometry geometry;
 
     /**
      * Constructor
@@ -72,6 +73,7 @@ public class WorldElement {
         width = w;
         height = h;
         setUserData(flavor);
+        this.geometry = geometry;
 
         fixtureDef.density = DENSITY;
         fixtureDef.restitution = RESTITUTION;
@@ -84,17 +86,20 @@ public class WorldElement {
         body.createFixture(fixtureDef);
         body.getFixtureList().first().setUserData(getUserData());
         fixtureDef.shape.dispose();
-
     }
 
     private Shape createShape (Geometry geometry) {
         switch (geometry) {
             case SQUARE: return square();
             case CIRCLE: return circle();
+            case TRIANGLE: return triangle();
             default: return square();
         }
     }
 
+    /**
+     * Crea un rectángulo. El punto de origen es su centroide.
+     */
     private Shape square() {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(0.5f * width, 0.5f * height);
@@ -102,9 +107,29 @@ public class WorldElement {
         return shape;
     }
 
+    /**
+     * Crea un círculo de radio = {@link #width}. El parámetro {@link #height} se ignora.
+     * El punto de origen es su centro.
+     */
     private Shape circle() {
         CircleShape shape = new CircleShape();
         shape.setRadius(0.5f * width);
+
+        return shape;
+    }
+
+    /**
+     * Crea un triángulo equilátero de lado {@link #width}. El parámetro {@link #height} se ignora.
+     * El punto de origen es su centroide (punto de cruce de las 3 alturas).
+     */
+    private Shape triangle() {
+        Vector2[] points = new Vector2[3];
+        points[0] = new Vector2(-0.5f * width, - width * MathUtils.sinDeg(60) / 3);
+        points[1] = new Vector2(0.5f * width, - width * MathUtils.sinDeg(60) / 3);
+        points[2] = new Vector2(0, width * MathUtils.sinDeg(60) / 3 * 2);
+
+        PolygonShape shape = new PolygonShape();
+        shape.set(points);
 
         return shape;
     }
@@ -154,6 +179,10 @@ public class WorldElement {
 
     public float getHeight() {
         return height;
+    }
+
+    public Geometry getGeometry() {
+        return this.geometry;
     }
 
 }

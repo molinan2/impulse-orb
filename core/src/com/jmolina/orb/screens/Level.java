@@ -5,9 +5,8 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -15,8 +14,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.data.GameStats;
 import com.jmolina.orb.data.ScreenFlag;
-import com.jmolina.orb.elements.Element;
-import com.jmolina.orb.elements.MovingElement;
+import com.jmolina.orb.elements.BaseElement;
+import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
@@ -150,8 +149,8 @@ public class Level extends BaseScreen {
                 stats.newTry();
 
                 for (Situation situation : getSituations()) {
-                    for (Element element : situation.getElements()) {
-                        if (element instanceof MovingElement) ((MovingElement)element).reset();
+                    for (BaseElement element : situation.getElements()) {
+                        if (element instanceof Movable) ((Movable)element).reset();
                     }
                 }
             }
@@ -415,7 +414,7 @@ public class Level extends BaseScreen {
         int size = situations.size;
         situation.setPosition(size-1);
 
-        for (Element element : situation.getElements()) {
+        for (BaseElement element : situation.getElements()) {
             addMainActor(element.getActor());
             element.syncActor(worldViewport);
         }
@@ -455,7 +454,7 @@ public class Level extends BaseScreen {
      */
     private void syncBodies() {
         for (Situation situation : situations) {
-            for (Element element : situation.getElements()) {
+            for (BaseElement element : situation.getElements()) {
                 element.syncBody(worldViewport);
             }
         }
@@ -468,7 +467,7 @@ public class Level extends BaseScreen {
      */
     public void syncActors() {
         for (Situation situation : situations) {
-            for (Element element : situation.getElements()) {
+            for (BaseElement element : situation.getElements()) {
                 element.syncActor(worldViewport);
             }
         }
@@ -509,7 +508,7 @@ public class Level extends BaseScreen {
         getMainStage().draw();
         getGestureStage().draw();
         getBackgroundStage().draw();
-        // debugRenderer.render(world, worldViewport.getCamera().combined);
+        // debugRenderer.render(world, worldViewport.getCamera().combined); // TODO: Debug
         getHUDStage().draw();
     }
 
@@ -541,33 +540,6 @@ public class Level extends BaseScreen {
         getOrb().updateHeat();
         getHUDStage().setGaugeLevel(getOrb().getHeat());
         getHUDStage().setGaugeOverload(getOrb().isOverloaded());
-    }
-
-    /**
-     * Ejecuta un tick de calentamiento en el {@link Orb}. Este tick puede implicar overload y
-     * destroy.
-     */
-    private void tick() {
-        getGameManager().play(GameManager.Fx.Tick);
-
-        if (getOrb().isOverloaded()) {
-            destroy();
-            return;
-        }
-
-        getOrb().increaseHeat(TICK_AMOUNT);
-        this.tickTimer = 0f;
-
-        if (getOrb().isHeatMaxed())
-            overload();
-    }
-
-    /**
-     * Activa la sobrecarga (overload) del Orb y actualizando la visualización del HUD.
-     */
-    private void overload() {
-        getOrb().setOverloaded(true);
-        getHUDStage().setGaugeOverload(true);
     }
 
     /**
@@ -697,10 +669,6 @@ public class Level extends BaseScreen {
         return locked;
     }
 
-    public void collide() {
-        collide(false);
-    }
-
     /**
      * Reproduce el sonido y la vibración correspondientes a una colisión
      */
@@ -711,6 +679,10 @@ public class Level extends BaseScreen {
             getGameManager().play(GameManager.Fx.WallCollision);
         else
             getGameManager().play(GameManager.Fx.ElementCollision);
+    }
+
+    public void collide() {
+        collide(false);
     }
 
     /**
@@ -768,7 +740,8 @@ public class Level extends BaseScreen {
     }
 
     /**
-     * Activa o desactiva el incremento continuo de calor del {@link Orb}
+     * Activa o desactiva el incremento continuo de calor del {@link Orb}.
+     * Al empezar el ticking (entrar en una zona caliente), siempre hay un tick.
      */
     public void setTicking(boolean ticking) {
         this.ticking = ticking;
@@ -782,6 +755,33 @@ public class Level extends BaseScreen {
      */
     private boolean isTicking() {
         return this.ticking;
+    }
+
+    /**
+     * Ejecuta un tick de calentamiento en el {@link Orb}. Este tick puede implicar overload y
+     * destroy.
+     */
+    private void tick() {
+        getGameManager().play(GameManager.Fx.Tick);
+
+        if (getOrb().isOverloaded()) {
+            destroy();
+            return;
+        }
+
+        getOrb().increaseHeat(TICK_AMOUNT);
+        this.tickTimer = 0f;
+
+        if (getOrb().isHeatMaxed())
+            overload();
+    }
+
+    /**
+     * Activa la sobrecarga (overload) del Orb y actualizando la visualización del HUD.
+     */
+    private void overload() {
+        getOrb().setOverloaded(true);
+        getHUDStage().setGaugeOverload(true);
     }
 
 }

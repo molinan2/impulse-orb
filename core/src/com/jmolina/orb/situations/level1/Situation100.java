@@ -2,10 +2,11 @@ package com.jmolina.orb.situations.level1;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
-import com.jmolina.orb.elements.Element;
-import com.jmolina.orb.elements.HotElement;
+import com.jmolina.orb.elements.BaseElement;
+import com.jmolina.orb.elements.Heater;
 import com.jmolina.orb.elements.Init;
-import com.jmolina.orb.elements.MovingElement;
+import com.jmolina.orb.elements.Movable;
+import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.situations.SideWalledSituation;
 
 
@@ -17,36 +18,45 @@ public class Situation100 extends SideWalledSituation {
 
     protected void createInnerElements () {
         // Test Rotable
-        MovingElement movingElement = new MovingElement(
+        Movable movable = new Movable(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                Element.Geometry.SQUARE, Element.Flavor.GREY,
+                BaseElement.Geometry.SQUARE, BaseElement.Flavor.GREY,
                 6, 8, 2, 2, 0
         );
 
-        movingElement.addRotation(0.5f);
-        movingElement.addDisplacement(0.25f, 4);
-        addElement(movingElement);
+        movable.addRotation(0.5f);
+        movable.addDisplacement(0.25f, 4);
+        addElement(movable);
 
 
 
         // Test Hot
-        HotElement hotElement = new HotElement(
+        Heater heater = new Heater(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 0, 0
         );
 
-        addElement(hotElement);
+        addElement(heater);
 
 
 
 
 
-        // Test (0,0)
-        addElement(new Element(
+        // Test
+        Movable m2 = new Movable(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                Element.Geometry.SQUARE, Element.Flavor.GREY,
-                0, 0, 1, 1, 0
-        ));
+                BaseElement.Geometry.TRIANGLE, BaseElement.Flavor.RED,
+                10, 2, 3, 3, 0
+        );
+
+        m2.addRotation(0.25f);
+        m2.addDisplacement(0.5f, 0, 1);
+        addElement(m2);
+
+
+
+
+
 
 
         // Init
@@ -56,21 +66,21 @@ public class Situation100 extends SideWalledSituation {
         ));
 
         // Bottom walls
-        addElement(new Element(
+        addElement(new BaseElement(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                Element.Geometry.SQUARE, Element.Flavor.BLACK,
+                BaseElement.Geometry.SQUARE, BaseElement.Flavor.BLACK,
                 6, -9 + 0.5f, 12, 18, 0
         ));
 
-        addElement(new Element(
+        addElement(new BaseElement(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                Element.Geometry.SQUARE, Element.Flavor.BLACK,
+                BaseElement.Geometry.SQUARE, BaseElement.Flavor.BLACK,
                 -6 + 0.5f, -9 + 0.5f, 12, 18, 0
         ));
 
-        addElement(new Element(
+        addElement(new BaseElement(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                Element.Geometry.SQUARE, Element.Flavor.BLACK,
+                BaseElement.Geometry.SQUARE, BaseElement.Flavor.BLACK,
                 18 - 0.5f, -9 + 0.5f, 12, 18, 0
         ));
     }

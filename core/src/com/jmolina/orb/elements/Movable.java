@@ -13,7 +13,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 /**
  * Elemento movible y rotable
  */
-public class MovingElement extends Element {
+public class Movable extends BaseElement {
 
     private final Interpolation INTERPOLATION = Interpolation.sine;
 
@@ -28,7 +28,7 @@ public class MovingElement extends Element {
      *
      * Crea un elemento movible (rotación y desplazamiento)
      */
-    public MovingElement(AssetManager am, World world, float ppm, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
+    public Movable(AssetManager am, World world, float ppm, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
         super(am, world, ppm, geometry, flavor, x, y, w, h, angle);
         this.zoomCorrectionFactor = ppm / Var.GRID_CELL_SIZE;
         this.x = x;

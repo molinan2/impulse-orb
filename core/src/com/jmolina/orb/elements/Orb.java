@@ -12,7 +12,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 /**
  * TODO: De color naranja cuando esté en Overload
  */
-public class Orb extends Element {
+public class Orb extends BaseElement {
 
     private final float DIAMETER = 1.0f;
     private final float INFINITE_DAMPING = 10000f;

@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.var.Asset;
 
-public class Init extends Element {
+public class Init extends BaseElement {
 
     public Init(AssetManager am, World world, float pixelsPerMeter, float x, float y) {
         super(am, world, am.get(Asset.GAME_INIT, Texture.class), pixelsPerMeter,

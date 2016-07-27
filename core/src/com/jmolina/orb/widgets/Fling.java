@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.elements.BaseActor;
+import com.jmolina.orb.actors.BaseActor;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 

@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.var.Asset;
 
-public class Exit extends Element {
+public class Exit extends BaseElement {
 
     public Exit(AssetManager am, World world, float x, float y, float pixelsPerMeter) {
         super(am, world, am.get(Asset.GAME_EXIT, Texture.class), pixelsPerMeter,
