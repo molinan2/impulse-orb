@@ -6,16 +6,22 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.var.Asset;
 
-public class Exit extends BaseElement {
 
-    public Exit(AssetManager am, World world, float x, float y, float pixelsPerMeter) {
-        super(am, world, am.get(Asset.GAME_EXIT, Texture.class), pixelsPerMeter,
+/**
+ * Elemento magnético (WIP)
+ */
+public class Magnetic extends Movable {
+
+    /**
+     * {@inheritDoc}
+     *
+     * Crea un elemento magnético
+     */
+    public Magnetic(AssetManager am, World world, float ppm, float x, float y) {
+        super(am, world, ppm,
                 Geometry.SQUARE, Flavor.BLUE,
-                x, y, 10, 4, 0
+                x, y, 10, 10, 0
         );
-
-        setAsSensor(true);
-        setEffect(Effect.EXIT);
     }
 
 }

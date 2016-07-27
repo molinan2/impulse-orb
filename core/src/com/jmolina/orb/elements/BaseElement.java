@@ -25,15 +25,11 @@ public class BaseElement extends WorldElement {
     private Actor actor;
     private float pixelsPerMeter;
 
-    public BaseElement(AssetManager am, World world, float pixelsPerMeter, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
-        this(am, world, pixelsPerMeter, geometry, flavor, BodyDef.BodyType.KinematicBody, x, y, w, h, angle);
-    }
-
     /**
-     * Constructor con textura por defecto
+     * Constructor simplificado. La textura se elige por defecto
      */
-    public BaseElement(AssetManager am, World world, float pixelsPerMeter, Geometry geometry, Flavor flavor, BodyDef.BodyType type, float x, float y, float w, float h, float angle) {
-        super(world, x, y, w, h, angle, flavor, geometry, type);
+    public BaseElement(AssetManager am, World world, float pixelsPerMeter, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
+        super(world, x, y, w, h, angle, flavor, geometry);
 
         this.assetManager = am;
         this.pixelsPerMeter = pixelsPerMeter;
@@ -42,21 +38,21 @@ public class BaseElement extends WorldElement {
     }
 
     /**
-     * Constructor completo con textura específica
-     *  @param am AssetManager
+     * Constructor completo. La textura se le suministra al constructor
+     *
+     * @param am AssetManager
      * @param world Box2D World which the Element's body will be added to
      * @param texture Visible Element texture
      * @param geometry {@link Geometry}
      * @param flavor {@link Flavor}
-     * @param type {@link BodyDef.BodyType}: Static, Kinematic or Dynamic
      * @param x Position x coord (World units)
      * @param y Position y coord (World units)
      * @param w Width of the element (World units)
      * @param h Heigth of the element (World units)
      * @param angle Initial angle of the Element in degrees counterclockwise
      */
-    public BaseElement(AssetManager am, World world, Texture texture, float pixelsPerMeter, Geometry geometry, Flavor flavor, BodyDef.BodyType type, float x, float y, float w, float h, float angle) {
-        super(world, x, y, w, h, angle, flavor, geometry, type);
+    public BaseElement(AssetManager am, World world, Texture texture, float pixelsPerMeter, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
+        super(world, x, y, w, h, angle, flavor, geometry);
 
         this.assetManager = am;
         this.pixelsPerMeter = pixelsPerMeter;

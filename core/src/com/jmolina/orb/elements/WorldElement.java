@@ -15,17 +15,19 @@ import com.jmolina.orb.data.UserData;
 public class WorldElement {
 
     /**
-     * Flavor
+     * Tipo de elemento
      *
      * BLACK: Elementos estáticos (muros y escenarios estáticos)
-     * GREY: Elementos kinéticos
-     * RED: Elementos destructivos
-     * BLUE: Elementos etéreos
+     * GREEN: Elementos dinámicos (sólo el {@link Orb})
+     * GREY: Elementos kinéticos genéricos
+     * RED: Elementos kinéticos destructivos
+     * BLUE: Elementos kinéticos etéreos
+     * VIOLET: Elementos kinéticos magnéticos
      */
-    public enum Flavor { BLACK, GREY, RED, BLUE }
+    public enum Flavor { BLACK, GREEN, GREY, RED, BLUE }
 
     /**
-     * Effect
+     * Efecto del elemento al contacto con el Orb.
      *
      * NONE: Sin efecto
      * EXIT: Provoca la salida del nivel
@@ -35,11 +37,11 @@ public class WorldElement {
     public enum Effect { NONE, EXIT, DESTROY, HEAT, CUSTOM }
 
     /**
-     * Geometry
+     * Forma geométrica del elemento
      *
-     * CIRCLE: Elemento elíptico
-     * SQUARE: Elemento rectangular
-     * TRIANGLE: Elemento triangular equilátero
+     * CIRCLE: Elipse
+     * SQUARE: Rectángulo
+     * TRIANGLE: Triángulo equilátero
      */
     public enum Geometry { CIRCLE, SQUARE, TRIANGLE }
 
@@ -63,9 +65,8 @@ public class WorldElement {
      * @param angle Rotation of the element in degrees counterclockwise
      * @param flavor Flavor
      * @param geometry Geometry
-     * @param type BodyDef.BodyType
      */
-    public WorldElement(World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry, BodyDef.BodyType type) {
+    public WorldElement(World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry) {
         userData = new UserData();
         FixtureDef fixtureDef = new FixtureDef();
         BodyDef bodyDef = new BodyDef();
@@ -78,8 +79,8 @@ public class WorldElement {
         fixtureDef.density = DENSITY;
         fixtureDef.restitution = RESTITUTION;
         fixtureDef.friction = FRICTION;
-        fixtureDef.shape = createShape(geometry);
-        bodyDef.type = type;
+        fixtureDef.shape = shape(geometry);
+        bodyDef.type = type(flavor);
         bodyDef.position.set(x, y);
         bodyDef.angle = angle * MathUtils.degreesToRadians;
         body = world.createBody(bodyDef);
@@ -88,7 +89,15 @@ public class WorldElement {
         fixtureDef.shape.dispose();
     }
 
-    private Shape createShape (Geometry geometry) {
+    private BodyDef.BodyType type(Flavor flavor) {
+        switch (flavor) {
+            case BLACK: return BodyDef.BodyType.StaticBody;
+            case GREEN: return BodyDef.BodyType.DynamicBody;
+            default: return BodyDef.BodyType.StaticBody;
+        }
+    }
+
+    private Shape shape(Geometry geometry) {
         switch (geometry) {
             case SQUARE: return square();
             case CIRCLE: return circle();

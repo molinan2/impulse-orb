@@ -30,7 +30,7 @@ public class Orb extends BaseElement {
     private Fragments fragments;
 
     public Orb(AssetManager am, World world, float pixelsPerMeter) {
-        super(am, world, pixelsPerMeter, Geometry.CIRCLE, Flavor.GREY, BodyDef.BodyType.DynamicBody, 6, 2, 1f, 1f, 0);
+        super(am, world, pixelsPerMeter, Geometry.CIRCLE, Flavor.GREEN, 6, 2, 1f, 1f, 0);
 
         heat = 0f;
         frozen = overloaded = false;

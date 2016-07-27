@@ -4,10 +4,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.BaseElement;
 import com.jmolina.orb.elements.WorldElement;
-import com.jmolina.orb.situations.SideWalledSituation;
+import com.jmolina.orb.situations.SideWallSituation;
 
 
-public class Situation101 extends SideWalledSituation {
+public class Situation101 extends SideWallSituation {
 
     public Situation101(AssetManager am, World world, float ratioMeterPixel) {
         super(am, world, ratioMeterPixel);

@@ -10,7 +10,8 @@ public class Init extends BaseElement {
 
     public Init(AssetManager am, World world, float pixelsPerMeter, float x, float y) {
         super(am, world, am.get(Asset.GAME_INIT, Texture.class), pixelsPerMeter,
-                Geometry.SQUARE, Flavor.BLUE, BodyDef.BodyType.KinematicBody, x, y, 10, 4, 0
+                Geometry.SQUARE, Flavor.BLUE,
+                x, y, 10, 4, 0
         );
 
         setAsSensor(true);

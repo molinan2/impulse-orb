@@ -6,11 +6,10 @@ import com.jmolina.orb.elements.BaseElement;
 import com.jmolina.orb.elements.Heater;
 import com.jmolina.orb.elements.Init;
 import com.jmolina.orb.elements.Movable;
-import com.jmolina.orb.elements.WorldElement;
-import com.jmolina.orb.situations.SideWalledSituation;
+import com.jmolina.orb.situations.SideWallSituation;
 
 
-public class Situation100 extends SideWalledSituation {
+public class Situation100 extends SideWallSituation {
 
     public Situation100(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter);
