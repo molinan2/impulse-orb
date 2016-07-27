@@ -7,22 +7,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.actors.BaseActor;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
-
-public class Fling extends BaseGroup {
+public class Arrow extends BaseGroup {
 
     private final float LINE_WIDTH_RATIO = 0.125f;
 
     private BaseActor base;
     private BaseActor line;
-    private BaseActor arrow;
+    private BaseActor arrowhead;
 
-    public Fling(AssetManager am, float pixelsPerMeter) {
+    public Arrow(AssetManager am, float pixelsPerMeter) {
         super(am);
 
         base = new BaseActor(getAsset(Asset.GAME_GESTURE_BASE, Texture.class));
         line = new BaseActor(getAsset(Asset.GAME_GESTURE_LINE, Texture.class));
-        arrow = new BaseActor(getAsset(Asset.GAME_GESTURE_ARROW, Texture.class));
+        arrowhead = new BaseActor(getAsset(Asset.GAME_GESTURE_ARROWHEAD, Texture.class));
 
         base.setScale(pixelsPerMeter / base.getWidth());
 
@@ -31,11 +29,11 @@ public class Fling extends BaseGroup {
                 LINE_WIDTH_RATIO * pixelsPerMeter / line.getHeight()
         );
 
-        arrow.setScale(pixelsPerMeter / arrow.getWidth());
+        arrowhead.setScale(pixelsPerMeter / arrowhead.getWidth());
 
         addActor(base);
         addActor(line);
-        addActor(arrow);
+        addActor(arrowhead);
         setTransform(false);
     }
 
@@ -48,37 +46,23 @@ public class Fling extends BaseGroup {
                 start.y - 0.5f * base.getHeight()
         );
 
-        arrow.setPosition(
-                end.x - 0.5f * arrow.getWidth(),
-                end.y - 0.5f * arrow.getHeight()
+        arrowhead.setPosition(
+                end.x - 0.5f * arrowhead.getWidth(),
+                end.y - 0.5f * arrowhead.getHeight()
         );
 
         direction = new Vector2(end.x - start.x, end.y - start.y);
         angle = MathUtils.radiansToDegrees * MathUtils.atan2(direction.y, direction.x);
         distance = (float) Math.sqrt(Math.pow(direction.x, 2) + Math.pow(direction.y, 2));
 
-        arrow.setRotation(angle);
+        arrowhead.setRotation(angle);
         line.setRotation(angle);
         line.setScaleX(distance / line.getWidth());
 
         line.setPosition(
-                0.5f * (base.getX() + arrow.getX()),
-                0.5f * (base.getY() + arrow.getY())
+                0.5f * (base.getX() + arrowhead.getX()),
+                0.5f * (base.getY() + arrowhead.getY())
         );
-    }
-
-    public void start() {
-        reset();
-        addAction(alpha(0));
-        addAction(sequence(
-                fadeIn(0),
-                fadeOut(0.75f)
-        ));
-    }
-
-    public void reset() {
-        clearActions();
-        addAction(alpha(0));
     }
 
 }

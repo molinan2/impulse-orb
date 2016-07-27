@@ -9,8 +9,15 @@ import com.jmolina.orb.var.Asset;
 
 /**
  * Elemento magnético (WIP)
+ * De momento, sólo radial
  */
 public class Magnetic extends Movable {
+
+    public enum Polarity { ATTRACTIVE, REPULSIVE }
+
+    private float threshold;
+    private float strenght;
+    private Polarity polarity;
 
     /**
      * {@inheritDoc}
@@ -19,7 +26,7 @@ public class Magnetic extends Movable {
      */
     public Magnetic(AssetManager am, World world, float ppm, float x, float y) {
         super(am, world, ppm,
-                Geometry.SQUARE, Flavor.BLUE,
+                Geometry.CIRCLE, Flavor.VIOLET,
                 x, y, 10, 10, 0
         );
     }

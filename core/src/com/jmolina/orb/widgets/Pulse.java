@@ -16,7 +16,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 /**
  * Seria mas apropiado que heredase de BaseActor
  */
-public class Tap extends BaseGroup {
+public class Pulse extends BaseGroup {
 
     private final float DIAMETER = 1.0f;
     private final float SCALE_MAX = 3.0f;
@@ -26,7 +26,7 @@ public class Tap extends BaseGroup {
     private BaseActor image;
     private float initialScale;
 
-    public Tap(AssetManager am, float pixelsPerMeter) {
+    public Pulse(AssetManager am, float pixelsPerMeter) {
         super(am);
 
         Texture texture = getAsset(Asset.GAME_GESTURE_BASE, Texture.class);

@@ -24,7 +24,7 @@ public class WorldElement {
      * BLUE: Elementos kinéticos etéreos
      * VIOLET: Elementos kinéticos magnéticos
      */
-    public enum Flavor { BLACK, GREEN, GREY, RED, BLUE }
+    public enum Flavor { BLACK, GREEN, GREY, RED, BLUE, VIOLET }
 
     /**
      * Efecto del elemento al contacto con el Orb.
@@ -34,12 +34,12 @@ public class WorldElement {
      * DESTROY: Provoca la destrucción del orbe
      * HEAT: Provoca el calentamiento del orbe
      */
-    public enum Effect { NONE, EXIT, DESTROY, HEAT, CUSTOM }
+    public enum Effect { NONE, EXIT, DESTROY, HEAT, INTERRUPTOR }
 
     /**
      * Forma geométrica del elemento
      *
-     * CIRCLE: Elipse
+     * CIRCLE: Círculo
      * SQUARE: Rectángulo
      * TRIANGLE: Triángulo equilátero
      */

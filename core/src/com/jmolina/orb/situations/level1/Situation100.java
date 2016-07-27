@@ -49,7 +49,6 @@ public class Situation100 extends SideWallSituation {
         );
 
         m2.addRotation(0.25f);
-        m2.addDisplacement(0.5f, 0, 1);
         addElement(m2);
 
 
