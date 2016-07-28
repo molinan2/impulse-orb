@@ -28,7 +28,7 @@ public class BaseElement extends WorldElement {
      * Constructor simplificado. La textura se elige por defecto
      */
     public BaseElement(AssetManager am, World world, float pixelsPerMeter, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
-        super(world, x, y, w, h, angle, flavor, geometry);
+        super(world, x, y, w, h, angle, geometry, flavor);
 
         this.assetManager = am;
         this.pixelsPerMeter = pixelsPerMeter;
@@ -51,7 +51,7 @@ public class BaseElement extends WorldElement {
      * @param angle Initial angle of the Element in degrees counterclockwise
      */
     public BaseElement(AssetManager am, World world, Texture texture, float pixelsPerMeter, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
-        super(world, x, y, w, h, angle, flavor, geometry);
+        super(world, x, y, w, h, angle, geometry, flavor);
 
         this.assetManager = am;
         this.pixelsPerMeter = pixelsPerMeter;
@@ -177,6 +177,7 @@ public class BaseElement extends WorldElement {
             case GREY: return getAssetManager().get(Asset.GAME_CIRCLE_GREY, Texture.class);
             case RED: return getAssetManager().get(Asset.GAME_CIRCLE_RED, Texture.class);
             case VIOLET: return getAssetManager().get(Asset.GAME_CIRCLE_VIOLET, Texture.class);
+            case TRANSPARENT: return getAssetManager().get(Asset.GAME_CIRCLE_TRANSPARENT, Texture.class);
             default: return getAssetManager().get(Asset.GAME_CIRCLE_GREY, Texture.class);
         }
     }

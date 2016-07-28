@@ -52,6 +52,7 @@ public class Asset {
     public static final String GAME_CIRCLE_GREY = GAME + "circle_grey.png";
     public static final String GAME_CIRCLE_RED = GAME + "circle_red.png";
     public static final String GAME_CIRCLE_VIOLET = GAME + "circle_violet.png";
+    public static final String GAME_CIRCLE_TRANSPARENT = GAME + "circle_transparent.png";
     public static final String GAME_TRIANGLE_GREY = GAME + "triangle_grey.png";
     public static final String GAME_TRIANGLE_RED = GAME + "triangle_red.png";
     public static final String GAME_ORB_FRAGMENT_1 = GAME + "orb_fragment_01.png";

@@ -16,6 +16,7 @@ import com.jmolina.orb.data.GameStats;
 import com.jmolina.orb.data.ScreenFlag;
 import com.jmolina.orb.data.Tick;
 import com.jmolina.orb.elements.BaseElement;
+import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.interfaces.SuperManager;
@@ -42,7 +43,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public class Level extends BaseScreen {
 
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
 
     public static final float INTRO_SEQUENCE_TIME = 1f;
 
@@ -58,6 +59,7 @@ public class Level extends BaseScreen {
     private final int WORLD_VELOCITY_INTERACTIONS = 8;
     private final int WORLD_POSITION_INTERACTIONS = 3;
     private final int INFINITE_Z_INDEX = 32000;
+    private final float MAGNETIC_FACTOR = 0.2f;
 
     private Tick tick;
     private float pixelsPerMeter, impulseFactor;
@@ -191,10 +193,11 @@ public class Level extends BaseScreen {
         syncActors();
         act(delta);
         syncBodies();
+        // preUpdate();
         step();
         followCamera();
         syncActors();
-        update();
+        postUpdate();
         draw();
 
         checkScreenSwitch();
@@ -518,13 +521,14 @@ public class Level extends BaseScreen {
      * Render update
      * Comprueba y actualiza datos y estados, si el juego no está bloqueado
      */
-    private void update() {
+    private void postUpdate() {
         if (isLocked()) return;
 
         updateHeat();
         updateFreeze();
         updateTimer();
         updateStats();
+        computeForces();
     }
 
     /**
@@ -573,6 +577,26 @@ public class Level extends BaseScreen {
         getHUDStage().setFullDistanceValue(stats.fullDistance());
         getHUDStage().setFullTimeValue(stats.fullTime());
         getHUDStage().setFullDestroyedValue(stats.fails());
+    }
+
+    /**
+     * Calcula las fuerzas de atracción y repulsión activas en el orbe y las aplica.
+     */
+    private void computeForces() {
+        Vector2 force = new Vector2(0, 0);
+
+        for (Situation situation : getSituations()) {
+            for (BaseElement element : situation.getElements()) {
+                if (element instanceof Magnetic) {
+                    Vector2 partial = ((Magnetic)element).force(getOrb().getPosition());
+                    force.add(partial);
+                }
+            }
+        }
+
+        force.scl(MAGNETIC_FACTOR);
+
+        getOrb().getBody().applyLinearImpulse(force, getOrb().getPosition(), true);
     }
 
     private void firstGame() {

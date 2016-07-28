@@ -10,17 +10,20 @@ import com.jmolina.orb.widgets.RadialField;
  */
 public class RadialMagnetic extends Magnetic {
 
-    public RadialMagnetic(AssetManager am, World world, float ppm, float x, float y, float diameter, float threshold, float strength, Polarity polarity) {
+    public RadialMagnetic(AssetManager am, World world, float ppm, float x, float y, float diameter, float threshold, Polarity polarity) {
+        this(am, world, ppm, Flavor.VIOLET, x, y, diameter, threshold, polarity);
+    }
+
+    public RadialMagnetic(AssetManager am, World world, float ppm, Flavor flavor, float x, float y, float diameter, float threshold, Polarity polarity) {
         super(am, world, ppm,
-                Geometry.CIRCLE,
+                Geometry.CIRCLE, flavor,
                 x, y, diameter, diameter, 0
         );
 
-        setStrength(strength);
         setThreshold(threshold);
         setPolarity(polarity);
 
-        RadialField radialField = new RadialField(am, getPPM(), diameter, getThreshold(), getStrength());
+        RadialField radialField = new RadialField(am, getPPM(), flavor, diameter, getThreshold());
         setActor(radialField);
     }
 
@@ -29,4 +32,5 @@ public class RadialMagnetic extends Magnetic {
         super.reset();
         ((RadialField)getActor()).reset();
     }
+
 }

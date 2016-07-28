@@ -8,6 +8,7 @@ import com.jmolina.orb.elements.Init;
 import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.RadialMagnetic;
+import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.situations.SideWallSituation;
 
 
@@ -65,15 +66,16 @@ public class Situation100 extends SideWallSituation {
 
 
 
-        // Test violet
-        RadialMagnetic radial = new RadialMagnetic(
+        // Test magnetic
+        RadialMagnetic magnetic = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                6, 12, 1,
-                4, 5, Magnetic.Polarity.ATTRACTIVE
+                WorldElement.Flavor.VIOLET,
+                8, 8.5f, 1,
+                5, Magnetic.Polarity.ATTRACTIVE
         );
 
-        radial.addRotation(0.25f);
-        addElement(radial);
+        magnetic.addRotation(0.25f);
+        addElement(magnetic);
 
 
 

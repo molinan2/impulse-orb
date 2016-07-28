@@ -1,39 +1,37 @@
 package com.jmolina.orb.elements;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.jmolina.orb.actors.BaseActor;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.utils.Utils;
 
 
 /**
  * Elemento magnético
- *
- * TODO: Extender de esta clase el RadialMagnetic y el LinearMagnetic
  */
 public class Magnetic extends Movable {
 
-    private final float DEFAULT_STRENGTH = 10f;
+    private final float MAX_FORCE = 5f;
     private final float DEFAULT_THRESHOLD = 4f;
     private final Polarity DEFAULT_POLARITY = Polarity.ATTRACTIVE;
 
     public enum Polarity { ATTRACTIVE, REPULSIVE }
 
     private float threshold;
-    private float strength;
     private Polarity polarity;
 
     public Magnetic(AssetManager am, World world, float ppm, Geometry geometry, float x, float y, float w, float h, float angle) {
+        this(am, world, ppm, geometry, Flavor.VIOLET, x, y, w, h, angle);
+    }
+
+    public Magnetic(AssetManager am, World world, float ppm, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
         super(am, world, ppm,
-                geometry, Flavor.VIOLET,
+                geometry, flavor,
                 x, y, w, h, angle
         );
 
         setThreshold(DEFAULT_THRESHOLD);
-        setStrength(DEFAULT_STRENGTH);
         setPolarity(DEFAULT_POLARITY);
     }
 
@@ -45,20 +43,51 @@ public class Magnetic extends Movable {
         return threshold;
     }
 
-    public void setStrength(float strength) {
-        this.strength = MathUtils.clamp(strength, 0, strength);
-    }
-
-    public float getStrength() {
-        return strength;
-    }
-
     public void setPolarity(Polarity polarity) {
         this.polarity = polarity;
     }
 
     public Polarity getPolarity() {
         return polarity;
+    }
+
+    /**
+     * Devuelve la distancia de un punto dado a este Elemento (que puede ser circular o rectangular).
+     *
+     * @param point Punto expresado en unidades del mundo
+     */
+    private float distance(Vector2 point) {
+        switch (getGeometry()) {
+            case CIRCLE: return distanceCircle(point);
+            default: return distanceCircle(point);
+        }
+    }
+
+    private float distanceCircle(Vector2 point) {
+        return Utils.distance(point, getPosition());
+    }
+
+    /**
+     * Devuelve la fuerza que ejercería este elemento sobre el punto dado.
+     * <p>
+     * La fórmula de la atracción está simplificada:
+     * - Sólo depende de la inversa de la distancia, siempre que el punto haya sobrepasado el umbral.
+     * - Sólo se computan los centroides (i.e. no se atrae el Orb si su centroide no cae dentro del
+     * campo de actuación).
+     *
+     * @param point Punto expresado en unidades del mundo
+     */
+    public Vector2 force(Vector2 point) {
+        Vector2 force = new Vector2(0,0);
+        float distance = distance(point);
+
+        if (distance < threshold) {
+            Vector2 direction = getPosition().sub(point).nor();
+            float factor = MAX_FORCE * (threshold - distance) / threshold;
+            force.set(direction).scl(factor);
+        }
+
+        return force;
     }
 
 }

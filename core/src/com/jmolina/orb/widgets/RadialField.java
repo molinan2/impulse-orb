@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
@@ -39,9 +40,8 @@ public class RadialField extends BaseGroup {
      * @param ppm PixelsPerMeter
      * @param diameter Diámetro del cuerpo
      * @param threshold Umbral (radio de acción)
-     * @param strength Fuerza de acción
      */
-    public RadialField(AssetManager am, float ppm, float diameter, float threshold, float strength) {
+    public RadialField(AssetManager am, float ppm, WorldElement.Flavor flavor, float diameter, float threshold) {
         super(am);
 
         this.diameter = diameter;
@@ -51,7 +51,8 @@ public class RadialField extends BaseGroup {
         field = new Image(getAsset(Asset.GAME_MAGNETIC_FIELD, Texture.class));
         field.setSize(Utils.cell(2 * threshold), Utils.cell(2 * threshold));
         field.setPosition(0, 0);
-        body = new Image(getAsset(Asset.GAME_CIRCLE_VIOLET, Texture.class));
+
+        body = new Image(getBodyTexture(flavor));
         body.setSize(Utils.cell(diameter), Utils.cell(diameter));
         body.setPosition(centerX(body), centerY(body));
 
@@ -174,6 +175,20 @@ public class RadialField extends BaseGroup {
      */
     private float angle(int i) {
         return 360.0f * (float) i / (float) PARTICLE_QUANTITY;
+    }
+
+    /**
+     * Devuelve la textura del cuerpo, dependiendo del {@link com.jmolina.orb.elements.WorldElement.Flavor}.
+     *
+     * @param flavor Flavor
+     */
+    private Texture getBodyTexture(WorldElement.Flavor flavor) {
+        switch (flavor) {
+            case RED: return getAsset(Asset.GAME_CIRCLE_RED, Texture.class);
+            case VIOLET: return getAsset(Asset.GAME_CIRCLE_VIOLET, Texture.class);
+            case TRANSPARENT: return getAsset(Asset.GAME_CIRCLE_TRANSPARENT, Texture.class);
+            default: return getAsset(Asset.GAME_CIRCLE_VIOLET, Texture.class);
+        }
     }
 
 }

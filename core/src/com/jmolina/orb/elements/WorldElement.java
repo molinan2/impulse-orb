@@ -15,6 +15,15 @@ import com.jmolina.orb.data.UserData;
 public class WorldElement {
 
     /**
+     * Forma geométrica del elemento
+     *
+     * CIRCLE: Círculo
+     * SQUARE: Rectángulo
+     * TRIANGLE: Triángulo equilátero
+     */
+    public enum Geometry { CIRCLE, SQUARE, TRIANGLE }
+
+    /**
      * Tipo de elemento
      *
      * BLACK: Elementos estáticos (muros y escenarios estáticos)
@@ -24,7 +33,7 @@ public class WorldElement {
      * BLUE: Elementos kinéticos etéreos
      * VIOLET: Elementos kinéticos magnéticos
      */
-    public enum Flavor { BLACK, GREEN, GREY, RED, BLUE, VIOLET }
+    public enum Flavor { BLACK, GREEN, GREY, RED, BLUE, VIOLET, TRANSPARENT }
 
     /**
      * Efecto del elemento al contacto con el Orb.
@@ -35,15 +44,6 @@ public class WorldElement {
      * HEAT: Provoca el calentamiento del orbe
      */
     public enum Effect { NONE, EXIT, DESTROY, HEAT, INTERRUPTOR }
-
-    /**
-     * Forma geométrica del elemento
-     *
-     * CIRCLE: Círculo
-     * SQUARE: Rectángulo
-     * TRIANGLE: Triángulo equilátero
-     */
-    public enum Geometry { CIRCLE, SQUARE, TRIANGLE }
 
     private final float DENSITY = 1.0f;
     private final float RESTITUTION = 0.6f;
@@ -63,10 +63,10 @@ public class WorldElement {
      * @param w Width of the element (World units)
      * @param h Heigth of the element (World units)
      * @param angle Rotation of the element in degrees counterclockwise
-     * @param flavor Flavor
      * @param geometry Geometry
+     * @param flavor Flavor
      */
-    public WorldElement(World world, float x, float y, float w, float h, float angle, Flavor flavor, Geometry geometry) {
+    public WorldElement(World world, float x, float y, float w, float h, float angle, Geometry geometry, Flavor flavor) {
         userData = new UserData();
         FixtureDef fixtureDef = new FixtureDef();
         BodyDef bodyDef = new BodyDef();
@@ -87,13 +87,16 @@ public class WorldElement {
         body.createFixture(fixtureDef);
         body.setUserData(getUserData());
         fixtureDef.shape.dispose();
+
+        if (flavor == Flavor.TRANSPARENT) setAsSensor(true);
     }
 
     private BodyDef.BodyType type(Flavor flavor) {
         switch (flavor) {
             case BLACK: return BodyDef.BodyType.StaticBody;
             case GREEN: return BodyDef.BodyType.DynamicBody;
-            default: return BodyDef.BodyType.StaticBody;
+            case GREY: return BodyDef.BodyType.KinematicBody;
+            default: return BodyDef.BodyType.KinematicBody;
         }
     }
 
