@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
@@ -28,10 +29,12 @@ public class RadialField extends BaseGroup {
     private final float PARTICLE_PERIOD = 1f;
     private final float PARTICLE_WIDTH = Utils.cell(0.25f);
     private final float PARTICLE_HEIGHT = Utils.cell(0.25f);
+    private final float PARTICLE_MAX_ALPHA = 0.5f;
 
     private Image body, field;
     private ArrayList<Image> particles;
-    private float diameter, threshold, strength;
+    private float diameter, threshold;
+    private Magnetic.Polarity polarity;
 
     /**
      * Constructor
@@ -41,12 +44,12 @@ public class RadialField extends BaseGroup {
      * @param diameter Diámetro del cuerpo
      * @param threshold Umbral (radio de acción)
      */
-    public RadialField(AssetManager am, float ppm, WorldElement.Flavor flavor, float diameter, float threshold) {
+    public RadialField(AssetManager am, float ppm, WorldElement.Flavor flavor, float diameter, float threshold, Magnetic.Polarity polarity) {
         super(am);
 
         this.diameter = diameter;
         this.threshold = threshold;
-        this.strength = strength;
+        this.polarity = polarity;
 
         field = new Image(getAsset(Asset.GAME_MAGNETIC_FIELD, Texture.class));
         field.setSize(Utils.cell(2 * threshold), Utils.cell(2 * threshold));
@@ -72,7 +75,7 @@ public class RadialField extends BaseGroup {
             Image particle = particles.get(i);
             particle.clearActions();
             particle.setPosition(centerX(), centerY());
-            particle.addAction(attraction(angle(i)));
+            particle.addAction(particleAction(i));
         }
     }
 
@@ -86,7 +89,7 @@ public class RadialField extends BaseGroup {
             Image particle = new Image(getAsset(Asset.GAME_MAGNETIC_PARTICLE, Texture.class));
             particle.setSize(PARTICLE_WIDTH, PARTICLE_HEIGHT);
             particle.setPosition(centerX(), centerY());
-            particle.addAction(attraction(angle(i)));
+            particle.addAction(particleAction(i));
             particles.add(particle);
         }
     }
@@ -146,6 +149,19 @@ public class RadialField extends BaseGroup {
     }
 
     /**
+     * Crea la acción de atracción o repulsión para una partícula con ángulo {@param angle}.
+     *
+     * @param i Ángulo en grados counterclockwise
+     */
+    private Action particleAction(int i) {
+        switch (polarity) {
+            case ATTRACTIVE: return attraction(angle(i));
+            case REPULSIVE: return repulsion(angle(i));
+            default: return attraction(angle(i));
+        }
+    }
+
+    /**
      * Crea una acción de atracción repetida infinitamente, para ser aplicada a una partícula con
      * ángulo {@param angle}.
      *
@@ -160,8 +176,31 @@ public class RadialField extends BaseGroup {
                         moveTo(borderX(angle), borderY(angle))
                 ),
                 parallel(
-                        alpha(0.5f, PARTICLE_PERIOD, Interpolation.pow2In),
+                        alpha(PARTICLE_MAX_ALPHA, PARTICLE_PERIOD, Interpolation.pow2In),
                         moveTo(centerX(), centerY(), PARTICLE_PERIOD, Interpolation.pow2In)
+                )
+        ));
+
+        return forever;
+    }
+
+    /**
+     * Crea una acción de repulsión repetida infinitamente, para ser aplicada a una partícula con
+     * ángulo {@param angle}.
+     *
+     * @param angle Ángulo en grados counterclockwise
+     */
+    private Action repulsion(float angle) {
+        RepeatAction forever = new RepeatAction();
+        forever.setCount(RepeatAction.FOREVER);
+        forever.setAction(new SequenceAction(
+                parallel(
+                        alpha(PARTICLE_MAX_ALPHA),
+                        moveTo(centerX(), centerY())
+                ),
+                parallel(
+                        alpha(0, PARTICLE_PERIOD, Interpolation.pow2Out),
+                        moveTo(borderX(angle), borderY(angle), PARTICLE_PERIOD, Interpolation.pow2Out)
                 )
         ));
 

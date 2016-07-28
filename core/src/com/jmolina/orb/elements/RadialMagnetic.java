@@ -17,13 +17,14 @@ public class RadialMagnetic extends Magnetic {
     public RadialMagnetic(AssetManager am, World world, float ppm, Flavor flavor, float x, float y, float diameter, float threshold, Polarity polarity) {
         super(am, world, ppm,
                 Geometry.CIRCLE, flavor,
-                x, y, diameter, diameter, 0
+                x, y, diameter, diameter, 0,
+                threshold, polarity
         );
 
         setThreshold(threshold);
         setPolarity(polarity);
 
-        RadialField radialField = new RadialField(am, getPPM(), flavor, diameter, getThreshold());
+        RadialField radialField = new RadialField(am, getPPM(), flavor, diameter, getThreshold(), polarity);
         setActor(radialField);
     }
 

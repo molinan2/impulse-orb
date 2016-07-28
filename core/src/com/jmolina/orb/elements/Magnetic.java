@@ -12,27 +12,22 @@ import com.jmolina.orb.utils.Utils;
  */
 public class Magnetic extends Movable {
 
-    private final float MAX_FORCE = 5f;
-    private final float DEFAULT_THRESHOLD = 4f;
-    private final Polarity DEFAULT_POLARITY = Polarity.ATTRACTIVE;
-
     public enum Polarity { ATTRACTIVE, REPULSIVE }
+
+    private final Polarity DEFAULT_POLARITY = Polarity.ATTRACTIVE;
+    private final float MAX_FORCE = 5f;
 
     private float threshold;
     private Polarity polarity;
 
-    public Magnetic(AssetManager am, World world, float ppm, Geometry geometry, float x, float y, float w, float h, float angle) {
-        this(am, world, ppm, geometry, Flavor.VIOLET, x, y, w, h, angle);
-    }
-
-    public Magnetic(AssetManager am, World world, float ppm, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
+    public Magnetic(AssetManager am, World world, float ppm, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle, float threshold, Polarity polarity) {
         super(am, world, ppm,
                 geometry, flavor,
                 x, y, w, h, angle
         );
 
-        setThreshold(DEFAULT_THRESHOLD);
-        setPolarity(DEFAULT_POLARITY);
+        setThreshold(threshold);
+        setPolarity(polarity);
     }
 
     public void setThreshold(float threshold) {
@@ -85,6 +80,9 @@ public class Magnetic extends Movable {
             Vector2 direction = getPosition().sub(point).nor();
             float factor = MAX_FORCE * (threshold - distance) / threshold;
             force.set(direction).scl(factor);
+
+            if (polarity == Polarity.REPULSIVE)
+                force.scl(-1);
         }
 
         return force;
