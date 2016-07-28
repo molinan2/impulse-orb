@@ -70,6 +70,7 @@ public class ContactHandler implements ContactListener {
         switch (flavor) {
             case BLACK: level.collide(true); return;
             case GREY: level.collide(false); return;
+            case VIOLET: level.collide(false); return;
             default:
         }
     }

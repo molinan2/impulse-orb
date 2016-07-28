@@ -3,7 +3,6 @@ package com.jmolina.orb.stages;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector2;
@@ -25,12 +24,12 @@ public class GestureStage extends Stage {
     private Arrow arrow;
     private Vector2 start, end;
     private FrameBuffer buffer;
-    private Image arrowBuffered;
+    private Image solidArrow;
 
     public GestureStage(AssetManager am, Viewport vp, float pixelsPerMeter) {
         super(vp);
 
-        arrowBuffered = new Image();
+        solidArrow = new Image();
         buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) Var.SCREEN_WIDTH, (int) Var.SCREEN_HEIGHT, false);
         start = new Vector2();
         end = new Vector2();
@@ -42,14 +41,14 @@ public class GestureStage extends Stage {
                 0.5f * vp.getWorldHeight() - 0.5f * pulse.getHeight()
         );
 
-        arrowBuffered.setSize(Var.SCREEN_WIDTH, Var.SCREEN_HEIGHT);
-        arrowBuffered.setPosition(0, 0);
+        solidArrow.setSize(Var.SCREEN_WIDTH, Var.SCREEN_HEIGHT);
+        solidArrow.setPosition(0, 0);
         arrow.setVisible(false);
         pulse.reset();
 
         addActor(pulse);
         addActor(arrow);
-        addActor(arrowBuffered);
+        addActor(solidArrow);
     }
 
     /**
@@ -59,15 +58,15 @@ public class GestureStage extends Stage {
         pulse.reset();
         arrow.set(start, end);
         renderBuffer();
-        updateArrowBuffered();
-        startArrowBuffered();
+        updateSolidArrow();
+        startSolidArrow();
     }
 
     /**
      * Dibuja el pulso del gesto "tap".
      */
     public void drawTap() {
-        resetArrowBuffered();
+        resetSolidArrow();
         pulse.start();
     }
 
@@ -79,36 +78,36 @@ public class GestureStage extends Stage {
         Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         arrow.setVisible(true);
-        arrowBuffered.setVisible(false);
+        solidArrow.setVisible(false);
         draw();
         arrow.setVisible(false);
-        arrowBuffered.setVisible(true);
+        solidArrow.setVisible(true);
         buffer.end();
     }
 
     /**
      * Asigna la textura del buffer a la imagen de la flecha.
      */
-    private void updateArrowBuffered() {
+    private void updateSolidArrow() {
         TextureRegion arrowRegion = new TextureRegion(buffer.getColorBufferTexture());
         arrowRegion.flip(false, true);
-        arrowBuffered.setDrawable(new TextureRegionDrawable(arrowRegion));
+        solidArrow.setDrawable(new TextureRegionDrawable(arrowRegion));
     }
 
     /**
      * Inicia la animación de la flecha.
      */
-    private void startArrowBuffered() {
-        arrowBuffered.clearActions();
-        arrowBuffered.addAction(sequence(alpha(1), fadeOut(0.75f)));
+    private void startSolidArrow() {
+        solidArrow.clearActions();
+        solidArrow.addAction(sequence(alpha(1), fadeOut(0.75f)));
     }
 
     /**
      * Resetea la animación de la flecha y la oculta.
      */
-    private void resetArrowBuffered() {
-        arrowBuffered.clearActions();
-        arrowBuffered.addAction(alpha(0));
+    private void resetSolidArrow() {
+        solidArrow.clearActions();
+        solidArrow.addAction(alpha(0));
     }
 
     @Override

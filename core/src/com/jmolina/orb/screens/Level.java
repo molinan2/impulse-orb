@@ -5,6 +5,7 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.SnapshotArray;
@@ -41,9 +42,11 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public class Level extends BaseScreen {
 
-    public static final float INTRO_SEQUENCE_TIME = 1f;
-    public static final float BACKGROUND_FADE_TIME = 0.5f;
+    private final boolean DEBUG = true;
 
+    public static final float INTRO_SEQUENCE_TIME = 1f;
+
+    private final float BACKGROUND_FADE_TIME = 0.5f;
     private final float GESTURE_HALF_TAP_SQUARE_SIZE = 10.0f;
     private final float GESTURE_TAP_COUNT_INTERVAL = 0.4f;
     private final float GESTURE_LONG_PRESS_DURATION = 1.1f;
@@ -74,8 +77,7 @@ public class Level extends BaseScreen {
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
     private Runnable orbIntro, orbDestroy, reset, unlock, toSuccess;
     private ScreenFlag screenFlag;
-
-    // private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
+    private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
 
     /**
@@ -508,7 +510,7 @@ public class Level extends BaseScreen {
         getMainStage().draw();
         getGestureStage().draw();
         getBackgroundStage().draw();
-        // debugRenderer.render(world, worldViewport.getCamera().combined); // TODO: Debug
+        if (DEBUG) debugRenderer.render(world, worldViewport.getCamera().combined);
         getHUDStage().draw();
     }
 

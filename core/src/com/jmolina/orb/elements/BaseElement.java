@@ -3,7 +3,6 @@ package com.jmolina.orb.elements;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -33,7 +32,7 @@ public class BaseElement extends WorldElement {
 
         this.assetManager = am;
         this.pixelsPerMeter = pixelsPerMeter;
-        this.actor = new com.jmolina.orb.actors.BaseActor();
+        this.actor = new BaseActor();
         setTexture(defaultTexture(geometry, flavor));
     }
 
@@ -56,7 +55,7 @@ public class BaseElement extends WorldElement {
 
         this.assetManager = am;
         this.pixelsPerMeter = pixelsPerMeter;
-        this.actor = new com.jmolina.orb.actors.BaseActor();
+        this.actor = new BaseActor();
         setTexture(texture);
     }
 
@@ -107,8 +106,8 @@ public class BaseElement extends WorldElement {
         float offsetX = 0.5f * Var.SCREEN_WIDTH;
         float offsetY = 0.5f * Var.SCREEN_HEIGHT;
 
-        float bodyPositionX = (actorPositionX - offsetX) / getPixelsPerMeter() + cameraX;
-        float bodyPositionY = (actorPositionY - offsetY) / getPixelsPerMeter() + cameraY;
+        float bodyPositionX = (actorPositionX - offsetX) / getPPM() + cameraX;
+        float bodyPositionY = (actorPositionY - offsetY) / getPPM() + cameraY;
 
         getBody().setTransform(
                 bodyPositionX,
@@ -149,8 +148,8 @@ public class BaseElement extends WorldElement {
         float actorWidth = actor.getWidth();
         float actorHeight = actor.getHeight();
 
-        float actorPositionX = getPixelsPerMeter() * (bodyPositionX - cameraX + offsetX) - 0.5f * actorWidth;
-        float actorPositionY = getPixelsPerMeter() * (bodyPositionY - cameraY + offsetY) - 0.5f * actorHeight;
+        float actorPositionX = getPPM() * (bodyPositionX - cameraX + offsetX) - 0.5f * actorWidth;
+        float actorPositionY = getPPM() * (bodyPositionY - cameraY + offsetY) - 0.5f * actorHeight;
 
         actor.setPosition(
                 actorPositionX,
@@ -177,6 +176,7 @@ public class BaseElement extends WorldElement {
             case BLACK: return getAssetManager().get(Asset.GAME_CIRCLE_BLACK, Texture.class);
             case GREY: return getAssetManager().get(Asset.GAME_CIRCLE_GREY, Texture.class);
             case RED: return getAssetManager().get(Asset.GAME_CIRCLE_RED, Texture.class);
+            case VIOLET: return getAssetManager().get(Asset.GAME_CIRCLE_VIOLET, Texture.class);
             default: return getAssetManager().get(Asset.GAME_CIRCLE_GREY, Texture.class);
         }
     }
@@ -199,8 +199,8 @@ public class BaseElement extends WorldElement {
     }
 
     private void setTexture(Texture texture) {
-        float scaleX = getPixelsPerMeter() * getWidth() / texture.getWidth();
-        float scaleY = getPixelsPerMeter() * getHeight() / texture.getHeight();
+        float scaleX = getPPM() * getWidth() / texture.getWidth();
+        float scaleY = getPPM() * getHeight() / texture.getHeight();
 
         ((BaseActor)actor).setTexture(texture);
         actor.setScale(scaleX, scaleY);
@@ -216,7 +216,7 @@ public class BaseElement extends WorldElement {
         }
     }
 
-    public float getPixelsPerMeter() {
+    public float getPPM() {
         return pixelsPerMeter;
     }
 

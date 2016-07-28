@@ -5,7 +5,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.BaseElement;
 import com.jmolina.orb.elements.Heater;
 import com.jmolina.orb.elements.Init;
+import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.Movable;
+import com.jmolina.orb.elements.RadialMagnetic;
 import com.jmolina.orb.situations.SideWallSituation;
 
 
@@ -20,7 +22,7 @@ public class Situation100 extends SideWallSituation {
         Movable movable = new Movable(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 BaseElement.Geometry.SQUARE, BaseElement.Flavor.GREY,
-                6, 8, 2, 2, 0
+                6, 4, 2, 2, 0
         );
 
         movable.addRotation(0.5f);
@@ -39,9 +41,18 @@ public class Situation100 extends SideWallSituation {
 
 
 
+        // Test platform
+        Movable platform = new Movable(
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                BaseElement.Geometry.SQUARE, BaseElement.Flavor.GREY,
+                6, 7, 10, 1, 0
+        );
+
+        addElement(platform);
 
 
-        // Test
+
+        // Test triangle
         Movable m2 = new Movable(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 BaseElement.Geometry.TRIANGLE, BaseElement.Flavor.RED,
@@ -50,6 +61,19 @@ public class Situation100 extends SideWallSituation {
 
         m2.addRotation(0.25f);
         addElement(m2);
+
+
+
+
+        // Test violet
+        RadialMagnetic radial = new RadialMagnetic(
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                6, 12, 1,
+                4, 5, Magnetic.Polarity.ATTRACTIVE
+        );
+
+        radial.addRotation(0.25f);
+        addElement(radial);
 
 
 
