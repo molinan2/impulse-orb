@@ -2,6 +2,7 @@ package com.jmolina.orb.elements;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.utils.Utils;
@@ -70,7 +71,7 @@ public class Movable extends Element {
      * @param clockwise A true si la rotación es en sentido horario
      */
     public void addRotation(float frequency, boolean clockwise) {
-        this.rotationFrequency = frequency;
+        this.rotationFrequency = MathUtils.clamp(frequency, 0, frequency);
         this.rotationClockwise = clockwise;
 
         float sign = clockwise ? -1f : 1f;
@@ -94,7 +95,7 @@ public class Movable extends Element {
      * @param y Coordenada Y destino (en unidades del mundo)
      */
     public void addDisplacement(float frequency, float x, float y) {
-        this.displacementFrequency = frequency;
+        this.displacementFrequency = MathUtils.clamp(frequency, 0, frequency);
         this.displacementX = x;
         this.displacementY = y;
 
@@ -137,10 +138,14 @@ public class Movable extends Element {
         addRotation(rotationFrequency, rotationClockwise);
         addDisplacement(displacementFrequency, displacementX, displacementY);
         skipBodySync(true);
+        // TODO: skipBodySync provoca problemas con elementos moviles que no tienen acciones
     }
 
     private void skipBodySync(boolean enabled) {
-        this.skipBodySync = enabled;
+        // Fix: Sólo afecta a los elementos que tienen aplicada alguna acción.
+        // Evita que se modifique erróneamente la rotación de los elementos que no tienen acción.
+        if (displacementFrequency > 0 && rotationFrequency > 0)
+            this.skipBodySync = enabled;
     }
 
     private boolean skippingBodySync() {

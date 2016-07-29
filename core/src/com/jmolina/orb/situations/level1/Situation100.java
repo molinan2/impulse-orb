@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Heater;
 import com.jmolina.orb.elements.Init;
+import com.jmolina.orb.elements.LinearMagnetic;
 import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.RadialMagnetic;
@@ -66,16 +67,29 @@ public class Situation100 extends SideWallSituation {
 
 
 
-        // Test magnetic
+        // Test magnetic radial
         RadialMagnetic magnetic = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Flavor.TRANSPARENT,
-                6, 10f, 1,
-                5, Magnetic.Polarity.REPULSIVE
+                WorldElement.Flavor.VIOLET,
+                6, 18, 1,
+                4, Magnetic.Polarity.ATTRACTIVE
         );
 
         magnetic.addRotation(0.25f);
         addElement(magnetic);
+
+
+
+
+        // Test magnetic linear
+        LinearMagnetic linear = new LinearMagnetic(
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Flavor.VIOLET,
+                6, 10f, 4, 1, 10,
+                2, Magnetic.Polarity.REPULSIVE
+        );
+
+        addElement(linear);
 
 
 

@@ -1,7 +1,9 @@
 package com.jmolina.orb.elements;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.widgets.RadialField;
 
 
@@ -10,22 +12,18 @@ import com.jmolina.orb.widgets.RadialField;
  */
 public class RadialMagnetic extends Magnetic {
 
-    public RadialMagnetic(AssetManager am, World world, float ppm, float x, float y, float diameter, float threshold, Polarity polarity) {
-        this(am, world, ppm, Flavor.VIOLET, x, y, diameter, threshold, polarity);
-    }
-
     public RadialMagnetic(AssetManager am, World world, float ppm, Flavor flavor, float x, float y, float diameter, float threshold, Polarity polarity) {
-        super(am, world, ppm,
+        super(
+                am, world, ppm,
                 Geometry.CIRCLE, flavor,
                 x, y, diameter, diameter, 0,
                 threshold, polarity
         );
 
+        RadialField radialField = new RadialField(am, getPPM(), flavor, diameter, threshold, polarity);
+        setActor(radialField);
         setThreshold(threshold);
         setPolarity(polarity);
-
-        RadialField radialField = new RadialField(am, getPPM(), flavor, diameter, getThreshold(), polarity);
-        setActor(radialField);
     }
 
     @Override
@@ -34,4 +32,43 @@ public class RadialMagnetic extends Magnetic {
         ((RadialField)getActor()).reset();
     }
 
+    /**
+     * Calcula la distancia de un punto al centro del elemento.
+     *
+     * @param point Punto en unidades del mundo
+     */
+    private float distance(Vector2 point) {
+        return Utils.distance(point, getPosition());
+    }
+
+    /**
+     * Devuelve la fuerza que ejerce este elemento sobre un punto dado.
+     * <p>
+     * La fórmula de la atracción está simplificada:
+     * - Sólo depende de la inversa de la distancia, siempre que el punto haya sobrepasado el umbral.
+     * - Sólo se computan los centroides (i.e. no se atrae el Orb si su centroide no cae dentro del
+     * campo de actuación).
+     *
+     * @param point Punto expresado en unidades del mundo
+     */
+    @Override
+    public Vector2 force(Vector2 point) {
+        Vector2 force = new Vector2(0, 0);
+
+        if (belowThreshold(point)) {
+            float factor = MAX_FORCE * (getThreshold() - distance(point)) / getThreshold();
+            Vector2 direction = getPosition().sub(point).nor();
+            force.set(direction).scl(factor);
+
+            if (getPolarity() == Polarity.REPULSIVE)
+                force.scl(-1);
+        }
+
+        return force;
+    }
+
+    private boolean belowThreshold(Vector2 point) {
+        if (distance(point) < getThreshold()) return true;
+        else return false;
+    }
 }

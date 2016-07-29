@@ -178,11 +178,15 @@ public class WorldElement {
         getBody().setTransform(x, y, getBody().getAngle());
     }
 
-    public Vector2 getPosition () {
+    public Vector2 getPosition() {
         return new Vector2(
                 getBody().getPosition().x,
                 getBody().getPosition().y
         );
+    }
+
+    public float getRotation() {
+        return MathUtils.radiansToDegrees * getBody().getAngle();
     }
 
     public float getWidth() {

@@ -10,12 +10,12 @@ import com.jmolina.orb.utils.Utils;
 /**
  * Elemento magnético
  */
-public class Magnetic extends Movable {
+public abstract class Magnetic extends Movable {
 
     public enum Polarity { ATTRACTIVE, REPULSIVE }
 
-    private final Polarity DEFAULT_POLARITY = Polarity.ATTRACTIVE;
-    private final float MAX_FORCE = 5f;
+    private final float MIN_THRESHOLD = 1f;
+    protected final float MAX_FORCE = 8f;
 
     private float threshold;
     private Polarity polarity;
@@ -26,7 +26,7 @@ public class Magnetic extends Movable {
                 x, y, w, h, angle
         );
 
-        setThreshold(threshold);
+        setThreshold(MathUtils.clamp(threshold, MIN_THRESHOLD, threshold));
         setPolarity(polarity);
     }
 
@@ -47,45 +47,10 @@ public class Magnetic extends Movable {
     }
 
     /**
-     * Devuelve la distancia de un punto dado a este Elemento (que puede ser circular o rectangular).
+     * Devuelve la fuerza que ejerce este elemento sobre un punto dado.
      *
      * @param point Punto expresado en unidades del mundo
      */
-    private float distance(Vector2 point) {
-        switch (getGeometry()) {
-            case CIRCLE: return distanceCircle(point);
-            default: return distanceCircle(point);
-        }
-    }
-
-    private float distanceCircle(Vector2 point) {
-        return Utils.distance(point, getPosition());
-    }
-
-    /**
-     * Devuelve la fuerza que ejercería este elemento sobre el punto dado.
-     * <p>
-     * La fórmula de la atracción está simplificada:
-     * - Sólo depende de la inversa de la distancia, siempre que el punto haya sobrepasado el umbral.
-     * - Sólo se computan los centroides (i.e. no se atrae el Orb si su centroide no cae dentro del
-     * campo de actuación).
-     *
-     * @param point Punto expresado en unidades del mundo
-     */
-    public Vector2 force(Vector2 point) {
-        Vector2 force = new Vector2(0,0);
-        float distance = distance(point);
-
-        if (distance < threshold) {
-            Vector2 direction = getPosition().sub(point).nor();
-            float factor = MAX_FORCE * (threshold - distance) / threshold;
-            force.set(direction).scl(factor);
-
-            if (polarity == Polarity.REPULSIVE)
-                force.scl(-1);
-        }
-
-        return force;
-    }
+    public abstract Vector2 force(Vector2 point);
 
 }

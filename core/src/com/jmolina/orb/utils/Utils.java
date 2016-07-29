@@ -40,6 +40,13 @@ public class Utils {
         return (float) Math.sqrt(Math.pow(segment.x, 2) + Math.pow(segment.y, 2));
     }
 
+    public static Vector2 normal(Vector2 vector) {
+        Vector2 normal = new Vector2(vector.y, - vector.x);
+        normal.nor();
+
+        return normal;
+    }
+
     /**
      * Translates grid cells to pixels
      *
