@@ -18,7 +18,7 @@ import com.jmolina.orb.var.Var;
  * mundo de Box2D, asociado a un {@link Actor} situado en la Scene2D. El cuerpo Body pertenece a la
  * "capa de simulación" y el Actor a la "capa de visualización".
  */
-public class BaseElement extends WorldElement {
+public class Element extends WorldElement {
 
     private AssetManager assetManager;
     private Actor actor;
@@ -27,7 +27,7 @@ public class BaseElement extends WorldElement {
     /**
      * Constructor simplificado. La textura se elige por defecto
      */
-    public BaseElement(AssetManager am, World world, float pixelsPerMeter, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
+    public Element(AssetManager am, World world, float pixelsPerMeter, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
         super(world, x, y, w, h, angle, geometry, flavor);
 
         this.assetManager = am;
@@ -50,7 +50,7 @@ public class BaseElement extends WorldElement {
      * @param h Heigth of the element (World units)
      * @param angle Initial angle of the Element in degrees counterclockwise
      */
-    public BaseElement(AssetManager am, World world, Texture texture, float pixelsPerMeter, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
+    public Element(AssetManager am, World world, Texture texture, float pixelsPerMeter, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
         super(world, x, y, w, h, angle, geometry, flavor);
 
         this.assetManager = am;

@@ -2,7 +2,7 @@ package com.jmolina.orb.situations.level1;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
-import com.jmolina.orb.elements.BaseElement;
+import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.situations.SideWallSituation;
 
 
@@ -14,15 +14,15 @@ public class Situation107 extends SideWallSituation {
 
     protected void createInnerElements () {
         // Grey stripe
-        addElement(new BaseElement(
+        addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), BaseElement.Geometry.SQUARE, BaseElement.Flavor.GREY, 3.5f, 5, 10, 1, 45
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.GREY, 3.5f, 5, 10, 1, 45
         ));
 
         // Red stripe
-        addElement(new BaseElement(
+        addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), BaseElement.Geometry.SQUARE, BaseElement.Flavor.RED, 8.5f, 13, 10, 1, -45
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.RED, 8.5f, 13, 10, 1, -45
         ));
     }
 

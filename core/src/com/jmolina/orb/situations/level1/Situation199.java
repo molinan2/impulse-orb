@@ -2,7 +2,7 @@ package com.jmolina.orb.situations.level1;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
-import com.jmolina.orb.elements.BaseElement;
+import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Exit;
 import com.jmolina.orb.situations.SideWallSituation;
 
@@ -22,19 +22,19 @@ public class Situation199 extends SideWallSituation {
         ));
 
         // Top walls
-        addElement(new BaseElement(
+        addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), BaseElement.Geometry.SQUARE, BaseElement.Flavor.BLACK, 6, 27, 12, 18, 0
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK, 6, 27, 12, 18, 0
         ));
 
-        addElement(new BaseElement(
+        addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), BaseElement.Geometry.SQUARE, BaseElement.Flavor.BLACK, -6 + 0.5f, 27, 12, 18, 0
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK, -6 + 0.5f, 27, 12, 18, 0
         ));
 
-        addElement(new BaseElement(
+        addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), BaseElement.Geometry.SQUARE, BaseElement.Flavor.BLACK, 18 - 0.5f, 27, 12, 18, 0
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK, 18 - 0.5f, 27, 12, 18, 0
         ));
     }
 

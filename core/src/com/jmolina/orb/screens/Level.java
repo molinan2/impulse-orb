@@ -15,7 +15,7 @@ import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.data.GameStats;
 import com.jmolina.orb.data.ScreenFlag;
 import com.jmolina.orb.data.Tick;
-import com.jmolina.orb.elements.BaseElement;
+import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.Orb;
@@ -153,7 +153,7 @@ public class Level extends BaseScreen {
                 stats.newTry();
 
                 for (Situation situation : getSituations()) {
-                    for (BaseElement element : situation.getElements()) {
+                    for (Element element : situation.getElements()) {
                         if (element instanceof Movable) ((Movable)element).reset();
                     }
                 }
@@ -419,7 +419,7 @@ public class Level extends BaseScreen {
         int size = situations.size;
         situation.setPosition(size-1);
 
-        for (BaseElement element : situation.getElements()) {
+        for (Element element : situation.getElements()) {
             addMainActor(element.getActor());
             element.syncActor(worldViewport);
         }
@@ -459,7 +459,7 @@ public class Level extends BaseScreen {
      */
     private void syncBodies() {
         for (Situation situation : situations) {
-            for (BaseElement element : situation.getElements()) {
+            for (Element element : situation.getElements()) {
                 element.syncBody(worldViewport);
             }
         }
@@ -472,7 +472,7 @@ public class Level extends BaseScreen {
      */
     public void syncActors() {
         for (Situation situation : situations) {
-            for (BaseElement element : situation.getElements()) {
+            for (Element element : situation.getElements()) {
                 element.syncActor(worldViewport);
             }
         }
@@ -586,7 +586,7 @@ public class Level extends BaseScreen {
         Vector2 force = new Vector2(0, 0);
 
         for (Situation situation : getSituations()) {
-            for (BaseElement element : situation.getElements()) {
+            for (Element element : situation.getElements()) {
                 if (element instanceof Magnetic) {
                     Vector2 partial = ((Magnetic)element).force(getOrb().getPosition());
                     force.add(partial);

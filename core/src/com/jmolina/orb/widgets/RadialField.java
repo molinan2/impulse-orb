@@ -33,7 +33,7 @@ public class RadialField extends BaseGroup {
 
     private Image body, field;
     private ArrayList<Image> particles;
-    private float diameter, threshold;
+    private float diameter, threshold, scale;
     private Magnetic.Polarity polarity;
 
     /**
@@ -64,7 +64,8 @@ public class RadialField extends BaseGroup {
 
         setSize(2 * Utils.cell(threshold), 2 * Utils.cell(threshold));
         setOrigin(0.5f * getWidth(), 0.5f * getHeight());
-        setScale(ppm / Var.GRID_CELL_SIZE);
+        scale = ppm / Var.GRID_CELL_SIZE;
+        setScale(scale);
     }
 
     /**
@@ -88,6 +89,7 @@ public class RadialField extends BaseGroup {
         for (int i=0; i<PARTICLE_QUANTITY; i++) {
             Image particle = new Image(getAsset(Asset.GAME_MAGNETIC_PARTICLE, Texture.class));
             particle.setSize(PARTICLE_WIDTH, PARTICLE_HEIGHT);
+            particle.setOrigin(0.5f * PARTICLE_WIDTH, 0.5f * PARTICLE_HEIGHT);
             particle.setPosition(centerX(), centerY());
             particle.addAction(particleAction(i));
             particles.add(particle);
@@ -172,13 +174,15 @@ public class RadialField extends BaseGroup {
         forever.setCount(RepeatAction.FOREVER);
         forever.setAction(new SequenceAction(
                 parallel(
+                        scaleTo(1, 1),
                         alpha(0),
                         moveTo(borderX(angle), borderY(angle))
                 ),
                 parallel(
                         alpha(PARTICLE_MAX_ALPHA, PARTICLE_PERIOD, Interpolation.pow2In),
                         moveTo(centerX(), centerY(), PARTICLE_PERIOD, Interpolation.pow2In)
-                )
+                ),
+                scaleTo(0, 0, 0.1f)
         ));
 
         return forever;
@@ -194,6 +198,8 @@ public class RadialField extends BaseGroup {
         RepeatAction forever = new RepeatAction();
         forever.setCount(RepeatAction.FOREVER);
         forever.setAction(new SequenceAction(
+                scaleTo(0, 0),
+                scaleTo(1, 1, 0.1f),
                 parallel(
                         alpha(PARTICLE_MAX_ALPHA),
                         moveTo(centerX(), centerY())

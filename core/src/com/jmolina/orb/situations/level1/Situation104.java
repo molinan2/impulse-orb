@@ -2,7 +2,7 @@ package com.jmolina.orb.situations.level1;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
-import com.jmolina.orb.elements.BaseElement;
+import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.situations.SideWallSituation;
 
 
@@ -14,14 +14,14 @@ public class Situation104 extends SideWallSituation {
 
     protected void createInnerElements () {
         // Obstacle balls
-        addElement(new BaseElement(
+        addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), BaseElement.Geometry.CIRCLE, BaseElement.Flavor.GREY, 4f, 5f, 4, 4, 0
+                getPixelsPerMeter(), Element.Geometry.CIRCLE, Element.Flavor.GREY, 4f, 5f, 4, 4, 0
         ));
 
-        addElement(new BaseElement(
+        addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), BaseElement.Geometry.CIRCLE, BaseElement.Flavor.GREY, 8f, 12f, 4, 4, 0
+                getPixelsPerMeter(), Element.Geometry.CIRCLE, Element.Flavor.GREY, 8f, 12f, 4, 4, 0
         ));
     }
 

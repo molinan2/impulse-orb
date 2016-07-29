@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -12,7 +11,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 /**
  * TODO: De color naranja cuando esté en Overload
  */
-public class Orb extends BaseElement {
+public class Orb extends Element {
 
     private final float DIAMETER = 1.0f;
     private final float INFINITE_DAMPING = 10000f;

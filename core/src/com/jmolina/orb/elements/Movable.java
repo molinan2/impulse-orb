@@ -13,7 +13,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 /**
  * Elemento movible y rotable
  */
-public class Movable extends BaseElement {
+public class Movable extends Element {
 
     private final Interpolation INTERPOLATION = Interpolation.sine;
 

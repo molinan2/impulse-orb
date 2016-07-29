@@ -3,7 +3,7 @@ package com.jmolina.orb.situations;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.jmolina.orb.elements.BaseElement;
+import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.var.Var;
 
 /**
@@ -17,12 +17,12 @@ public abstract class Situation {
 
     private AssetManager assetManager;
     private World world;
-    private SnapshotArray<BaseElement> elements;
+    private SnapshotArray<Element> elements;
     private float pixelsPerMeter, cellSizeCorrectionFactor;
 
     public Situation(AssetManager am, World world, float pixelsPerMeter) {
         this.pixelsPerMeter = pixelsPerMeter;
-        this.elements = new SnapshotArray<BaseElement>();
+        this.elements = new SnapshotArray<Element>();
         this.assetManager = am;
         this.world = world;
         this.cellSizeCorrectionFactor = pixelsPerMeter / Var.GRID_CELL_SIZE;
@@ -36,16 +36,16 @@ public abstract class Situation {
         return pixelsPerMeter;
     }
 
-    public void addElement (BaseElement element) {
+    public void addElement (Element element) {
         this.elements.add(element);
     }
 
-    public SnapshotArray<BaseElement> getElements () {
+    public SnapshotArray<Element> getElements () {
         return this.elements;
     }
 
     public void setPosition(int orderY) {
-        for (BaseElement element : getElements()) {
+        for (Element element : getElements()) {
             element.setPosition(
                     element.getBody().getPosition().x,
                     element.getBody().getPosition().y + orderY * HEIGHT

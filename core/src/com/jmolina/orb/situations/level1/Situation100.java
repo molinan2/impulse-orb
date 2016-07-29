@@ -2,7 +2,7 @@ package com.jmolina.orb.situations.level1;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
-import com.jmolina.orb.elements.BaseElement;
+import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Heater;
 import com.jmolina.orb.elements.Init;
 import com.jmolina.orb.elements.Magnetic;
@@ -22,7 +22,7 @@ public class Situation100 extends SideWallSituation {
         // Test Rotable
         Movable movable = new Movable(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                BaseElement.Geometry.SQUARE, BaseElement.Flavor.GREY,
+                Element.Geometry.SQUARE, Element.Flavor.GREY,
                 6, 4, 2, 2, 0
         );
 
@@ -45,7 +45,7 @@ public class Situation100 extends SideWallSituation {
         // Test platform
         Movable platform = new Movable(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                BaseElement.Geometry.SQUARE, BaseElement.Flavor.GREY,
+                Element.Geometry.SQUARE, Element.Flavor.GREY,
                 6, 7, 10, 1, 0
         );
 
@@ -56,7 +56,7 @@ public class Situation100 extends SideWallSituation {
         // Test triangle
         Movable m2 = new Movable(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                BaseElement.Geometry.TRIANGLE, BaseElement.Flavor.RED,
+                Element.Geometry.TRIANGLE, Element.Flavor.RED,
                 10, 2, 3, 3, 0
         );
 
@@ -69,9 +69,9 @@ public class Situation100 extends SideWallSituation {
         // Test magnetic
         RadialMagnetic magnetic = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Flavor.VIOLET,
-                8, 8.5f, 1,
-                5, Magnetic.Polarity.ATTRACTIVE
+                WorldElement.Flavor.TRANSPARENT,
+                6, 10f, 1,
+                5, Magnetic.Polarity.REPULSIVE
         );
 
         magnetic.addRotation(0.25f);
@@ -90,21 +90,21 @@ public class Situation100 extends SideWallSituation {
         ));
 
         // Bottom walls
-        addElement(new BaseElement(
+        addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                BaseElement.Geometry.SQUARE, BaseElement.Flavor.BLACK,
+                Element.Geometry.SQUARE, Element.Flavor.BLACK,
                 6, -9 + 0.5f, 12, 18, 0
         ));
 
-        addElement(new BaseElement(
+        addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                BaseElement.Geometry.SQUARE, BaseElement.Flavor.BLACK,
+                Element.Geometry.SQUARE, Element.Flavor.BLACK,
                 -6 + 0.5f, -9 + 0.5f, 12, 18, 0
         ));
 
-        addElement(new BaseElement(
+        addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                BaseElement.Geometry.SQUARE, BaseElement.Flavor.BLACK,
+                Element.Geometry.SQUARE, Element.Flavor.BLACK,
                 18 - 0.5f, -9 + 0.5f, 12, 18, 0
         ));
     }

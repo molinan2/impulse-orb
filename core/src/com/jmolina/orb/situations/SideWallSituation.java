@@ -2,7 +2,7 @@ package com.jmolina.orb.situations;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
-import com.jmolina.orb.elements.BaseElement;
+import com.jmolina.orb.elements.Element;
 
 
 public abstract class SideWallSituation extends Situation {
@@ -17,15 +17,15 @@ public abstract class SideWallSituation extends Situation {
         createInnerElements();
 
         // Side walls
-        addElement(new BaseElement(
+        addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), BaseElement.Geometry.SQUARE, BaseElement.Flavor.BLACK,
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK,
                 -6 + 0.5f, 9, 12, 18, 0
         ));
 
-        addElement(new BaseElement(
+        addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), BaseElement.Geometry.SQUARE, BaseElement.Flavor.BLACK,
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK,
                 12 + 6 - 0.5f, 9, 12, 18, 0
         ));
     }
