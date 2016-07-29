@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jmolina.orb.data.Displacement;
+import com.jmolina.orb.data.Rotation;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Var;
 
@@ -20,9 +22,9 @@ public class Movable extends Element {
 
     private float zoomCorrectionFactor;
     private float x, y, angle;
-    private float rotationFrequency, displacementFrequency, displacementX, displacementY;
-    private boolean rotationClockwise;
     private boolean skipBodySync; // Skip bodySync on the next frame, allowing positioning in World units
+    private Rotation rotation;
+    private Displacement displacement;
 
     /**
      * {@inheritDoc}
@@ -36,12 +38,9 @@ public class Movable extends Element {
         this.y = y;
         this.angle = angle;
 
-        this.rotationFrequency = 0f;
-        this.rotationClockwise = true;
-        this.displacementFrequency = 0f;
-        this.displacementX = 0f;
-        this.displacementY = 0f;
-        this.skipBodySync = false;
+        rotation = new Rotation();
+        displacement = new Displacement();
+        allowBodySync();
     }
 
     @Override
@@ -52,7 +51,7 @@ public class Movable extends Element {
     /**
      * {@inheritDoc}
      *
-     * Ignora la sincronización de Actor a Body si {@link #skippingBodySync()} es true.
+     * Ignora la sincronización de Actor a Body si {@link #isSkippingBodySync()} es true.
      * Si la ignora, desactiva {@link #skipBodySync}, de modo que sólo estará a true durante 1 frame.
      * <p>
      * Es necesario para poder resetear la posición del actor en base a las coordenadas originales
@@ -60,7 +59,7 @@ public class Movable extends Element {
      */
     @Override
     public void syncBody(Viewport viewport, boolean position, boolean angle) {
-        if (skippingBodySync()) skipBodySync(false);
+        if (isSkippingBodySync()) allowBodySync();
         else super.syncBody(viewport, position, angle);
     }
 
@@ -71,8 +70,8 @@ public class Movable extends Element {
      * @param clockwise A true si la rotación es en sentido horario
      */
     public void addRotation(float frequency, boolean clockwise) {
-        this.rotationFrequency = MathUtils.clamp(frequency, 0, frequency);
-        this.rotationClockwise = clockwise;
+        rotation.frequency = MathUtils.clamp(frequency, 0, frequency);
+        rotation.clockwise = clockwise;
 
         float sign = clockwise ? -1f : 1f;
         float duration = 1 / frequency;
@@ -95,9 +94,9 @@ public class Movable extends Element {
      * @param y Coordenada Y destino (en unidades del mundo)
      */
     public void addDisplacement(float frequency, float x, float y) {
-        this.displacementFrequency = MathUtils.clamp(frequency, 0, frequency);
-        this.displacementX = x;
-        this.displacementY = y;
+        displacement.frequency = MathUtils.clamp(frequency, 0, frequency);
+        displacement.x = x;
+        displacement.y = y;
 
         float halfDuration = 1 / (2 * frequency);
 
@@ -130,26 +129,27 @@ public class Movable extends Element {
      */
     public void reset() {
         getActor().clearActions();
-        getBody().setTransform(
-                this.x,
-                this.y,
-                this.angle
-        );
-        addRotation(rotationFrequency, rotationClockwise);
-        addDisplacement(displacementFrequency, displacementX, displacementY);
-        skipBodySync(true);
-        // TODO: skipBodySync provoca problemas con elementos moviles que no tienen acciones
+        getBody().setTransform(x, y, angle);
+        addRotation(rotation.frequency, rotation.clockwise);
+        addDisplacement(displacement.frequency, displacement.x, displacement.y);
+        skipBodySync();
     }
 
-    private void skipBodySync(boolean enabled) {
-        // Fix: Sólo afecta a los elementos que tienen aplicada alguna acción.
-        // Evita que se modifique erróneamente la rotación de los elementos que no tienen acción.
-        if (displacementFrequency > 0 && rotationFrequency > 0)
-            this.skipBodySync = enabled;
+    private void skipBodySync() {
+        // Fix: Evita que se modifique erróneamente la rotación de los elementos que no tienen
+        // aplicada ninguna acción.
+        if (displacement.frequency == 0 && rotation.frequency == 0)
+            return;
+
+        skipBodySync = true;
     }
 
-    private boolean skippingBodySync() {
-        return this.skipBodySync;
+    private void allowBodySync() {
+        skipBodySync = false;
+    }
+
+    private boolean isSkippingBodySync() {
+        return skipBodySync;
     }
 
 }
