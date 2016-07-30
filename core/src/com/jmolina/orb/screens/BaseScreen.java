@@ -292,7 +292,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     }
 
     /**
-     * Registra un actor para poder realizar operaciones automaticas sobre el
+     * Registra un actor para poder realizarle operaciones automáticas
      * @param actor Actor
      */
     protected void registerActor(Actor actor) {

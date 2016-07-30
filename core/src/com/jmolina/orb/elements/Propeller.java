@@ -10,8 +10,8 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class Propeller extends LinearMagnetic {
 
-    public Propeller(AssetManager am, World world, float ppm, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle, float threshold, Polarity polarity) {
-        super(am, world, ppm, flavor, x, y, w, h, angle, threshold, polarity);
+    public Propeller(AssetManager am, World world, float ppm, float x, float y, float w, float angle, float threshold, Polarity polarity) {
+        super(am, world, ppm, Flavor.TRANSPARENT, x, y, w, 0, angle, threshold, polarity);
     }
 
 }

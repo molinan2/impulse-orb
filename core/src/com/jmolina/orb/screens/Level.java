@@ -190,7 +190,7 @@ public class Level extends BaseScreen {
         syncActors();
         act(delta);
         syncBodies();
-        // preUpdate();
+        preUpdate();
         step();
         followCamera();
         syncActors();
@@ -503,6 +503,16 @@ public class Level extends BaseScreen {
 
     /**
      * Render update
+     * Computa las fuerzas sobre el orbe, si el juego no está bloqueado
+     */
+    private void preUpdate() {
+        if (isLocked()) return;
+
+        computeForces();
+    }
+
+    /**
+     * Render update
      * Comprueba y actualiza datos y estados, si el juego no está bloqueado
      */
     private void postUpdate() {
@@ -512,7 +522,6 @@ public class Level extends BaseScreen {
         updateFreeze();
         updateTimer();
         updateStats();
-        computeForces();
     }
 
     /**

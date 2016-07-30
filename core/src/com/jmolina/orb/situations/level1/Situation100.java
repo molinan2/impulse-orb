@@ -8,6 +8,7 @@ import com.jmolina.orb.elements.Init;
 import com.jmolina.orb.elements.LinearMagnetic;
 import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.Movable;
+import com.jmolina.orb.elements.Propeller;
 import com.jmolina.orb.elements.RadialMagnetic;
 import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.situations.SideWallSituation;
@@ -82,7 +83,7 @@ public class Situation100 extends SideWallSituation {
 
 
         // Test magnetic linear
-        LinearMagnetic linear = new LinearMagnetic(
+        /*LinearMagnetic linear = new LinearMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
                 6, 10f, 4, 0.5f, 30,
@@ -90,8 +91,18 @@ public class Situation100 extends SideWallSituation {
         );
 
         linear.addRotation(0.25f);
-        addElement(linear);
+        addElement(linear);*/
 
+
+
+        // Test propeller
+        Propeller propeller = new Propeller(
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                6, 8, 8, 0,
+                2, Magnetic.Polarity.REPULSIVE
+        );
+
+        addElement(propeller);
 
 
 

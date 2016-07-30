@@ -163,7 +163,7 @@ public class LinearField extends Field {
      * Calcula la coordenada Y del punto interior de una partícula (en el eje)
      */
     private float axisY() {
-        return Utils.cell(getThreshold()) - PARTICLE_DIAMETER;
+        return Utils.cell(getThreshold()) - 0.5f * PARTICLE_DIAMETER;
     }
 
     /**
