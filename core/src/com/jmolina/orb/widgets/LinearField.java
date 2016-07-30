@@ -3,7 +3,6 @@ package com.jmolina.orb.widgets;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -26,18 +25,10 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
  * Representación visual de un elemento magnético lineal. Contiene la imagen del propio elemento,
  * el campo de acción y varias partículas que indican la polaridad mediante una animación.
  */
-public class LinearField extends BaseGroup {
+public class LinearField extends Field {
 
-    private final int PARTICLE_COUNT = 6;
-    private final float PARTICLE_PERIOD = 1f;
-    private final float PARTICLE_DIAMETER = Utils.cell(0.25f);
-    private final float PARTICLE_MAX_ALPHA = 0.5f;
-    private final float PARTICLE_SHORT_TIME = 0.1f;
-
+    private float width, height;
     private Image body, field, fill;
-    private ArrayList<Image> particles;
-    private float width, height, threshold;
-    private Magnetic.Polarity polarity;
 
     /**
      * Constructor
@@ -51,12 +42,10 @@ public class LinearField extends BaseGroup {
      * @param polarity Polaridad
      */
     public LinearField(AssetManager am, float ppm, WorldElement.Flavor flavor, float w, float h, float threshold, Magnetic.Polarity polarity) {
-        super(am);
+        super(am, threshold, polarity);
 
         width = w;
         height = h;
-        this.threshold = threshold;
-        this.polarity = polarity;
 
         fill = new Image();
         fill.setSize(Utils.cell(w), Utils.cell(threshold));
@@ -70,6 +59,7 @@ public class LinearField extends BaseGroup {
         body.setSize(Utils.cell(w), Utils.cell(h));
         body.setPosition(0, Utils.cell(threshold) - 0.5f * Utils.cell(h));
 
+        setParticleCount(6);
         createParticles();
         addActors();
 
@@ -78,38 +68,8 @@ public class LinearField extends BaseGroup {
         setScale(ppm / Var.GRID_CELL_SIZE);
     }
 
-    /**
-     * Crea la partículas
-     */
-    private void createParticles() {
-        particles = new ArrayList<Image>();
-
-        for (int i=0; i<PARTICLE_COUNT; i++) {
-            Image particle = new Image(getAsset(Asset.GAME_MAGNETIC_PARTICLE, Texture.class));
-            particle.setSize(PARTICLE_DIAMETER, PARTICLE_DIAMETER);
-            particle.setOrigin(0.5f * PARTICLE_DIAMETER, 0.5f * PARTICLE_DIAMETER);
-            initParticle(particle, i);
-            particles.add(particle);
-        }
-    }
-
-    /**
-     * Reinicia las animaciones de las partículas
-     */
-    public void reset() {
-        for (int i=0; i<particles.size(); i++) {
-            Image particle = particles.get(i);
-            initParticle(particle, i);
-        }
-    }
-
-    /**
-     * Inicializa la posición de una partícula
-     *
-     * @param particle Partícula
-     * @param index Índice de la partícula
-     */
-    private void initParticle(Image particle, int index) {
+    @Override
+    protected void initParticle(Image particle, int index) {
         particle.clearActions();
         particle.setPosition(axisX(index), axisY());
         particle.addAction(alpha(0));
@@ -118,54 +78,8 @@ public class LinearField extends BaseGroup {
         particle.addAction(particleAction(index));
     }
 
-    private float axisX(int index) {
-        return index * (Utils.cell(width) - PARTICLE_DIAMETER) / (PARTICLE_COUNT -1);
-    }
-
-    private float axisY() {
-        return Utils.cell(threshold) - PARTICLE_DIAMETER;
-    }
-
-    private float borderX(int index) {
-        return axisX(index);
-    }
-
-    private float borderY() {
-        return Utils.cell(2 * threshold) - PARTICLE_DIAMETER;
-    }
-
-    /**
-     * Añade los actores
-     */
-    private void addActors() {
-        addActor(field);
-        addActor(fill);
-
-        for(Image particle : particles)
-            addActor(particle);
-
-        addActor(body);
-    }
-
-    /**
-     * Crea la animación de una partícula con índice {@param index}.
-     *
-     * @param index Índice de la partícula
-     */
-    private Action particleAction(int index) {
-        switch (polarity) {
-            case ATTRACTIVE: return attraction(index);
-            case REPULSIVE: return repulsion(index);
-            default: return attraction(index);
-        }
-    }
-
-    /**
-     * Animación de atracción de una partícula
-     *
-     * @param index Índice de la partícula
-     */
-    private Action attraction(int index) {
+    @Override
+    protected Action attraction(int index) {
         RepeatAction forever = new RepeatAction();
         forever.setCount(RepeatAction.FOREVER);
         forever.setAction(new SequenceAction(
@@ -187,12 +101,8 @@ public class LinearField extends BaseGroup {
         return forever;
     }
 
-    /**
-     * Animación de repulsión de una partícula
-     *
-     * @param index Índice de la partícula
-     */
-    private Action repulsion(int index) {
+    @Override
+    protected Action repulsion(int index) {
         RepeatAction forever = new RepeatAction();
         forever.setCount(RepeatAction.FOREVER);
         forever.setAction(new SequenceAction(
@@ -214,6 +124,19 @@ public class LinearField extends BaseGroup {
     }
 
     /**
+     * Añade los actores
+     */
+    private void addActors() {
+        addActor(field);
+        addActor(fill);
+
+        for(Image particle : getParticles())
+            addActor(particle);
+
+        addActor(body);
+    }
+
+    /**
      * Devuelve la textura del cuerpo, dependiendo del {@link WorldElement.Flavor}.
      *
      * @param flavor Flavor
@@ -225,6 +148,38 @@ public class LinearField extends BaseGroup {
             case TRANSPARENT: return getAsset(Asset.GAME_SQUARE_TRANSPARENT, Texture.class);
             default: return getAsset(Asset.GAME_SQUARE_VIOLET, Texture.class);
         }
+    }
+
+    /**
+     * Calcula la coordenada X del punto interior de una partícula (en el eje)
+     *
+     * @param index Índice de la partícula
+     */
+    private float axisX(int index) {
+        return index * (Utils.cell(width) - PARTICLE_DIAMETER) / (getParticleCount() -1);
+    }
+
+    /**
+     * Calcula la coordenada Y del punto interior de una partícula (en el eje)
+     */
+    private float axisY() {
+        return Utils.cell(getThreshold()) - PARTICLE_DIAMETER;
+    }
+
+    /**
+     * Calcula la coordenada X del punto exterior de una partícula (en el borde)
+     *
+     * @param index Índice de la partícula
+     */
+    private float borderX(int index) {
+        return axisX(index);
+    }
+
+    /**
+     * Calcula la coordenada Y del punto exterior de una partícula (en el borde)
+     */
+    private float borderY() {
+        return Utils.cell(2 * getThreshold()) - PARTICLE_DIAMETER;
     }
 
 }
