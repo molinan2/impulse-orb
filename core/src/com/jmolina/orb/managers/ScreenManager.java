@@ -98,7 +98,7 @@ public class ScreenManager {
             getCurrent().dispose();
         }
 
-        setScreen(newScreen(key));
+        setScreen(createScreen(key));
         getCurrent().setAsInputProcessor();
         getCurrent().setHierarchy(hierarchy);
 
@@ -108,7 +108,7 @@ public class ScreenManager {
         }
     }
 
-    public BaseScreen newScreen(Key key) {
+    public BaseScreen createScreen(Key key) {
         switch (key) {
             case LOAD: return new Load(getSuperManager(), LOAD);
             case MAIN: return new Main(getSuperManager(), MAIN);

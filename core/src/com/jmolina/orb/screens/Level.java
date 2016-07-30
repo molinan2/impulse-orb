@@ -13,7 +13,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.data.GameStats;
-import com.jmolina.orb.data.ScreenFlag;
 import com.jmolina.orb.data.Tick;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Magnetic;
@@ -78,7 +77,6 @@ public class Level extends BaseScreen {
     private GameStats stats;
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
     private Runnable orbIntro, orbDestroy, reset, unlock, toSuccess;
-    private ScreenFlag screenFlag;
     private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
 
 
@@ -92,7 +90,6 @@ public class Level extends BaseScreen {
         super(sm, key);
 
         tick = new Tick();
-        screenFlag = new ScreenFlag();
         pixelsPerMeter = getGameManager().getPixelsPerMeter();
         impulseFactor = 1 / getPixelsPerMeter();
         orbStartPosition = new Vector2();
@@ -200,7 +197,7 @@ public class Level extends BaseScreen {
         postUpdate();
         draw();
 
-        checkScreenSwitch();
+        checkSwitching();
     }
 
     /**
@@ -279,10 +276,10 @@ public class Level extends BaseScreen {
     @Override
     public void switchToScreen(final ScreenManager.Key screen, final Hierarchy hierarchy) {
 
-        Runnable flag = new Runnable() {
+        Runnable flagSwitch = new Runnable() {
             @Override
             public void run() {
-                screenFlag.enable(screen, hierarchy);
+                flagSwitch(screen, hierarchy);
             }
         };
 
@@ -290,20 +287,9 @@ public class Level extends BaseScreen {
                 Actions.addAction(fadeIn(UIAction.DURATION, Interpolation.pow2), getBackgroundStage().getRoot()),
                 delay(UIAction.DURATION),
                 transition(Flow.LEAVING, hierarchy),
-                run(flag)
+                run(flagSwitch)
         ));
     }
-
-    /**
-     * Ejecuta un cambio inmediato de pantalla. Este método debe llamarse al final del
-     * {@link #render(float)} para evitar excepciones de acceso a memoria. El cambio sólo se
-     * ejecutará si se ha marcado la {@link #screenFlag}.
-     */
-    private void checkScreenSwitch() {
-        if (screenFlag.isEnabled())
-            getScreenManager().switchToScreen(screenFlag.getScreen(), screenFlag.getHierarchy());
-    }
-
 
     /**
      * Devuelve el valor actual de {@link #pixelsPerMeter}

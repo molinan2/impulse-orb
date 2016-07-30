@@ -9,24 +9,6 @@ import com.jmolina.orb.screens.BaseScreen;
 
 public class UIRunnable {
 
-    static public Runnable enableTouchable(final Actor actor) {
-        return new Runnable() {
-            @Override
-            public void run() {
-                actor.setTouchable(Touchable.enabled);
-            }
-        };
-    }
-
-    static public Runnable disableTouchable(final Actor actor) {
-        return new Runnable() {
-            @Override
-            public void run() {
-                actor.setTouchable(Touchable.disabled);
-            }
-        };
-    }
-
     static public Runnable setInputProcessor(final InputProcessor processor) {
         return new Runnable() {
             @Override
@@ -41,15 +23,6 @@ public class UIRunnable {
             @Override
             public void run() {
                 Gdx.app.exit();
-            }
-        };
-    }
-
-    static public Runnable setScreen(final ScreenManager screenManager, final ScreenManager.Key key, final BaseScreen.Hierarchy hierarchy) {
-        return new Runnable() {
-            @Override
-            public void run() {
-                screenManager.switchToScreen(key, hierarchy);
             }
         };
     }

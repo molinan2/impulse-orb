@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actions.UIAction;
+import com.jmolina.orb.data.ScreenFlag;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.managers.GameManager;
@@ -48,8 +49,8 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     private Hierarchy hierarchy;
     private SnapshotArray<Actor> actors;
     private InputMultiplexer multiplexer;
-    private ScreenManager.Key previousKey;
-    private ScreenManager.Key key;
+    private ScreenManager.Key previousKey, key;
+    private ScreenFlag screenFlag;
 
 
     /**
@@ -59,6 +60,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         superManager = sm;
         this.key = key;
 
+        screenFlag = new ScreenFlag();
         actors = new SnapshotArray<Actor>();
         mainViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         backgroundViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
@@ -98,6 +100,8 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         backgroundStage.draw();
         mainStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         mainStage.draw();
+
+        checkSwitching();
     }
 
     @Override
@@ -196,16 +200,38 @@ public class BaseScreen extends ScreenAdapter implements Backable {
 
     /**
      * Ejecuta la animacion de salida y cambia a otra pantalla
-     * @param key Name Nombre de la siguiente pantalla
+     * @param screen Name Nombre de la siguiente pantalla
      * @param hierarchy Hierarchy Jerarquía de la siguiente pantalla respecto de la actual
      */
-    public void switchToScreen(final ScreenManager.Key key, final Hierarchy hierarchy) {
+    public void switchToScreen(final ScreenManager.Key screen, final Hierarchy hierarchy) {
         clearRootActions();
         unsetInputProcessor();
+
+        Runnable flagSwitch = new Runnable() {
+            @Override
+            public void run() {
+                flagSwitch(screen, hierarchy);
+            }
+        };
+
         addMainAction(sequence(
                 transition(Flow.LEAVING, hierarchy),
-                run(UIRunnable.setScreen(getScreenManager(), key, hierarchy))
+                run(flagSwitch)
         ));
+    }
+
+    protected void flagSwitch(ScreenManager.Key screen, Hierarchy hierarchy) {
+        screenFlag.enable(screen, hierarchy);
+    }
+
+    /**
+     * Ejecuta un cambio inmediato de pantalla. Este método debe llamarse al final del
+     * {@link #render(float)} para evitar excepciones de acceso a memoria. El cambio sólo se
+     * ejecutará si se ha marcado la {@link #screenFlag}.
+     */
+    protected void checkSwitching() {
+        if (screenFlag.isEnabled())
+            getScreenManager().switchToScreen(screenFlag.getScreen(), screenFlag.getHierarchy());
     }
 
     /**
