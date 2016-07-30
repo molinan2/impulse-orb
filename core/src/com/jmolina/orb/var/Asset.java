@@ -48,6 +48,8 @@ public class Asset {
     public static final String GAME_SQUARE_GREY = GAME + "square_grey.png";
     public static final String GAME_SQUARE_RED = GAME + "square_red.png";
     public static final String GAME_SQUARE_WHITE = GAME + "square_white.png";
+    public static final String GAME_SQUARE_VIOLET = GAME + "square_violet.png";
+    public static final String GAME_SQUARE_TRANSPARENT = GAME + "square_transparent.png";
     public static final String GAME_CIRCLE_BLACK = GAME + "circle_black.png";
     public static final String GAME_CIRCLE_GREY = GAME + "circle_grey.png";
     public static final String GAME_CIRCLE_RED = GAME + "circle_red.png";
@@ -68,7 +70,8 @@ public class Asset {
     public static final String GAME_EXIT = GAME + "exit.png";
     public static final String GAME_INIT = GAME + "init.png";
     public static final String GAME_HEAT = GAME + "heat.png";
-    public static final String GAME_MAGNETIC_FIELD = GAME + "magnetic_field.png";
+    public static final String GAME_MAGNETIC_FIELD_RADIAL = GAME + "magnetic_field_radial.png";
+    public static final String GAME_MAGNETIC_FIELD_LINEAR = GAME + "magnetic_field_linear.png";
     public static final String GAME_MAGNETIC_PARTICLE = GAME + "magnetic_particle.png";
 
     public static final String HUD_BACKGROUND = HUD + "hud_background.png";

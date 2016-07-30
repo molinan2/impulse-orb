@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.utils.Utils;
+import com.jmolina.orb.widgets.LinearField;
 
 
 /**
@@ -24,8 +25,8 @@ public class LinearMagnetic extends Magnetic {
                 threshold, polarity
         );
 
-        // LinearField linearField = new LinearField(am, getPPM(), flavor, w, h, threshold, polarity);
-        // setActor(linearField);
+        LinearField linearField = new LinearField(am, getPPM(), flavor, w, h, threshold, polarity);
+        setActor(linearField);
         setThreshold(threshold);
         setPolarity(polarity);
     }
@@ -33,7 +34,7 @@ public class LinearMagnetic extends Magnetic {
     @Override
     public void reset() {
         super.reset();
-        // ((LinearField)getActor()).reset();
+        ((LinearField)getActor()).reset();
     }
 
     /**

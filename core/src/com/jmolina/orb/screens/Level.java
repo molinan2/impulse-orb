@@ -493,12 +493,10 @@ public class Level extends BaseScreen {
      * Ejecuta un paso más las Actions de cada actor
      */
     private void act(float delta) {
-        if (!isLocked()){
+        if (!isLocked())
             getMainStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
-        }
-        else {
+        else
             getOrb().getActor().act(delta);
-        }
 
         getGestureStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         getBackgroundStage().act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));

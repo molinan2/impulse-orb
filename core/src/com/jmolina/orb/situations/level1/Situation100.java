@@ -71,8 +71,8 @@ public class Situation100 extends SideWallSituation {
         RadialMagnetic magnetic = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                6, 18, 1,
-                4, Magnetic.Polarity.ATTRACTIVE
+                6, 16, 1,
+                2, Magnetic.Polarity.ATTRACTIVE
         );
 
         magnetic.addRotation(0.25f);
@@ -85,10 +85,11 @@ public class Situation100 extends SideWallSituation {
         LinearMagnetic linear = new LinearMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                6, 10f, 4, 1, 10,
-                2, Magnetic.Polarity.REPULSIVE
+                6, 10f, 4, 0.5f, 30,
+                4, Magnetic.Polarity.REPULSIVE
         );
 
+        linear.addRotation(0.25f);
         addElement(linear);
 
 

@@ -22,7 +22,7 @@ public class Movable extends Element {
 
     private float zoomCorrectionFactor;
     private float x, y, angle;
-    private boolean skipBodySync; // Skip bodySync on the next frame, allowing positioning in World units
+    private boolean skipBodySync;
     private Rotation rotation;
     private Displacement displacement;
 
@@ -129,18 +129,17 @@ public class Movable extends Element {
      */
     public void reset() {
         getActor().clearActions();
-        getBody().setTransform(x, y, angle);
+        getBody().setTransform(x, y, MathUtils.degreesToRadians * angle);
         addRotation(rotation.frequency, rotation.clockwise);
         addDisplacement(displacement.frequency, displacement.x, displacement.y);
         skipBodySync();
     }
 
+    /**
+     * Skip bodySync on the next frame, allowing positioning the element in World units instead
+     * of scene units and then converting.
+     */
     private void skipBodySync() {
-        // Fix: Evita que se modifique erróneamente la rotación de los elementos que no tienen
-        // aplicada ninguna acción.
-        if (displacement.frequency == 0 && rotation.frequency == 0)
-            return;
-
         skipBodySync = true;
     }
 

@@ -13,26 +13,30 @@ import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
+
 import java.util.ArrayList;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 
 
 /**
- * Representación visual de un elemento magnético radial. Contiene la imagen del propio elemento,
+ * Representación visual de un elemento magnético lineal. Contiene la imagen del propio elemento,
  * el campo de acción y varias partículas que indican la polaridad mediante una animación.
  */
-public class RadialField extends BaseGroup {
+public class LinearField extends BaseGroup {
 
-    private final int PARTICLE_COUNT = 12;
+    private final int PARTICLE_COUNT = 6;
     private final float PARTICLE_PERIOD = 1f;
     private final float PARTICLE_DIAMETER = Utils.cell(0.25f);
     private final float PARTICLE_MAX_ALPHA = 0.5f;
     private final float PARTICLE_SHORT_TIME = 0.1f;
 
-    private Image body, field;
+    private Image body, field, fill;
     private ArrayList<Image> particles;
-    private float diameter, threshold;
+    private float width, height, threshold;
     private Magnetic.Polarity polarity;
 
     /**
@@ -41,29 +45,35 @@ public class RadialField extends BaseGroup {
      * @param am AssetManager
      * @param ppm PixelsPerMeter
      * @param flavor Flavor
-     * @param diameter Diámetro del cuerpo
-     * @param threshold Umbral (radio de acción)
+     * @param w Ancho del elemento (en unidades del mundo)
+     * @param h Alto del elemento (en unidades del mundo)
+     * @param threshold Umbral
      * @param polarity Polaridad
      */
-    public RadialField(AssetManager am, float ppm, WorldElement.Flavor flavor, float diameter, float threshold, Magnetic.Polarity polarity) {
+    public LinearField(AssetManager am, float ppm, WorldElement.Flavor flavor, float w, float h, float threshold, Magnetic.Polarity polarity) {
         super(am);
 
-        this.diameter = diameter;
+        width = w;
+        height = h;
         this.threshold = threshold;
         this.polarity = polarity;
 
-        field = new Image(getAsset(Asset.GAME_MAGNETIC_FIELD_RADIAL, Texture.class));
-        field.setSize(Utils.cell(2 * threshold), Utils.cell(2 * threshold));
-        field.setPosition(0, 0);
+        fill = new Image();
+        fill.setSize(Utils.cell(w), Utils.cell(threshold));
+        fill.setPosition(0, 0);
+
+        field = new Image(getAsset(Asset.GAME_MAGNETIC_FIELD_LINEAR, Texture.class));
+        field.setSize(Utils.cell(w), Utils.cell(threshold));
+        field.setPosition(0, Utils.cell(threshold));
 
         body = new Image(getBodyTexture(flavor));
-        body.setSize(Utils.cell(diameter), Utils.cell(diameter));
-        body.setPosition(Utils.cell(threshold) - 0.5f * Utils.cell(diameter), Utils.cell(threshold) - 0.5f * Utils.cell(diameter));
+        body.setSize(Utils.cell(w), Utils.cell(h));
+        body.setPosition(0, Utils.cell(threshold) - 0.5f * Utils.cell(h));
 
         createParticles();
         addActors();
 
-        setSize(2 * Utils.cell(threshold), 2 * Utils.cell(threshold));
+        setSize(Utils.cell(w), 2 * Utils.cell(threshold));
         setOrigin(0.5f * getWidth(), 0.5f * getHeight());
         setScale(ppm / Var.GRID_CELL_SIZE);
     }
@@ -84,7 +94,7 @@ public class RadialField extends BaseGroup {
     }
 
     /**
-     * Reinicia la animación de las partículas
+     * Reinicia las animaciones de las partículas
      */
     public void reset() {
         for (int i=0; i<particles.size(); i++) {
@@ -101,18 +111,35 @@ public class RadialField extends BaseGroup {
      */
     private void initParticle(Image particle, int index) {
         particle.clearActions();
-        particle.setPosition(centerX(), centerY());
+        particle.setPosition(axisX(index), axisY());
         particle.addAction(alpha(0));
         particle.act(0);
         particle.clearActions();
         particle.addAction(particleAction(index));
     }
 
+    private float axisX(int index) {
+        return index * (Utils.cell(width) - PARTICLE_DIAMETER) / (PARTICLE_COUNT -1);
+    }
+
+    private float axisY() {
+        return Utils.cell(threshold) - PARTICLE_DIAMETER;
+    }
+
+    private float borderX(int index) {
+        return axisX(index);
+    }
+
+    private float borderY() {
+        return Utils.cell(2 * threshold) - PARTICLE_DIAMETER;
+    }
+
     /**
-     * Añade los actores, en orden.
+     * Añade los actores
      */
     private void addActors() {
         addActor(field);
+        addActor(fill);
 
         for(Image particle : particles)
             addActor(particle);
@@ -121,39 +148,7 @@ public class RadialField extends BaseGroup {
     }
 
     /**
-     * Devuelve la coordenada X de la posición de una partícula situada en el centro
-     */
-    private float centerX() {
-        return Utils.cell(threshold) - 0.5f * PARTICLE_DIAMETER;
-    }
-
-    /**
-     * Devuelve la coordenada Y de la posición de una partícula situada en el centro
-     */
-    private float centerY() {
-        return Utils.cell(threshold) - 0.5f * PARTICLE_DIAMETER;
-    }
-
-    /**
-     * Devuelve la coordenada X de la posición de una partícula situada en el borde del umbral.
-     *
-     * @param index Índice de la partícula
-     */
-    private float borderX(int index) {
-        return Utils.cell(threshold) * (1 + MathUtils.cosDeg(angle(index))) - 0.5f * PARTICLE_DIAMETER;
-    }
-
-    /**
-     * Devuelve la coordenada Y de la posición de una partícula situada en el borde del umbral.
-     *
-     * @param index Índice de la partícula
-     */
-    private float borderY(int index) {
-        return Utils.cell(threshold) * (1 + MathUtils.sinDeg(angle(index))) - 0.5f * PARTICLE_DIAMETER;
-    }
-
-    /**
-     * Crea la acción de atracción o repulsión de una partícula.
+     * Crea la animación de una partícula con índice {@param index}.
      *
      * @param index Índice de la partícula
      */
@@ -166,47 +161,26 @@ public class RadialField extends BaseGroup {
     }
 
     /**
-     * Crea una acción de atracción repetida infinitamente, para ser aplicada a una partícula.
+     * Animación de atracción de una partícula
      *
-     * @param index Índice de la p artícula
+     * @param index Índice de la partícula
      */
     private Action attraction(int index) {
         RepeatAction forever = new RepeatAction();
         forever.setCount(RepeatAction.FOREVER);
         forever.setAction(new SequenceAction(
                 parallel(
-                        scaleTo(1, 1),
                         alpha(0),
-                        moveTo(borderX(index), borderY(index))
+                        scaleTo(1, 1),
+                        moveTo(borderX(index), borderY())
                 ),
                 parallel(
                         alpha(PARTICLE_MAX_ALPHA, PARTICLE_PERIOD, Interpolation.pow2In),
-                        moveTo(centerX(), centerY(), PARTICLE_PERIOD, Interpolation.pow2In)
-                ),
-                scaleTo(0, 0, PARTICLE_SHORT_TIME)
-        ));
-
-        return forever;
-    }
-
-    /**
-     * Crea una acción de repulsión repetida infinitamente, para ser aplicada a una partícula.
-     *
-     * @param index Índice de la p artícula
-     */
-    private Action repulsion(int index) {
-        RepeatAction forever = new RepeatAction();
-        forever.setCount(RepeatAction.FOREVER);
-        forever.setAction(new SequenceAction(
-                scaleTo(0, 0),
-                scaleTo(1, 1, PARTICLE_SHORT_TIME),
-                parallel(
-                        alpha(PARTICLE_MAX_ALPHA),
-                        moveTo(centerX(), centerY())
+                        moveTo(axisX(index), axisY(), PARTICLE_PERIOD, Interpolation.pow2In)
                 ),
                 parallel(
-                        alpha(0, PARTICLE_PERIOD, Interpolation.pow2Out),
-                        moveTo(borderX(index), borderY(index), PARTICLE_PERIOD, Interpolation.pow2Out)
+                        scaleTo(0, 0, PARTICLE_SHORT_TIME),
+                        alpha(0, PARTICLE_SHORT_TIME)
                 )
         ));
 
@@ -214,25 +188,42 @@ public class RadialField extends BaseGroup {
     }
 
     /**
-     * Calcula el ángulo en base al índice de sector circular
+     * Animación de repulsión de una partícula
      *
-     * @param i Índice de sector circular
+     * @param index Índice de la partícula
      */
-    private float angle(int i) {
-        return 360.0f * (float) i / (float) PARTICLE_COUNT;
+    private Action repulsion(int index) {
+        RepeatAction forever = new RepeatAction();
+        forever.setCount(RepeatAction.FOREVER);
+        forever.setAction(new SequenceAction(
+                parallel(
+                        scaleTo(0, 0),
+                        moveTo(axisX(index), axisY())
+                ),
+                parallel(
+                        alpha(PARTICLE_MAX_ALPHA, PARTICLE_SHORT_TIME),
+                        scaleTo(1, 1, PARTICLE_SHORT_TIME)
+                ),
+                parallel(
+                        alpha(0, PARTICLE_PERIOD, Interpolation.pow2Out),
+                        moveTo(borderX(index), borderY(), PARTICLE_PERIOD, Interpolation.pow2Out)
+                )
+        ));
+
+        return forever;
     }
 
     /**
-     * Devuelve la textura del cuerpo, dependiendo del {@link com.jmolina.orb.elements.WorldElement.Flavor}.
+     * Devuelve la textura del cuerpo, dependiendo del {@link WorldElement.Flavor}.
      *
      * @param flavor Flavor
      */
     private Texture getBodyTexture(WorldElement.Flavor flavor) {
         switch (flavor) {
-            case RED: return getAsset(Asset.GAME_CIRCLE_RED, Texture.class);
-            case VIOLET: return getAsset(Asset.GAME_CIRCLE_VIOLET, Texture.class);
-            case TRANSPARENT: return getAsset(Asset.GAME_CIRCLE_TRANSPARENT, Texture.class);
-            default: return getAsset(Asset.GAME_CIRCLE_VIOLET, Texture.class);
+            case RED: return getAsset(Asset.GAME_SQUARE_RED, Texture.class);
+            case VIOLET: return getAsset(Asset.GAME_SQUARE_VIOLET, Texture.class);
+            case TRANSPARENT: return getAsset(Asset.GAME_SQUARE_TRANSPARENT, Texture.class);
+            default: return getAsset(Asset.GAME_SQUARE_VIOLET, Texture.class);
         }
     }
 
