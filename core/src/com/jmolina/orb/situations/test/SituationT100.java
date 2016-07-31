@@ -4,7 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Heater;
-import com.jmolina.orb.elements.Init;
+import com.jmolina.orb.elements.Up;
 import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.Propeller;
@@ -24,7 +24,7 @@ public class SituationT100 extends Walls {
         Movable movable = new Movable(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 Element.Geometry.SQUARE, Element.Flavor.GREY,
-                6, 4, 2, 2, 0
+                2, 2, 6, 4, 0
         );
 
         movable.addRotation(0.5f);
@@ -47,7 +47,7 @@ public class SituationT100 extends Walls {
         Movable platform = new Movable(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 Element.Geometry.SQUARE, Element.Flavor.GREY,
-                8, 7, 10, 1, 0
+                10, 1, 8, 7, 0
         );
 
         addElement(platform);
@@ -58,7 +58,7 @@ public class SituationT100 extends Walls {
         Movable m2 = new Movable(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 Element.Geometry.TRIANGLE, Element.Flavor.RED,
-                10, 2, 3, 3, 0
+                3, 3, 10, 2, 0
         );
 
         m2.addRotation(0.25f);
@@ -71,7 +71,7 @@ public class SituationT100 extends Walls {
         RadialMagnetic magnetic = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                6, 16, 1,
+                1, 6, 16,
                 2, Magnetic.Polarity.ATTRACTIVE
         );
 
@@ -97,7 +97,7 @@ public class SituationT100 extends Walls {
         // Test propeller
         Propeller propeller = new Propeller(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                6, 8, 5, 0,
+                5, 6, 8, 0,
                 2, Magnetic.Polarity.REPULSIVE
         );
 
@@ -108,8 +108,8 @@ public class SituationT100 extends Walls {
 
 
 
-        // Init
-        addElement(new Init(
+        // Up
+        addElement(new Up(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 6, 4
         ));
@@ -118,19 +118,19 @@ public class SituationT100 extends Walls {
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 Element.Geometry.SQUARE, Element.Flavor.BLACK,
-                6, -9 + 0.5f, 12, 18, 0
+                12, 18, 6, -9 + 0.5f, 0
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 Element.Geometry.SQUARE, Element.Flavor.BLACK,
-                -6 + 0.5f, -9 + 0.5f, 12, 18, 0
+                12, 18, -6 + 0.5f, -9 + 0.5f, 0
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 Element.Geometry.SQUARE, Element.Flavor.BLACK,
-                18 - 0.5f, -9 + 0.5f, 12, 18, 0
+                12, 18, 18 - 0.5f, -9 + 0.5f, 0
         ));
     }
 

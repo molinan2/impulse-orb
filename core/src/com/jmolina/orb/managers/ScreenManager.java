@@ -110,6 +110,12 @@ public class ScreenManager {
         }
     }
 
+    /**
+     * TODO: ScreenManager sets the levels
+     * Configurar desde aqui la setPreviousScreen (setPrevious) y la setSuccessScreen (setFollowing).
+     * Añadir un setThis para indicar cuál es la Key actual.
+     * Hacer públicos los métodos y hacerlo desde aquí, no pasar parámetros.
+     */
     public BaseScreen createScreen(Key key) {
         switch (key) {
             case LOAD: return new Load(getSuperManager(), LOAD);

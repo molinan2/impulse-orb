@@ -1,4 +1,4 @@
-package com.jmolina.orb.elements;
+package com.jmolina.orb.actors;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;

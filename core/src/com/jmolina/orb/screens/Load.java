@@ -65,7 +65,7 @@ public class Load extends BaseScreen {
     private void switchToMenu() {
         superManager.createGameManager();
         getGameManager().play(GameManager.Track.Menu);
-        switchToScreen(MAIN, Hierarchy.LOWER);
+        switchToScreen(LEVEL_1, Hierarchy.LOWER);
     }
 
 }

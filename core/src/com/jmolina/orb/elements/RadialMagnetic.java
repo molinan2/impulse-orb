@@ -12,11 +12,11 @@ import com.jmolina.orb.widgets.game.RadialField;
  */
 public class RadialMagnetic extends Magnetic {
 
-    public RadialMagnetic(AssetManager am, World world, float ppm, Flavor flavor, float x, float y, float diameter, float threshold, Polarity polarity) {
+    public RadialMagnetic(AssetManager am, World world, float ppm, Flavor flavor, float diameter, float x, float y, float threshold, Polarity polarity) {
         super(
                 am, world, ppm,
                 Geometry.CIRCLE, flavor,
-                x, y, diameter, diameter, 0,
+                diameter, diameter, x, y, 0,
                 threshold, polarity
         );
 

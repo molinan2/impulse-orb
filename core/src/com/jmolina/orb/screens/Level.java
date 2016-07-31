@@ -18,6 +18,7 @@ import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.Orb;
+import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.listeners.ContactHandler;
@@ -57,11 +58,13 @@ public class Level extends BaseScreen {
     private final int WORLD_STEP_MULTIPLIER = 2;
     private final int WORLD_VELOCITY_INTERACTIONS = 8;
     private final int WORLD_POSITION_INTERACTIONS = 3;
-    private final int INFINITE_Z_INDEX = 32000;
+    private final int Z_INDEX_ORB = 20000;
+    private final int Z_INDEX_BLACK = 10000;
     private final float MAGNETIC_FACTOR = 0.2f;
+    private final float IMPULSE_FACTOR = 0.85f;
 
     private Tick tick;
-    private float pixelsPerMeter, impulseFactor;
+    private float pixelsPerMeter, impulse;
     private boolean locked, ticking;
     private World world;
     private ContactHandler contactHandler;
@@ -91,7 +94,7 @@ public class Level extends BaseScreen {
 
         tick = new Tick();
         pixelsPerMeter = getGameManager().getPixelsPerMeter();
-        impulseFactor = 1 / getPixelsPerMeter();
+        impulse = IMPULSE_FACTOR / getPixelsPerMeter();
         orbStartPosition = new Vector2();
         lastOrbPosition = new Vector2();
         situations = new SnapshotArray<Situation>();
@@ -369,7 +372,7 @@ public class Level extends BaseScreen {
     public void setOrb(Orb orb) {
         addMainActor(orb.getActor());
         orb.syncActor(worldViewport);
-        orb.getActor().setZIndex(INFINITE_Z_INDEX);
+        orb.getActor().setZIndex(Z_INDEX_ORB);
         this.orb = orb;
     }
 
@@ -410,7 +413,22 @@ public class Level extends BaseScreen {
             element.syncActor(worldViewport);
         }
 
-        getOrb().getActor().setZIndex(INFINITE_Z_INDEX);
+        correctZIndexes();
+    }
+
+    /**
+     * Corrige los Z index de los elementos BLACK (muros) y el Orb. Los elementos BLACK deben
+     * permanecer siempre por encima de los demás. El Orb debe permanecer por encima de todos.
+     */
+    private void correctZIndexes() {
+        for (Situation situation : getSituations()) {
+            for (Element element : situation.getElements()) {
+                if (element.getFlavor() == WorldElement.Flavor.BLACK)
+                    element.getActor().setZIndex(Z_INDEX_BLACK);
+            }
+        }
+
+        getOrb().getActor().setZIndex(Z_INDEX_ORB);
     }
 
     /**
@@ -731,8 +749,8 @@ public class Level extends BaseScreen {
      * @param velocityY Velocidad recogida por el {@link GestureHandler} para la coordenada y
      */
     public void impulse(float velocityX, float velocityY) {
-        float impulseX = MathUtils.clamp(velocityX * impulseFactor, -GESTURE_MAX_FLING_IMPULSE, GESTURE_MAX_FLING_IMPULSE);
-        float impulseY = MathUtils.clamp(-velocityY * impulseFactor, -GESTURE_MAX_FLING_IMPULSE, GESTURE_MAX_FLING_IMPULSE);
+        float impulseX = MathUtils.clamp(velocityX * impulse, -GESTURE_MAX_FLING_IMPULSE, GESTURE_MAX_FLING_IMPULSE);
+        float impulseY = MathUtils.clamp(-velocityY * impulse, -GESTURE_MAX_FLING_IMPULSE, GESTURE_MAX_FLING_IMPULSE);
 
         if (!isLocked()) {
             getOrb().unfreeze();

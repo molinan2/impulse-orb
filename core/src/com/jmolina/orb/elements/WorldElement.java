@@ -50,23 +50,24 @@ public class WorldElement {
     private final float FRICTION = 0.8f; // FRICTION = 0 evita rotaciones al colisionar
 
     private float width, height;
+    private float initialX, initialY, initialAngle;
     private Body body;
     private UserData userData;
     private Geometry geometry;
+    private Flavor flavor;
 
     /**
      * Constructor
-     *
-     * @param world World
-     * @param x Position x coord (World units)
-     * @param y Position y coord (World units)
+     *  @param world World
      * @param w Width of the element (World units)
      * @param h Heigth of the element (World units)
+     * @param x Position x coord (World units)
+     * @param y Position y coord (World units)
      * @param angle Rotation of the element in degrees counterclockwise
      * @param geometry Geometry
      * @param flavor Flavor
      */
-    public WorldElement(World world, float x, float y, float w, float h, float angle, Geometry geometry, Flavor flavor) {
+    public WorldElement(World world, float w, float h, float x, float y, float angle, Geometry geometry, Flavor flavor) {
         userData = new UserData();
         FixtureDef fixtureDef = new FixtureDef();
         BodyDef bodyDef = new BodyDef();
@@ -75,6 +76,7 @@ public class WorldElement {
         height = h;
         setUserData(flavor);
         this.geometry = geometry;
+        this.flavor = flavor;
 
         fixtureDef.density = DENSITY;
         fixtureDef.restitution = RESTITUTION;
@@ -175,6 +177,8 @@ public class WorldElement {
     }
 
     public void setPosition(float x, float y) {
+        setInitialX(x);
+        setInitialY(y);
         getBody().setTransform(x, y, getBody().getAngle());
     }
 
@@ -199,6 +203,47 @@ public class WorldElement {
 
     public Geometry getGeometry() {
         return this.geometry;
+    }
+
+    public Flavor getFlavor() {
+        return flavor;
+    }
+
+    /**
+     * Valores iniciales. Éstos pueden variar cuando el elemento se añade a una situación, que tiene
+     * una altura base que se sumará a la del elemento. Los valores iniciales se deben restaurar al
+     * resetear el elemento (por ejemplo, si es variante).
+     *
+     * @param x
+     */
+    public void setInitialX(float x) {
+        initialX = x;
+    }
+
+    public float getInitialX() {
+        return initialX;
+    }
+
+    public void setInitialY(float y) {
+        initialY = y;
+    }
+
+    public float getInitialY() {
+        return initialY;
+    }
+
+    /**
+     * Ángulo inicial en grados. Es importante si el objeto es variante, ya que debe resetearse y
+     * recuperar su ángulo inicial. Si no es variante, nunca se resetea.
+     *
+     * @param angle Ángulo en grados.
+     */
+    public void setInitialAngle(float angle) {
+        initialAngle = angle;
+    }
+
+    public float getInitialAngle() {
+        return initialAngle;
     }
 
 }

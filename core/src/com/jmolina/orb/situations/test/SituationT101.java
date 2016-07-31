@@ -17,18 +17,18 @@ public class SituationT101 extends Walls {
         // Obstacle ball
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY, 6, 14, 4, 4, 0
+                WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY, 4, 4, 6, 14, 0
         ));
 
         // Lateral red boxes
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED, 0.75f, 10, 0.5f, 4, 0
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED, 0.5f, 4, 0.75f, 10, 0
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED, 11.25f, 10, 0.5f, 4, 0
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED, 0.5f, 4, 11.25f, 10, 0
         ));
     }
 

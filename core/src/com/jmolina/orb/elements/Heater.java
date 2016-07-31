@@ -31,7 +31,7 @@ public class Heater extends Element {
     public Heater(AssetManager am, World world, float ppm, float x, float y) {
         super(am, world, am.get(Asset.GAME_HEAT, Texture.class), ppm,
                 Geometry.SQUARE, Flavor.BLUE,
-                x, y, 10, 10, 0
+                10, 10, x, y, 0
         );
 
         setAsSensor(true);

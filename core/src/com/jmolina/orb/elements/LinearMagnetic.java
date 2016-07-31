@@ -17,11 +17,11 @@ public class LinearMagnetic extends Magnetic {
 
     private final float NEAR_ZERO = 0.0001f;
 
-    public LinearMagnetic(AssetManager am, World world, float ppm, Flavor flavor, float x, float y, float w, float h, float angle, float threshold, Polarity polarity) {
+    public LinearMagnetic(AssetManager am, World world, float ppm, Flavor flavor, float w, float h, float x, float y, float angle, float threshold, Polarity polarity) {
         super(
                 am, world, ppm,
                 Geometry.SQUARE, flavor,
-                x, y, w, h, angle,
+                w, h, x, y, angle,
                 threshold, polarity
         );
 

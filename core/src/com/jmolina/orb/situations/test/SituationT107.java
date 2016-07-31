@@ -16,13 +16,13 @@ public class SituationT107 extends Walls {
         // Grey stripe
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.GREY, 3.5f, 5, 10, 1, 45
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.GREY, 10, 1, 3.5f, 5, 45
         ));
 
         // Red stripe
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.RED, 8.5f, 13, 10, 1, -45
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.RED, 10, 1, 8.5f, 13, -45
         ));
     }
 

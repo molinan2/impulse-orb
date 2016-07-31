@@ -18,22 +18,22 @@ public class SituationT102 extends Walls {
         // Lateral boxes
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Geometry.SQUARE, Flavor.GREY, 0, 7, 7, 7, 45
+                getPixelsPerMeter(), Geometry.SQUARE, Flavor.GREY, 7, 7, 0, 7, 45
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Geometry.SQUARE, Flavor.RED, 2.5f, 9.5f, 7, 0.5f, -45
+                getPixelsPerMeter(), Geometry.SQUARE, Flavor.RED, 7, 0.5f, 2.5f, 9.5f, -45
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Geometry.SQUARE, Flavor.GREY, 12, 12, 7, 7, -45
+                getPixelsPerMeter(), Geometry.SQUARE, Flavor.GREY, 7, 7, 12, 12, -45
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Geometry.SQUARE, Flavor.RED, 9.5f, 14.5f, 7, 0.5f, 45
+                getPixelsPerMeter(), Geometry.SQUARE, Flavor.RED, 7, 0.5f, 9.5f, 14.5f, 45
         ));
     }
 

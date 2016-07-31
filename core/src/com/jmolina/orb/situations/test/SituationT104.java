@@ -16,12 +16,12 @@ public class SituationT104 extends Walls {
         // Obstacle balls
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Element.Geometry.CIRCLE, Element.Flavor.GREY, 4f, 5f, 4, 4, 0
+                getPixelsPerMeter(), Element.Geometry.CIRCLE, Element.Flavor.GREY, 4, 4, 4f, 5f, 0
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Element.Geometry.CIRCLE, Element.Flavor.GREY, 8f, 12f, 4, 4, 0
+                getPixelsPerMeter(), Element.Geometry.CIRCLE, Element.Flavor.GREY, 4, 4, 8f, 12f, 0
         ));
     }
 

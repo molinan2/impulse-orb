@@ -18,7 +18,7 @@ public class Orb extends Element {
     private final float HEAT_MIN = 0f;
     private final float HEAT_MAX = 1f;
     private final float HEAT_INCREMENT = 0.2f;
-    private final float COOLING_RATE = 0.1f;
+    private final float COOLING_RATE = 0.2f;
     private final float OVERLOAD_TIME = 3f;
     private final float FREEZE_TIME = 0.90f;
     public static final float INTRO_TIME = 1f;
@@ -26,14 +26,14 @@ public class Orb extends Element {
 
     private boolean frozen, overloaded;
     private float heat, naturalScale, freezeTime, overloadTime;
-    private Fragments fragments;
+    private com.jmolina.orb.actors.Fragments fragments;
 
     public Orb(AssetManager am, World world, float pixelsPerMeter) {
-        super(am, world, pixelsPerMeter, Geometry.CIRCLE, Flavor.GREEN, 6, 2, 1f, 1f, 0);
+        super(am, world, pixelsPerMeter, Geometry.CIRCLE, Flavor.GREEN, 1f, 1f, 6, 2, 0);
 
         heat = 0f;
         frozen = overloaded = false;
-        fragments = new Fragments(am);
+        fragments = new com.jmolina.orb.actors.Fragments(am);
         naturalScale = pixelsPerMeter * DIAMETER / fragments.getWidth();
         fragments.setScale(naturalScale);
         setActor(fragments);

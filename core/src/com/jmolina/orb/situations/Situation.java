@@ -36,6 +36,13 @@ public abstract class Situation {
         return pixelsPerMeter;
     }
 
+    /**
+     * TODO
+     * Sólo con crear un elemento ya se añade al mundo. addElement sólo lo indexa en la situación
+     * para que se pueda modificar su posición relativa basada en la situación. Si no se hace
+     * addElement, el elemento se sitúa con su posición de base, pero se dibuja en su situación.
+     * ¿Es esto normal?
+     */
     public void addElement (Element element) {
         this.elements.add(element);
     }

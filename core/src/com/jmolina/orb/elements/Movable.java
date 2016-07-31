@@ -21,7 +21,6 @@ public class Movable extends Element {
     private final Interpolation INTERPOLATION = Interpolation.sine;
 
     private float zoomCorrectionFactor;
-    private float x, y, angle;
     private boolean skipBodySync;
     private Rotation rotation;
     private Displacement displacement;
@@ -31,12 +30,12 @@ public class Movable extends Element {
      *
      * Crea un elemento movible (rotación y desplazamiento)
      */
-    public Movable(AssetManager am, World world, float ppm, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle) {
-        super(am, world, ppm, geometry, flavor, x, y, w, h, angle);
-        this.zoomCorrectionFactor = ppm / Var.GRID_CELL_SIZE;
-        this.x = x;
-        this.y = y;
-        this.angle = angle;
+    public Movable(AssetManager am, World world, float ppm, Geometry geometry, Flavor flavor, float w, float h, float x, float y, float angle) {
+        super(am, world, ppm, geometry, flavor, w, h, x, y, angle);
+        zoomCorrectionFactor = ppm / Var.GRID_CELL_SIZE;
+        setInitialX(x);
+        setInitialY(y);
+        setInitialAngle(angle);
 
         rotation = new Rotation();
         displacement = new Displacement();
@@ -129,7 +128,7 @@ public class Movable extends Element {
      */
     public void reset() {
         getActor().clearActions();
-        getBody().setTransform(x, y, MathUtils.degreesToRadians * angle);
+        getBody().setTransform(getInitialX(), getInitialY(), MathUtils.degreesToRadians * getInitialAngle());
         addRotation(rotation.frequency, rotation.clockwise);
         addDisplacement(displacement.frequency, displacement.x, displacement.y);
         skipBodySync();

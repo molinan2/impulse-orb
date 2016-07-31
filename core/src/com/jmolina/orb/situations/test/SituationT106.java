@@ -16,12 +16,12 @@ public class SituationT106 extends Walls {
         // Red boxes
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.RED, 0, 7, 7, 7, 45
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.RED, 7, 7, 0, 7, 45
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.RED, 12, 12, 7, 7, 45
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.RED, 7, 7, 12, 12, 45
         ));
     }
 

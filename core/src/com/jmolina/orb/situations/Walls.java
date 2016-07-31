@@ -20,13 +20,13 @@ public abstract class Walls extends Situation {
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK,
-                -6 + 0.5f, 9, 12, 18, 0
+                12, 18, -6 + 0.5f, 9, 0
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK,
-                12 + 6 - 0.5f, 9, 12, 18, 0
+                12, 18, 12 + 6 - 0.5f, 9, 0
         ));
     }
 

@@ -10,7 +10,7 @@ public class Exit extends Element {
     public Exit(AssetManager am, World world, float x, float y, float pixelsPerMeter) {
         super(am, world, am.get(Asset.GAME_EXIT, Texture.class), pixelsPerMeter,
                 Geometry.SQUARE, Flavor.BLUE,
-                x, y, 10, 4, 0
+                10, 4, x, y, 0
         );
 
         setAsSensor(true);

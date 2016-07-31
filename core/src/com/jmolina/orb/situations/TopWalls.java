@@ -1,26 +1,17 @@
-package com.jmolina.orb.situations.test;
+package com.jmolina.orb.situations;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Element;
-import com.jmolina.orb.elements.Exit;
-import com.jmolina.orb.situations.Walls;
 
 
-public class SituationT199 extends Walls {
+public class TopWalls extends Walls {
 
-    public SituationT199(AssetManager am, World world, float ratioMeterPixel) {
+    public TopWalls(AssetManager am, World world, float ratioMeterPixel) {
         super(am, world, ratioMeterPixel);
     }
 
     protected void createInnerElements () {
-        // Exit
-        addElement(new Exit(
-                getAssetManager(), getWorld(),
-                6, 13,
-                getPixelsPerMeter()
-        ));
-
         // Top walls
         addElement(new Element(
                 getAssetManager(), getWorld(),

@@ -4,7 +4,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.jmolina.orb.utils.Utils;
 
 
 /**
@@ -20,10 +19,10 @@ public abstract class Magnetic extends Movable {
     private float threshold;
     private Polarity polarity;
 
-    public Magnetic(AssetManager am, World world, float ppm, Geometry geometry, Flavor flavor, float x, float y, float w, float h, float angle, float threshold, Polarity polarity) {
+    public Magnetic(AssetManager am, World world, float ppm, Geometry geometry, Flavor flavor, float w, float h, float x, float y, float angle, float threshold, Polarity polarity) {
         super(am, world, ppm,
                 geometry, flavor,
-                x, y, w, h, angle
+                w, h, x, y, angle
         );
 
         setThreshold(MathUtils.clamp(threshold, MIN_THRESHOLD, threshold));

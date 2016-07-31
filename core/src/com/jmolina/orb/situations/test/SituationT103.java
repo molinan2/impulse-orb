@@ -16,22 +16,22 @@ public class SituationT103 extends Walls {
         // Obstacle bars
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.GREY, 4.5f, 3.5f, 9, 1, 0
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.GREY, 9, 1, 4.5f, 3.5f, 0
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.GREY, 7.5f, 7.5f, 9, 1, 0
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.GREY, 9, 1, 7.5f, 7.5f, 0
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.GREY, 4.5f, 11.5f, 9, 1, 0
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.GREY, 9, 1, 4.5f, 11.5f, 0
         ));
 
         addElement(new Element(
                 getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.GREY, 7.5f, 15.5f, 9, 1, 0
+                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.GREY, 9, 1, 7.5f, 15.5f, 0
         ));
     }
 
