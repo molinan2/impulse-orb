@@ -59,8 +59,7 @@ public class LinearField extends Field {
         body.setSize(Utils.cell(w), Utils.cell(h));
         body.setPosition(0, Utils.cell(threshold) - 0.5f * Utils.cell(h));
 
-        setParticleCount(6);
-        createParticles();
+        createParticles((int) w);
         addActors();
 
         setSize(Utils.cell(w), 2 * Utils.cell(threshold));

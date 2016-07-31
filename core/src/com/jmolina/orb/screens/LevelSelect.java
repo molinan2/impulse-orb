@@ -36,57 +36,27 @@ public class LevelSelect extends Menu {
         level4 = new Card(getAssetManager(), "HERO", getFormattedBestTime(LEVEL_4), "--", cover, true);
         level5 = new Card(getAssetManager(), "GOD", getFormattedBestTime(LEVEL_5), "--", cover, true);
 
-        Visitor switchToLevel1 = new Visitor() {
-            @Override
-            public void run() {
-                getGameManager().play(GameManager.Fx.Button);
-                switchToScreen(LEVEL_LAUNCH_1, LOWER);
-            }
-        };
-
-        Visitor switchToLevel2 = new Visitor() {
-            @Override
-            public void run() {
-                getGameManager().play(GameManager.Fx.Button);
-                switchToScreen(LEVEL_LAUNCH_2, LOWER);
-            }
-        };
-
-        Visitor switchToLevel3 = new Visitor() {
-            @Override
-            public void run() {
-                getGameManager().play(GameManager.Fx.Button);
-                switchToScreen(LEVEL_LAUNCH_3, LOWER);
-            }
-        };
-
-        Visitor switchToLevel4 = new Visitor() {
-            @Override
-            public void run() {
-                getGameManager().play(GameManager.Fx.Button);
-                switchToScreen(LEVEL_LAUNCH_4, LOWER);
-            }
-        };
-
-        Visitor switchToLevel5 = new Visitor() {
-            @Override
-            public void run() {
-                getGameManager().play(GameManager.Fx.Button);
-                switchToScreen(LEVEL_LAUNCH_5, LOWER);
-            }
-        };
-
-        level1.setOnClickOperation(switchToLevel1);
-        level2.setOnClickOperation(switchToLevel2);
-        level3.setOnClickOperation(switchToLevel3);
-        level4.setOnClickOperation(switchToLevel4);
-        level5.setOnClickOperation(switchToLevel5);
+        level1.setOnClickOperation(visitor(LEVEL_LAUNCH_1));
+        level2.setOnClickOperation(visitor(LEVEL_LAUNCH_2));
+        level3.setOnClickOperation(visitor(LEVEL_LAUNCH_3));
+        level4.setOnClickOperation(visitor(LEVEL_LAUNCH_4));
+        level5.setOnClickOperation(visitor(LEVEL_LAUNCH_5));
 
         add(level1);
         add(level2);
         add(level3);
         add(level4);
         add(level5);
+    }
+
+    private Visitor visitor(final ScreenManager.Key screen) {
+        return new Visitor() {
+            @Override
+            public void run() {
+                getGameManager().play(GameManager.Fx.Button);
+                switchToScreen(screen, LOWER);
+            }
+        };
     }
 
     @Override

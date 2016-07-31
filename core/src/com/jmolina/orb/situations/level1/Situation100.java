@@ -48,7 +48,7 @@ public class Situation100 extends SideWallSituation {
         Movable platform = new Movable(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 Element.Geometry.SQUARE, Element.Flavor.GREY,
-                6, 7, 10, 1, 0
+                8, 7, 10, 1, 0
         );
 
         addElement(platform);
@@ -98,7 +98,7 @@ public class Situation100 extends SideWallSituation {
         // Test propeller
         Propeller propeller = new Propeller(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                6, 8, 8, 0,
+                6, 8, 5, 0,
                 2, Magnetic.Polarity.REPULSIVE
         );
 

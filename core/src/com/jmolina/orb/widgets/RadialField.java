@@ -49,8 +49,7 @@ public class RadialField extends Field {
         body.setSize(Utils.cell(d), Utils.cell(d));
         body.setPosition(Utils.cell(threshold) - 0.5f * Utils.cell(d), Utils.cell(threshold) - 0.5f * Utils.cell(d));
 
-        setParticleCount(12);
-        createParticles();
+        createParticles(12);
         addActors();
 
         setSize(2 * Utils.cell(threshold), 2 * Utils.cell(threshold));

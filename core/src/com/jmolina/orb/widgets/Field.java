@@ -38,7 +38,8 @@ public abstract class Field extends BaseGroup {
     /**
      * Crea la partículas
      */
-    protected void createParticles() {
+    protected void createParticles(int count) {
+        setParticleCount(count);
         particles = new ArrayList<Image>();
 
         for (int i = 0; i< particleCount; i++) {
@@ -106,7 +107,7 @@ public abstract class Field extends BaseGroup {
      * Define la cantidad de partículas
      * @param count Cantidad de partículas
      */
-    protected void setParticleCount(int count) {
+    private void setParticleCount(int count) {
         particleCount = count;
     }
 

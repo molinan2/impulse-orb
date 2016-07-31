@@ -763,13 +763,17 @@ public class Level extends BaseScreen {
     /**
      * Activa el incremento continuo de calor del {@link Orb} (ticking). Al empezar (entrar en una
      * zona caliente), siempre ocurre un tick.
+     *
+     * TODO
+     * El tick siempre al empezar puede ser problemático si se entra y sale muy rápido, por ejemplo
+     * debido a rebotes o campos magnéticos
      */
     public void enableTicking(Tick tick) {
         this.tick.amount = tick.amount;
         this.tick.period = tick.period;
-        tick.reset();
+        this.tick.reset(); // TODO Quiza eliminando esta línea se solucione
         ticking = true;
-        tick();
+        tick(); // TODO Y/o ésta
     }
 
     /**

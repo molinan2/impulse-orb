@@ -11,7 +11,12 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 
 /**
- * Elemento movible y rotable
+ * Elemento calentador
+ *
+ * TODO
+ * Extender de Movable
+ * Cambiar textura: que sea lisa
+ * Que las proporciones sea variables (w, h)
  */
 public class Heater extends Element {
 
