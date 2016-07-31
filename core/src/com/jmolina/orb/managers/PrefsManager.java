@@ -47,6 +47,12 @@ public class PrefsManager {
     public static final String LADDER_5_1 = "ladder_5_1";
     public static final String LADDER_5_2 = "ladder_5_2";
     public static final String LADDER_5_3 = "ladder_5_3";
+    public static final String LADDER_T1_1 = "ladder_test1_3";
+    public static final String LADDER_TEST1_2 = "ladder_test1_3";
+    public static final String LADDER_TEST1_3 = "ladder_test1_3";
+    public static final String LADDER_T2_1 = "ladder_test2_3";
+    public static final String LADDER_TEST2_2 = "ladder_test2_3";
+    public static final String LADDER_TEST2_3 = "ladder_test2_3";
 
     private Preferences prefs;
 

@@ -13,7 +13,7 @@ import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.widgets.Title;
+import com.jmolina.orb.widgets.ui.Title;
 
 public class Menu extends BaseScreen {
 

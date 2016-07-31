@@ -10,12 +10,12 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.utils.Utils;
-import com.jmolina.orb.widgets.Gauge;
-import com.jmolina.orb.widgets.HUDBackground;
-import com.jmolina.orb.widgets.Curtain;
-import com.jmolina.orb.widgets.PauseButton;
-import com.jmolina.orb.widgets.PauseMenu;
-import com.jmolina.orb.widgets.Timer;
+import com.jmolina.orb.widgets.game.Gauge;
+import com.jmolina.orb.widgets.game.HUDBackground;
+import com.jmolina.orb.widgets.game.Curtain;
+import com.jmolina.orb.widgets.ui.PauseButton;
+import com.jmolina.orb.widgets.ui.PauseMenu;
+import com.jmolina.orb.widgets.game.Timer;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 

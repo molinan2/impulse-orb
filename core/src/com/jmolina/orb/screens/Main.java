@@ -6,9 +6,9 @@ import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Utils;
-import com.jmolina.orb.widgets.Notice;
-import com.jmolina.orb.widgets.MainButton;
-import com.jmolina.orb.widgets.GameTitle;
+import com.jmolina.orb.widgets.ui.Notice;
+import com.jmolina.orb.widgets.ui.MainButton;
+import com.jmolina.orb.widgets.ui.GameTitle;
 
 import static com.jmolina.orb.managers.ScreenManager.Key.*;
 

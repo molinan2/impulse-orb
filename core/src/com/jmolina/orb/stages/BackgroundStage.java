@@ -3,7 +3,7 @@ package com.jmolina.orb.stages;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
-import com.jmolina.orb.widgets.StaticBackground;
+import com.jmolina.orb.widgets.ui.StaticBackground;
 
 public class BackgroundStage extends Stage {
 
@@ -20,4 +20,5 @@ public class BackgroundStage extends Stage {
         staticBackground.dispose();
         super.dispose();
     }
+
 }

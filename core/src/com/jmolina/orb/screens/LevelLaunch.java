@@ -7,10 +7,10 @@ import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.widgets.Ladder;
-import com.jmolina.orb.widgets.LaunchCover;
-import com.jmolina.orb.widgets.LevelTitle;
-import com.jmolina.orb.widgets.MainButton;
+import com.jmolina.orb.widgets.ui.Ladder;
+import com.jmolina.orb.widgets.ui.LaunchCover;
+import com.jmolina.orb.widgets.ui.LevelTitle;
+import com.jmolina.orb.widgets.ui.MainButton;
 
 import static com.jmolina.orb.managers.ScreenManager.Key.*;
 

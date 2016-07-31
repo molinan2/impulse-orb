@@ -11,11 +11,11 @@ import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Var;
-import com.jmolina.orb.widgets.BigText;
-import com.jmolina.orb.widgets.Heading;
-import com.jmolina.orb.widgets.SuccessCover;
-import com.jmolina.orb.widgets.LevelTitle;
-import com.jmolina.orb.widgets.MainButton;
+import com.jmolina.orb.widgets.ui.BigText;
+import com.jmolina.orb.widgets.ui.Heading;
+import com.jmolina.orb.widgets.ui.SuccessCover;
+import com.jmolina.orb.widgets.ui.LevelTitle;
+import com.jmolina.orb.widgets.ui.MainButton;
 
 import java.text.DecimalFormat;
 

@@ -7,9 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.managers.AssetManager;
-import com.jmolina.orb.utils.Grid;
 import com.jmolina.orb.var.Var;
-import com.jmolina.orb.widgets.TiledLayer;
+import com.jmolina.orb.widgets.game.TiledLayer;
 
 public class ParallaxStage extends Stage {
 

@@ -83,6 +83,16 @@ public class PersonalTimes {
                 LADDER_2 = LADDER_5_2;
                 LADDER_3 = LADDER_5_3;
                 break;
+            case LEVEL_T1:
+                LADDER_1 = LADDER_T1_1;
+                LADDER_2 = LADDER_TEST1_2;
+                LADDER_3 = LADDER_TEST1_3;
+                break;
+            case LEVEL_T2:
+                LADDER_1 = LADDER_T2_1;
+                LADDER_2 = LADDER_TEST2_2;
+                LADDER_3 = LADDER_TEST2_3;
+                break;
             default:
         }
     }

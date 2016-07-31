@@ -13,8 +13,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.jmolina.orb.var.Var;
-import com.jmolina.orb.widgets.Arrow;
-import com.jmolina.orb.widgets.Pulse;
+import com.jmolina.orb.widgets.game.Arrow;
+import com.jmolina.orb.widgets.game.Pulse;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 

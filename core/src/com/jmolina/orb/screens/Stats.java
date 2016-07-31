@@ -4,8 +4,8 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.widgets.Heading;
-import com.jmolina.orb.widgets.Stat;
+import com.jmolina.orb.widgets.ui.Heading;
+import com.jmolina.orb.widgets.ui.Stat;
 
 import static com.jmolina.orb.managers.PrefsManager.*;
 
