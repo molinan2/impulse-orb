@@ -15,27 +15,27 @@ public class Situation105 extends Walls {
     }
 
     protected void createInnerElements () {
-        Element circleCenter1 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element circleCenter1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
                 2, 2, 6, 2, 0);
 
-        Element circleLeft1 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element circleLeft1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
                 2, 2, 3, 6, 0);
 
-        Element circleRight1 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element circleRight1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
                 2, 2, 9, 6, 0);
 
-        Element circleCenter2 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element circleCenter2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
                 2, 2, 6, 11, 0);
 
-        Element circleLeft2 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element circleLeft2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
                 2, 2, 3, 15, 0);
 
-        Element circleRight2 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element circleRight2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
                 2, 2, 9, 15, 0);
 

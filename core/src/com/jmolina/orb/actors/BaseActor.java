@@ -41,22 +41,7 @@ public class BaseActor extends Actor {
         Color color = getColor();
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
-        /** Metodo completo de dibujado:
-         * @param x the x-coordinate in screen space
-         * @param y the y-coordinate in screen space
-         * @param originX the x-coordinate of the scaling and rotation origin relative to the screen space coordinates
-         * @param originY the y-coordinate of the scaling and rotation origin relative to the screen space coordinates
-         * @param width the width in pixels
-         * @param height the height in pixels
-         * @param scaleX the scale of the rectangle around originX/originY in x
-         * @param scaleY the scale of the rectangle around originX/originY in y
-         * @param rotation the angle of counter clockwise rotation of the rectangle around originX/originY
-         * @param srcX the x-coordinate in texel space
-         * @param srcY the y-coordinate in texel space
-         * @param srcWidth the source with in texels
-         * @param srcHeight the source height in texels
-         * @param flipX whether to flip the sprite horizontally
-         * @param flipY whether to flip the sprite vertically */
+        // Metodo completo de dibujado
         batch.draw(texture,
                 this.getX(), this.getY(),
                 this.getOriginX(), this.getOriginY(),

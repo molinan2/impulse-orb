@@ -15,19 +15,19 @@ public class Situation102 extends Walls {
     }
 
     protected void createInnerElements () {
-        Element platform1 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platform1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 9, 1, 4.5f, 2, 0);
 
-        Element platform2 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platform2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 9, 1, 7.5f, 6, 0);
 
-        Element platform3 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platform3 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 9, 1, 4.5f, 10, 0);
 
-        Element platform4 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platform4 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 9, 1, 7.5f, 14, 0);
 

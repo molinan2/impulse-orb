@@ -15,19 +15,19 @@ public class Situation108 extends Walls {
     }
 
     protected void createInnerElements () {
-        Element triangleLeft1 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element triangleLeft1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.GREY,
                 9, 9, 0, 4, 180);
 
-        Element triangleRight1 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element triangleRight1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.GREY,
                 9, 9, 12, 4, 180);
 
-        Element triangleLeft2 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element triangleLeft2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.GREY,
                 9, 9, 0, 13, 180);
 
-        Element triangleRight2 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element triangleRight2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.GREY,
                 9, 9, 12, 13, 180);
 

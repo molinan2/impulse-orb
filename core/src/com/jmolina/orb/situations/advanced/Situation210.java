@@ -2,6 +2,7 @@ package com.jmolina.orb.situations.advanced;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
+import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.situations.Walls;
@@ -41,52 +42,52 @@ public class Situation210 extends Walls {
         platform2.addDisplacement(0.125f, 0, -18);
         inter.addDisplacement(0.25f, 0, 18);
 
-        Movable wallLeft1 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element wallLeft1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 1, 2, 0.5f, 0, 0
         );
 
-        Movable wallLeft2 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element wallLeft2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 1, 2, 0.5f, 4.5f, 0
         );
 
-        Movable wallLeft3 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element wallLeft3 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 1, 2, 0.5f, 9, 0
         );
 
-        Movable wallLeft4 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element wallLeft4 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 1, 2, 0.5f, 13.5f, 0
         );
 
-        Movable wallLeft5 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element wallLeft5 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 1, 2, 0.5f, 18, 0
         );
 
-        Movable wallRight1 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element wallRight1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 1, 2, 11.5f, 0, 0
         );
 
-        Movable wallRight2 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element wallRight2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 1, 2, 11.5f, 4.5f, 0
         );
 
-        Movable wallRight3 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element wallRight3 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 1, 2, 11.5f, 9, 0
         );
 
-        Movable wallRight4 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element wallRight4 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 1, 2, 11.5f, 13.5f, 0
         );
 
-        Movable wallRight5 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element wallRight5 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 1, 2, 11.5f, 18, 0
         );

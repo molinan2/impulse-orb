@@ -18,11 +18,11 @@ public class Situation103 extends Walls {
     protected void createInnerElements () {
         float side = 8 * (float) Math.sqrt(2);
 
-        Element squareLeft = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element squareLeft = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 side, side, 0, 5, 45);
 
-        Element squareRight = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element squareRight = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 side, side, 12, 14, 45);
 

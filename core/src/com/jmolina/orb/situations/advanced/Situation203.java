@@ -26,35 +26,35 @@ public class Situation203 extends Walls {
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 6, 1, 9, 4 * octave, 0);
 
-        Movable destroyerLeft1 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element destroyerLeft1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
                 2, 2, 0, 1 * octave, 45);
 
-        Movable destroyerLeft2 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element destroyerLeft2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
                 2, 2, 0, 3 * octave, 45);
 
-        Movable destroyerLeft3 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element destroyerLeft3 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
                 2, 2, 0, 5 * octave, 45);
 
-        Movable destroyerLeft4 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element destroyerLeft4 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
                 2, 2, 0, 7 * octave, 45);
 
-        Movable destroyerRight1 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element destroyerRight1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
                 2, 2, 12, 1 * octave, 45);
 
-        Movable destroyerRight2 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element destroyerRight2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
                 2, 2, 12, 3 * octave, 45);
 
-        Movable destroyerRight3 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element destroyerRight3 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
                 2, 2, 12, 5 * octave, 45);
 
-        Movable destroyerRight4 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element destroyerRight4 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
                 2, 2, 12, 7 * octave, 45);
 

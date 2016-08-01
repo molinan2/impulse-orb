@@ -16,15 +16,15 @@ public class Situation202 extends Walls {
 
     @Override
     protected void createInnerElements () {
-        Element platform1 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platform1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 3, 1, 6, 15.5f, 0);
 
-        Element platform2a = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platform2a = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 3, 1, 3, 2.5f, 0);
 
-        Element platform2b = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platform2b = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 3, 1, 9, 2.5f, 0);
 
@@ -38,12 +38,12 @@ public class Situation202 extends Walls {
                 6, 0.5f, 15, 9, 0
         );
 
-        Movable destroyerLeft = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element destroyerLeft = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
                 2, 2, 0, 11, 45
         );
 
-        Movable destroyerRight = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element destroyerRight = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
                 2, 2, 12, 11, 45
         );

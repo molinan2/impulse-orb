@@ -15,11 +15,11 @@ public class Situation109 extends Walls {
     }
 
     protected void createInnerElements () {
-        Element squareLeft = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element squareLeft = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 10, 7.5f, 5, 3.75f, 0);
 
-        Element squareRight = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element squareRight = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 10, 7.5f, 7, 12.75f, 0);
 

@@ -28,7 +28,7 @@ public class Situation200 extends BottomWalls {
                 6, 5
         );
 
-        Element platform = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platform = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 4, 1, 6, 8, 0);
 
@@ -42,12 +42,12 @@ public class Situation200 extends BottomWalls {
                 6, 0.5f, 12, 14, 0
         );
 
-        Movable gateLeftOver = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element gateLeftOver = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 3, 1, 1.5f, 14, 0
         );
 
-        Movable gateRightOver = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element gateRightOver = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 3, 1, 10.5f, 14, 0
         );

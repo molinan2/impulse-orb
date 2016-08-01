@@ -1,6 +1,7 @@
 package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.SnapshotArray;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actions.UIAction;
@@ -44,6 +46,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 public class Level extends BaseScreen {
 
     private final boolean DEBUG = false;
+    private final boolean LOG = false;
     private final boolean INVULNERABLE = false;
 
     public static final float INTRO_SEQUENCE_TIME = 1f;
@@ -190,18 +193,55 @@ public class Level extends BaseScreen {
      */
     @Override
     public void render(float delta) {
+        long first = TimeUtils.nanoTime();
+        
+        System.out.println("FRAME");
+        System.out.println("Start        " + TimeUtils.nanoTime());
+
         clear();
         syncActors();
+
+        System.out.println("SyncActors 1 " + TimeUtils.nanoTime());
+
         act(delta);
+
+        System.out.println("Act          " + TimeUtils.nanoTime());
+
         syncBodies();
+
+        System.out.println("SyncBodies   " + TimeUtils.nanoTime());
+
         preUpdate();
+
+        System.out.println("preUpdate    " + TimeUtils.nanoTime());
+
         step();
+
+        System.out.println("Step         " + TimeUtils.nanoTime());
+
         followCamera();
+
+        System.out.println("Follow       " + TimeUtils.nanoTime());
+
         syncActors();
+
+        System.out.println("SyncActors 2 " + TimeUtils.nanoTime());
+
         postUpdate();
+
+        System.out.println("postUpdate   " + TimeUtils.nanoTime());
+
         draw();
 
+        System.out.println("Draw         " + TimeUtils.nanoTime());
+
         checkSwitching();
+
+        System.out.println("Switch       " + TimeUtils.nanoTime());
+
+        long time = TimeUtils.nanoTime() - first;
+
+        System.out.println("TIME         " + time);
     }
 
     /**
@@ -460,20 +500,23 @@ public class Level extends BaseScreen {
     }
 
     /**
-     * Sincroniza la posición y rotación de los cuerpos con las de sus actores
+     * Sincroniza la posición y rotación de los cuerpos con las de sus actores.
+     * No es necesaria en el caso de elementos no móviles
      */
     private void syncBodies() {
         for (Situation situation : situations) {
             for (Element element : situation.getElements()) {
-                element.syncBody(worldViewport);
+                if (element instanceof Movable)
+                    element.syncBody(worldViewport);
             }
         }
 
-        orb.syncBody(worldViewport, false, true);
+        getOrb().syncBody(worldViewport, false, true);
     }
 
     /**
-     * Sincroniza la posición y rotación de los actores con las de sus cuerpos
+     * Sincroniza la posición y rotación de los actores con las de sus cuerpos.
+     * Es necesaria en todos los casos, para que los actores se correspondan con el scroll.
      */
     public void syncActors() {
         for (Situation situation : situations) {

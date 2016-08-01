@@ -18,11 +18,11 @@ public class Situation201 extends Walls {
 
     @Override
     protected void createInnerElements () {
-        Element platform1 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platform1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 3, 1, 6, 15.5f, 0);
 
-        Element platform2a = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platform2a = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 3, 1, 6, 2.5f, 0);
 
@@ -36,12 +36,12 @@ public class Situation201 extends Walls {
                 6, 0.5f, 12, 9, 0
         );
 
-        Movable gateLeftOver = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element gateLeftOver = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 3, 1, 1.5f, 9, 0
         );
 
-        Movable gateRightOver = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element gateRightOver = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 3, 1, 10.5f, 9, 0
         );
