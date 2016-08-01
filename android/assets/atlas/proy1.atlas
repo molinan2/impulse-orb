@@ -1,0 +1,216 @@
+
+proy1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+heat
+  rotate: false
+  xy: 2, 360
+  size: 640, 640
+  orig: 640, 640
+  offset: 0, 0
+  index: -1
+exit
+  rotate: false
+  xy: 2, 102
+  size: 640, 256
+  orig: 640, 256
+  offset: 0, 0
+  index: -1
+box
+  rotate: false
+  xy: 2, 68
+  size: 512, 32
+  orig: 512, 32
+  offset: 0, 0
+  index: -1
+parallax_layer_b
+  rotate: false
+  xy: 644, 728
+  size: 272, 272
+  orig: 272, 272
+  offset: 0, 0
+  index: -1
+parallax_layer_a
+  rotate: false
+  xy: 644, 470
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+parallax_layer_c
+  rotate: false
+  xy: 644, 212
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+orb_fragment_a
+  rotate: false
+  xy: 644, 10
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+square_black
+  rotate: false
+  xy: 918, 936
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+square_grey
+  rotate: false
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+square_red
+  rotate: false
+  xy: 918, 870
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+square_transparent
+  rotate: false
+  xy: 68, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+square_violet
+  rotate: false
+  xy: 918, 804
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+square_white
+  rotate: false
+  xy: 134, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+magnetic_particle
+  rotate: false
+  xy: 516, 84
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+
+proy12.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+magnetic_field_linear
+  rotate: false
+  xy: 2, 496
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+circle_black
+  rotate: false
+  xy: 2, 94
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+circle_grey
+  rotate: false
+  xy: 516, 608
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+circle_red
+  rotate: false
+  xy: 404, 94
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+orb_fragment_b
+  rotate: false
+  xy: 806, 406
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+orb_fragment_c
+  rotate: false
+  xy: 806, 204
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+orb_fragment_d
+  rotate: false
+  xy: 806, 2
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+
+proy13.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+magnetic_field_radial
+  rotate: false
+  xy: 2, 404
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+circle_transparent
+  rotate: false
+  xy: 2, 2
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+circle_violet
+  rotate: false
+  xy: 516, 516
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+gesture_arrowhead
+  rotate: false
+  xy: 404, 2
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+
+proy14.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+up
+  rotate: false
+  xy: 2, 404
+  size: 640, 256
+  orig: 640, 256
+  offset: 0, 0
+  index: -1
+gesture_base
+  rotate: false
+  xy: 2, 2
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+gesture_line
+  rotate: false
+  xy: 404, 2
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1

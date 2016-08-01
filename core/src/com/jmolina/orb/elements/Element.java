@@ -1,14 +1,15 @@
 package com.jmolina.orb.elements;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actors.BaseActor;
+import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.AssetAtlas;
 import com.jmolina.orb.var.Var;
 
 
@@ -34,14 +35,14 @@ public class Element extends WorldElement {
         this.assetManager = am;
         this.pixelsPerMeter = pixelsPerMeter;
         this.actor = new BaseActor();
-        setTexture(defaultTexture(geometry, flavor));
+        setTextureRegion(defaultTexture(geometry, flavor));
     }
 
     /**
      * Constructor completo. La textura se le suministra al constructor
      *  @param am AssetManager
      * @param world Box2D World which the Element's body will be added to
-     * @param texture Visible Element texture
+     * @param region Visible Element texture
      * @param geometry {@link Geometry}
      * @param flavor {@link Flavor}
      * @param w Width of the element (World units)
@@ -50,13 +51,13 @@ public class Element extends WorldElement {
      * @param y Position y coord (World units)
      * @param angle Initial angle of the Element in degrees counterclockwise
      */
-    public Element(AssetManager am, World world, Texture texture, float pixelsPerMeter, Geometry geometry, Flavor flavor, float w, float h, float x, float y, float angle) {
+    public Element(AssetManager am, World world, TextureRegion region, float pixelsPerMeter, Geometry geometry, Flavor flavor, float w, float h, float x, float y, float angle) {
         super(world, w, h, x, y, angle, geometry, flavor);
 
         this.assetManager = am;
         this.pixelsPerMeter = pixelsPerMeter;
         this.actor = new BaseActor();
-        setTexture(texture);
+        setTextureRegion(region);
     }
 
     /**
@@ -162,7 +163,7 @@ public class Element extends WorldElement {
         actor.setRotation(actorRotation);
     }
 
-    private Texture defaultTexture(Geometry geometry, Flavor flavor) {
+    private TextureRegion defaultTexture(Geometry geometry, Flavor flavor) {
         switch (geometry) {
             case CIRCLE: return circleTexture(flavor);
             case SQUARE: return squareTexture(flavor);
@@ -171,42 +172,39 @@ public class Element extends WorldElement {
         }
     }
 
-    private Texture circleTexture(Flavor flavor) {
+    private TextureRegion circleTexture(Flavor flavor) {
         switch (flavor) {
-            case BLACK: return getAssetManager().get(Asset.GAME_CIRCLE_BLACK, Texture.class);
-            case GREY: return getAssetManager().get(Asset.GAME_CIRCLE_GREY, Texture.class);
-            case RED: return getAssetManager().get(Asset.GAME_CIRCLE_RED, Texture.class);
-            case VIOLET: return getAssetManager().get(Asset.GAME_CIRCLE_VIOLET, Texture.class);
-            case TRANSPARENT: return getAssetManager().get(Asset.GAME_CIRCLE_TRANSPARENT, Texture.class);
-            default: return getAssetManager().get(Asset.GAME_CIRCLE_GREY, Texture.class);
+            case BLACK: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_CIRCLE_BLACK);
+            case GREY: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_CIRCLE_GREY);
+            case RED: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_CIRCLE_RED);
+            case VIOLET: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_CIRCLE_VIOLET);
+            case TRANSPARENT: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_CIRCLE_TRANSPARENT);
+            default: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_CIRCLE_GREY);
         }
     }
 
-    private Texture squareTexture(Flavor flavor) {
+    private TextureRegion squareTexture(Flavor flavor) {
         switch (flavor) {
-            case BLACK:
-                Texture black = getAssetManager().get(Asset.GAME_SQUARE_BLACK, Texture.class);
-                black.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-                return black;
-            case GREY: return getAssetManager().get(Asset.GAME_SQUARE_GREY, Texture.class);
-            case RED: return getAssetManager().get(Asset.GAME_SQUARE_RED, Texture.class);
-            default: return getAssetManager().get(Asset.GAME_SQUARE_GREY, Texture.class);
+            case BLACK: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_SQUARE_BLACK);
+            case GREY: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_SQUARE_GREY);
+            case RED: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_SQUARE_RED);
+            default: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_SQUARE_GREY);
         }
     }
 
-    private Texture triangleTexture(Flavor flavor) {
+    private TextureRegion triangleTexture(Flavor flavor) {
         switch (flavor) {
-            case GREY: return getAssetManager().get(Asset.GAME_TRIANGLE_GREY, Texture.class);
-            case RED: return getAssetManager().get(Asset.GAME_TRIANGLE_RED, Texture.class);
-            default: return getAssetManager().get(Asset.GAME_TRIANGLE_GREY, Texture.class);
+            case GREY: return new TextureRegion(getAssetManager().get(Asset.GAME_TRIANGLE_GREY, Texture.class));
+            case RED: return new TextureRegion(getAssetManager().get(Asset.GAME_TRIANGLE_RED, Texture.class));
+            default: return new TextureRegion(getAssetManager().get(Asset.GAME_TRIANGLE_GREY, Texture.class));
         }
     }
 
-    private void setTexture(Texture texture) {
-        float scaleX = getPPM() * getWidth() / texture.getWidth();
-        float scaleY = getPPM() * getHeight() / texture.getHeight();
+    private void setTextureRegion(TextureRegion region) {
+        float scaleX = getPPM() * getWidth() / region.getRegionWidth();
+        float scaleY = getPPM() * getHeight() / region.getRegionHeight();
 
-        ((BaseActor)actor).setTexture(texture);
+        ((BaseActor)actor).setTextureRegion(region);
         actor.setScale(scaleX, scaleY);
 
         // Corrección específica para la textura del triángulo, que es distinta para que el origen

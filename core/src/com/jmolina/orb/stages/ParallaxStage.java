@@ -3,10 +3,12 @@ package com.jmolina.orb.stages;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.managers.AssetManager;
+import com.jmolina.orb.var.AssetAtlas;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.game.TiledLayer;
 
@@ -32,13 +34,13 @@ public class ParallaxStage extends Stage {
         float width = viewport.getWorldWidth();
         float height = viewport.getWorldHeight();
 
-        Texture layer1Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_1, Texture.class);
-        Texture layer2Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_2, Texture.class);
-        Texture layer3Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_3, Texture.class);
+        TextureRegion region1 = assetManager.getAtlas().findRegion(AssetAtlas.GAME_PARALLAX_LAYER_1);
+        TextureRegion region2 = assetManager.getAtlas().findRegion(AssetAtlas.GAME_PARALLAX_LAYER_2);
+        TextureRegion region3 = assetManager.getAtlas().findRegion(AssetAtlas.GAME_PARALLAX_LAYER_3);
 
-        layer1 = new TiledLayer(assetManager, layer1Texture, width, height);
-        layer2 = new TiledLayer(assetManager, layer2Texture, width, height);
-        layer3 = new TiledLayer(assetManager, layer3Texture, width, height);
+        layer1 = new TiledLayer(assetManager, region1, width, height);
+        layer2 = new TiledLayer(assetManager, region2, width, height);
+        layer3 = new TiledLayer(assetManager, region3, width, height);
 
         layer1.setPosition(-width, -height);
         layer2.setPosition(-width, -height);

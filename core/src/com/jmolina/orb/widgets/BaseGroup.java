@@ -1,12 +1,12 @@
 package com.jmolina.orb.widgets;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Disposable;
+import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.utils.Utils;
 
 public class BaseGroup extends Group implements Disposable {

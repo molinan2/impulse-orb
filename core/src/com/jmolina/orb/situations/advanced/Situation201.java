@@ -1,11 +1,11 @@
 package com.jmolina.orb.situations.advanced;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.Up;
 import com.jmolina.orb.elements.WorldElement;
+import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.situations.BottomWalls;
 import com.jmolina.orb.situations.Walls;
 

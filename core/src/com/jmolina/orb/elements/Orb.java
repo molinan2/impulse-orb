@@ -1,10 +1,10 @@
 package com.jmolina.orb.elements;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
+import com.jmolina.orb.managers.AssetManager;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 

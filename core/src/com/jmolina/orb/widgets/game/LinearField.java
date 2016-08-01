@@ -1,6 +1,5 @@
 package com.jmolina.orb.widgets.game;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -9,8 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.WorldElement;
+import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.AssetAtlas;
 import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
@@ -49,7 +50,7 @@ public class LinearField extends com.jmolina.orb.widgets.game.Field {
         fill.setSize(Utils.cell(w), Utils.cell(threshold));
         fill.setPosition(0, 0);
 
-        field = new Image(getAsset(Asset.GAME_MAGNETIC_FIELD_LINEAR, Texture.class));
+        field = new Image(am.getAtlas().findRegion(AssetAtlas.GAME_MAGNETIC_FIELD_LINEAR));
         field.setSize(Utils.cell(w), Utils.cell(threshold));
         field.setPosition(0, Utils.cell(threshold));
 
@@ -140,10 +141,10 @@ public class LinearField extends com.jmolina.orb.widgets.game.Field {
      */
     private Texture getBodyTexture(WorldElement.Flavor flavor) {
         switch (flavor) {
-            case RED: return getAsset(Asset.GAME_SQUARE_RED, Texture.class);
-            case VIOLET: return getAsset(Asset.GAME_SQUARE_VIOLET, Texture.class);
-            case TRANSPARENT: return getAsset(Asset.GAME_SQUARE_TRANSPARENT, Texture.class);
-            default: return getAsset(Asset.GAME_SQUARE_VIOLET, Texture.class);
+            case RED: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_SQUARE_RED).getTexture();
+            case VIOLET: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_SQUARE_VIOLET).getTexture();
+            case TRANSPARENT: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_SQUARE_TRANSPARENT).getTexture();
+            default: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_SQUARE_VIOLET).getTexture();
         }
     }
 

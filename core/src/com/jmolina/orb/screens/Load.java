@@ -1,6 +1,7 @@
 package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
@@ -20,6 +21,7 @@ public class Load extends BaseScreen {
     private boolean loaded;
     private SuperManager superManager;
 
+
     public Load(SuperManager sm, ScreenManager.Key key) {
         super(sm, key);
 
@@ -38,6 +40,7 @@ public class Load extends BaseScreen {
         loaded = false;
 
         getAssetManager().preloadAll(AssetManager.ASSET_CLASS);
+        getAssetManager().load("atlas/proy1.atlas", TextureAtlas.class);
     }
 
     @Override
@@ -54,6 +57,7 @@ public class Load extends BaseScreen {
         this.bar.updateProgress(getAssetManager().getProgress());
 
         if (loaded && !switching) {
+            //getAssetManager().setAtlas();
             switching = true;
             switchToMenu();
         }
@@ -65,7 +69,9 @@ public class Load extends BaseScreen {
     private void switchToMenu() {
         superManager.createGameManager();
         getGameManager().play(GameManager.Track.Menu);
-        switchToScreen(LEVEL_1, Hierarchy.LOWER);
+        switchToScreen(MAIN, Hierarchy.LOWER);
     }
+
+
 
 }

@@ -1,12 +1,12 @@
 package com.jmolina.orb.elements;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.data.Displacement;
 import com.jmolina.orb.data.Rotation;
+import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Var;
 

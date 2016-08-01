@@ -1,14 +1,15 @@
 package com.jmolina.orb.actors;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.AssetAtlas;
 import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -35,11 +36,11 @@ public class Fragments extends BaseGroup {
     public Fragments(AssetManager am) {
         super(am);
 
-        explosion = new Image(getAsset(Asset.GAME_CIRCLE_RED, Texture.class));
-        fragment1 = new Image(getAsset(Asset.GAME_ORB_FRAGMENT_1, Texture.class));
-        fragment2 = new Image(getAsset(Asset.GAME_ORB_FRAGMENT_2, Texture.class));
-        fragment3 = new Image(getAsset(Asset.GAME_ORB_FRAGMENT_3, Texture.class));
-        fragment4 = new Image(getAsset(Asset.GAME_ORB_FRAGMENT_4, Texture.class));
+        explosion = new Image(am.getAtlas().findRegion(AssetAtlas.GAME_CIRCLE_RED));
+        fragment1 = new Image(am.getAtlas().findRegion(AssetAtlas.GAME_ORB_FRAGMENT_1));
+        fragment2 = new Image(am.getAtlas().findRegion(AssetAtlas.GAME_ORB_FRAGMENT_2));
+        fragment3 = new Image(am.getAtlas().findRegion(AssetAtlas.GAME_ORB_FRAGMENT_3));
+        fragment4 = new Image(am.getAtlas().findRegion(AssetAtlas.GAME_ORB_FRAGMENT_4));
 
         addActor(explosion);
         addActor(fragment1);

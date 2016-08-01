@@ -1,12 +1,13 @@
 package com.jmolina.orb.widgets.game;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.elements.Magnetic;
+import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.AssetAtlas;
 import com.jmolina.orb.widgets.BaseGroup;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public abstract class Field extends BaseGroup {
         particles = new ArrayList<Image>();
 
         for (int i = 0; i< particleCount; i++) {
-            Image particle = new Image(getAsset(Asset.GAME_MAGNETIC_PARTICLE, Texture.class));
+            Image particle = new Image(getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_MAGNETIC_PARTICLE));
             particle.setSize(PARTICLE_DIAMETER, PARTICLE_DIAMETER);
             particle.setOrigin(0.5f * PARTICLE_DIAMETER, 0.5f * PARTICLE_DIAMETER);
             initParticle(particle, i);

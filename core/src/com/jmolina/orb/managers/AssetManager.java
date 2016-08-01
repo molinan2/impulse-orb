@@ -1,11 +1,13 @@
 package com.jmolina.orb.managers;
 
 // import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.Field;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
@@ -14,6 +16,8 @@ import com.jmolina.orb.var.Asset;
 public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 
     public static final Class ASSET_CLASS = Asset.class;
+    private TextureAtlas atlas;
+
 
     /**
      * Constructor
@@ -35,6 +39,16 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
         load(Asset.UI_PROGRESS_BASE, Texture.class);
         load(Asset.UI_PROGRESS_FILL, Texture.class);
         finishLoading();
+    }
+
+    public TextureAtlas getAtlas() {
+        // return atlas;
+        return get("atlas/proy1.atlas", TextureAtlas.class);
+    }
+
+    public void setAtlas() {
+        atlas = new TextureAtlas(Gdx.files.internal("atlas/proy1.atlas"));
+        float hola = 3;
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.jmolina.orb.widgets.game;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
@@ -10,8 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.WorldElement;
+import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.AssetAtlas;
 import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -41,7 +42,7 @@ public class RadialField extends com.jmolina.orb.widgets.game.Field {
 
         diameter = d;
 
-        field = new Image(getAsset(Asset.GAME_MAGNETIC_FIELD_RADIAL, Texture.class));
+        field = new Image(getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_MAGNETIC_FIELD_RADIAL));
         field.setSize(Utils.cell(2 * threshold), Utils.cell(2 * threshold));
         field.setPosition(0, 0);
 
@@ -126,10 +127,10 @@ public class RadialField extends com.jmolina.orb.widgets.game.Field {
      */
     private Texture getBodyTexture(WorldElement.Flavor flavor) {
         switch (flavor) {
-            case RED: return getAsset(Asset.GAME_CIRCLE_RED, Texture.class);
-            case VIOLET: return getAsset(Asset.GAME_CIRCLE_VIOLET, Texture.class);
-            case TRANSPARENT: return getAsset(Asset.GAME_CIRCLE_TRANSPARENT, Texture.class);
-            default: return getAsset(Asset.GAME_CIRCLE_VIOLET, Texture.class);
+            case RED: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_CIRCLE_RED).getTexture();
+            case VIOLET: getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_CIRCLE_RED).getTexture();
+            case TRANSPARENT: getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_CIRCLE_RED).getTexture();
+            default: return getAssetManager().getAtlas().findRegion(AssetAtlas.GAME_CIRCLE_RED).getTexture();
         }
     }
 

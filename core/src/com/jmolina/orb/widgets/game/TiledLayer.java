@@ -1,6 +1,7 @@
 package com.jmolina.orb.widgets.game;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -19,27 +20,32 @@ public class TiledLayer extends BaseGroup {
 
     private Image image;
 
-    public TiledLayer(AssetManager am, Texture texture, float viewportWidth, float viewportHeight) {
+    public TiledLayer(AssetManager am, TextureRegion region, float viewportWidth, float viewportHeight) {
         super(am);
 
-        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        // region.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        // region.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
-        int tilesX = MathUtils.round(viewportWidth / texture.getWidth());
-        int tilesY = MathUtils.round(viewportHeight / texture.getHeight());
+        int tilesX = MathUtils.round(viewportWidth / region.getRegionWidth());
+        int tilesY = MathUtils.round(viewportHeight / region.getRegionHeight());
 
-        TextureRegion region = new TextureRegion(texture);
-        region.setRegion(
+        TextureRegion expandedRegion = new TextureRegion(region);
+        expandedRegion.setRegion(
                 0, 0,
-                TIMES_X * tilesX * texture.getWidth(),
-                TIMES_Y * tilesY * texture.getHeight()
+                TIMES_X * tilesX * region.getRegionWidth(),
+                TIMES_Y * tilesY * region.getRegionHeight()
         );
 
-        image = new Image(region);
-        image.setSize(region.getRegionWidth(), region.getRegionHeight());
+        image = new Image(expandedRegion);
+        image.setSize(expandedRegion.getRegionWidth(), expandedRegion.getRegionHeight());
         image.setPosition(0, 0);
 
         addActor(image);
+    }
+
+    @Override
+    public void draw (Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
     }
 
 }
