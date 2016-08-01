@@ -12,8 +12,8 @@ import com.jmolina.orb.var.Var;
  */
 public abstract class Situation {
 
-    private final float HEIGHT = 18.0f;
-    private final float WIDTH = 12.0f;
+    protected final float HEIGHT = 18.0f;
+    protected final float WIDTH = 12.0f;
 
     private AssetManager assetManager;
     private World world;

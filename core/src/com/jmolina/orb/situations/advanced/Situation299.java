@@ -1,4 +1,4 @@
-package com.jmolina.orb.situations.basic;
+package com.jmolina.orb.situations.advanced;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
@@ -7,9 +7,9 @@ import com.jmolina.orb.elements.Up;
 import com.jmolina.orb.situations.TopWalls;
 
 
-public class Situation199 extends TopWalls {
+public class Situation299 extends TopWalls {
 
-    public Situation199(AssetManager am, World world, float ratioMeterPixel) {
+    public Situation299(AssetManager am, World world, float ratioMeterPixel) {
         super(am, world, ratioMeterPixel);
     }
 

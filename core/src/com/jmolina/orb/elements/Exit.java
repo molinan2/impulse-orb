@@ -7,7 +7,7 @@ import com.jmolina.orb.var.Asset;
 
 public class Exit extends Element {
 
-    public Exit(AssetManager am, World world, float x, float y, float pixelsPerMeter) {
+    public Exit(AssetManager am, World world, float pixelsPerMeter, float x, float y) {
         super(am, world, am.get(Asset.GAME_EXIT, Texture.class), pixelsPerMeter,
                 Geometry.SQUARE, Flavor.BLUE,
                 10, 4, x, y, 0

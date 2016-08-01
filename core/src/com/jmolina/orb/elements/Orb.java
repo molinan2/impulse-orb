@@ -13,16 +13,19 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public class Orb extends Element {
 
+    public static final float INTRO_TIME = 1f;
+    public static final float OUTRO_TIME = 1.2f;
+
     private final float DIAMETER = 1.0f;
     private final float INFINITE_DAMPING = 10000f;
+    private final float OVER_DAMPING = 10f;
     private final float HEAT_MIN = 0f;
     private final float HEAT_MAX = 1f;
     private final float HEAT_INCREMENT = 0.2f;
     private final float COOLING_RATE = 0.2f;
     private final float OVERLOAD_TIME = 3f;
     private final float FREEZE_TIME = 0.90f;
-    public static final float INTRO_TIME = 1f;
-    public static final float OUTRO_TIME = 1.2f;
+    private final float SCALE_CORRECTION = 1.025f;
 
     private boolean frozen, overloaded;
     private float heat, naturalScale, freezeTime, overloadTime;
@@ -34,7 +37,7 @@ public class Orb extends Element {
         heat = 0f;
         frozen = overloaded = false;
         fragments = new com.jmolina.orb.actors.Fragments(am);
-        naturalScale = pixelsPerMeter * DIAMETER / fragments.getWidth();
+        naturalScale = pixelsPerMeter * SCALE_CORRECTION * DIAMETER / fragments.getWidth();
         fragments.setScale(naturalScale);
         setActor(fragments);
         getBody().setSleepingAllowed(false); // Evita que se quede dormido. ¡La Gravedad no despierta!
@@ -45,6 +48,7 @@ public class Orb extends Element {
      */
     public void freeze() {
         frozen = true;
+
         getBody().setLinearDamping(INFINITE_DAMPING);
         getBody().setAngularDamping(INFINITE_DAMPING);
     }

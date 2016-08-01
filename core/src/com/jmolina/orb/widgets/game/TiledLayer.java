@@ -15,7 +15,7 @@ import com.jmolina.orb.widgets.BaseGroup;
 public class TiledLayer extends BaseGroup {
 
     private final int TIMES_X = 4;
-    private final int TIMES_Y = 10;
+    private final int TIMES_Y = 20;
 
     private Image image;
 

@@ -44,6 +44,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 public class Level extends BaseScreen {
 
     private final boolean DEBUG = false;
+    private final boolean INVULNERABLE = false;
 
     public static final float INTRO_SEQUENCE_TIME = 1f;
 
@@ -61,7 +62,7 @@ public class Level extends BaseScreen {
     private final int Z_INDEX_ORB = 20000;
     private final int Z_INDEX_BLACK = 10000;
     private final float MAGNETIC_FACTOR = 0.2f;
-    private final float IMPULSE_FACTOR = 0.85f;
+    private final float IMPULSE_FACTOR = 0.8f;
 
     private Tick tick;
     private float pixelsPerMeter, impulse;
@@ -710,6 +711,8 @@ public class Level extends BaseScreen {
 
     /**
      * Reproduce el sonido y la vibración correspondientes a una colisión
+     *
+     * @param wall Indica si se colisiona contra un muro
      */
     public void collide(boolean wall) {
         getGameManager().vibrate(GameManager.Length.Short);
@@ -735,10 +738,12 @@ public class Level extends BaseScreen {
             getGameManager().vibrate(GameManager.Length.Medium);
             getGameManager().play(GameManager.Fx.Tap);
 
-            if (getOrb().isOverloaded())
-                destroy();
-            else if (getOrb().isHeatMaxed())
+            if (getOrb().isOverloaded()) {
+                destroy(); // TODO Revisar overload
+            }
+            else if (getOrb().isHeatMaxed()) {
                 overload();
+            }
         }
     }
 
@@ -771,6 +776,8 @@ public class Level extends BaseScreen {
      * Destruye el {@link Orb}, dibuja su animación y reinicia el juego
      */
     public void destroy() {
+        if (INVULNERABLE) return;
+
         lock();
         getStats().setFailed(true);
         getGameManager().vibrate(GameManager.Length.Long);

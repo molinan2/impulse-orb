@@ -59,6 +59,7 @@ public class Pulse extends BaseGroup {
     public void reset() {
         image.clearActions();
         image.addAction(alpha(0));
+        act(0);
     }
 
 }

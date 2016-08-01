@@ -17,8 +17,7 @@ public class SituationT199 extends Walls {
         // Exit
         addElement(new Exit(
                 getAssetManager(), getWorld(),
-                6, 13,
-                getPixelsPerMeter()
+                getPixelsPerMeter(), 6, 13
         ));
 
         // Top walls

@@ -3,6 +3,7 @@ package com.jmolina.orb.elements;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -183,7 +184,10 @@ public class Element extends WorldElement {
 
     private Texture squareTexture(Flavor flavor) {
         switch (flavor) {
-            case BLACK: return getAssetManager().get(Asset.GAME_SQUARE_BLACK, Texture.class);
+            case BLACK:
+                Texture black = getAssetManager().get(Asset.GAME_SQUARE_BLACK, Texture.class);
+                black.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+                return black;
             case GREY: return getAssetManager().get(Asset.GAME_SQUARE_GREY, Texture.class);
             case RED: return getAssetManager().get(Asset.GAME_SQUARE_RED, Texture.class);
             default: return getAssetManager().get(Asset.GAME_SQUARE_GREY, Texture.class);

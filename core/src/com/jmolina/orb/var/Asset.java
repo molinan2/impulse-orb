@@ -68,7 +68,7 @@ public class Asset {
     public static final String GAME_PARALLAX_LAYER_2 = GAME + "parallax_layer_02.png";
     public static final String GAME_PARALLAX_LAYER_3 = GAME + "parallax_layer_03.png";
     public static final String GAME_EXIT = GAME + "exit.png";
-    public static final String GAME_INIT = GAME + "init.png";
+    public static final String GAME_UP = GAME + "up.png";
     public static final String GAME_HEAT = GAME + "heat.png";
     public static final String GAME_MAGNETIC_FIELD_RADIAL = GAME + "magnetic_field_radial.png";
     public static final String GAME_MAGNETIC_FIELD_LINEAR = GAME + "magnetic_field_linear.png";
