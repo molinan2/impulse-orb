@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Element;
 
 
-public class BottomWalls extends Walls {
+public class BottomWalls extends SideWalls {
 
     public BottomWalls(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter);

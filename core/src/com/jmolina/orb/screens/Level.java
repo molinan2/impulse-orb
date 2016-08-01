@@ -193,55 +193,17 @@ public class Level extends BaseScreen {
      */
     @Override
     public void render(float delta) {
-        long first = TimeUtils.nanoTime();
-        
-        System.out.println("FRAME");
-        System.out.println("Start        " + TimeUtils.nanoTime());
-
         clear();
         syncActors();
-
-        System.out.println("SyncActors 1 " + TimeUtils.nanoTime());
-
         act(delta);
-
-        System.out.println("Act          " + TimeUtils.nanoTime());
-
         syncBodies();
-
-        System.out.println("SyncBodies   " + TimeUtils.nanoTime());
-
         preUpdate();
-
-        System.out.println("preUpdate    " + TimeUtils.nanoTime());
-
         step();
-
-        System.out.println("Step         " + TimeUtils.nanoTime());
-
         followCamera();
-
-        System.out.println("Follow       " + TimeUtils.nanoTime());
-
         syncActors();
-
-        System.out.println("SyncActors 2 " + TimeUtils.nanoTime());
-
         postUpdate();
-
-        System.out.println("postUpdate   " + TimeUtils.nanoTime());
-
         draw();
-
-        System.out.println("Draw         " + TimeUtils.nanoTime());
-
         checkSwitching();
-
-        System.out.println("Switch       " + TimeUtils.nanoTime());
-
-        long time = TimeUtils.nanoTime() - first;
-
-        System.out.println("TIME         " + time);
     }
 
     /**

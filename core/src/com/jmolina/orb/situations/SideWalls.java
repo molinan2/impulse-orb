@@ -5,9 +5,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Element;
 
 
-public abstract class Walls extends Situation {
+public abstract class SideWalls extends Situation {
 
-    public Walls(AssetManager am, World world, float pixelsPerMeter) {
+    public SideWalls(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter);
     }
 

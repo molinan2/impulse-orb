@@ -10,10 +10,10 @@ import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.Propeller;
 import com.jmolina.orb.elements.RadialMagnetic;
 import com.jmolina.orb.elements.WorldElement;
-import com.jmolina.orb.situations.Walls;
+import com.jmolina.orb.situations.SideWalls;
 
 
-public class SituationT100 extends Walls {
+public class SituationT100 extends SideWalls {
 
     public SituationT100(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter);
@@ -36,7 +36,7 @@ public class SituationT100 extends Walls {
         // Test Hot
         Heater heater = new Heater(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                0, 0
+                10, 10, 0, 0
         );
 
         addElement(heater);

@@ -28,10 +28,10 @@ public class Heater extends Element {
      *
      * Crea un elemento etéreo calentador de dimensiones fijas: 10x10.
      */
-    public Heater(AssetManager am, World world, float ppm, float x, float y) {
+    public Heater(AssetManager am, World world, float ppm, float w, float h, float x, float y) {
         super(am, world, am.get(Asset.GAME_HEAT, Texture.class), ppm,
                 Geometry.SQUARE, Flavor.BLUE,
-                10, 10, x, y, 0
+                w, h, x, y, 0
         );
 
         setAsSensor(true);

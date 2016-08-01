@@ -3,7 +3,7 @@ package com.jmolina.orb.screens.levels;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.screens.Level;
-import com.jmolina.orb.situations.test.SituationT199;
+import com.jmolina.orb.situations.expert.*;
 
 
 public class Level3 extends Level {
@@ -14,8 +14,8 @@ public class Level3 extends Level {
         setPreviousScreen(ScreenManager.Key.LEVEL_LAUNCH_3);
         setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_3);
 
-        // Temporal
-        addSituation(new SituationT199(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation300(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation399(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
         setOrbStartPosition(6, 9);
     }
