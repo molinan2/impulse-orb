@@ -12,23 +12,25 @@ public class BottomWalls extends Walls {
     }
 
     protected void createInnerElements () {
-        // Bottom walls
+        // Muro abajo centro
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 Element.Geometry.SQUARE, Element.Flavor.BLACK,
-                12, 18, 6, -9 + 0.5f, 0
+                13, 18, 6, -8.5f, 0
         ));
 
+        // Muro abajo izquierda
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 Element.Geometry.SQUARE, Element.Flavor.BLACK,
-                12, 18, -6 + 0.5f, -9 + 0.5f, 0
+                13, 19, -5.5f, -8.5f, 0
         ));
 
+        // Muro abajo derecha
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 Element.Geometry.SQUARE, Element.Flavor.BLACK,
-                12, 18, 18 - 0.5f, -9 + 0.5f, 0
+                13, 19, 17.5f, -8.5f, 0
         ));
     }
 

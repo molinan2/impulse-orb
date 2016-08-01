@@ -12,20 +12,25 @@ public class TopWalls extends Walls {
     }
 
     protected void createInnerElements () {
-        // Top walls
+        // Muro arriba centro
         addElement(new Element(
-                getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK, 12, 18, 6, 27, 0
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                Element.Geometry.SQUARE, Element.Flavor.BLACK,
+                13, 18, 6, 27, 0
         ));
 
+        // Muro arriba izquierda
         addElement(new Element(
-                getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK, 12, 18, -6 + 0.5f, 27, 0
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                Element.Geometry.SQUARE, Element.Flavor.BLACK,
+                13, 19, -5.5f, 27, 0
         ));
 
+        // Muro arriba derecha
         addElement(new Element(
-                getAssetManager(), getWorld(),
-                getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK, 12, 18, 18 - 0.5f, 27, 0
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                Element.Geometry.SQUARE, Element.Flavor.BLACK,
+                13, 19, 17.5f, 27, 0
         ));
     }
 

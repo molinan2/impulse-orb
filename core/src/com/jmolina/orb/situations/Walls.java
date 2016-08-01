@@ -16,17 +16,18 @@ public abstract class Walls extends Situation {
     protected void createElements () {
         createInnerElements();
 
-        // Side walls
+        // Muro izquierdo
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK,
-                12, 18, -6 + 0.5f, 9, 0
+                12, 19, -5.5f, 9, 0
         ));
 
+        // Muro derecho
         addElement(new Element(
                 getAssetManager(), getWorld(),
                 getPixelsPerMeter(), Element.Geometry.SQUARE, Element.Flavor.BLACK,
-                12, 18, 12 + 6 - 0.5f, 9, 0
+                12, 19, 17.5f, 9, 0
         ));
     }
 
