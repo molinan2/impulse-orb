@@ -19,42 +19,42 @@ public class Situation306 extends SideWalls {
         RadialMagnetic radial11 = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                1, 2.5f, 3,
+                1, 4, 3,
                 4, Magnetic.Polarity.REPULSIVE
         );
 
         RadialMagnetic radial12 = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                1, 9.5f, 3,
+                1, 8, 3,
                 4, Magnetic.Polarity.REPULSIVE
         );
 
         RadialMagnetic radial21 = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                1, 2.5f, 9,
+                1, 4, 9,
                 4, Magnetic.Polarity.REPULSIVE
         );
 
         RadialMagnetic radial22 = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                1, 9.5f, 9,
+                1, 8, 9,
                 4, Magnetic.Polarity.REPULSIVE
         );
 
         RadialMagnetic radial31 = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                1, 2.5f, 15,
+                1, 4, 15,
                 4, Magnetic.Polarity.REPULSIVE
         );
 
         RadialMagnetic radial32 = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                1, 9.5f, 15,
+                1, 8, 15,
                 4, Magnetic.Polarity.REPULSIVE
         );
 

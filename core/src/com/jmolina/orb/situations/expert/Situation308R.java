@@ -9,9 +9,9 @@ import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.situations.SideWalls;
 
 
-public class Situation308b extends SideWalls {
+public class Situation308R extends SideWalls {
 
-    public Situation308b(AssetManager am, World world, float pixelsPerMeter) {
+    public Situation308R(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter);
     }
 
@@ -20,25 +20,25 @@ public class Situation308b extends SideWalls {
         LinearMagnetic magnet1 = new LinearMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                9, 1, 11, 4.5f, 90,
+                9, 1, 1, 4.5f, 90,
                 6, Magnetic.Polarity.REPULSIVE
-        );
-
-        Element destroyer1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
-                9, 1, 1, 4.5f, 90
         );
 
         LinearMagnetic magnet2 = new LinearMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                9, 1, 11, 13.5f, 90,
+                9, 1, 1, 13.5f, 90,
                 6, Magnetic.Polarity.REPULSIVE
+        );
+
+        Element destroyer1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
+                9, 1, 11, 4.5f, 90
         );
 
         Element destroyer2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
-                9, 1, 1, 13.5f, 90
+                9, 1, 11, 13.5f, 90
         );
 
 

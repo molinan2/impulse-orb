@@ -21,11 +21,11 @@ public class Situation303 extends SideWalls {
         float octave = 1.5f;
 
         Element cube11 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 3, 3, 1 * octave, 1.5f, 0);
 
         Element cube12 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 3, 3, 5 * octave, 1.5f, 0);
 
         Movable cube21 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
@@ -37,11 +37,11 @@ public class Situation303 extends SideWalls {
                 3, 3, 7 * octave, 4.5f, 0);
 
         Element cube31 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 3, 3, 1 * octave, 7.5f, 0);
 
         Element cube32 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 3, 3, 5 * octave, 7.5f, 0);
 
         Movable cube41 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
@@ -57,7 +57,7 @@ public class Situation303 extends SideWalls {
                 3, 3, 1 * octave, 13.5f, 0);
 
         Element cube52 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 3, 3, 5 * octave, 13.5f, 0);
 
         Movable cube6 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),

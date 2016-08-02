@@ -21,25 +21,35 @@ public class Situation304 extends SideWalls {
     protected void createInnerElements () {
         Propeller magnet = new Propeller(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                4, 6, 4.5f, 0,
+                6, 6, 4.5f, 0,
                 9, Magnetic.Polarity.REPULSIVE
         );
 
         Propeller magnetTopLeft = new Propeller(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                4, 2, 13.5f, 180,
+                3, 2, 13.5f, 180,
                 9, Magnetic.Polarity.REPULSIVE
         );
 
         Propeller magnetTopRight = new Propeller(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
-                4, 10, 13.5f, 180,
+                3, 10, 13.5f, 180,
                 9, Magnetic.Polarity.REPULSIVE
         );
+
+        Element wall1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
+                9, 0.5f, 3.25f, 9, 90);
+
+        Element wall2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
+                9, 0.5f, 8.75f, 9, 90);
 
         addElement(magnet);
         addElement(magnetTopLeft);
         addElement(magnetTopRight);
+        addElement(wall1);
+        addElement(wall2);
     }
 
 }

@@ -18,23 +18,46 @@ public class Situation302 extends SideWalls {
 
     @Override
     protected void createInnerElements () {
-        RadialMagnetic radial1 = new RadialMagnetic(
+        RadialMagnetic radial11 = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                2, 0.5f, 4.5f,
-                8, Magnetic.Polarity.ATTRACTIVE
+                1, 0.5f, 3f,
+                4, Magnetic.Polarity.REPULSIVE
         );
 
-        RadialMagnetic radial2 = new RadialMagnetic(
+        RadialMagnetic radial12 = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                2, 11.5f, 13.5f,
-                8, Magnetic.Polarity.ATTRACTIVE
+                1, 11.5f, 3f,
+                4, Magnetic.Polarity.REPULSIVE
         );
 
-        addElement(radial1);
-        addElement(radial2);
+        RadialMagnetic radial = new RadialMagnetic(
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Flavor.VIOLET,
+                1, 6, 9f,
+                6, Magnetic.Polarity.ATTRACTIVE
+        );
 
+        RadialMagnetic radial21 = new RadialMagnetic(
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Flavor.VIOLET,
+                1, 0.5f, 15f,
+                4, Magnetic.Polarity.REPULSIVE
+        );
+
+        RadialMagnetic radial22 = new RadialMagnetic(
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Flavor.VIOLET,
+                1, 11.5f, 15f,
+                4, Magnetic.Polarity.REPULSIVE
+        );
+
+        addElement(radial11);
+        addElement(radial12);
+        addElement(radial21);
+        addElement(radial22);
+        addElement(radial);
     }
 
 }

@@ -22,7 +22,7 @@ public class Situation307 extends SideWalls {
         Vortex radial = new Vortex(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 6, 9,
-                5, Magnetic.Polarity.ATTRACTIVE
+                4, Magnetic.Polarity.ATTRACTIVE
         );
 
         Movable triangle11 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),

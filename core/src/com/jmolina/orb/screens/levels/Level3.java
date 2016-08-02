@@ -37,6 +37,8 @@ public class Level3 extends Level {
         addSituation(new Situation304(getAssetManager(), getWorld(), getPixelsPerMeter()));
         addSituation(new Situation304(getAssetManager(), getWorld(), getPixelsPerMeter()));
         addSituation(new Situation304(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation304(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation304(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
         addSituation(new Situation305(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
@@ -54,10 +56,15 @@ public class Level3 extends Level {
 
         addSituation(new Situation305(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
-        addSituation(new Situation308b(getAssetManager(), getWorld(), getPixelsPerMeter()));
-        addSituation(new Situation308b(getAssetManager(), getWorld(), getPixelsPerMeter()));
-        addSituation(new Situation308b(getAssetManager(), getWorld(), getPixelsPerMeter()));
-        addSituation(new Situation308b(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation308L(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation308L(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation308L(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation308L(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation308R(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation308R(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation308R(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation308R(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
         addSituation(new Situation303(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
