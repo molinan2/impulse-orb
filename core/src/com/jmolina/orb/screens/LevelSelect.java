@@ -47,8 +47,8 @@ public class LevelSelect extends Menu {
         add(level3);
         add(level4);
         add(level5);
-        add(levelTest1);
-        add(levelTest2);
+        // add(levelTest1);
+        // add(levelTest2);
     }
 
     private Visitor visitor(final ScreenManager.Key screen) {
