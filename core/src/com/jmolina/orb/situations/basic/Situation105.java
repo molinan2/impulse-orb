@@ -20,11 +20,11 @@ public class Situation105 extends SideWalls {
 
         Element circleLeft1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
-                2, 2, 3, 6, 0);
+                2, 2, 0.5f, 6, 0);
 
         Element circleRight1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
-                2, 2, 9, 6, 0);
+                2, 2, 11.5f, 6, 0);
 
         Element circleCenter2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
@@ -32,11 +32,11 @@ public class Situation105 extends SideWalls {
 
         Element circleLeft2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
-                2, 2, 3, 15, 0);
+                2, 2, 0.5f, 15, 0);
 
         Element circleRight2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
-                2, 2, 9, 15, 0);
+                2, 2, 11.5f, 15, 0);
 
         addElement(circleCenter1);
         addElement(circleLeft1);

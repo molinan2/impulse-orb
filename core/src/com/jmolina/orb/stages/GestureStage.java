@@ -72,9 +72,12 @@ public class GestureStage extends Stage {
 
     /**
      * Genera un nuevo buffer.
+     *
+     * Si se utiliza buffer.begin() y buffer.end() se modifican incorrectamente las dimensiones del
+     * viewport. Hay que utilizar buffer.bind() y FrameBuffer.unbind() (estático).
      */
     private void renderBuffer() {
-        buffer.begin();
+        buffer.bind();
         Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         arrow.setVisible(true);
@@ -82,7 +85,7 @@ public class GestureStage extends Stage {
         draw();
         arrow.setVisible(false);
         solidArrow.setVisible(true);
-        buffer.end();
+        FrameBuffer.unbind();
     }
 
     /**

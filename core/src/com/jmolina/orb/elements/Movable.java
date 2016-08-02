@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.data.Displacement;
 import com.jmolina.orb.data.Rotation;
+import com.jmolina.orb.interfaces.Reseteable;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Var;
 
@@ -16,7 +17,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 /**
  * Elemento movible y rotable
  */
-public class Movable extends Element {
+public class Movable extends Element implements Reseteable {
 
     private final Interpolation INTERPOLATION = Interpolation.sine;
 
@@ -126,6 +127,7 @@ public class Movable extends Element {
      * Es necesario desactivar temporalmente (1 frame) la sincronización del Body con el Actor
      * para poder posicionar el Element según sus coordenadas del mundo.
      */
+    @Override
     public void reset() {
         getActor().clearActions();
         getBody().setTransform(getInitialX(), getInitialY(), MathUtils.degreesToRadians * getInitialAngle());

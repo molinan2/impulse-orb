@@ -21,6 +21,7 @@ import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.elements.WorldElement;
+import com.jmolina.orb.interfaces.Reseteable;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.listeners.ContactHandler;
@@ -46,7 +47,6 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 public class Level extends BaseScreen {
 
     private final boolean DEBUG = false;
-    private final boolean LOG = false;
     private final boolean INVULNERABLE = false;
 
     public static final float INTRO_SEQUENCE_TIME = 1f;
@@ -158,7 +158,8 @@ public class Level extends BaseScreen {
 
                 for (Situation situation : getSituations()) {
                     for (Element element : situation.getElements()) {
-                        if (element instanceof Movable) ((Movable)element).reset();
+                        if (element instanceof Reseteable)
+                            ((Reseteable)element).reset();
                     }
                 }
             }
@@ -796,7 +797,10 @@ public class Level extends BaseScreen {
      *
      * TODO
      * El tick siempre al empezar puede ser problemático si se entra y sale muy rápido, por ejemplo
-     * debido a rebotes o campos magnéticos
+     * debido a rebotes o campos magnéticos.
+     *
+     * Lo más natural sería hacer que se caliente continuamente mientras haya contacto, un efecto
+     * similar al COOLING.
      */
     public void enableTicking(Tick tick) {
         this.tick.amount = tick.amount;

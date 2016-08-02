@@ -2,6 +2,8 @@ package com.jmolina.orb.widgets.game;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.elements.Magnetic;
@@ -149,6 +151,11 @@ public abstract class Field extends BaseGroup {
      */
     protected Magnetic.Polarity getPolarity() {
         return polarity;
+    }
+
+    @Override
+    public void draw (Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
     }
 
 }

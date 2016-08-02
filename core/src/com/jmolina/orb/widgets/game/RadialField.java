@@ -21,7 +21,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  * Representación visual de un elemento magnético radial. Contiene la imagen del propio elemento,
  * el campo de acción y varias partículas que indican la polaridad mediante una animación.
  */
-public class RadialField extends com.jmolina.orb.widgets.game.Field {
+public class RadialField extends Field {
 
     private float diameter;
     private Image body, field;
