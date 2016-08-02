@@ -15,6 +15,71 @@ public class Level3 extends Level {
         setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_3);
 
         addSituation(new Situation300(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation301(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation301(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation301(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation301(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation302(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation302(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation302(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation302(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation303(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation303(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation303(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation303(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation304(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation304(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation304(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation304(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation304(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation304(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation305(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation306(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation306(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation306(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation306(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation306(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation306(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation307(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation307(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation307(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation307(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation305(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation308b(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation308b(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation308b(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation308b(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation303(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation309(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation309(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation309(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation309(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation310(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation310(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation310(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation310(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation305(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation311(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation311(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation311(getAssetManager(), getWorld(), getPixelsPerMeter()));
+        addSituation(new Situation311(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
+        addSituation(new Situation303(getAssetManager(), getWorld(), getPixelsPerMeter()));
+
         addSituation(new Situation399(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
         setOrbStartPosition(6, 9);

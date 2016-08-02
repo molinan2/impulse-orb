@@ -5,36 +5,36 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.LinearMagnetic;
 import com.jmolina.orb.elements.Magnetic;
-import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.RadialMagnetic;
-import com.jmolina.orb.elements.Up;
 import com.jmolina.orb.elements.WorldElement;
-import com.jmolina.orb.situations.BottomWalls;
+import com.jmolina.orb.situations.SideWalls;
 
 
-public class Situation300 extends BottomWalls {
+public class Situation302 extends SideWalls {
 
-    public Situation300(AssetManager am, World world, float pixelsPerMeter) {
+    public Situation302(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter);
     }
 
     @Override
     protected void createInnerElements () {
-        Element up = new Up(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                6, 5
-        );
-
-        LinearMagnetic magnet = new LinearMagnetic(
+        RadialMagnetic radial1 = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                12, 0.5f, 6, 0.75f, 0,
-                4, Magnetic.Polarity.REPULSIVE
+                2, 0.5f, 4.5f,
+                8, Magnetic.Polarity.ATTRACTIVE
         );
 
-        addElement(magnet);
-        addElement(up);
+        RadialMagnetic radial2 = new RadialMagnetic(
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Flavor.VIOLET,
+                2, 11.5f, 13.5f,
+                8, Magnetic.Polarity.ATTRACTIVE
+        );
 
-        super.createInnerElements();
+        addElement(radial1);
+        addElement(radial2);
+
     }
 
 }

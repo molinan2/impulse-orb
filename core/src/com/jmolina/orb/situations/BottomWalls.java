@@ -23,14 +23,14 @@ public class BottomWalls extends SideWalls {
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 Element.Geometry.SQUARE, Element.Flavor.BLACK,
-                13, 19, -5.5f, -8.5f, 0
+                13, 18, -5.5f, -8.5f, 0
         ));
 
         // Muro abajo derecha
         addElement(new Element(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 Element.Geometry.SQUARE, Element.Flavor.BLACK,
-                13, 19, 17.5f, -8.5f, 0
+                13, 18, 17.5f, -8.5f, 0
         ));
     }
 
