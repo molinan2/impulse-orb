@@ -41,7 +41,6 @@ public class Situation308L extends SideWalls {
                 9, 1, 1, 13.5f, 90
         );
 
-
         addElement(magnet1);
         addElement(destroyer1);
         addElement(magnet2);

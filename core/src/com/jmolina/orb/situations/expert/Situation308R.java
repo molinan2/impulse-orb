@@ -20,14 +20,14 @@ public class Situation308R extends SideWalls {
         LinearMagnetic magnet1 = new LinearMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                9, 1, 1, 4.5f, 90,
+                9, 1, 1, 4.5f, -90,
                 6, Magnetic.Polarity.REPULSIVE
         );
 
         LinearMagnetic magnet2 = new LinearMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                9, 1, 1, 13.5f, 90,
+                9, 1, 1, 13.5f, -90,
                 6, Magnetic.Polarity.REPULSIVE
         );
 
@@ -40,7 +40,6 @@ public class Situation308R extends SideWalls {
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
                 9, 1, 11, 13.5f, 90
         );
-
 
         addElement(magnet1);
         addElement(destroyer1);

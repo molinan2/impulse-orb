@@ -16,11 +16,6 @@ public class Level4 extends Level {
 
         addSituation(new Situation400(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
-        addSituation(new Situation405(getAssetManager(), getWorld(), getPixelsPerMeter()));
-        addSituation(new Situation405(getAssetManager(), getWorld(), getPixelsPerMeter()));
-        addSituation(new Situation405(getAssetManager(), getWorld(), getPixelsPerMeter()));
-        addSituation(new Situation405(getAssetManager(), getWorld(), getPixelsPerMeter()));
-
         addSituation(new Situation401(getAssetManager(), getWorld(), getPixelsPerMeter()));
         addSituation(new Situation401(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
