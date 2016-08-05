@@ -97,6 +97,7 @@ public class Menu extends BaseScreen {
         scrollPane.setScrollPercentY(0);
         scrollPane.updateVisualScroll();
         super.show();
+        getGameManager().play(GameManager.Track.Menu);
     }
 
 }

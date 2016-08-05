@@ -113,4 +113,10 @@ public class Main extends BaseScreen {
     public void back() {
         exitApplication();
     }
+
+    @Override
+    public void show() {
+        super.show();
+        getGameManager().play(GameManager.Track.Menu);
+    }
 }

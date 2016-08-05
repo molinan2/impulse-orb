@@ -21,7 +21,7 @@ public class GameManager {
     private final int VIBRATION_MEDIUM = 30;
     private final int VIBRATION_LONG = 300;
     private final float SOUND_VOLUME = 1f;
-    private final float MUSIC_VOLUME = 0.3f;
+    private final float MUSIC_VOLUME = 0.6f;
 
     private SuperManager superManager;
     private PrefsManager prefsManager;
@@ -178,26 +178,24 @@ public class GameManager {
     private void playTrack(Track track) {
         if (!music) return;
 
-        switch (track) {
-            case Menu:
+        if (track == Track.Menu) {
+            if (!menuMusic.isPlaying()) {
                 successMusic.stop();
                 gameMusic.stop();
                 menuMusic.play();
-                break;
-            case Game:
+            }
+        } else if (track == Track.Game) {
+            if (!gameMusic.isPlaying()) {
                 successMusic.stop();
                 menuMusic.stop();
                 gameMusic.play();
-                break;
-            case Success:
+            }
+        } else if (track == Track.Success) {
+            if (!successMusic.isPlaying()) {
                 gameMusic.stop();
                 menuMusic.stop();
                 successMusic.play();
-                break;
-            default:
-                gameMusic.stop();
-                menuMusic.stop();
-                successMusic.stop();
+            }
         }
     }
 

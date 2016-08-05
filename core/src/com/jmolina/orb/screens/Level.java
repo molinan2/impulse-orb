@@ -240,6 +240,7 @@ public class Level extends BaseScreen {
     public void show() {
         unsetInputProcessor();
         firstGame();
+        getGameManager().play(GameManager.Track.Game);
     }
 
     /**
@@ -637,7 +638,6 @@ public class Level extends BaseScreen {
 
     private void firstGame() {
         stats.newTry();
-        getGameManager().play(GameManager.Track.Game);
         getBackgroundStage().addAction(alpha(1));
         getOrb().getActor().addAction(alpha(0));
 
@@ -690,7 +690,6 @@ public class Level extends BaseScreen {
         unsetInputProcessor();
         getPrefsManager().saveGameStats(stats, getKey());
         getGameManager().play(GameManager.Fx.Back);
-        getGameManager().play(GameManager.Track.Menu);
         switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
     }
 
