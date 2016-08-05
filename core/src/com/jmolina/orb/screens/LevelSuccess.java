@@ -102,7 +102,6 @@ public class LevelSuccess extends BaseScreen {
     @Override
     public void hide() {
         super.hide();
-        getGameManager().play(GameManager.Track.Menu);
     }
 
 }
