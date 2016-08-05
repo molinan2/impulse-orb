@@ -1,7 +1,6 @@
 package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.SnapshotArray;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.actions.UIAction;
@@ -59,16 +57,16 @@ public class Level extends BaseScreen {
     private final float GESTURE_MAX_FLING_IMPULSE = 40f;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
     private final float WORLD_TIME_STEP = Var.FPS;
-    private final int WORLD_STEP_MULTIPLIER = 2;
-    private final int WORLD_VELOCITY_INTERACTIONS = 8;
-    private final int WORLD_POSITION_INTERACTIONS = 3;
+    private final int WORLD_STEP_MULTIPLIER = 1;
+    private final int WORLD_VELOCITY_ITERACTIONS = 8;
+    private final int WORLD_POSITION_ITERACTIONS = 3;
     private final int Z_INDEX_ORB = 20000;
     private final int Z_INDEX_BLACK = 10000;
     private final float MAGNETIC_FACTOR = 0.2f;
     private final float IMPULSE_FACTOR = 0.8f;
 
     private Tick tick;
-    private float pixelsPerMeter, impulse;
+    private float pixelsPerMeter, impulse, physicsStepAccumulator;
     private boolean locked, ticking;
     private World world;
     private ContactHandler contactHandler;
@@ -96,6 +94,7 @@ public class Level extends BaseScreen {
     public Level(SuperManager sm, ScreenManager.Key key) {
         super(sm, key);
 
+        physicsStepAccumulator = 0f;
         tick = new Tick();
         pixelsPerMeter = getGameManager().getPixelsPerMeter();
         impulse = IMPULSE_FACTOR / getPixelsPerMeter();
@@ -199,12 +198,13 @@ public class Level extends BaseScreen {
         act(delta);
         syncBodies();
         preUpdate();
-        step();
+        stepPhysics(delta);
         followCamera();
         syncActors();
         postUpdate();
         draw();
         checkSwitching();
+        System.out.println(Gdx.graphics.getRawDeltaTime());
     }
 
     /**
@@ -446,19 +446,37 @@ public class Level extends BaseScreen {
 
 
     /**
-     * Avanza la simulación
+     * Avanza la simulación usando el método del acumulador. Este método es útil para entornos con
+     * pocos recursos, en los que es habitual que el tiempo de frame supere el tiempo máximo por
+     * frame (1/60 a 60 fps), ya que permite "avanzar más" la simulación hasta alcanzar el tiempo
+     * de frame. Tiene la desventaja de que quedan residuos temporales en el acumulador, que pueden
+     * provocar saltos en frames posteriores (aliasing temporal).
      *
-     * Se calcularán {@link #WORLD_STEP_MULTIPLIER} pasos por cada frame
+     * Si sobran los recursos, es más recomendable usar un timestep fijo.
      */
-    public void step() {
-        for (int i = 0; i< WORLD_STEP_MULTIPLIER; i++) {
-            if (!isLocked()) {
-                world.step(
-                        WORLD_TIME_STEP / (float) WORLD_STEP_MULTIPLIER,
-                        WORLD_VELOCITY_INTERACTIONS,
-                        WORLD_POSITION_INTERACTIONS
-                );
-            }
+    public void stepPhysics(float delta) {
+        if (isLocked()) return;
+
+        float frameTime = Math.min(delta, 0.166666f);
+        physicsStepAccumulator += frameTime;
+        while (physicsStepAccumulator >= WORLD_TIME_STEP) {
+            multiStepPhysics();
+            physicsStepAccumulator -= WORLD_TIME_STEP;
+        }
+    }
+
+    /**
+     * Realiza {@link #WORLD_STEP_MULTIPLIER} pasos de la simulación física por cada fotograma. Un
+     * mayor número de pasos aumenta la precisión de las colisiones, a costa de mayor consumo de
+     * recursos.
+     */
+    private void multiStepPhysics() {
+        for (int i=0; i<WORLD_STEP_MULTIPLIER; i++) {
+            world.step(
+                    WORLD_TIME_STEP / (float) WORLD_STEP_MULTIPLIER,
+                    WORLD_VELOCITY_ITERACTIONS,
+                    WORLD_POSITION_ITERACTIONS
+            );
         }
     }
 
