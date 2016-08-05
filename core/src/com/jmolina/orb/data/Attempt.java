@@ -14,6 +14,9 @@ public class Attempt {
     /** Si el Orb alcanzo la salida */
     private boolean successful;
 
+    /** Puesto en el ranking */
+    private int rank;
+
     /**
      * Constructor
      */
@@ -22,6 +25,7 @@ public class Attempt {
         distance = 0f;
         failed = false;
         successful = false;
+        rank = 0;
     }
 
     public void addTime(float timeIncrement) {
@@ -66,6 +70,14 @@ public class Attempt {
 
     public void setSuccessful(boolean successful) {
         this.successful = successful;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public int getRank() {
+        return rank;
     }
 
 }

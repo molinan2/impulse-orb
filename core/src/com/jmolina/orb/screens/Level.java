@@ -204,7 +204,6 @@ public class Level extends BaseScreen {
         postUpdate();
         draw();
         checkSwitching();
-        System.out.println(Gdx.graphics.getRawDeltaTime());
     }
 
     /**
@@ -688,7 +687,7 @@ public class Level extends BaseScreen {
      */
     public void leaveGame() {
         unsetInputProcessor();
-        getPrefsManager().saveGameStats(stats, getKey());
+        getPrefsManager().saveStats(stats, getKey());
         getGameManager().play(GameManager.Fx.Back);
         switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
     }
@@ -697,10 +696,12 @@ public class Level extends BaseScreen {
      * Completa el juego, guardando las estadísticas y lanzando la pantalla de Success
      */
     public void successGame() {
+        int rank;
+
         lock();
         getStats().setSuccessfull(true);
-        getPrefsManager().saveGameStats(stats, getKey());
-        getGameManager().cacheAttempt(stats.getLastAttempt());
+        rank = getPrefsManager().saveStats(getStats(), getKey());
+        getGameManager().cache(getStats().getLastAttempt(), rank);
         unsetInputProcessor();
         getGameManager().play(GameManager.Fx.Exit);
         getOrb().outro(toSuccess);

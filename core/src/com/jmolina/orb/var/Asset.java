@@ -43,6 +43,11 @@ public class Asset {
     public static final String UI_PROGRESS_BASE = UI + "progress_base.png";
     public static final String UI_PROGRESS_FILL = UI + "progress_fill.png";
     public static final String UI_SUCCESS_COVER_01 = UI + "success_cover.png";
+    public static final String UI_STAR_1ST = UI + "star_1st.png";
+    public static final String UI_STAR_2ND = UI + "star_2nd.png";
+    public static final String UI_STAR_3RD = UI + "star_3rd.png";
+    public static final String UI_RATING_YES = UI + "rating_yes.png";
+    public static final String UI_RATING_NO = UI + "rating_no.png";
 
     public static final String GAME_SQUARE_BLACK = GAME + "square_black.png";
     public static final String GAME_SQUARE_GREY = GAME + "square_grey.png";

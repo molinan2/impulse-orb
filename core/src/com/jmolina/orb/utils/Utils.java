@@ -3,6 +3,7 @@ package com.jmolina.orb.utils;
 import com.badlogic.gdx.math.Vector2;
 import com.jmolina.orb.var.Var;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 public class Utils {
@@ -26,6 +27,11 @@ public class Utils {
         formattedTime = minutesString + ":" + secondsString + "." + decimalsString;
 
         return formattedTime;
+    }
+
+    public static String formatDistance(float distance) {
+        DecimalFormat df = new DecimalFormat("###.##");
+        return df.format(distance) + " m";
     }
 
     /**

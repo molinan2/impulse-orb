@@ -13,6 +13,8 @@ import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.ui.BigText;
 import com.jmolina.orb.widgets.ui.Heading;
+import com.jmolina.orb.widgets.ui.Rating;
+import com.jmolina.orb.widgets.ui.Star;
 import com.jmolina.orb.widgets.ui.SuccessCover;
 import com.jmolina.orb.widgets.ui.LevelTitle;
 import com.jmolina.orb.widgets.ui.MainButton;
@@ -33,6 +35,8 @@ public class LevelSuccess extends BaseScreen {
     private BigText time;
     private BigText distance;
     private MainButton button;
+    private Star star;
+    private Rating rating;
 
     public LevelSuccess(SuperManager superManager, ScreenManager.Key key, ScreenManager.Key previousKey, String title) {
         super(superManager, key);
@@ -47,7 +51,7 @@ public class LevelSuccess extends BaseScreen {
         this.distanceHeading = new Heading(getAssetManager(), "Distance", Align.center, Heading.Weight.Regular, Var.COLOR_BLUE);
 
         this.time = new BigText(getAssetManager(), Utils.formatTime(attempt.getTime()));
-        this.distance = new BigText(getAssetManager(), formatDistance(attempt.getDistance()));
+        this.distance = new BigText(getAssetManager(), Utils.formatDistance(attempt.getDistance()));
 
         this.button = new MainButton(getAssetManager(), "BACK", MainButton.Type.Default);
         button.addListener(new ClickListener(){
@@ -59,13 +63,20 @@ public class LevelSuccess extends BaseScreen {
             }
         });
 
+        this.star = new Star(getAssetManager(), getGameManager().getCachedRank());
+
+        // TODO: Calcular el auténtico rating basado en el Attemp (se compara con tiempos hardcoded)
+        this.rating = new Rating(getAssetManager(), 3);
+
         this.title.setPositionGrid(1, 16.5f);
         this.cover.setPositionGrid(1, 12f);
-        this.timeHeading.setPositionGrid(1, 10f);
-        this.time.setPositionGrid(1, 8.5f);
-        this.distanceHeading.setPositionGrid(1, 7f);
-        this.distance.setPositionGrid(1, 5.5f);
+        this.timeHeading.setPositionGrid(1, 10.5f);
+        this.time.setPositionGrid(1, 9f);
+        this.distanceHeading.setPositionGrid(1, 7.5f);
+        this.distance.setPositionGrid(1, 6f);
         this.button.setPositionGrid(2, 1f);
+        this.star.setPositionGrid(7.65f, 12.25f);
+        this.rating.setPositionGrid(1, 3.5f);
 
         addMainActor(this.title);
         addMainActor(this.cover);
@@ -74,6 +85,8 @@ public class LevelSuccess extends BaseScreen {
         addMainActor(this.time);
         addMainActor(this.distance);
         addMainActor(this.button);
+        addMainActor(this.star);
+        addMainActor(this.rating);
     }
 
     @Override
@@ -86,11 +99,6 @@ public class LevelSuccess extends BaseScreen {
         distance.dispose();
         button.dispose();
         super.dispose();
-    }
-
-    private String formatDistance(float distance) {
-        DecimalFormat df = new DecimalFormat("###.##");
-        return df.format(distance) + " m";
     }
 
     @Override

@@ -38,19 +38,37 @@ public class PersonalTimes {
     }
 
     /**
-     * Añade un nuevo tiempo y lo ordena dentro de la lista de tiempos
+     * Añade un nuevo tiempo, ordenándolo en la lista de tiempos y actualizando los tiempos
+     * en las preferencias.
+     *
+     * @return El puesto en que ha quedado el tiempo
      */
-    public void addAttempt(Attempt attempt) {
+    public int addAttempt(Attempt attempt) {
         if (attempt.isSuccessful()) {
             times.add(attempt.getTime());
             Collections.sort(times);
         }
+
+        putTimes();
+
+        int rank = 0;
+
+        for (int i = times.size()-1; i >= 0; i--) {
+            if (attempt.getTime() == times.get(i)) {
+                rank = i+1;
+                break;
+            }
+        }
+
+        return rank;
     }
 
     /**
-     * Guarda en disco los 3 primeros tiempos
+     * Guarda en preferencias los 3 primeros tiempos. Ignora del cuarto tiempo en adelante (en caso
+     * de que ya hubiera 3 tiempos guardados y se añadiera uno más). No hace {@link Preferences#flush()}
+     * (deberá hacerse externamente cuando se quieran guardar las preferencias en el almacenamiento).
      */
-    public void put() {
+    private void putTimes() {
         if (times.size() > 0) prefs.putFloat(LADDER_1, times.get(0));
         if (times.size() > 1) prefs.putFloat(LADDER_2, times.get(1));
         if (times.size() > 2) prefs.putFloat(LADDER_3, times.get(2));

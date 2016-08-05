@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.MathUtils;
 import com.jmolina.orb.OrbApp;
+import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.data.GameStats;
 import com.jmolina.orb.data.PersonalTimes;
 import com.jmolina.orb.var.Var;
@@ -148,7 +149,14 @@ public class PrefsManager {
         getPrefs().flush();
     }
 
-    public void saveGameStats(GameStats stats, ScreenManager.Key level) {
+    /**
+     * @param stats
+     * @param level
+     * @return El rango conseguido por el tiempo
+     */
+    public int saveStats(GameStats stats, ScreenManager.Key level) {
+        int rank = 0;
+
         if (!stats.isEmpty()) {
             prefs.putFloat(STAT_TIME, prefs.getFloat(STAT_TIME) + stats.fullTime());
             prefs.putFloat(STAT_DISTANCE, prefs.getFloat(STAT_DISTANCE) + stats.fullDistance());
@@ -190,12 +198,12 @@ public class PrefsManager {
             }
 
             // Guarda los mejores tiempos
-            PersonalTimes personalTimes = new PersonalTimes(prefs, level);
-            personalTimes.addAttempt(stats.getLastAttempt());
-            personalTimes.put();
-
+            PersonalTimes times = new PersonalTimes(prefs, level);
+            rank = times.addAttempt(stats.getLastAttempt());
             save();
         }
+
+        return rank;
     }
 
 }

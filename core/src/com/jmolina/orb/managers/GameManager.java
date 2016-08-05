@@ -26,6 +26,7 @@ public class GameManager {
     private SuperManager superManager;
     private PrefsManager prefsManager;
     private Attempt cachedAttempt;
+    private int cachedRank;
     private boolean vibration = true;
     private boolean sound = true;
     private boolean music = true;
@@ -38,6 +39,7 @@ public class GameManager {
      * Constructor
      */
     public GameManager (SuperManager sm) {
+        cachedRank = 0;
         prefsManager = sm.getPrefsManager();
         superManager = sm;
         cachedAttempt = new Attempt();
@@ -77,15 +79,20 @@ public class GameManager {
         else playTrack(Track.Menu);
     }
 
-    public void cacheAttempt(Attempt attempt) {
+    public void cache(Attempt attempt, int rank) {
         if (attempt != null) {
             cachedAttempt.setDistance(attempt.getDistance());
             cachedAttempt.setTime(attempt.getTime());
+            cachedRank = rank;
         }
     }
 
     public Attempt getCachedAttempt() {
         return cachedAttempt;
+    }
+
+    public int getCachedRank() {
+        return cachedRank;
     }
 
     public void vibrate(Length length) {
