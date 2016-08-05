@@ -9,10 +9,13 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.ui.ProgressBar;
+import com.sun.xml.internal.ws.api.model.MEP;
 
 import static com.jmolina.orb.managers.ScreenManager.Key.*;
 
 public class Load extends BaseScreen {
+
+    private final ScreenManager.Key FIRST_SCREEN = MAIN;
 
     private Image splash;
     private ProgressBar bar;
@@ -55,17 +58,9 @@ public class Load extends BaseScreen {
 
         if (loaded && !switching) {
             switching = true;
-            switchToMenu();
+            superManager.createGameManager();
+            switchToScreen(FIRST_SCREEN, Hierarchy.LOWER);
         }
-    }
-
-    /**
-     * Llamada especial a switchToScreen para poder crear el GameManager con los assets cargados
-     */
-    private void switchToMenu() {
-        superManager.createGameManager();
-        getGameManager().play(GameManager.Track.Menu);
-        switchToScreen(MAIN, Hierarchy.LOWER);
     }
 
 }
