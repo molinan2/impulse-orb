@@ -1,13 +1,9 @@
 package com.jmolina.orb.widgets.ui;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.utils.Utils;
@@ -19,10 +15,14 @@ import java.util.ArrayList;
 
 public class Rating extends BaseGroup {
 
+    public final static int MIN = 0;
+    public final static int MAX = 4;
+
+    private final String NICE_TRY = "Nice try";
     private final String BRONZE = "Bronze!";
     private final String SILVER = "Silver!";
     private final String GOLD = "Gold!";
-    private final String DEVELOPER = "You beat the developer!";
+    private final String DEVELOPER = "You have beaten the developer!";
 
     private ArrayList<Image> points;
     private Group rating;
@@ -31,23 +31,15 @@ public class Rating extends BaseGroup {
     public Rating(AssetManager am, int numericRating) {
         super(am);
 
-        numericRating = MathUtils.clamp(numericRating, 1, 4);
-
         rating = new Group();
         heading = new Heading(getAssetManager(), getText(numericRating), Align.center, Heading.Weight.Regular, Var.COLOR_BLACK);
         points = new ArrayList<Image>();
 
-        for (int i=0; i<4; i++) {
-            if (i < numericRating) {
-                points.add(new Image(getAsset(Asset.UI_RATING_YES, Texture.class)));
-            }
-            else {
-                points.add(new Image(getAsset(Asset.UI_RATING_NO, Texture.class)));
-            }
-        }
+        for (int i=MIN; i<MAX; i++) {
+            if (i < numericRating) points.add(new Image(getAsset(Asset.UI_RATING_YES, Texture.class)));
+            else points.add(new Image(getAsset(Asset.UI_RATING_NO, Texture.class)));
 
-        for (int i=0; i<4; i++) {
-            points.get(i).setPosition(i * Utils.cell(1.25f), 0);
+            points.get(i).setPosition(i * Utils.cell(1.25f), Utils.cell(0));
             rating.addActor(points.get(i));
         }
 
@@ -60,7 +52,10 @@ public class Rating extends BaseGroup {
     }
 
     private String getText(int rating) {
-        if (rating == 1) return BRONZE;
+        rating = MathUtils.clamp(rating, 0, 4);
+
+        if (rating == 0) return NICE_TRY;
+        else if (rating == 1) return BRONZE;
         else if (rating == 2) return SILVER;
         else if (rating == 3) return GOLD;
         else if (rating == 4) return DEVELOPER;

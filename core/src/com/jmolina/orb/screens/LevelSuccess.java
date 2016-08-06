@@ -19,13 +19,8 @@ import com.jmolina.orb.widgets.ui.SuccessCover;
 import com.jmolina.orb.widgets.ui.LevelTitle;
 import com.jmolina.orb.widgets.ui.MainButton;
 
-import java.text.DecimalFormat;
+import java.util.ArrayList;
 
-/**
- * TODO: Texto de "You have unlocked NEXT LEVEL"
- * TODO: Posición en el ranking si llega al podio
- * TODO: Estrellitas de tipo NADEO (bronze, silver, gold, developer)
- */
 public class LevelSuccess extends BaseScreen {
 
     private LevelTitle title;
@@ -64,9 +59,7 @@ public class LevelSuccess extends BaseScreen {
         });
 
         this.star = new Star(getAssetManager(), getGameManager().getCachedRank());
-
-        // TODO: Calcular el auténtico rating basado en el Attemp (se compara con tiempos hardcoded)
-        this.rating = new Rating(getAssetManager(), 3);
+        this.rating = new Rating(getAssetManager(), numericRating(key, attempt.getTime()));
 
         this.title.setPositionGrid(1, 16.5f);
         this.cover.setPositionGrid(1, 12f);
@@ -107,9 +100,39 @@ public class LevelSuccess extends BaseScreen {
         getGameManager().play(GameManager.Track.Success);
     }
 
-    @Override
-    public void hide() {
-        super.hide();
+    /**
+     * Obtiene el rating numérico
+     *
+     * @param key
+     * @param time
+     * @return
+     */
+    private int numericRating(ScreenManager.Key key, float time) {
+        switch (key) {
+            case LEVEL_SUCCESS_1: return numericRatingByLevel(1, time);
+            case LEVEL_SUCCESS_2: return numericRatingByLevel(2, time);
+            case LEVEL_SUCCESS_3: return numericRatingByLevel(3, time);
+            case LEVEL_SUCCESS_4: return numericRatingByLevel(4, time);
+            case LEVEL_SUCCESS_5: return numericRatingByLevel(5, time);
+            default: return 0;
+        }
+    }
+
+    /**
+     * Obtiene el rating numérico
+     *
+     * @param levelIndex
+     * @param time
+     * @return
+     */
+    private int numericRatingByLevel(int levelIndex, float time) {
+        ArrayList<Float> levelTimes = getGameManager().getTimes(levelIndex);
+
+        if (time < levelTimes.get(0)) return 4;
+        else if (time < levelTimes.get(1)) return 3;
+        else if (time < levelTimes.get(2)) return 2;
+        else if (time < levelTimes.get(3)) return 1;
+        else return 0;
     }
 
 }

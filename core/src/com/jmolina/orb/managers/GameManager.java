@@ -8,6 +8,9 @@ import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.var.Var;
+import com.jmolina.orb.widgets.ui.Rating;
+
+import java.util.ArrayList;
 
 public class GameManager {
 
@@ -35,6 +38,8 @@ public class GameManager {
             exitSound, flingSound, initSound, optionSound, tapSound, tickSound, warningSound;
     private Music menuMusic, gameMusic, successMusic;
 
+    private ArrayList<ArrayList<Float>> times;
+
     /**
      * Constructor
      */
@@ -47,6 +52,7 @@ public class GameManager {
         createSounds();
         createMusic();
         fetchOptions();
+        createTimes();
     }
 
     public void dispose() {
@@ -214,6 +220,54 @@ public class GameManager {
         gameMusic.stop();
         menuMusic.stop();
         successMusic.stop();
+    }
+
+    private void createTimes() {
+        times = new ArrayList<ArrayList<Float>>();
+
+        ArrayList<Float> level1 = new ArrayList<Float>();
+        ArrayList<Float> level2 = new ArrayList<Float>();
+        ArrayList<Float> level3 = new ArrayList<Float>();
+        ArrayList<Float> level4 = new ArrayList<Float>();
+        ArrayList<Float> level5 = new ArrayList<Float>();
+
+        level1.add(Var.TIME_LEVEL_1_DEV);
+        level1.add(Var.TIME_LEVEL_1_GOLD);
+        level1.add(Var.TIME_LEVEL_1_SILVER);
+        level1.add(Var.TIME_LEVEL_1_BRONZE);
+        level2.add(Var.TIME_LEVEL_2_DEV);
+        level2.add(Var.TIME_LEVEL_2_GOLD);
+        level2.add(Var.TIME_LEVEL_2_SILVER);
+        level2.add(Var.TIME_LEVEL_2_BRONZE);
+        level3.add(Var.TIME_LEVEL_3_DEV);
+        level3.add(Var.TIME_LEVEL_3_GOLD);
+        level3.add(Var.TIME_LEVEL_3_SILVER);
+        level3.add(Var.TIME_LEVEL_3_BRONZE);
+        level4.add(Var.TIME_LEVEL_4_DEV);
+        level4.add(Var.TIME_LEVEL_4_GOLD);
+        level4.add(Var.TIME_LEVEL_4_SILVER);
+        level4.add(Var.TIME_LEVEL_4_BRONZE);
+        level5.add(Var.TIME_LEVEL_5_DEV);
+        level5.add(Var.TIME_LEVEL_5_GOLD);
+        level5.add(Var.TIME_LEVEL_5_SILVER);
+        level5.add(Var.TIME_LEVEL_5_BRONZE);
+
+        times.add(level1);
+        times.add(level2);
+        times.add(level3);
+        times.add(level4);
+        times.add(level5);
+    }
+
+    /**
+     *
+     *
+     * @param levelIndex Índice de nivel en número natural: {1,5}
+     * @return
+     */
+    public ArrayList<Float> getTimes(int levelIndex) {
+        levelIndex = MathUtils.clamp(levelIndex-1, Rating.MIN, Rating.MAX);
+        return times.get(levelIndex);
     }
 
 }

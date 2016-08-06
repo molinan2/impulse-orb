@@ -57,9 +57,10 @@ public class Level extends BaseScreen {
     private final float GESTURE_MAX_FLING_IMPULSE = 40f;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
     private final float WORLD_TIME_STEP = Var.FPS;
-    private final int WORLD_STEP_MULTIPLIER = 1;
-    private final int WORLD_VELOCITY_ITERACTIONS = 8;
-    private final int WORLD_POSITION_ITERACTIONS = 3;
+    private final int WORLD_STEP_MULTIPLIER = 4;
+    private final int WORLD_VELOCITY_ITERATIONS = 8;
+    private final int WORLD_POSITION_ITERATIONS = 3;
+    private final boolean WOLRD_ACCUMULATED_STEP = false;
     private final int Z_INDEX_ORB = 20000;
     private final int Z_INDEX_BLACK = 10000;
     private final float MAGNETIC_FACTOR = 0.2f;
@@ -457,11 +458,16 @@ public class Level extends BaseScreen {
     public void stepPhysics(float delta) {
         if (isLocked()) return;
 
-        float frameTime = Math.min(delta, 0.166666f);
-        physicsStepAccumulator += frameTime;
-        while (physicsStepAccumulator >= WORLD_TIME_STEP) {
+        if (!WOLRD_ACCUMULATED_STEP) {
             multiStepPhysics();
-            physicsStepAccumulator -= WORLD_TIME_STEP;
+        }
+        else {
+            float frameTime = Math.min(delta, 0.166666f);
+            physicsStepAccumulator += frameTime;
+            while (physicsStepAccumulator >= WORLD_TIME_STEP) {
+                world.step(WORLD_TIME_STEP, WORLD_VELOCITY_ITERATIONS, WORLD_POSITION_ITERATIONS);
+                physicsStepAccumulator -= WORLD_TIME_STEP;
+            }
         }
     }
 
@@ -474,8 +480,8 @@ public class Level extends BaseScreen {
         for (int i=0; i<WORLD_STEP_MULTIPLIER; i++) {
             world.step(
                     WORLD_TIME_STEP / (float) WORLD_STEP_MULTIPLIER,
-                    WORLD_VELOCITY_ITERACTIONS,
-                    WORLD_POSITION_ITERACTIONS
+                    WORLD_VELOCITY_ITERATIONS,
+                    WORLD_POSITION_ITERATIONS
             );
         }
     }
