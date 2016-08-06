@@ -131,4 +131,10 @@ public class GestureStage extends Stage {
         return false;
     }
 
+    @Override
+    public void dispose() {
+        buffer.dispose();
+        super.dispose();
+    }
+
 }

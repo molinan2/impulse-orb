@@ -24,7 +24,6 @@ public class Gauge extends BaseGroup {
     public Gauge(AssetManager am) {
         super(am);
 
-
         background = new Image(getAsset(Asset.HUD_GAUGE_BACKGROUND, Texture.class));
         bar = new Image(getAsset(Asset.HUD_GAUGE_BAR, Texture.class));
         overload = new Image(getAsset(Asset.HUD_GAUGE_OVERLOAD, Texture.class));
