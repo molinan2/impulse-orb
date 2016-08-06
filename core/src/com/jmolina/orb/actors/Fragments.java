@@ -1,6 +1,6 @@
 package com.jmolina.orb.actors;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;

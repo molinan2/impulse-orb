@@ -1,6 +1,6 @@
 package com.jmolina.orb.elements;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 
 

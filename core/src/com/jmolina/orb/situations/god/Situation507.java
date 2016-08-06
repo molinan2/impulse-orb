@@ -1,6 +1,6 @@
 package com.jmolina.orb.situations.god;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Movable;

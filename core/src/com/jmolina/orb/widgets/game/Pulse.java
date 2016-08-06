@@ -1,6 +1,6 @@
 package com.jmolina.orb.widgets.game;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.actors.BaseActor;

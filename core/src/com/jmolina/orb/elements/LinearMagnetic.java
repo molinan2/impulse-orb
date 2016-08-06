@@ -1,6 +1,6 @@
 package com.jmolina.orb.elements;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;

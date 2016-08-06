@@ -1,6 +1,6 @@
 package com.jmolina.orb.situations.advanced;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Exit;
 import com.jmolina.orb.elements.Up;

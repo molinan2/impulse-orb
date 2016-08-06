@@ -27,6 +27,7 @@ import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.situations.Situation;
+import com.jmolina.orb.situations.SituationFactory;
 import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
 import com.jmolina.orb.stages.ParallaxStage;
@@ -50,11 +51,11 @@ public class Level extends BaseScreen {
     public static final float INTRO_SEQUENCE_TIME = 1f;
 
     private final float BACKGROUND_FADE_TIME = 0.5f;
-    private final float GESTURE_HALF_TAP_SQUARE_SIZE = 10.0f;
+    private final float GESTURE_HALF_TAP_SQUARE_SIZE = 14.0f;
     private final float GESTURE_TAP_COUNT_INTERVAL = 0.4f;
     private final float GESTURE_LONG_PRESS_DURATION = 1.1f;
     private final float GESTURE_MAX_FLING_DELAY = 0.1f;
-    private final float GESTURE_MAX_FLING_IMPULSE = 40f;
+    private final float GESTURE_MAX_FLING_IMPULSE = 60f;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
     private final float WORLD_TIME_STEP = Var.FPS;
     private final int WORLD_STEP_MULTIPLIER = 4;
@@ -84,6 +85,7 @@ public class Level extends BaseScreen {
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
     private Runnable orbIntro, orbDestroy, reset, unlock, toSuccess;
     private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
+    private SituationFactory situationFactory;
 
 
     /**
@@ -135,6 +137,8 @@ public class Level extends BaseScreen {
         createRunnables();
         lock();
         disableTicking();
+
+        situationFactory = new SituationFactory(getAssetManager(), getWorld(), getPixelsPerMeter());
     }
 
     /**
@@ -408,7 +412,7 @@ public class Level extends BaseScreen {
      *
      * @param situation {@link Situation}
      */
-    public void addSituation (Situation situation) {
+    private void addSituation (Situation situation) {
         situations.add(situation);
         int size = situations.size;
         situation.setPosition(size-1);
@@ -419,6 +423,10 @@ public class Level extends BaseScreen {
         }
 
         correctZIndexes();
+    }
+
+    public void addSituation(Class clazz) {
+        addSituation(situationFactory.newSituation(clazz));
     }
 
     /**
