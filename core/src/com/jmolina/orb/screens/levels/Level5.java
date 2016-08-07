@@ -8,8 +8,8 @@ import com.jmolina.orb.situations.god.*;
 
 public class Level5 extends Level {
 
-    public Level5(SuperManager sm, ScreenManager.Key key) {
-        super(sm, key);
+    public Level5(SuperManager sm) {
+        super(sm);
 
         setPreviousScreen(ScreenManager.Key.LEVEL_LAUNCH_5);
         setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_5);

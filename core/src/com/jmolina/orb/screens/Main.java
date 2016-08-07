@@ -22,8 +22,8 @@ public class Main extends BaseScreen {
     private MainButton exit;
     private Notice notice;
 
-    public Main(SuperManager superManager, ScreenManager.Key key) {
-        super(superManager, key);
+    public Main(SuperManager superManager) {
+        super(superManager);
 
         gameTitle = new GameTitle(getAssetManager());
         notice = new Notice(getAssetManager());

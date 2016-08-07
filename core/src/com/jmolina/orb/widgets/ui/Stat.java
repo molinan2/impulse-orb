@@ -16,7 +16,7 @@ import com.jmolina.orb.widgets.BaseGroup;
 import java.text.DecimalFormat;
 
 /**
- * TODO: Que conserve la unidad para no tener que especificarla en cada setValue
+ *
  */
 public class Stat extends BaseGroup {
 

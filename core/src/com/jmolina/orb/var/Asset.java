@@ -4,7 +4,7 @@ package com.jmolina.orb.var;
 
 /**
  * Assets principales. {@link com.jmolina.orb.managers.AssetManager} precarga automáticamente todos
- * los assets mediante Reflection.
+ * los assets mediante Reflection. Todos los campos públicos deben ser de tipo String.
  */
 public class Asset {
 

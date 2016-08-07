@@ -20,8 +20,8 @@ public class Options extends Menu {
 
     private PrefsManager prefsManager;
 
-    public Options(SuperManager superManager, ScreenManager.Key key) {
-        super(superManager, key);
+    public Options(SuperManager superManager) {
+        super(superManager);
 
         this.prefsManager = superManager.getPrefsManager();
         setPreviousScreen(ScreenManager.Key.MAIN);

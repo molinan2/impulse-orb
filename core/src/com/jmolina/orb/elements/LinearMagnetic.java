@@ -10,7 +10,6 @@ import com.jmolina.orb.widgets.game.LinearField;
 
 
 /**
- * TODO
  * Elemento magnético lineal
  */
 public class LinearMagnetic extends Magnetic {

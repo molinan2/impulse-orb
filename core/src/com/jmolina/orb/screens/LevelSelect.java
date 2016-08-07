@@ -18,8 +18,8 @@ public class LevelSelect extends Menu {
 
     private Card level1, level2, level3, level4, level5, levelTest1, levelTest2;
 
-    public LevelSelect(SuperManager superManager, ScreenManager.Key key) {
-        super(superManager, key);
+    public LevelSelect(SuperManager superManager) {
+        super(superManager);
 
         setPreviousScreen(ScreenManager.Key.MAIN);
         setTitle("SELECT");

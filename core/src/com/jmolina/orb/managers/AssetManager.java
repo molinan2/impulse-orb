@@ -13,6 +13,8 @@ import com.jmolina.orb.var.Asset;
 
 public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 
+    private enum AssetType { FONT, MUSIC, SOUND, TEXTURE, UNDEFINED }
+
     public static final Class ASSET_CLASS = Asset.class;
 
     /**
@@ -40,50 +42,63 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
     /**
      * Precarga todos los assets en una clase usando reflection
      *
-     * @param c Class
+     * @param clazz Class
      */
-    public void preloadAll(Class c) {
-        for (Field field : ClassReflection.getFields(c)) {
+    public void preloadAll(Class clazz) {
+        for (Field field : ClassReflection.getFields(clazz)) {
             try {
-                // Android Studio 2 añade un campo sintetico para soportar su "Instant run",
+                // Fix: Salta la iteracion si el campo no es de tipo String (deben ser String).
+                // Android Studio 2 añade un campo sintético para soportar su "Instant run",
                 // provocando una NullPointerException al ejecutar la app en Android.
-
-                // Salta la iteracion si el campo no es de tipo String (deben ser String)
                 if (!field.getType().toString().equals("class java.lang.String")) {
                     continue;
                 }
 
-                // Alternativa: Salta la iteracion si el campo es sintetico (mas arriesgado)
+                // Alternate fix: Salta la iteración si el campo es sintético (más arriesgado)
                 // if (field.isSynthetic()) {
                 //     continue;
                 // }
 
-                // NullPointerException al ejecutarse sobre un campo sintetico
-                Object o = field.get(c);
-                String name = o.toString();
+                Object object = field.get(clazz);
+                String name = object.toString();
+                AssetType assetType = detectAssetType(name);
 
-                // TODO: implementar una función decisora para las extensiones
-                if (name.endsWith(".fnt")) {
-                    load(field.get(c).toString(), BitmapFont.class);
+                switch (assetType) {
+                    case FONT:
+                        load(name, BitmapFont.class);
+                        break;
+                    case MUSIC:
+                        load(name, Music.class);
+                        break;
+                    case SOUND:
+                        load(name, Sound.class);
+                        break;
+                    case TEXTURE:
+                        TextureLoader.TextureParameter parameter = new TextureLoader.TextureParameter();
+                        parameter.genMipMaps = true;
+                        parameter.minFilter = Texture.TextureFilter.Linear;
+                        parameter.magFilter = Texture.TextureFilter.Linear;
+                        load(name, Texture.class, parameter);
+                        break;
+                    default:
                 }
-                else if (name.endsWith(".music.mp3") || name.endsWith(".music.ogg")) {
-                    load(field.get(c).toString(), Music.class);
-                }
-                else if (name.endsWith(".mp3")) {
-                    load(field.get(c).toString(), Sound.class);
-                }
-                else if (name.endsWith(".png")) {
-                    TextureLoader.TextureParameter parameter = new TextureLoader.TextureParameter();
-                    parameter.genMipMaps = true;
-                    parameter.minFilter = Texture.TextureFilter.Linear;
-                    parameter.magFilter = Texture.TextureFilter.Linear;
-                    load(field.get(c).toString(), Texture.class, parameter);
-                }
-
             } catch (ReflectionException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private AssetType detectAssetType(String name) {
+        boolean font = name.endsWith(".fnt");
+        boolean music = name.endsWith(".music.mp3") || name.endsWith(".music.ogg");
+        boolean sound = name.endsWith(".mp3");
+        boolean texture = name.endsWith(".png");
+
+        if (font) return AssetType.FONT;
+        else if (music) return AssetType.MUSIC;
+        else if (sound) return AssetType.SOUND;
+        else if (texture) return AssetType.TEXTURE;
+        else return AssetType.UNDEFINED;
     }
 
 }

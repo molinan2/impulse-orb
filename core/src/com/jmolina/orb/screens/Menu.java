@@ -21,8 +21,8 @@ public class Menu extends BaseScreen {
     private Table table;
     private ScrollPane scrollPane;
 
-    public Menu(SuperManager superManager, ScreenManager.Key key) {
-        super(superManager, key);
+    public Menu(SuperManager superManager) {
+        super(superManager);
 
         title = new Title(getAssetManager(), "");
         title.setPosition(Utils.cell(1), Utils.cell(15.5f));

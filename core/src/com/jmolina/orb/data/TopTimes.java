@@ -8,7 +8,7 @@ import java.util.Collections;
 
 import static com.jmolina.orb.managers.PrefsManager.*;
 
-public class PersonalTimes {
+public class TopTimes {
 
     private String LADDER_1;
     private String LADDER_2;
@@ -18,7 +18,7 @@ public class PersonalTimes {
     private ScreenManager.Key screenKey;
     private ArrayList<Float> times;
 
-    public PersonalTimes(Preferences prefs, ScreenManager.Key screenKey) {
+    public TopTimes(Preferences prefs, ScreenManager.Key screenKey) {
         this.prefs = prefs;
         this.screenKey = screenKey;
         this.times = new ArrayList<Float>();

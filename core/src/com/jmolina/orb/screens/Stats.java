@@ -29,8 +29,8 @@ public class Stats extends Menu {
 
     private Preferences prefs;
 
-    public Stats(SuperManager superManager, ScreenManager.Key key) {
-        super(superManager, key);
+    public Stats(SuperManager superManager) {
+        super(superManager);
 
         setPreviousScreen(ScreenManager.Key.MAIN);
         setTitle("STATS");

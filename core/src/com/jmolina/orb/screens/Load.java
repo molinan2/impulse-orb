@@ -13,7 +13,7 @@ import static com.jmolina.orb.managers.ScreenManager.Key.*;
 
 public class Load extends BaseScreen {
 
-    private final ScreenManager.Key FIRST_SCREEN = LEVEL_SUCCESS_1;
+    private final ScreenManager.Key FIRST_SCREEN = MAIN;
 
     private Image splash;
     private ProgressBar bar;
@@ -21,8 +21,8 @@ public class Load extends BaseScreen {
     private boolean loaded;
     private SuperManager superManager;
 
-    public Load(SuperManager sm, ScreenManager.Key key) {
-        super(sm, key);
+    public Load(SuperManager sm) {
+        super(sm);
 
         superManager = sm;
 
@@ -57,7 +57,7 @@ public class Load extends BaseScreen {
         if (loaded && !switching) {
             switching = true;
             superManager.createGameManager();
-            switchToScreen(MAIN, Hierarchy.LOWER);
+            switchToScreen(FIRST_SCREEN, Hierarchy.LOWER);
         }
     }
 

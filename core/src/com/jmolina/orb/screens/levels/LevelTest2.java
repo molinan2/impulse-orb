@@ -9,13 +9,12 @@ import com.jmolina.orb.situations.test.SituationT199;
 
 public class LevelTest2 extends Level {
 
-    public LevelTest2(SuperManager sm, ScreenManager.Key key) {
-        super(sm, key);
+    public LevelTest2(SuperManager sm) {
+        super(sm);
 
         setPreviousScreen(ScreenManager.Key.LEVEL_LAUNCH_T2);
         setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_T2);
 
-        // Temporal
         addSituation(SituationT100.class);
         addSituation(SituationT199.class);
 

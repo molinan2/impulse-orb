@@ -16,8 +16,8 @@ import com.jmolina.orb.situations.test.SituationT199;
 
 public class LevelTest1 extends Level {
 
-    public LevelTest1(SuperManager sm, ScreenManager.Key key) {
-        super(sm, key);
+    public LevelTest1(SuperManager sm) {
+        super(sm);
 
         setPreviousScreen(ScreenManager.Key.LEVEL_LAUNCH_T1);
         setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_T1);

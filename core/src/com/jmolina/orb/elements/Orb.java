@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 /**
- * TODO: De color naranja cuando esté en Overload
+ *
  */
 public class Orb extends Element {
 

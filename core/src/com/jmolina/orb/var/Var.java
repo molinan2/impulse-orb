@@ -17,7 +17,6 @@ public class Var {
     public static final int COLOR_BLUE = 0x2E3192ff;
     public static final int COLOR_BLACK = 0x4D4D4Dff;
 
-    // TODO: Tiempos del desarrollador:
     // LEVEL 1: 102.43f
 
     public static final float TIME_LEVEL_1_DEV = 1;

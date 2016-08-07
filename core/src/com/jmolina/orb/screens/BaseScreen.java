@@ -49,17 +49,15 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     private Hierarchy hierarchy;
     private SnapshotArray<Actor> actors;
     private InputMultiplexer multiplexer;
-    private ScreenManager.Key previousKey, key;
+    private ScreenManager.Key previousKey, thisKey;
     private ScreenFlag screenFlag;
 
 
     /**
      * Constructor
      */
-    public BaseScreen(SuperManager sm, ScreenManager.Key key) {
+    public BaseScreen(SuperManager sm) {
         superManager = sm;
-        this.key = key;
-
         screenFlag = new ScreenFlag();
         actors = new SnapshotArray<Actor>();
         mainViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
@@ -137,8 +135,12 @@ public class BaseScreen extends ScreenAdapter implements Backable {
      * Class methods
      */
 
-    public ScreenManager.Key getKey() {
-        return this.key;
+    public void setThisKey(ScreenManager.Key key) {
+        thisKey = key;
+    }
+
+    public ScreenManager.Key getThisKey() {
+        return thisKey;
     }
 
     protected void clear() {

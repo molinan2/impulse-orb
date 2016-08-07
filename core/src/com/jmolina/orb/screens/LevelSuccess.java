@@ -33,9 +33,9 @@ public class LevelSuccess extends BaseScreen {
     private Star star;
     private Rating rating;
 
-    public LevelSuccess(SuperManager superManager, ScreenManager.Key key, ScreenManager.Key previousKey, String title) {
-        super(superManager, key);
-        setPreviousScreen(previousKey);
+    public LevelSuccess(SuperManager superManager, String title) {
+        super(superManager);
+        setPreviousScreen(ScreenManager.Key.LEVEL_SELECT);
 
         Attempt attempt = getGameManager().getCachedAttempt();
 
@@ -59,7 +59,7 @@ public class LevelSuccess extends BaseScreen {
         });
 
         this.star = new Star(getAssetManager(), getGameManager().getCachedRank());
-        this.rating = new Rating(getAssetManager(), numericRating(key, attempt.getTime()));
+        this.rating = new Rating(getAssetManager(), numericRating(getThisKey(), attempt.getTime()));
 
         this.title.setPositionGrid(1, 16.5f);
         this.cover.setPositionGrid(1, 12f);

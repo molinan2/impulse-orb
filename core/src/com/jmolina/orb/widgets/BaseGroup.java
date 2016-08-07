@@ -32,7 +32,6 @@ public class BaseGroup extends Group implements Disposable {
 
     @Override
     public void draw (Batch batch, float parentAlpha) {
-        // TODO: Click feedback preliminar con shader.
         if (brightness > 0) {
             float variance = 0.03f;
             brightness = MathUtils.clamp(brightness - variance, 0f, 1f);
@@ -65,6 +64,9 @@ public class BaseGroup extends Group implements Disposable {
         shader.dispose();
     }
 
+    /**
+     * Provoca la activación del shader de brillo.
+     */
     public void clickEffect() {
         brightness = 0.5f;
     }

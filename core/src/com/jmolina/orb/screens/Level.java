@@ -92,10 +92,9 @@ public class Level extends BaseScreen {
      * Constructor
      *
      * @param sm SuperManager
-     * @param key Clave correspondiente a la pantalla actual
      */
-    public Level(SuperManager sm, ScreenManager.Key key) {
-        super(sm, key);
+    public Level(SuperManager sm) {
+        super(sm);
 
         physicsStepAccumulator = 0f;
         tick = new Tick();
@@ -249,14 +248,10 @@ public class Level extends BaseScreen {
 
     /**
      * {@inheritDoc}
-     * Reproduce la música de pantallas de menú
-     *
-     * TODO: Se ejecutan 2 plays seguidos cuando se cambia a SUCCESS SCREEN
      */
     @Override
     public void hide() {
         super.hide();
-        getGameManager().play(GameManager.Track.Menu);
     }
 
     /**
@@ -280,7 +275,7 @@ public class Level extends BaseScreen {
     }
 
     /**
-     * Cambia a la pantalla {@link #key}
+     * Cambia a la pantalla indicada
      *
      * @param screen Identificador de la siguiente pantalla
      * @param hierarchy Jerarquía de la siguiente pantalla respecto de la actual
@@ -701,7 +696,7 @@ public class Level extends BaseScreen {
      */
     public void leaveGame() {
         unsetInputProcessor();
-        getPrefsManager().saveStats(stats, getKey());
+        getPrefsManager().saveStats(stats, getThisKey());
         getGameManager().play(GameManager.Fx.Back);
         switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
     }
@@ -710,12 +705,14 @@ public class Level extends BaseScreen {
      * Completa el juego, guardando las estadísticas y lanzando la pantalla de Success
      */
     public void successGame() {
-        int rank;
-
         lock();
         getStats().setSuccessfull(true);
-        rank = getPrefsManager().saveStats(getStats(), getKey());
-        getGameManager().cache(getStats().getLastAttempt(), rank);
+
+        if (getStats().getLastAttempt() != null) {
+            int rank = getPrefsManager().saveStats(getStats(), getThisKey());
+            getGameManager().cache(getStats().getLastAttempt(), rank);
+        }
+
         unsetInputProcessor();
         getGameManager().play(GameManager.Fx.Exit);
         getOrb().outro(toSuccess);
@@ -776,12 +773,10 @@ public class Level extends BaseScreen {
             getGameManager().vibrate(GameManager.Length.Medium);
             getGameManager().play(GameManager.Fx.Tap);
 
-            if (getOrb().isOverloaded()) {
-                destroy(); // TODO Revisar overload
-            }
-            else if (getOrb().isHeatMaxed()) {
+            if (getOrb().isOverloaded())
+                destroy();
+            else if (getOrb().isHeatMaxed())
                 overload();
-            }
         }
     }
 
@@ -826,20 +821,13 @@ public class Level extends BaseScreen {
     /**
      * Activa el incremento continuo de calor del {@link Orb} (ticking). Al empezar (entrar en una
      * zona caliente), siempre ocurre un tick.
-     *
-     * TODO
-     * El tick siempre al empezar puede ser problemático si se entra y sale muy rápido, por ejemplo
-     * debido a rebotes o campos magnéticos.
-     *
-     * Lo más natural sería hacer que se caliente continuamente mientras haya contacto, un efecto
-     * similar al COOLING.
      */
     public void enableTicking(Tick tick) {
         this.tick.amount = tick.amount;
         this.tick.period = tick.period;
-        this.tick.reset(); // TODO Quiza eliminando esta línea se solucione
+        this.tick.reset();
         ticking = true;
-        tick(); // TODO Y/o ésta
+        tick();
     }
 
     /**

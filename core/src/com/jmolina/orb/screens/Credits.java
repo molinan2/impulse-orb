@@ -25,8 +25,8 @@ public class Credits extends Menu {
     private Credit resources;
     private Credit thanks;
 
-    public Credits(SuperManager superManager, ScreenManager.Key key) {
-        super(superManager, key);
+    public Credits(SuperManager superManager) {
+        super(superManager);
 
         setPreviousScreen(ScreenManager.Key.MAIN);
         setTitle("CREDITS");

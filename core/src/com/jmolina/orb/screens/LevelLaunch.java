@@ -20,32 +20,36 @@ public class LevelLaunch extends Menu {
     private LaunchCover cover;
     private MainButton mainButton;
     private Ladder ladderPersonal;
-    private Ladder ladderOnline;
 
-    public LevelLaunch(SuperManager superManager, ScreenManager.Key key, final ScreenManager.Key level, String title) {
-        super(superManager, key);
+    /**
+     * Constructor
+     *
+     * @param superManager
+     * @param levelLaunched
+     * @param title
+     */
+    public LevelLaunch(SuperManager superManager, final ScreenManager.Key levelLaunched, String title) {
+        super(superManager);
 
         setPreviousScreen(LEVEL_SELECT);
-        setTitle(level.toString());
+        setTitle(title);
 
         this.title = new LevelTitle(getAssetManager(), title);
         this.cover = new LaunchCover(getAssetManager(), getAsset(Asset.UI_LAUNCH_COVER, Texture.class));
         this.mainButton = new MainButton(getAssetManager(), "GO!", MainButton.Type.Play);
-        ladderPersonal = new Ladder(getAssetManager(), getPrefsManager(), level, "Your best times");
-        ladderOnline = new Ladder(getAssetManager(), getPrefsManager(), level, "World best times");
+        ladderPersonal = new Ladder(getAssetManager(), getPrefsManager(), levelLaunched, "Your best times");
 
         add(this.title);
         add(this.cover);
         add(this.mainButton, 1f, 8f);
         add(this.ladderPersonal);
-        // add(this.ladderOnline);
 
         mainButton.addListener(new ClickListener(){
             @Override
             public void clicked (InputEvent event, float x, float y) {
                 mainButton.clickEffect();
                 getGameManager().play(GameManager.Fx.Button);
-                switchToScreen(level, Hierarchy.LOWER);
+                switchToScreen(levelLaunched, Hierarchy.LOWER);
             }
         });
     }
@@ -56,7 +60,6 @@ public class LevelLaunch extends Menu {
         title.dispose();
         cover.dispose();
         mainButton.dispose();
-        ladderOnline.dispose();
         ladderPersonal.dispose();
         super.dispose();
     }

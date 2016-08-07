@@ -4,9 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.MathUtils;
 import com.jmolina.orb.OrbApp;
-import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.data.GameStats;
-import com.jmolina.orb.data.PersonalTimes;
+import com.jmolina.orb.data.TopTimes;
 import com.jmolina.orb.var.Var;
 
 public class PrefsManager {
@@ -198,8 +197,10 @@ public class PrefsManager {
             }
 
             // Guarda los mejores tiempos
-            PersonalTimes times = new PersonalTimes(prefs, level);
-            rank = times.addAttempt(stats.getLastAttempt());
+            TopTimes times = new TopTimes(prefs, level);
+            if (stats.getLastAttempt() != null)
+                rank = times.addAttempt(stats.getLastAttempt());
+
             save();
         }
 

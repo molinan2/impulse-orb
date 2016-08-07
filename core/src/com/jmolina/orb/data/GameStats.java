@@ -245,7 +245,6 @@ public class GameStats {
         }
     }
 
-    // TODO: No se deberia llamar si attemps esta vacio. Arrojar una excepcion
     public Attempt getLastAttempt() {
         if (!isEmpty())
             return attempts.get(attempts.size()-1);

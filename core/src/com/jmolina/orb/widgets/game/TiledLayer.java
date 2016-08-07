@@ -8,9 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.widgets.BaseGroup;
 
 /**
- * Dibuja una capa basada en tiles, del tamaño del nivel
- *
- * TODO: Recibir las dimensiones del Level y ajustarse a ellas.
+ * Dibuja una capa basada en tiles, del tamaño del nivel. Actualmente, se dibuja una dimensión
+ * constante que cubre todos los niveles (en lugar de adaptarse a su tamaño).
  */
 public class TiledLayer extends BaseGroup {
 
