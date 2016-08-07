@@ -9,7 +9,7 @@ public class Credits extends Menu {
     public final String BACON_IPSUM = "Bacon ipsum dolor amet rump landjaeger beef pig fatback t-bone tri-tip ham hock ribeye. Chuck boudin hamburger, t-bone biltong ham swine bresaola prosciutto pork chop. Spare ribs short ribs leberkas venison. Ham hock hamburger shank t-bone porchetta cow brisket jowl jerky alcatra landjaeger pork chop. Ribeye chuck jerky beef ribs pastrami, tenderloin short loin boudin pork belly ham hock.";
     private final String AUTHORS = "Game design, programming, interface design and sound effects design by Juan M. Molina [1].";
     private final String LICENSE = "Source code licensed under GPLv3 [1]. Original content comprised of sound effects and graphic art, and licensed under CC BY-SA 4.0 [2].";
-    private final String RESOURCES = "All music themes composed by Benjamin Tissot [1] and licensed under CC BY-ND 3.0 [2]. Music themes are \"Funky element\" [3], \"The lounge\" [4] and \"Pop dance\" [5]. \"Padlock icon\" designed by Dave Gandy [6] for FLATICON [7] and licensed under CC BY 3.0 [8]. \"Worn graph paper background\" [9] and \"Simple gray texture\" [10] designed by Vasili Hartikainen [11] and licensed under CC BY 3.0 [8].";
+    private final String RESOURCES = "All music themes composed by Benjamin Tissot [1] and licensed under CC BY-ND 3.0 [2]. Music themes are \"Funky element\" [3], \"The lounge\" [4] and \"Pop dance\" [5]. \"Padlock icon\" designed by Dave Gandy [6] for FLATICON [7] and licensed under CC BY 3.0 [8]. \"Worn graph paper background\" [9] and \"Simple gray texture\" [10] designed by Vasili Hartikainen [11] and licensed under CC BY 3.0 [8]. Roboto font designed by Christian Robertson for Google [12] and licensed under Apache License 2.0 [13].";
     private final String LIBRARIES = "This application makes extensive use of libGDX [1], a game-development framework created by Mario Zechner and Nathan Sweet and maintained by the community [2]. libGDX is licensed under the Apache License 2.0 [3].";
     private final String TOOLS = "Fonts rendered with Hiero [1], a Bitmap Font Tool created by Kevin Glass and adapted by Nathan Sweet [2].\n" +
             "\n" +
@@ -50,6 +50,8 @@ public class Credits extends Menu {
         resources.addLink("Worn graph paper background", "http://tiled-bg.blogspot.com.es/2013/06/worn-graph-paper-background.html");
         resources.addLink("Simple gray texture", "http://tiled-bg.blogspot.com.es/2014/09/simple-gray-texture.html");
         resources.addLink("Vasili Hartikainen", "http://tiled-bg.blogspot.com.es/");
+        resources.addLink("Roboto font", "https://www.google.com/fonts/specimen/Roboto");
+        resources.addLink("Apache License 2.0", "http://www.apache.org/licenses/LICENSE-2.0");
 
         libraries = new Credit(getAssetManager(), "LIBRARIES", LIBRARIES);
         libraries.addLink("libGDX", "https://libgdx.badlogicgames.com");
