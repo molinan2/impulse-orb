@@ -30,12 +30,13 @@ public class LevelSuccess extends BaseScreen {
     private BigText time;
     private BigText distance;
     private MainButton button;
-    private Star star;
+    private Star podium;
     private Rating rating;
 
-    public LevelSuccess(SuperManager superManager, String title) {
+    public LevelSuccess(SuperManager superManager, ScreenManager.Key thisKey, String title) {
         super(superManager);
         setPreviousScreen(ScreenManager.Key.LEVEL_SELECT);
+        setThisKey(thisKey);
 
         Attempt attempt = getGameManager().getCachedAttempt();
 
@@ -58,7 +59,7 @@ public class LevelSuccess extends BaseScreen {
             }
         });
 
-        this.star = new Star(getAssetManager(), getGameManager().getCachedRank());
+        this.podium = new Star(getAssetManager(), getGameManager().getCachedRank());
         this.rating = new Rating(getAssetManager(), numericRating(getThisKey(), attempt.getTime()));
 
         this.title.setPositionGrid(1, 16.5f);
@@ -68,7 +69,7 @@ public class LevelSuccess extends BaseScreen {
         this.distanceHeading.setPositionGrid(1, 7.5f);
         this.distance.setPositionGrid(1, 6f);
         this.button.setPositionGrid(2, 1f);
-        this.star.setPositionGrid(7.65f, 12.25f);
+        this.podium.setPositionGrid(7.65f, 12.25f);
         this.rating.setPositionGrid(1, 3.5f);
 
         addMainActor(this.title);
@@ -78,7 +79,7 @@ public class LevelSuccess extends BaseScreen {
         addMainActor(this.time);
         addMainActor(this.distance);
         addMainActor(this.button);
-        addMainActor(this.star);
+        addMainActor(this.podium);
         addMainActor(this.rating);
     }
 

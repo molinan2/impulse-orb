@@ -207,4 +207,15 @@ public class PrefsManager {
         return rank;
     }
 
+    public boolean levelCompleted(ScreenManager.Key level) {
+        switch (level) {
+            case LEVEL_1: if (prefs.contains(LADDER_1_1)) return true;
+            case LEVEL_2: if (prefs.contains(LADDER_2_1)) return true;
+            case LEVEL_3: if (prefs.contains(LADDER_3_1)) return true;
+            case LEVEL_4: if (prefs.contains(LADDER_4_1)) return true;
+            case LEVEL_5: if (prefs.contains(LADDER_5_1)) return true;
+            default: return false;
+        }
+    }
+
 }

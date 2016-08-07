@@ -26,13 +26,13 @@ public class LevelSelect extends Menu {
 
         Texture cover = getAsset(Asset.UI_CARD_COVER, Texture.class);
 
-        level1 = new Card(getAssetManager(), "BASIC", getFormattedBestTime(LEVEL_1), "--", cover, true);
-        level2 = new Card(getAssetManager(), "ADVANCED", getFormattedBestTime(LEVEL_2), "--", cover, true);
-        level3 = new Card(getAssetManager(), "EXPERT", getFormattedBestTime(LEVEL_3), "--", cover, true);
-        level4 = new Card(getAssetManager(), "HERO", getFormattedBestTime(LEVEL_4), "--", cover, true);
-        level5 = new Card(getAssetManager(), "GOD", getFormattedBestTime(LEVEL_5), "--", cover, true);
-        levelTest1 = new Card(getAssetManager(), "TEST1", getFormattedBestTime(LEVEL_T1), "--", cover, true);
-        levelTest2 = new Card(getAssetManager(), "TEST2", getFormattedBestTime(LEVEL_T2), "--", cover, true);
+        level1 = new Card(getAssetManager(), "BASIC", getFormattedBestTime(LEVEL_1), "--", cover);
+        level2 = new Card(getAssetManager(), "ADVANCED", getFormattedBestTime(LEVEL_2), "--", cover);
+        level3 = new Card(getAssetManager(), "EXPERT", getFormattedBestTime(LEVEL_3), "--", cover);
+        level4 = new Card(getAssetManager(), "HERO", getFormattedBestTime(LEVEL_4), "--", cover);
+        level5 = new Card(getAssetManager(), "GOD", getFormattedBestTime(LEVEL_5), "--", cover);
+        levelTest1 = new Card(getAssetManager(), "TEST1", getFormattedBestTime(LEVEL_T1), "--", cover);
+        levelTest2 = new Card(getAssetManager(), "TEST2", getFormattedBestTime(LEVEL_T2), "--", cover);
 
         level1.setOnClickOperation(visitor(LEVEL_LAUNCH_1));
         level2.setOnClickOperation(visitor(LEVEL_LAUNCH_2));
@@ -41,6 +41,13 @@ public class LevelSelect extends Menu {
         level5.setOnClickOperation(visitor(LEVEL_LAUNCH_5));
         levelTest1.setOnClickOperation(visitor(LEVEL_LAUNCH_T1));
         levelTest2.setOnClickOperation(visitor(LEVEL_LAUNCH_T2));
+
+        level1.unlock();
+        if (getPrefsManager().levelCompleted(LEVEL_1)) level2.unlock();
+        if (getPrefsManager().levelCompleted(LEVEL_2)) level3.unlock();
+        if (getPrefsManager().levelCompleted(LEVEL_3)) level4.unlock();
+        if (getPrefsManager().levelCompleted(LEVEL_4)) level5.unlock();
+
 
         add(level1);
         add(level2);

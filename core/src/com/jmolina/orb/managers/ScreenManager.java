@@ -216,38 +216,31 @@ public class ScreenManager {
                 return levelTest2;
 
             case LEVEL_SUCCESS_1:
-                LevelSuccess levelSuccess1 = new LevelSuccess(getSuperManager(), "BASIC");
-                levelSuccess1.setThisKey(LEVEL_SUCCESS_1);
+                LevelSuccess levelSuccess1 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_1, "BASIC");
                 return levelSuccess1;
 
             case LEVEL_SUCCESS_2:
-                LevelSuccess levelSuccess2 = new LevelSuccess(getSuperManager(), "ADVANCED");
-                levelSuccess2.setThisKey(LEVEL_SUCCESS_2);
+                LevelSuccess levelSuccess2 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_2, "ADVANCED");
                 return levelSuccess2;
 
             case LEVEL_SUCCESS_3:
-                LevelSuccess levelSuccess3 = new LevelSuccess(getSuperManager(), "EXPERT");
-                levelSuccess3.setThisKey(LEVEL_SUCCESS_3);
+                LevelSuccess levelSuccess3 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_3, "EXPERT");
                 return levelSuccess3;
 
             case LEVEL_SUCCESS_4:
-                LevelSuccess levelSuccess4 = new LevelSuccess(getSuperManager(), "HERO");
-                levelSuccess4.setThisKey(LEVEL_SUCCESS_4);
+                LevelSuccess levelSuccess4 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_4, "HERO");
                 return levelSuccess4;
 
             case LEVEL_SUCCESS_5:
-                LevelSuccess levelSuccess5 = new LevelSuccess(getSuperManager(), "GOD");
-                levelSuccess5.setThisKey(LEVEL_SUCCESS_5);
+                LevelSuccess levelSuccess5 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_5, "GOD");
                 return levelSuccess5;
 
             case LEVEL_SUCCESS_T1:
-                LevelSuccess levelSuccessT1 = new LevelSuccess(getSuperManager(), "TEST1");
-                levelSuccessT1.setThisKey(LEVEL_SUCCESS_T1);
+                LevelSuccess levelSuccessT1 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_T1, "TEST1");
                 return levelSuccessT1;
 
             case LEVEL_SUCCESS_T2:
-                LevelSuccess levelSuccessT2 = new LevelSuccess(getSuperManager(), "TEST2");
-                levelSuccessT2.setThisKey(LEVEL_SUCCESS_T2);
+                LevelSuccess levelSuccessT2 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_T1, "TEST2");
                 return levelSuccessT2;
 
             default:

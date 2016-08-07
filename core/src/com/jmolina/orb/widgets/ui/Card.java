@@ -32,10 +32,8 @@ public class Card extends BaseGroup {
 
     private boolean available;
 
-    public Card(AssetManager am, String title, String personal, String world, Texture coverTexture, boolean available) {
+    public Card(AssetManager am, String title, String personal, String world, Texture coverTexture) {
         super(am);
-
-        this.available = available;
 
         cover = new Image(coverTexture);
         coverWhite = new Image(getAsset(Asset.UI_CARD_COVER_WHITE, Texture.class));
@@ -86,8 +84,7 @@ public class Card extends BaseGroup {
 
         setHeight(Utils.cell(4));
 
-        if (available) unlock();
-        else lock();
+        lock();
     }
 
     public void lock() {
