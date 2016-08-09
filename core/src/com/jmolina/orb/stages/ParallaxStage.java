@@ -32,8 +32,8 @@ public class ParallaxStage extends Stage {
         float width = viewport.getWorldWidth();
         float height = viewport.getWorldHeight();
 
-        Texture layer1Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_1, Texture.class);
-        Texture layer2Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_2, Texture.class);
+        Texture layer1Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_1_BLUR, Texture.class);
+        Texture layer2Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_2_BLUR, Texture.class);
         Texture layer3Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_3, Texture.class);
 
         layer1 = new TiledLayer(assetManager, layer1Texture, width, height);

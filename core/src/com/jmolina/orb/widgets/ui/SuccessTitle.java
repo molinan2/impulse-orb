@@ -12,36 +12,30 @@ import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BaseGroup;
 
-public class LevelTitle extends BaseGroup {
+public class SuccessTitle extends BaseGroup {
 
-    private Label name;
-    private Image bg;
+    private Label label;
+    private Image background;
 
-    public LevelTitle(AssetManager am, String name) {
+    public SuccessTitle(AssetManager am, String title) {
         super(am);
 
-        bg = new Image(getAssetManager().get(Asset.UI_LAUNCH_TITLE, Texture.class));
-        bg.setPosition(0f, 0f);
+        background = new Image(getAssetManager().get(Asset.UI_SUCCESS_TITLE_BACKGROUND, Texture.class));
+        background.setPosition(0f, 0f);
 
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = new Color(Var.COLOR_WHITE);
         style.font = getAssetManager().get(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
 
-        this.name = new Label(name.toUpperCase(), style);
-        this.name.setPosition(Utils.cell(0), Utils.cell(0));
-        this.name.setSize(Utils.cell(10), Utils.cell(1));
-        this.name.setAlignment(Align.center);
+        label = new Label(title.toUpperCase(), style);
+        label.setSize(Utils.cell(10), Utils.cell(1));
+        label.setPosition(Utils.cell(0), Utils.cell(0));
+        label.setAlignment(Align.center);
 
-        addActor(this.bg);
-        addActor(this.name);
+        addActor(background);
+        addActor(label);
 
-        setHeight(Utils.cell(1));
-        setWidth(Utils.cell(10));
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
+        setSize(Utils.cell(10), Utils.cell(1));
     }
 
 }

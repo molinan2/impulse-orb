@@ -32,8 +32,7 @@ public class Checkbox extends BaseGroup {
         setHeight(checkedImage.getHeight());
         setWidth(checkedImage.getWidth());
 
-        // Necesario para que solo el Checkbox responda a eventos
-        // Asi se puede identificar su clase en MultiOption
+        // Solo el Grupo responda a eventos. Asi se identifica su clase en MultiOption.
         checkedImage.setTouchable(Touchable.disabled);
         uncheckedImage.setTouchable(Touchable.disabled);
         setTouchable(Touchable.enabled);
@@ -62,11 +61,6 @@ public class Checkbox extends BaseGroup {
 
     public boolean isChecked() {
         return checked;
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
     }
 
 }

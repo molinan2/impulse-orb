@@ -28,11 +28,9 @@ public class OrbApp implements ApplicationListener, SuperManager {
 	@Override
 	public void create () {
 		setCatchBackKey(true);
-
 		prefsManager = new PrefsManager();
 		screenManager = new ScreenManager(this);
 		assetManager = new AssetManager();
-
 		assetManager.loadLoadScreenAssets();
 		screenManager.switchToScreen(ScreenManager.Key.LOAD, BaseScreen.Hierarchy.LOWER);
 	}
@@ -60,7 +58,7 @@ public class OrbApp implements ApplicationListener, SuperManager {
 	@Override
 	public void dispose () {
 		screenManager.dispose();
-		gameManager.dispose();
+		if (gameManager != null) gameManager.dispose();
 		assetManager.clear();
 		assetManager.dispose();
 	}

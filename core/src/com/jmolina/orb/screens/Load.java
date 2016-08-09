@@ -1,39 +1,32 @@
 package com.jmolina.orb.screens;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.utils.Utils;
-import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.ui.ProgressBar;
+import com.jmolina.orb.widgets.ui.Splash;
 
 import static com.jmolina.orb.managers.ScreenManager.Key.*;
 
 public class Load extends BaseScreen {
 
-    private final ScreenManager.Key FIRST_SCREEN = MAIN;
+    private final ScreenManager.Key FIRST_SCREEN = LEVEL_1;
 
-    private Image splash;
+    private Splash splash;
     private ProgressBar bar;
-    private boolean switching;
-    private boolean loaded;
-    private SuperManager superManager;
+    private boolean switching, loaded;
 
-    public Load(SuperManager sm) {
-        super(sm);
+    public Load(SuperManager superManager) {
+        super(superManager);
 
-        superManager = sm;
+        splash = new Splash(getAssetManager());
+        splash.setPositionGrid(2, 7.5f);
 
-        this.splash = new Image(getAsset(Asset.UI_SPLASH, Texture.class));
-        this.splash.setPosition(Utils.cell(2), Utils.cell(7.5f));
+        bar = new ProgressBar(getAssetManager());
+        bar.setPositionGrid(2, 3.5f);
 
-        this.bar = new ProgressBar(getAssetManager());
-        this.bar.setPosition(Utils.cell(2), Utils.cell(3.5f));
-
-        addMainActor(this.splash);
-        addMainActor(this.bar);
+        addMainActor(splash);
+        addMainActor(bar);
 
         switching = false;
         loaded = false;
@@ -42,21 +35,15 @@ public class Load extends BaseScreen {
     }
 
     @Override
-    public void dispose() {
-        bar.dispose();
-        super.dispose();
-    }
-
-    @Override
     public void render(float delta) {
-        super.render(delta);
-
         loaded = getAssetManager().update();
-        this.bar.updateProgress(getAssetManager().getProgress());
+        bar.updateProgress(getAssetManager().getProgress());
+
+        super.render(delta);
 
         if (loaded && !switching) {
             switching = true;
-            superManager.createGameManager();
+            getSuperManager().createGameManager();
             switchToScreen(FIRST_SCREEN, Hierarchy.LOWER);
         }
     }

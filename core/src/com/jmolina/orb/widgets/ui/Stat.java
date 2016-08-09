@@ -39,7 +39,7 @@ public class Stat extends BaseGroup {
         nameStyle = new Label.LabelStyle();
         dataStyle = new Label.LabelStyle();
 
-        nameStyle.fontColor = new Color(Var.COLOR_BLUE);
+        nameStyle.fontColor = new Color(Var.COLOR_DARK_LILAC);
         dataStyle.fontColor = new Color(Var.COLOR_BLACK);
         nameStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
         dataStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_45, BitmapFont.class);
@@ -62,11 +62,6 @@ public class Stat extends BaseGroup {
         addActor(this.data);
         setTransform(false);
         setHeight(Utils.cell(1));
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
     }
 
     private String formatStat(float value, String unit) {

@@ -23,7 +23,7 @@ public class Option extends BaseGroup {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.fontColor = new Color(Var.COLOR_DARK_LILAC);
         style.font = getAsset(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
 
         label = new Label(name, style);
@@ -53,9 +53,4 @@ public class Option extends BaseGroup {
         else checkbox.uncheck();
     }
 
-    @Override
-    public void dispose() {
-        checkbox.dispose();
-        super.dispose();
-    }
 }

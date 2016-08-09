@@ -6,21 +6,27 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.BaseGroup;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+
 public class Back extends BaseGroup {
 
-    private Image image;
+    private Image image, frame;
 
     public Back(AssetManager am) {
         super(am);
 
         image = new Image(getAsset(Asset.UI_BACK, Texture.class));
-        image.setPosition(0f, 0f);
-        addActor(image);
-    }
+        image.setPosition(0, 0);
+        frame = new Image(getAsset(Asset.UI_BACK_FRAME, Texture.class));
+        frame.setPosition(0, 0);
+        frame.addAction(alpha(0));
+        frame.act(0);
 
-    @Override
-    public void dispose() {
-        super.dispose();
+        setFrame(frame);
+
+        addActor(image);
+        addActor(frame);
     }
 
 }

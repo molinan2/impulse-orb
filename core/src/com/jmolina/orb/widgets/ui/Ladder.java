@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.var.Asset;
@@ -29,48 +30,43 @@ public class Ladder extends BaseGroup {
     private String LADDER_2;
     private String LADDER_3;
 
-    private Label title;
-    private Image bg;
+    private Label titleLabel;
+    private Image background;
     private ArrayList<LadderRow> rows;
-    private Preferences prefs;
     private ArrayList<Float> times;
+    private ArrayList<Integer> ratings;
+    private Preferences prefs;
+    private GameManager gameManager;
 
-    public Ladder(AssetManager am, PrefsManager pm, ScreenManager.Key level, String title) {
+    public Ladder(AssetManager am, PrefsManager pm, GameManager gm, ScreenManager.Key level, String title) {
         super(am);
 
-        this.prefs = pm.getPrefs();
-        this.times = getLevelTimes(level);
+        gameManager = gm;
+        prefs = pm.getPrefs();
+        times = getLevelTimes(level);
+        ratings = getRatings(level);
+        rows = new ArrayList<LadderRow>();
 
-        this.rows = new ArrayList<LadderRow>();
-
-        this.bg = new Image(getAsset(Asset.UI_LADDER_BACKGROUND, Texture.class));
-        this.bg.setPosition(0f, 0f);
+        background = new Image(getAsset(Asset.UI_LADDER_BACKGROUND, Texture.class));
+        background.setPosition(0f, 0f);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.fontColor = new Color(Var.COLOR_LILAC);
         style.font = getAsset(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
 
-        this.title = new Label(title.toUpperCase(), style);
-        this.title.setPosition(Utils.cell(0.5f), Utils.cell(3.125f));
-        this.title.setSize(Utils.cell(2), Utils.cell(0.5f));
-        this.title.setAlignment(Align.left);
+        titleLabel = new Label(title.toUpperCase(), style);
+        titleLabel.setPosition(Utils.cell(0.5f), Utils.cell(3.125f));
+        titleLabel.setSize(Utils.cell(2), Utils.cell(0.5f));
+        titleLabel.setAlignment(Align.left);
 
-        this.rows.add(new LadderRow(getAssetManager(), "1", getLevelTime(0), "MyUserName", "(13)"));
-        this.rows.add(new LadderRow(getAssetManager(), "2", getLevelTime(1), "MyUserName", "(21)"));
-        this.rows.add(new LadderRow(getAssetManager(), "3", getLevelTime(2), "MyUserName", "(18)"));
+        rows.add(new LadderRow(getAssetManager(), 1, times.get(0), ratings.get(0)));
+        rows.add(new LadderRow(getAssetManager(), 2, times.get(1), ratings.get(1)));
+        rows.add(new LadderRow(getAssetManager(), 3, times.get(2), ratings.get(2)));
 
-        addActor(this.bg);
-        addActor(this.title);
+        addActor(background);
+        addActor(titleLabel);
         addLadderRows(rows);
         setHeight(Utils.cell(4));
-    }
-
-    @Override
-    public void dispose() {
-        for(LadderRow row : rows)
-            row.dispose();
-
-        super.dispose();
     }
 
     private void addLadderRows(ArrayList<LadderRow> rows) {
@@ -78,15 +74,6 @@ public class Ladder extends BaseGroup {
             rows.get(i).setPosition(Utils.cell(0.5f), Utils.cell(2f - i * 0.75f));
             addActor(rows.get(i));
         }
-    }
-
-    private String getLevelTime(int index) {
-        float time = times.get(index);
-
-        if (time > 0)
-            return Utils.formatTime(time);
-        else
-            return "--";
     }
 
     private ArrayList<Float> getLevelTimes(ScreenManager.Key key) {
@@ -98,6 +85,16 @@ public class Ladder extends BaseGroup {
         times.add(prefs.getFloat(LADDER_3));
 
         return times;
+    }
+
+    private ArrayList<Integer> getRatings(ScreenManager.Key key) {
+        ArrayList<Integer> ratings = new ArrayList<Integer>();
+
+        ratings.add(numericRating(key, times.get(0)));
+        ratings.add(numericRating(key, times.get(1)));
+        ratings.add(numericRating(key, times.get(2)));
+
+        return ratings;
     }
 
     private void detectLevel(ScreenManager.Key key) {
@@ -138,6 +135,17 @@ public class Ladder extends BaseGroup {
                 LADDER_3 = LADDER_TEST2_3;
                 break;
             default:
+        }
+    }
+
+    private int numericRating(ScreenManager.Key level, float time) {
+        switch (level) {
+            case LEVEL_1: return gameManager.getNumericRating(1, time);
+            case LEVEL_2: return gameManager.getNumericRating(2, time);
+            case LEVEL_3: return gameManager.getNumericRating(3, time);
+            case LEVEL_4: return gameManager.getNumericRating(4, time);
+            case LEVEL_5: return gameManager.getNumericRating(5, time);
+            default: return 0;
         }
     }
 

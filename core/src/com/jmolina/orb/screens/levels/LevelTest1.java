@@ -19,8 +19,8 @@ public class LevelTest1 extends Level {
     public LevelTest1(SuperManager sm) {
         super(sm);
 
-        setPreviousScreen(ScreenManager.Key.LEVEL_LAUNCH_T1);
-        setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_T1);
+        setPreviousScreen(ScreenManager.Key.LAUNCH_T1);
+        setSuccessScreen(ScreenManager.Key.SUCCESS_T1);
 
         addSituation(SituationT100.class);
         addSituation(SituationT101.class);

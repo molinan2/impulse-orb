@@ -12,7 +12,7 @@ public class PauseMenu extends BaseGroup {
 
     private Level level;
     private MainButton resumeButton, restartButton, leaveButton;
-    private com.jmolina.orb.widgets.ui.Heading fullHeading;
+    private Heading fullHeading;
     private Stat distanceStat, fullTimeStat, fullDistanceStat, fullDestroyedStat;
     private ClickListener resumeListener, restartListener, leaveListener;
 
@@ -58,11 +58,11 @@ public class PauseMenu extends BaseGroup {
     }
 
     private void createActors() {
-        resumeButton = new MainButton(getAssetManager(), "RESUME", MainButton.Type.Play);
-        restartButton = new MainButton(getAssetManager(), "RESTART", MainButton.Type.Default);
-        leaveButton = new MainButton(getAssetManager(), "LEAVE", MainButton.Type.Exit);
+        resumeButton = new MainButton(getAssetManager(), "RESUME", MainButton.Type.SUCCESS);
+        restartButton = new MainButton(getAssetManager(), "RESTART", MainButton.Type.WARNING);
+        leaveButton = new MainButton(getAssetManager(), "LEAVE", MainButton.Type.DANGER);
         distanceStat = new Stat(getAssetManager(), "Distance", 0f, "m");
-        fullHeading = new com.jmolina.orb.widgets.ui.Heading(getAssetManager(), "Since start", Align.center, com.jmolina.orb.widgets.ui.Heading.Weight.Bold, Var.COLOR_WHITE);
+        fullHeading = new Heading(getAssetManager(), "Since start", Align.center, Heading.Weight.Bold, Var.COLOR_WHITE);
         fullTimeStat = new Stat(getAssetManager(), "Time", 0, "s");
         fullDistanceStat = new Stat(getAssetManager(), "Distance", 0, "m");
         fullDestroyedStat = new Stat(getAssetManager(), "Destroyed", 0, "times");

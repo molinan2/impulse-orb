@@ -11,8 +11,8 @@ public class Level5 extends Level {
     public Level5(SuperManager sm) {
         super(sm);
 
-        setPreviousScreen(ScreenManager.Key.LEVEL_LAUNCH_5);
-        setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_5);
+        setPreviousScreen(ScreenManager.Key.LAUNCH_5);
+        setSuccessScreen(ScreenManager.Key.SUCCESS_5);
 
         addSituation(Situation500.class);
 

@@ -74,24 +74,6 @@ public class Stats extends Menu {
     }
 
     @Override
-    public void dispose() {
-        played.dispose();
-        distance.dispose();
-        fails.dispose();
-        successes.dispose();
-        avgTimeAlive.dispose();
-        avgDistanceAlive.dispose();
-        minTimeAlive.dispose();
-        maxTimeAlive.dispose();
-        minDistanceAlive.dispose();
-        maxDistanceAlive.dispose();
-        timeHeading.dispose();
-        distanceHeading.dispose();
-        generalHeading.dispose();
-        super.dispose();
-    }
-
-    @Override
     public void show() {
         updateStats();
         super.show();

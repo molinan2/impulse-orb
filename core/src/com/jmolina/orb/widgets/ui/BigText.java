@@ -19,7 +19,7 @@ public class BigText extends BaseGroup {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.fontColor = new Color(Var.COLOR_LILAC);
         style.font = getAsset(Asset.FONT_ROBOTO_BOLD_90, BitmapFont.class);
 
         this.label = new Label(text, style);
@@ -31,11 +31,6 @@ public class BigText extends BaseGroup {
 
         addActor(this.label);
         setHeight(Utils.cell(1.5f));
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
     }
 
 }

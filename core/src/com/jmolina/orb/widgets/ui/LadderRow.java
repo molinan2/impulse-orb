@@ -12,59 +12,56 @@ import com.jmolina.orb.widgets.BaseGroup;
 
 public class LadderRow extends BaseGroup {
 
-    private Label rank;
-    private Label time;
-    private Label user;
-    private Label globalRank;
+    private Label rankLabel, timeLabel, userLabel;
+    private Rating rating;
 
-    public LadderRow(AssetManager am, String rank, String time, String user) {
-        this(am, rank, time, user, "");
-    }
-
-    public LadderRow(AssetManager am, String rank, String time, String user, String globalRank) {
+    public LadderRow(AssetManager am, int rank, float time, int numericRating) {
         super(am);
 
         Label.LabelStyle regular = new Label.LabelStyle();
         Label.LabelStyle strong = new Label.LabelStyle();
-        regular.fontColor = new Color(Var.COLOR_BLACK);
-        strong.fontColor = new Color(Var.COLOR_BLACK);
+        regular.fontColor = new Color(Var.COLOR_DARK_LILAC);
+        strong.fontColor = new Color(Var.COLOR_DARK_LILAC);
         regular.font = getAssetManager().get(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
         strong.font = getAssetManager().get(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
 
-        this.rank = new Label(rank, strong);
-        this.rank.setPosition(Utils.cell(0), Utils.cell(0));
-        this.rank.setSize(Utils.cell(1), Utils.cell(0.5f));
-        this.rank.setAlignment(Align.left);
+        rankLabel = new Label(String.valueOf(rank), strong);
+        rankLabel.setPosition(Utils.cell(0), Utils.cell(0));
+        rankLabel.setSize(Utils.cell(1), Utils.cell(0.5f));
+        rankLabel.setAlignment(Align.left);
 
-        this.time = new Label(time, regular);
-        this.time.setPosition(Utils.cell(1), Utils.cell(0));
-        this.time.setSize(Utils.cell(2), Utils.cell(0.5f));
-        this.time.setAlignment(Align.right);
+        timeLabel = new Label(formatTime(time), regular);
+        timeLabel.setPosition(Utils.cell(1), Utils.cell(0));
+        timeLabel.setSize(Utils.cell(2), Utils.cell(0.5f));
+        timeLabel.setAlignment(Align.right);
 
-        this.user = new Label(user, strong);
-        this.user.setPosition(Utils.cell(4), Utils.cell(0));
-        this.user.setSize(Utils.cell(3.5f), Utils.cell(0.5f));
-        this.user.setAlignment(Align.left);
-        this.user.setEllipsis(true);
+        userLabel = new Label("You", strong);
+        userLabel.setPosition(Utils.cell(4), Utils.cell(0));
+        userLabel.setSize(Utils.cell(3.5f), Utils.cell(0.5f));
+        userLabel.setAlignment(Align.left);
+        userLabel.setEllipsis(true);
 
-        addActor(this.rank);
-        addActor(this.time);
-        addActor(this.user);
+        rating = new Rating(getAssetManager(), numericRating);
+        rating.setPositionGrid(5, 0);
+        rating.setScale(0.5f);
+        rating.setHeadingVisibility(false);
 
-        if (!globalRank.equals("")) {
-            this.globalRank = new Label(globalRank, regular);
-            this.globalRank.setPosition(Utils.cell(7.5f), Utils.cell(0));
-            this.globalRank.setSize(Utils.cell(1.5f), Utils.cell(0.5f));
-            this.globalRank.setAlignment(Align.right);
-            addActor(this.globalRank);
+        addActor(rankLabel);
+        addActor(timeLabel);
+
+        if (time > 0) {
+            addActor(userLabel);
+            addActor(rating);
         }
 
         setHeight(Utils.cell(0.5f));
     }
 
-    @Override
-    public void dispose() {
-        super.dispose();
+    private String formatTime(float time) {
+        if (time > 0)
+            return Utils.formatTime(time);
+        else
+            return "--";
     }
 
 }

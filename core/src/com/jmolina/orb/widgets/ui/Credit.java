@@ -33,7 +33,7 @@ public class Credit extends BaseGroup {
         bodyStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
         Label.LabelStyle headerStyle = new Label.LabelStyle();
-        headerStyle.fontColor = new Color(Var.COLOR_BLUE);
+        headerStyle.fontColor = new Color(Var.COLOR_LILAC);
         headerStyle.font = getAsset(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
 
         this.body = new Label(body, bodyStyle);
@@ -58,7 +58,7 @@ public class Credit extends BaseGroup {
 
     public void addLink(String text, final String uri) {
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.fontColor = new Color(Var.COLOR_DARK_LILAC);
         style.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
         int linkIndex = links.size() + 1;
@@ -96,11 +96,6 @@ public class Credit extends BaseGroup {
         }
 
         return height;
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
     }
 
     @Override

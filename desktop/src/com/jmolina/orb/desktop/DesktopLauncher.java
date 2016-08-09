@@ -15,6 +15,7 @@ public class DesktopLauncher {
 		config.height = (int) Var.SCREEN_HEIGHT;
 		config.width = (int) Var.SCREEN_WIDTH;
 		config.title = Var.APP_NAME + " " + Var.APP_VERSION;
+		config.addIcon(Asset.APP_ICON_256, Files.FileType.Internal);
 		config.addIcon(Asset.APP_ICON_128, Files.FileType.Internal);
 		config.addIcon(Asset.APP_ICON_64, Files.FileType.Internal);
 		config.addIcon(Asset.APP_ICON_32, Files.FileType.Internal);

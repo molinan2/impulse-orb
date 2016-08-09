@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class GameManager {
 
-    public enum Fx { Back, Button, ElementCollision, WallCollision, Destroy, Exit, Fling, Init, Option, Tap, Tick, Warning }
+    public enum Fx { Back, Button, ElementCollision, WallCollision, Destroy, Error, Exit, Fling, Init, Option, Tap, Tick, Warning }
     public enum Track { Menu, Game, Success }
     public enum Length { Short, Medium, Long }
 
@@ -35,7 +35,7 @@ public class GameManager {
     private boolean music = true;
     private int zoom = PrefsManager.OPTION_ZOOM_DEFAULT;
     private Sound backSound, buttonSound, elementCollisionSound, wallCollisionSound, destroySound,
-            exitSound, flingSound, initSound, optionSound, tapSound, tickSound, warningSound;
+            errorSound, exitSound, flingSound, initSound, optionSound, tapSound, tickSound, warningSound;
     private Music menuMusic, gameMusic, successMusic;
 
     private ArrayList<ArrayList<Float>> times;
@@ -61,6 +61,7 @@ public class GameManager {
         elementCollisionSound.dispose();
         wallCollisionSound.dispose();
         destroySound.dispose();
+        errorSound.dispose();
         exitSound.dispose();
         flingSound.dispose();
         initSound.dispose();
@@ -73,16 +74,13 @@ public class GameManager {
     }
 
     /**
-     * Sólo se llama desde el menú (Options)
+     * Se llama desde {@link com.jmolina.orb.screens.Options} y desde {@link GameManager}.
      */
     public void fetchOptions() {
         vibration = prefsManager.getOptionVibration();
         sound = prefsManager.getOptionSound();
         music = prefsManager.getOptionMusic();
         zoom = MathUtils.clamp(prefsManager.getOptionZoom(), PrefsManager.OPTION_ZOOM_MIN, PrefsManager.OPTION_ZOOM_MAX);
-
-        if (!music) stopMusic();
-        else playTrack(Track.Menu);
     }
 
     public void cache(Attempt attempt, int rank) {
@@ -131,6 +129,7 @@ public class GameManager {
         elementCollisionSound = getAsset(Asset.SOUND_ELEMENT_COLLISION, Sound.class);
         wallCollisionSound = getAsset(Asset.SOUND_WALL_COLLISION, Sound.class);
         destroySound = getAsset(Asset.SOUND_DESTROY, Sound.class);
+        errorSound = getAsset(Asset.SOUND_ERROR, Sound.class);
         exitSound = getAsset(Asset.SOUND_EXIT, Sound.class);
         flingSound = getAsset(Asset.SOUND_FLING, Sound.class);
         initSound = getAsset(Asset.SOUND_INIT, Sound.class);
@@ -177,6 +176,7 @@ public class GameManager {
             case ElementCollision: elementCollisionSound.play(SOUND_VOLUME); break;
             case WallCollision: wallCollisionSound.play(SOUND_VOLUME); break;
             case Destroy: destroySound.play(SOUND_VOLUME); break;
+            case Error: errorSound.play(SOUND_VOLUME); break;
             case Exit: exitSound.play(SOUND_VOLUME); break;
             case Fling: flingSound.play(SOUND_VOLUME); break;
             case Init: initSound.play(SOUND_VOLUME); break;
@@ -216,7 +216,7 @@ public class GameManager {
         return superManager.getAssetManager().get(fileName, type);
     }
 
-    private void stopMusic() {
+    public void stopMusic() {
         gameMusic.stop();
         menuMusic.stop();
         successMusic.stop();
@@ -268,6 +268,27 @@ public class GameManager {
     public ArrayList<Float> getTimes(int levelIndex) {
         levelIndex = MathUtils.clamp(levelIndex-1, Rating.MIN, Rating.MAX);
         return times.get(levelIndex);
+    }
+
+    public boolean isEnabledMusic() {
+        return music;
+    }
+
+    /**
+     * Obtiene el rating numérico
+     *
+     * @param levelIndex
+     * @param time
+     * @return
+     */
+    public int getNumericRating(int levelIndex, float time) {
+        ArrayList<Float> levelTimes = getTimes(levelIndex);
+
+        if (time < levelTimes.get(0)) return 4;
+        else if (time < levelTimes.get(1)) return 3;
+        else if (time < levelTimes.get(2)) return 2;
+        else if (time < levelTimes.get(3)) return 1;
+        else return 0;
     }
 
 }

@@ -13,6 +13,8 @@ import com.jmolina.orb.widgets.BaseGroup;
 
 import java.util.ArrayList;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+
 public class Rating extends BaseGroup {
 
     public final static int MIN = 0;
@@ -32,12 +34,21 @@ public class Rating extends BaseGroup {
         super(am);
 
         rating = new Group();
-        heading = new Heading(getAssetManager(), getText(numericRating), Align.center, Heading.Weight.Regular, Var.COLOR_BLACK);
+        heading = new Heading(getAssetManager(), getText(numericRating), Align.center, Heading.Weight.Regular, Var.COLOR_DARK_LILAC);
         points = new ArrayList<Image>();
 
         for (int i=MIN; i<MAX; i++) {
-            if (i < numericRating) points.add(new Image(getAsset(Asset.UI_RATING_YES, Texture.class)));
-            else points.add(new Image(getAsset(Asset.UI_RATING_NO, Texture.class)));
+            if (i < numericRating) {
+                points.add(new Image(getAsset(Asset.UI_RATING_YES, Texture.class)));
+                points.get(i).addAction(forever(sequence(
+                        alpha(0.5f, 0.25f),
+                        alpha(1f, 0.25f),
+                        delay(1f)
+                )));
+            }
+            else {
+                points.add(new Image(getAsset(Asset.UI_RATING_NO, Texture.class)));
+            }
 
             points.get(i).setPosition(i * Utils.cell(1.25f), Utils.cell(0));
             rating.addActor(points.get(i));
@@ -60,6 +71,10 @@ public class Rating extends BaseGroup {
         else if (rating == 3) return GOLD;
         else if (rating == 4) return DEVELOPER;
         else return "";
+    }
+
+    public void setHeadingVisibility(boolean visibility) {
+        heading.setVisible(visibility);
     }
 
 }

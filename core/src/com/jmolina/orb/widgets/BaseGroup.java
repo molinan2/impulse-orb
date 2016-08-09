@@ -1,6 +1,8 @@
 package com.jmolina.orb.widgets;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -9,42 +11,24 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.utils.Utils;
 
-public class BaseGroup extends Group implements Disposable {
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
-    private ShaderProgram shader;
-    private float brightness;
+public class BaseGroup extends Group {
 
     private AssetManager assetManager;
+    private Image frame;
 
     public BaseGroup(AssetManager am) {
         setAssetManager(am);
-
-        setTransform(true); // Disabling transform improves drawing performance
+        setTransform(true); // Transform=false improves drawing performance
         setScale(1.0f, 1.0f);
         setOrigin(0f, 0f);
-
-        brightness = 0.0f;
-        shader = new ShaderProgram(
-                Gdx.files.internal("shader/brightness.vert"),
-                Gdx.files.internal("shader/brightness.frag")
-        );
     }
 
     @Override
     public void draw (Batch batch, float parentAlpha) {
-        if (brightness > 0) {
-            float variance = 0.03f;
-            brightness = MathUtils.clamp(brightness - variance, 0f, 1f);
-            batch.setShader(shader);
-            shader.begin();
-            shader.setUniformf("brightness", brightness);
-            super.draw(batch, parentAlpha);
-            shader.end();
-            batch.setShader(null);
-        }
-        else {
-            super.draw(batch, parentAlpha);
-        }
+        super.draw(batch, parentAlpha);
     }
 
     public AssetManager getAssetManager() {
@@ -59,16 +43,25 @@ public class BaseGroup extends Group implements Disposable {
         return getAssetManager().get(fileName, type);
     }
 
-    @Override
-    public void dispose() {
-        shader.dispose();
+    /**
+     * Activa el efecto post-click.
+     */
+    public void clickEffect() {
+        if (frame != null) {
+            frame.addAction(sequence(
+                    alpha(1),
+                    alpha(0, 0.2f)
+            ));
+        }
     }
 
     /**
-     * Provoca la activación del shader de brillo.
+     * Actor con alpha = 0 sobre el que se ejecutará una animación al hacer click en el objeto
+     *
+     * @param frame
      */
-    public void clickEffect() {
-        brightness = 0.5f;
+    public void setFrame(Image frame) {
+        this.frame = frame;
     }
 
     public void setPositionGrid (float x, float y) {

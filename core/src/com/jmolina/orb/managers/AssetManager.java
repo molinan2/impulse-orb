@@ -13,7 +13,7 @@ import com.jmolina.orb.var.Asset;
 
 public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 
-    private enum AssetType { FONT, MUSIC, SOUND, TEXTURE, UNDEFINED }
+    private enum AssetType { FONT, MUSIC, SOUND, TEXTURE, TEXTURE_MIP, UNDEFINED }
 
     public static final Class ASSET_CLASS = Asset.class;
 
@@ -32,7 +32,8 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
      */
     public void loadLoadScreenAssets() {
         load(Asset.UI_BACKGROUND, Texture.class);
-        load(Asset.UI_SPLASH, Texture.class);
+        load(Asset.UI_SPLASH_BODY, Texture.class);
+        load(Asset.UI_SPLASH_REFLECTIONS, Texture.class);
         load(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
         load(Asset.UI_PROGRESS_BASE, Texture.class);
         load(Asset.UI_PROGRESS_FILL, Texture.class);
@@ -73,12 +74,15 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
                     case SOUND:
                         load(name, Sound.class);
                         break;
+                    case TEXTURE_MIP:
+                        TextureLoader.TextureParameter param = new TextureLoader.TextureParameter();
+                        param.genMipMaps = true;
+                        param.minFilter = Texture.TextureFilter.Linear;
+                        param.magFilter = Texture.TextureFilter.Linear;
+                        load(name, Texture.class, param);
+                        break;
                     case TEXTURE:
-                        TextureLoader.TextureParameter parameter = new TextureLoader.TextureParameter();
-                        parameter.genMipMaps = true;
-                        parameter.minFilter = Texture.TextureFilter.Linear;
-                        parameter.magFilter = Texture.TextureFilter.Linear;
-                        load(name, Texture.class, parameter);
+                        load(name, Texture.class);
                         break;
                     default:
                 }
@@ -92,11 +96,13 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
         boolean font = name.endsWith(".fnt");
         boolean music = name.endsWith(".music.mp3") || name.endsWith(".music.ogg");
         boolean sound = name.endsWith(".mp3");
+        boolean textureMip = name.endsWith(".mip.png");
         boolean texture = name.endsWith(".png");
 
         if (font) return AssetType.FONT;
         else if (music) return AssetType.MUSIC;
         else if (sound) return AssetType.SOUND;
+        else if (textureMip) return AssetType.TEXTURE_MIP;
         else if (texture) return AssetType.TEXTURE;
         else return AssetType.UNDEFINED;
     }
