@@ -21,8 +21,8 @@ public class PauseButton extends BaseGroup {
 
 
         paused = false;
-        pauseDrawable = new TextureRegionDrawable(new TextureRegion(getAsset(Asset.HUD_PAUSE, Texture.class)));
-        resumeDrawable = new TextureRegionDrawable(new TextureRegion(getAsset(Asset.HUD_PAUSE_RESUME, Texture.class)));
+        pauseDrawable = new TextureRegionDrawable(new TextureRegion(getAsset(Asset.HUD_BUTTON_PAUSE, Texture.class)));
+        resumeDrawable = new TextureRegionDrawable(new TextureRegion(getAsset(Asset.HUD_BUTTON_RESUME, Texture.class)));
         image = new Image(pauseDrawable);
         image.setPosition(0f, 0f);
 

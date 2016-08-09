@@ -47,6 +47,11 @@ public class Options extends Menu {
                 prefsManager.putOptionMusic(music.isChecked());
                 prefsManager.save();
                 getGameManager().fetchOptions();
+
+                if (getGameManager().isEnabledMusic())
+                    getGameManager().play(GameManager.Track.Menu);
+                else
+                    getGameManager().stopMusic();
             }
         });
 
@@ -103,16 +108,6 @@ public class Options extends Menu {
     public void show() {
         super.show();
         updateOptions();
-    }
-
-    @Override
-    public void dispose () {
-        music.dispose();
-        sound.dispose();
-        vibration.dispose();
-        online.dispose();
-        zoom.dispose();
-        super.dispose();
     }
 
     @Override

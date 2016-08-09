@@ -1,7 +1,5 @@
 package com.jmolina.orb.var;
 
-import java.util.ArrayList;
-
 public class Var {
 
     public static final String APP_NAME = "Orb";
@@ -14,15 +12,17 @@ public class Var {
     public static final String EXCEPTION_EMPTY_LIST_ACCESS = "Can't access item on an empty list";
 
     public static final int COLOR_WHITE = 0xffffffff;
-    public static final int COLOR_BLUE = 0x2E3192ff;
-    public static final int COLOR_BLACK = 0x4D4D4Dff;
+    public static final int COLOR_LILAC = 0x765AE0ff;
+    public static final int COLOR_DARK_LILAC = 0x625499ff;
+    public static final int COLOR_DARK_GREEN = 0x009345ff;
+    public static final int COLOR_BLACK = 0x404040ff;
 
     // LEVEL 1: 102.43f
 
-    public static final float TIME_LEVEL_1_DEV = 1;
-    public static final float TIME_LEVEL_1_GOLD = 2;
-    public static final float TIME_LEVEL_1_SILVER = 3;
-    public static final float TIME_LEVEL_1_BRONZE = 4;
+    public static final float TIME_LEVEL_1_DEV = 2;
+    public static final float TIME_LEVEL_1_GOLD = 4;
+    public static final float TIME_LEVEL_1_SILVER = 6;
+    public static final float TIME_LEVEL_1_BRONZE = 8;
     public static final float TIME_LEVEL_2_DEV = 102.43f;
     public static final float TIME_LEVEL_2_GOLD = 115;
     public static final float TIME_LEVEL_2_SILVER = 145;

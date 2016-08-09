@@ -18,9 +18,4 @@ public class SuccessCover extends BaseGroup {
         setSize(Utils.cell(10), Utils.cell(4));
     }
 
-    @Override
-    public void dispose() {
-        super.dispose();
-    }
-
 }

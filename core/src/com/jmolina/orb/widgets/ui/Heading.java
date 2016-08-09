@@ -20,15 +20,15 @@ public class Heading extends BaseGroup {
     private Label label;
 
     public Heading(AssetManager am, String name) {
-        this(am, name, Align.left, Weight.Medium, Var.COLOR_BLUE);
+        this(am, name, Align.left, Weight.Medium, Var.COLOR_LILAC);
     }
 
     public Heading(AssetManager am, String name, int align) {
-        this(am, name, align, Weight.Medium, Var.COLOR_BLUE);
+        this(am, name, align, Weight.Medium, Var.COLOR_LILAC);
     }
 
     public Heading(AssetManager am, String name, int align, Weight weight) {
-        this(am, name, align, weight, Var.COLOR_BLUE);
+        this(am, name, align, weight, Var.COLOR_LILAC);
     }
 
     public Heading(AssetManager am, String name, int align, Weight weight, int color) {
@@ -48,11 +48,6 @@ public class Heading extends BaseGroup {
         addActor(label);
         setTransform(false);
         setHeight(Utils.cell(1));
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
     }
 
     public BitmapFont newBitmapFont (Weight weight) {

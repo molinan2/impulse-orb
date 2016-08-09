@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.interfaces.Visitor;
+import com.jmolina.orb.managers.GameManager;
+import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
@@ -21,90 +23,89 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class Card extends BaseGroup {
 
-    private Image cover;
-    private Image coverWhite;
-    private Image background;
-    private Image lock;
-
-    private Label title;
-    private Label personal;
-    private Label world;
-
+    private Image coverFrame, cover, coverBlur, background, padlock, fullFrame;
+    private Label titleLabel, timeLabel;
+    private GameManager gameManager;
     private boolean available;
 
-    public Card(AssetManager am, String title, String personal, String world, Texture coverTexture) {
+    public Card(AssetManager am, GameManager gm, String title, String time, ScreenManager.Key level) {
         super(am);
 
-        cover = new Image(coverTexture);
-        coverWhite = new Image(getAsset(Asset.UI_CARD_COVER_WHITE, Texture.class));
-        background = new Image(getAsset(Asset.UI_CARD_BACKGROUND, Texture.class));
-        lock = new Image(getAsset(Asset.UI_CARD_PADLOCK, Texture.class));
+        gameManager = gm;
 
+        fullFrame = new Image(getAsset(Asset.UI_CARD_FRAME, Texture.class));
+        coverFrame = new Image(getAsset(Asset.UI_CARD_COVER_FRAME, Texture.class));
+        cover = new Image(getCoverTexture(level));
+        coverBlur = new Image(getCoverBlurTexture(level));
+        background = new Image(getAsset(Asset.UI_CARD_BACKGROUND, Texture.class));
+        padlock = new Image(getAsset(Asset.UI_CARD_PADLOCK, Texture.class));
+
+        fullFrame.setPosition(0, 0);
+        fullFrame.addAction(alpha(0));
+        fullFrame.act(0);
+        coverFrame.setPosition(0, 0);
         background.setPosition(0f, 0f);
         cover.setPosition(0f, 0f);
-        coverWhite.setPosition(0f, 0f);
-        lock.setPosition(Utils.cell(1.75f), Utils.cell(1));
+        coverBlur.setPosition(0f, 0f);
+        padlock.setPosition(Utils.cell(1.75f), Utils.cell(1));
 
         Label.LabelStyle titleStyle = new Label.LabelStyle();
-        titleStyle.fontColor = new Color(Var.COLOR_BLUE);
+        titleStyle.fontColor = new Color(Var.COLOR_LILAC);
         titleStyle.font = getAsset(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
 
-        this.title = new Label(title, titleStyle);
-        this.title.setTouchable(Touchable.disabled);
-        this.title.setPosition(Utils.cell(5), Utils.cell(3));
-        this.title.setHeight(Utils.cell(1));
-        this.title.setWidth(Utils.cell(4.75f));
-        this.title.setAlignment(Align.right);
+        titleLabel = new Label(title, titleStyle);
+        titleLabel.setTouchable(Touchable.disabled);
+        titleLabel.setPosition(Utils.cell(5), Utils.cell(2.75f));
+        titleLabel.setHeight(Utils.cell(1));
+        titleLabel.setWidth(Utils.cell(4.5f));
+        titleLabel.setAlignment(Align.right);
 
         Label.LabelStyle timeStyle = new Label.LabelStyle();
         timeStyle.fontColor = new Color(Var.COLOR_BLACK);
         timeStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
-        this.personal = new Label("Best   " + personal, timeStyle);
-        this.personal.setTouchable(Touchable.disabled);
-        this.personal.setPosition(Utils.cell(5), Utils.cell(0));
-        this.personal.setHeight(Utils.cell(0.75f));
-        this.personal.setWidth(Utils.cell(4.75f));
-        this.personal.setAlignment(Align.right);
+        timeLabel = new Label(time, timeStyle);
+        timeLabel.setTouchable(Touchable.disabled);
+        timeLabel.setPosition(Utils.cell(5), Utils.cell(0.25f));
+        timeLabel.setHeight(Utils.cell(0.75f));
+        timeLabel.setWidth(Utils.cell(4.5f));
+        timeLabel.setAlignment(Align.right);
 
-        this.world = new Label("World   " + world, timeStyle);
-        this.world.setTouchable(Touchable.disabled);
-        this.world.setPosition(Utils.cell(5), Utils.cell(0.75f));
-        this.world.setHeight(Utils.cell(0.75f));
-        this.world.setWidth(Utils.cell(4.75f));
-        this.world.setAlignment(Align.right);
+        addActor(background);
+        addActor(coverBlur);
+        addActor(cover);
+        addActor(coverFrame);
+        addActor(fullFrame);
+        addActor(padlock);
+        addActor(titleLabel);
+        addActor(timeLabel);
 
-        addActor(this.background);
-        addActor(this.coverWhite);
-        addActor(this.cover);
-        addActor(this.lock);
-        addActor(this.title);
-        addActor(this.personal);
-        // addActor(this.world);
+        setFrame(fullFrame);
 
         setHeight(Utils.cell(4));
-
         lock();
     }
 
     public void lock() {
         available = false;
         cover.clearActions();
-        lock.clearActions();
-        personal.clearActions();
-        cover.addAction(alpha(0.5f));
-        lock.addAction(alpha(1f));
-        personal.addAction(alpha(0f));
-        //this.setTouchable(Touchable.disabled);
+        padlock.clearActions();
+        timeLabel.clearActions();
+        cover.setVisible(false);
+        coverBlur.setVisible(true);
+        coverBlur.addAction(alpha(0.5f));
+        padlock.addAction(alpha(1f));
+        timeLabel.addAction(alpha(0f));
     }
 
     public void unlock() {
         available = true;
         cover.clearActions();
-        lock.clearActions();
-        personal.clearActions();
-        lock.addAction(alpha(0f));
-        //this.setTouchable(Touchable.enabled);
+        cover.setVisible(true);
+        coverBlur.setVisible(false);
+        padlock.clearActions();
+        timeLabel.clearActions();
+        padlock.addAction(alpha(0f));
     }
 
     public boolean isAvailable() {
@@ -117,11 +118,13 @@ public class Card extends BaseGroup {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (isAvailable()) {
+                    clickEffect();
                     visitor.run();
                 }
                 else {
-                    lock.clearActions();
-                    lock.addAction(UIAction.blink());
+                    gameManager.play(GameManager.Fx.Error);
+                    padlock.clearActions();
+                    padlock.addAction(UIAction.blink());
 
                     // Si creara un metodo publico para lockBlink(), la Screen podria llamarlo si
                     // isLocked(), con lo que no necesitaria entrar con el Visitor. Sin embargo,
@@ -131,6 +134,28 @@ public class Card extends BaseGroup {
                 }
             }
         });
+    }
+
+    private Texture getCoverTexture(ScreenManager.Key level) {
+        switch (level) {
+            case LEVEL_1: return getAsset(Asset.UI_CARD_COVER_1, Texture.class);
+            case LEVEL_2: return getAsset(Asset.UI_CARD_COVER_2, Texture.class);
+            case LEVEL_3: return getAsset(Asset.UI_CARD_COVER_3, Texture.class);
+            case LEVEL_4: return getAsset(Asset.UI_CARD_COVER_4, Texture.class);
+            case LEVEL_5: return getAsset(Asset.UI_CARD_COVER_5, Texture.class);
+            default: return getAsset(Asset.UI_CARD_COVER_1, Texture.class);
+        }
+    }
+
+    private Texture getCoverBlurTexture(ScreenManager.Key level) {
+        switch (level) {
+            case LEVEL_1: return getAsset(Asset.UI_CARD_COVER_1_BLUR, Texture.class);
+            case LEVEL_2: return getAsset(Asset.UI_CARD_COVER_2_BLUR, Texture.class);
+            case LEVEL_3: return getAsset(Asset.UI_CARD_COVER_3_BLUR, Texture.class);
+            case LEVEL_4: return getAsset(Asset.UI_CARD_COVER_4_BLUR, Texture.class);
+            case LEVEL_5: return getAsset(Asset.UI_CARD_COVER_5_BLUR, Texture.class);
+            default: return getAsset(Asset.UI_CARD_COVER_1_BLUR, Texture.class);
+        }
     }
 
 }

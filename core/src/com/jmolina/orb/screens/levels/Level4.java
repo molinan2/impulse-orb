@@ -11,8 +11,8 @@ public class Level4 extends Level {
     public Level4(SuperManager sm) {
         super(sm);
 
-        setPreviousScreen(ScreenManager.Key.LEVEL_LAUNCH_4);
-        setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_4);
+        setPreviousScreen(ScreenManager.Key.LAUNCH_4);
+        setSuccessScreen(ScreenManager.Key.SUCCESS_4);
 
         addSituation(Situation400.class);
 

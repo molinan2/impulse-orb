@@ -17,7 +17,6 @@ public class BackgroundStage extends Stage {
 
     @Override
     public void dispose() {
-        staticBackground.dispose();
         super.dispose();
     }
 

@@ -46,9 +46,4 @@ public class StaticBackground extends BaseGroup {
         super.draw(batch, parentAlpha);
     }
 
-    @Override
-    public void dispose() {
-        super.dispose();
-    }
-
 }

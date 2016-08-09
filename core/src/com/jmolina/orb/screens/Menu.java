@@ -32,8 +32,7 @@ public class Menu extends BaseScreen {
         table.setPosition(Utils.cell(1), 0f);
 
         ScrollPane.ScrollPaneStyle style = new ScrollPane.ScrollPaneStyle();
-        style.vScrollKnob = new TextureRegionDrawable(new TextureRegion(
-                getAsset(Asset.UI_SCROLL_KNOB, Texture.class)));
+        style.vScrollKnob = new TextureRegionDrawable(new TextureRegion(getAsset(Asset.UI_SCROLL_KNOB, Texture.class)));
 
         scrollPane = new ScrollPane(table);
         scrollPane.setStyle(style);
@@ -43,12 +42,6 @@ public class Menu extends BaseScreen {
 
         addMainActor(title);
         addMainActor(scrollPane);
-    }
-
-    @Override
-    public void dispose() {
-        title.dispose();
-        super.dispose();
     }
 
     private Table getTable() {

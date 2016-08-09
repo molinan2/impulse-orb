@@ -20,7 +20,7 @@ public class Notice extends BaseGroup {
         super(am);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.fontColor = new Color(Var.COLOR_BLUE);
+        labelStyle.fontColor = new Color(Var.COLOR_DARK_LILAC);
         labelStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
 
         this.author = new Label(Var.APP_AUTHOR, labelStyle);
@@ -41,8 +41,4 @@ public class Notice extends BaseGroup {
         addActor(this.version);
     }
 
-    @Override
-    public void dispose() {
-        super.dispose();
-    }
 }

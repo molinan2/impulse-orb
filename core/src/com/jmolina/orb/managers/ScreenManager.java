@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.screens.Credits;
 import com.jmolina.orb.screens.levels.Level1;
-import com.jmolina.orb.screens.LevelLaunch;
-import com.jmolina.orb.screens.LevelSelect;
-import com.jmolina.orb.screens.LevelSuccess;
+import com.jmolina.orb.screens.Launch;
+import com.jmolina.orb.screens.Select;
+import com.jmolina.orb.screens.Success;
 import com.jmolina.orb.screens.Load;
 import com.jmolina.orb.screens.Main;
 import com.jmolina.orb.screens.Options;
@@ -27,9 +27,9 @@ public class ScreenManager {
     public enum Key {
         LOAD, MAIN,
         OPTIONS, STATS, CREDITS, LEVEL_SELECT,
-        LEVEL_LAUNCH_1, LEVEL_LAUNCH_2, LEVEL_LAUNCH_3, LEVEL_LAUNCH_4, LEVEL_LAUNCH_5, LEVEL_LAUNCH_T1, LEVEL_LAUNCH_T2,
+        LAUNCH_1, LAUNCH_2, LAUNCH_3, LAUNCH_4, LAUNCH_5, LAUNCH_T1, LAUNCH_T2,
         LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_T1, LEVEL_T2,
-        LEVEL_SUCCESS_1, LEVEL_SUCCESS_2, LEVEL_SUCCESS_3, LEVEL_SUCCESS_4, LEVEL_SUCCESS_5, LEVEL_SUCCESS_T1, LEVEL_SUCCESS_T2;
+        SUCCESS_1, SUCCESS_2, SUCCESS_3, SUCCESS_4, SUCCESS_5, SUCCESS_T1, SUCCESS_T2;
 
         @Override
         public String toString() {
@@ -141,44 +141,44 @@ public class ScreenManager {
                 return credits;
 
             case LEVEL_SELECT:
-                LevelSelect levelSelect = new LevelSelect(getSuperManager());
-                levelSelect.setThisKey(LEVEL_SELECT);
-                return levelSelect;
+                Select select = new Select(getSuperManager());
+                select.setThisKey(LEVEL_SELECT);
+                return select;
 
-            case LEVEL_LAUNCH_1:
-                LevelLaunch levelLaunch1 = new LevelLaunch(getSuperManager(), LEVEL_1, "BASIC");
-                levelLaunch1.setThisKey(LEVEL_LAUNCH_1);
-                return levelLaunch1;
+            case LAUNCH_1:
+                Launch launch1 = new Launch(getSuperManager(), LEVEL_1, "BASIC");
+                launch1.setThisKey(LAUNCH_1);
+                return launch1;
 
-            case LEVEL_LAUNCH_2:
-                LevelLaunch levelLaunch2 = new LevelLaunch(getSuperManager(), LEVEL_2, "ADVANCED");
-                levelLaunch2.setThisKey(LEVEL_LAUNCH_2);
-                return levelLaunch2;
+            case LAUNCH_2:
+                Launch launch2 = new Launch(getSuperManager(), LEVEL_2, "ADVANCE");
+                launch2.setThisKey(LAUNCH_2);
+                return launch2;
 
-            case LEVEL_LAUNCH_3:
-                LevelLaunch levelLaunch3 = new LevelLaunch(getSuperManager(), LEVEL_3, "EXPERT");
-                levelLaunch3.setThisKey(LEVEL_LAUNCH_3);
-                return levelLaunch3;
+            case LAUNCH_3:
+                Launch launch3 = new Launch(getSuperManager(), LEVEL_3, "EXPERT");
+                launch3.setThisKey(LAUNCH_3);
+                return launch3;
 
-            case LEVEL_LAUNCH_4:
-                LevelLaunch levelLaunch4 = new LevelLaunch(getSuperManager(), LEVEL_4, "HERO");
-                levelLaunch4.setThisKey(LEVEL_LAUNCH_4);
-                return levelLaunch4;
+            case LAUNCH_4:
+                Launch launch4 = new Launch(getSuperManager(), LEVEL_4, "HERO");
+                launch4.setThisKey(LAUNCH_4);
+                return launch4;
 
-            case LEVEL_LAUNCH_5:
-                LevelLaunch levelLaunch5 = new LevelLaunch(getSuperManager(), LEVEL_5, "GOD");
-                levelLaunch5.setThisKey(LEVEL_LAUNCH_5);
-                return levelLaunch5;
+            case LAUNCH_5:
+                Launch launch5 = new Launch(getSuperManager(), LEVEL_5, "GOD");
+                launch5.setThisKey(LAUNCH_5);
+                return launch5;
 
-            case LEVEL_LAUNCH_T1:
-                LevelLaunch levelLaunchT1 = new LevelLaunch(getSuperManager(), LEVEL_T1, "TEST1");
-                levelLaunchT1.setThisKey(LEVEL_LAUNCH_T1);
-                return levelLaunchT1;
+            case LAUNCH_T1:
+                Launch launchT1 = new Launch(getSuperManager(), LEVEL_T1, "TEST1");
+                launchT1.setThisKey(LAUNCH_T1);
+                return launchT1;
 
-            case LEVEL_LAUNCH_T2:
-                LevelLaunch levelLaunchT2 = new LevelLaunch(getSuperManager(), LEVEL_T2, "TEST2");
-                levelLaunchT2.setThisKey(LEVEL_LAUNCH_T2);
-                return levelLaunchT2;
+            case LAUNCH_T2:
+                Launch launchT2 = new Launch(getSuperManager(), LEVEL_T2, "TEST2");
+                launchT2.setThisKey(LAUNCH_T2);
+                return launchT2;
 
             case LEVEL_1:
                 Level1 level1 = new Level1(getSuperManager());
@@ -215,33 +215,33 @@ public class ScreenManager {
                 levelTest2.setThisKey(LEVEL_T2);
                 return levelTest2;
 
-            case LEVEL_SUCCESS_1:
-                LevelSuccess levelSuccess1 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_1, "BASIC");
-                return levelSuccess1;
+            case SUCCESS_1:
+                Success success1 = new Success(getSuperManager(), SUCCESS_1, "BASIC COMPLETED!");
+                return success1;
 
-            case LEVEL_SUCCESS_2:
-                LevelSuccess levelSuccess2 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_2, "ADVANCED");
-                return levelSuccess2;
+            case SUCCESS_2:
+                Success success2 = new Success(getSuperManager(), SUCCESS_2, "ADVANCE COMPLETED!");
+                return success2;
 
-            case LEVEL_SUCCESS_3:
-                LevelSuccess levelSuccess3 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_3, "EXPERT");
-                return levelSuccess3;
+            case SUCCESS_3:
+                Success success3 = new Success(getSuperManager(), SUCCESS_3, "EXPERT COMPLETED!");
+                return success3;
 
-            case LEVEL_SUCCESS_4:
-                LevelSuccess levelSuccess4 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_4, "HERO");
-                return levelSuccess4;
+            case SUCCESS_4:
+                Success success4 = new Success(getSuperManager(), SUCCESS_4, "HERO COMPLETED!");
+                return success4;
 
-            case LEVEL_SUCCESS_5:
-                LevelSuccess levelSuccess5 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_5, "GOD");
-                return levelSuccess5;
+            case SUCCESS_5:
+                Success success5 = new Success(getSuperManager(), SUCCESS_5, "GOD COMPLETED!");
+                return success5;
 
-            case LEVEL_SUCCESS_T1:
-                LevelSuccess levelSuccessT1 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_T1, "TEST1");
-                return levelSuccessT1;
+            case SUCCESS_T1:
+                Success successT1 = new Success(getSuperManager(), SUCCESS_T1, "TEST1 COMPLETED!");
+                return successT1;
 
-            case LEVEL_SUCCESS_T2:
-                LevelSuccess levelSuccessT2 = new LevelSuccess(getSuperManager(), LEVEL_SUCCESS_T1, "TEST2");
-                return levelSuccessT2;
+            case SUCCESS_T2:
+                Success successT2 = new Success(getSuperManager(), SUCCESS_T1, "TEST2 COMPLETED!");
+                return successT2;
 
             default:
                 Main main2 = new Main(getSuperManager());

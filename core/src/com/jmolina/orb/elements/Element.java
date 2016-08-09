@@ -39,7 +39,7 @@ public class Element extends WorldElement {
 
     /**
      * Constructor completo. La textura se le suministra al constructor
-     *  @param am AssetManager
+     * @param am AssetManager
      * @param world Box2D World which the Element's body will be added to
      * @param texture Visible Element texture
      * @param geometry {@link Geometry}

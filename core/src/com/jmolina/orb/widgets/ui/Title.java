@@ -21,7 +21,7 @@ public class Title extends BaseGroup {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_BLUE);
+        style.fontColor = new Color(Var.COLOR_LILAC);
         style.font = getAsset(Asset.FONT_ROBOTO_BOLD_90, BitmapFont.class);
 
         label = new Label(name, style);
@@ -36,11 +36,6 @@ public class Title extends BaseGroup {
 
         addActor(button);
         addActor(label);
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
     }
 
     /**

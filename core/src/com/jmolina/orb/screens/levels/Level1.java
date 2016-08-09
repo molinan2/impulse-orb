@@ -10,8 +10,8 @@ public class Level1 extends Level {
 
     public Level1(SuperManager sm) {
         super(sm);
-        setPreviousScreen(ScreenManager.Key.LEVEL_LAUNCH_1);
-        setSuccessScreen(ScreenManager.Key.LEVEL_SUCCESS_1);
+        setPreviousScreen(ScreenManager.Key.LAUNCH_1);
+        setSuccessScreen(ScreenManager.Key.SUCCESS_1);
 
         addSituation(Situation100.class);
 

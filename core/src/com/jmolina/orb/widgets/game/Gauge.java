@@ -36,7 +36,7 @@ public class Gauge extends BaseGroup {
 
         overload.addAction(Actions.alpha(0));
 
-        addActor(background);
+        //  addActor(background);
         addActor(bar);
         addActor(overload);
         addActor(frame);
