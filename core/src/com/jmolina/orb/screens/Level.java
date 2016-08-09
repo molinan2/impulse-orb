@@ -1,6 +1,11 @@
 package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
@@ -8,6 +13,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -32,6 +39,7 @@ import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
 import com.jmolina.orb.stages.ParallaxStage;
 import com.jmolina.orb.utils.Utils;
+import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -87,6 +95,16 @@ public class Level extends BaseScreen {
     private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     private SituationFactory situationFactory;
 
+    // Only testing
+    private long nanotimeStart = 0;
+    private long nanotime = 0;
+    private long nanotimeAcc = 0;
+    private float nanotimeAvg = 0;
+    private int frames = 0;
+    private SpriteBatch spriteBatch;
+    private Label frametime;
+    // End testing
+
 
     /**
      * Constructor
@@ -95,6 +113,18 @@ public class Level extends BaseScreen {
      */
     public Level(SuperManager sm) {
         super(sm);
+
+
+        // Only testing
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.fontColor = new Color(Var.COLOR_RED);
+        labelStyle.font = getAsset(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
+
+        frametime = new Label("", labelStyle);
+        frametime.setPosition(64, 64);
+        spriteBatch =  new SpriteBatch();
+        // End testing
+
 
         physicsStepAccumulator = 0f;
         tick = new Tick();
@@ -197,6 +227,11 @@ public class Level extends BaseScreen {
      */
     @Override
     public void render(float delta) {
+
+        // Only testing
+        nanotimeStart = System.nanoTime();
+        // End testing
+
         clear();
         syncActors();
         act(delta);
@@ -208,6 +243,18 @@ public class Level extends BaseScreen {
         postUpdate();
         draw();
         checkSwitching();
+
+        // Only testing
+        nanotime = System.nanoTime() - nanotimeStart;
+        nanotimeAcc += nanotime;
+        frames++;
+        nanotimeAvg = (float) (nanotimeAcc) / (float) frames;
+        frametime.setText(String.format("%.2f", nanotimeAvg / 1000000f));
+        spriteBatch.begin();
+        frametime.draw(spriteBatch, 1);
+        spriteBatch.end();
+        // End testing
+
     }
 
     /**
@@ -461,23 +508,30 @@ public class Level extends BaseScreen {
     public void stepPhysics(float delta) {
         if (isLocked()) return;
 
-        if (!WOLRD_ACCUMULATED_STEP) {
-            multiStepPhysics();
-        }
-        else {
-            float frameTime = Math.min(delta, 0.166666f);
-            physicsStepAccumulator += frameTime;
-            while (physicsStepAccumulator >= WORLD_TIME_STEP) {
-                world.step(WORLD_TIME_STEP, WORLD_VELOCITY_ITERATIONS, WORLD_POSITION_ITERATIONS);
-                physicsStepAccumulator -= WORLD_TIME_STEP;
-            }
+        if (WOLRD_ACCUMULATED_STEP) accumulatedPhysics(delta);
+        else multiStepPhysics();
+    }
+
+    /**
+     * Acumula el tiempo de frame y realiza pasos de la simulación hasta alcanzarlo. Es más apropiado
+     * cuando la ejecución es lenta (más de 16 ms de tiempo de frame).
+     *
+     * @param delta
+     */
+    private void accumulatedPhysics(float delta) {
+        float frameTime = Math.min(delta, 0.166666f);
+        physicsStepAccumulator += frameTime;
+        while (physicsStepAccumulator >= WORLD_TIME_STEP) {
+            world.step(WORLD_TIME_STEP, WORLD_VELOCITY_ITERATIONS, WORLD_POSITION_ITERATIONS);
+            physicsStepAccumulator -= WORLD_TIME_STEP;
         }
     }
 
     /**
      * Realiza {@link #WORLD_STEP_MULTIPLIER} pasos de la simulación física por cada fotograma. Un
      * mayor número de pasos aumenta la precisión de las colisiones, a costa de mayor consumo de
-     * recursos.
+     * recursos. Es más apropiado cuando la ejecución es muy rápida (menos de 16 ms de tiempo de
+     * frame).
      */
     private void multiStepPhysics() {
         for (int i=0; i<WORLD_STEP_MULTIPLIER; i++) {

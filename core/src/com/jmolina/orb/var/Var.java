@@ -16,6 +16,7 @@ public class Var {
     public static final int COLOR_DARK_LILAC = 0x625499ff;
     public static final int COLOR_DARK_GREEN = 0x009345ff;
     public static final int COLOR_BLACK = 0x404040ff;
+    public static final int COLOR_RED = 0xff0000ff;
 
     // LEVEL 1: 102.43f
 
