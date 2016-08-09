@@ -96,9 +96,7 @@ public class Asset {
     public static final String GAME_GESTURE_BASE = GAME + "gesture_base.mip.png";
     public static final String GAME_GESTURE_LINE = GAME + "gesture_line.mip.png";
     public static final String GAME_GESTURE_ARROWHEAD = GAME + "gesture_arrowhead.mip.png";
-    public static final String GAME_PARALLAX_LAYER_1 = GAME + "parallax_layer_01.png";
     public static final String GAME_PARALLAX_LAYER_1_BLUR = GAME + "parallax_layer_01_blur.png";
-    public static final String GAME_PARALLAX_LAYER_2 = GAME + "parallax_layer_02.png";
     public static final String GAME_PARALLAX_LAYER_2_BLUR = GAME + "parallax_layer_02_blur.png";
     public static final String GAME_PARALLAX_LAYER_3 = GAME + "parallax_layer_03.png";
     public static final String GAME_EXIT = GAME + "exit.png";
