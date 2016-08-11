@@ -12,20 +12,21 @@ import com.jmolina.orb.var.Var;
  */
 public abstract class Situation {
 
-    protected final float HEIGHT = 18.0f;
-    protected final float WIDTH = 12.0f;
+    public static final float HEIGHT = 18.0f;
+    public static final float WIDTH = 12.0f;
 
     private AssetManager assetManager;
     private World world;
     private SnapshotArray<Element> elements;
-    private float pixelsPerMeter, cellSizeCorrectionFactor;
+    private float pixelsPerMeter;
+    private int positionY;
 
     public Situation(AssetManager am, World world, float pixelsPerMeter) {
         this.pixelsPerMeter = pixelsPerMeter;
-        this.elements = new SnapshotArray<Element>();
-        this.assetManager = am;
         this.world = world;
-        this.cellSizeCorrectionFactor = pixelsPerMeter / Var.GRID_CELL_SIZE;
+        assetManager = am;
+        elements = new SnapshotArray<Element>();
+        positionY = 0;
 
         createElements();
     }
@@ -52,13 +53,26 @@ public abstract class Situation {
         return this.elements;
     }
 
-    public void setPosition(int orderY) {
+    /**
+     * Posición de la Situation dentro de un Level. El offset de cada Element vendrá dado por
+     * {@link #positionY} * {@link #HEIGHT}.
+     *
+     * @param positionY Posición, empezando por 0.
+     */
+    public void setPositionY(int positionY) {
+        this.positionY = positionY;
+        float offsetY = positionY * HEIGHT;
+
         for (Element element : getElements()) {
             element.setPosition(
                     element.getBody().getPosition().x,
-                    element.getBody().getPosition().y + orderY * HEIGHT
+                    element.getBody().getPosition().y + offsetY
             );
         }
+    }
+
+    public int getPositionY() {
+        return positionY;
     }
 
     protected AssetManager getAssetManager() {

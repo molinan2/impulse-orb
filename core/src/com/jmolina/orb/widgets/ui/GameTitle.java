@@ -57,7 +57,7 @@ public class GameTitle extends BaseGroup {
                         Interpolation.sineOut
                 ));
 
-                if (clicks > 7) {
+                if (clicks >= 5) {
                     clicks = 0;
                     orb.addAction(sequence(
                             Actions.moveBy(Utils.cell(-4), 0, 0.75f, Interpolation.sineIn),

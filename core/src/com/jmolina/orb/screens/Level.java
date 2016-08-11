@@ -28,6 +28,7 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.situations.SituationFactory;
+import com.jmolina.orb.situations.advanced.Situation205;
 import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
 import com.jmolina.orb.stages.ParallaxStage;
@@ -51,6 +52,7 @@ public class Level extends BaseScreen {
     private final boolean DEBUG_INVULNERABLE = false;
     private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     private DebugTime debugTime = new DebugTime(getAssetManager());
+    private float timer = 0f;
 
     public static final float INTRO_SEQUENCE_TIME = 1f;
 
@@ -406,6 +408,10 @@ public class Level extends BaseScreen {
         lastOrbPosition.set(x, y);
     }
 
+    protected void addSituation(Class clazz) {
+        addSituation(situationFactory.newSituation(clazz));
+    }
+
     /**
      * Añade una situación al nivel actual y añade todos sus actores. El {@link Orb} siempre queda
      * por encima.
@@ -415,7 +421,7 @@ public class Level extends BaseScreen {
     private void addSituation (Situation situation) {
         situations.add(situation);
         int size = situations.size;
-        situation.setPosition(size-1);
+        situation.setPositionY(size-1);
 
         for (Element element : situation.getElements()) {
             addMainActor(element.getActor());
@@ -423,10 +429,6 @@ public class Level extends BaseScreen {
         }
 
         correctZIndexes();
-    }
-
-    public void addSituation(Class clazz) {
-        addSituation(situationFactory.newSituation(clazz));
     }
 
     /**
