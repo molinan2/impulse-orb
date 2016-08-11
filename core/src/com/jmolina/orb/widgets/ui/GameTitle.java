@@ -60,11 +60,14 @@ public class GameTitle extends BaseGroup {
                 if (clicks >= 5) {
                     clicks = 0;
                     orb.addAction(sequence(
-                            Actions.moveBy(Utils.cell(-4), 0, 0.75f, Interpolation.sineIn),
+                            parallel(
+                                    Actions.moveBy(Utils.cell(-4), 0, 0.75f, Interpolation.sineIn),
+                                    Actions.rotateBy(180, 0.75f, Interpolation.exp5In)
+                            ),
                             Actions.moveTo(Utils.cell(12), orb.getY(), 0),
                             parallel(
                                     Actions.moveTo(0, 0, 2, Interpolation.sineOut),
-                                    Actions.rotateBy(720, 2, Interpolation.sineOut)
+                                    Actions.rotateBy(720, 2, Interpolation.pow2Out)
                             )
                     ));
                 }

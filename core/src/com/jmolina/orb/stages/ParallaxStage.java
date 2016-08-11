@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.var.Var;
@@ -40,9 +41,12 @@ public class ParallaxStage extends Stage {
         layer2 = new TiledLayer(assetManager, layer2Texture, width, height);
         layer3 = new TiledLayer(assetManager, layer3Texture, width, height);
 
-        layer1.setPosition(-width, -height);
-        layer2.setPosition(-width, -height);
-        layer3.setPosition(-width, -height);
+        float positionX = -width + layer1Texture.getWidth() * 0.5f - Utils.cell(0.5f);
+        float positionY = -height;
+
+        layer1.setPosition(positionX, positionY);
+        layer2.setPosition(positionX, positionY);
+        layer3.setPosition(positionX, positionY);
 
         // Tiene en cuenta el tamaño global de unidad del grid
         float scale  = pixelsPerMeter / Var.GRID_CELL_SIZE;

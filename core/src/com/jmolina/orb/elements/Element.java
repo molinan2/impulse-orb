@@ -224,4 +224,13 @@ public class Element extends WorldElement {
         return pixelsPerMeter;
     }
 
+    public void dispose() {
+        World world = getBody().getWorld();
+        world.destroyBody(getBody());
+        getActor().remove();
+
+        assetManager = null;
+        actor = null;
+    }
+
 }

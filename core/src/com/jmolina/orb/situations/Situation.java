@@ -87,4 +87,14 @@ public abstract class Situation {
         return getAssetManager().get(fileName, type);
     }
 
+    public void dispose() {
+        for (Element element : getElements()) {
+            element.dispose();
+        }
+
+        assetManager = null;
+        world = null;
+        elements = null;
+    }
+
 }

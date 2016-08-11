@@ -16,6 +16,8 @@ public class Orb extends Element {
     public static final float INTRO_TIME = 1f;
     public static final float OUTRO_TIME = 1.2f;
 
+    private final float DEFAULT_X = 6;
+    private final float DEFAULT_Y = 2;
     private final float DIAMETER = 1.0f;
     private final float INFINITE_DAMPING = 10000f;
     private final float OVER_DAMPING = 10f;
@@ -41,6 +43,7 @@ public class Orb extends Element {
         fragments.setScale(naturalScale);
         setActor(fragments);
         getBody().setSleepingAllowed(false); // Evita que se quede dormido. ¡La Gravedad no despierta!
+        setPosition(DEFAULT_X, DEFAULT_Y);
     }
 
     /**

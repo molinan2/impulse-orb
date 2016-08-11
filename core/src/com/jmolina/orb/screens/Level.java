@@ -19,7 +19,6 @@ import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.elements.WorldElement;
-import com.jmolina.orb.interfaces.Reseteable;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.listeners.ContactHandler;
@@ -28,13 +27,14 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.situations.SituationFactory;
-import com.jmolina.orb.situations.advanced.Situation205;
 import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
 import com.jmolina.orb.stages.ParallaxStage;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.misc.DebugTime;
+
+import java.util.ArrayList;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -47,12 +47,13 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public class Level extends BaseScreen {
 
+    private enum Adjacency { TOP, BOTTOM }
+
     private final boolean DEBUG_WORLD = false;
     private final boolean DEBUG_TIME = false;
     private final boolean DEBUG_INVULNERABLE = false;
     private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     private DebugTime debugTime = new DebugTime(getAssetManager());
-    private float timer = 0f;
 
     public static final float INTRO_SEQUENCE_TIME = 1f;
 
@@ -61,7 +62,6 @@ public class Level extends BaseScreen {
     private final float GESTURE_TAP_COUNT_INTERVAL = 0.4f;
     private final float GESTURE_LONG_PRESS_DURATION = 1.1f;
     private final float GESTURE_MAX_FLING_DELAY = 0.1f;
-    private final float GESTURE_MAX_FLING_IMPULSE = 60f;
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
     private final float WORLD_TIME_STEP = Var.FPS;
     private final int WORLD_STEP_MULTIPLIER = 4;
@@ -71,7 +71,8 @@ public class Level extends BaseScreen {
     private final int Z_INDEX_ORB = 20000;
     private final int Z_INDEX_BLACK = 10000;
     private final float MAGNETIC_FACTOR = 0.2f;
-    private final float IMPULSE_FACTOR = 0.8f;
+    private final float IMPULSE_FACTOR = 0.6f;
+    private final float IMPULSE_MAX = 50f;
 
     private Tick tick;
     private float pixelsPerMeter, impulse, physicsStepAccumulator;
@@ -84,13 +85,16 @@ public class Level extends BaseScreen {
     private GestureHandler gestureHandler;
     private ParallaxStage parallaxStage;
     private HUDStage hudStage;
-    private SnapshotArray<Situation> situations;
     private Orb orb;
     private Vector2 orbStartPosition, lastOrbPosition;
     private GameStats stats;
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
     private Runnable orbIntro, orbDestroy, reset, unlock, toSuccess;
     private SituationFactory situationFactory;
+
+    private ArrayList<Class> situationList;
+    private Situation currentSituation = null, adjacentSituation = null;
+    private int adjacencyNow, adjacencyBefore;
 
 
     /**
@@ -101,13 +105,14 @@ public class Level extends BaseScreen {
     public Level(SuperManager sm) {
         super(sm);
 
+        situationList = new ArrayList<Class>();
+
         physicsStepAccumulator = 0f;
         tick = new Tick();
         pixelsPerMeter = getGameManager().getPixelsPerMeter();
         impulse = IMPULSE_FACTOR / getPixelsPerMeter();
         orbStartPosition = new Vector2();
         lastOrbPosition = new Vector2();
-        situations = new SnapshotArray<Situation>();
         stats = new GameStats();
 
         float worldWidth = VIEWPORT_WIDTH / getPixelsPerMeter();
@@ -164,12 +169,10 @@ public class Level extends BaseScreen {
                 getHUDStage().reset();
                 stats.newTry();
 
-                for (Situation situation : getSituations()) {
-                    for (Element element : situation.getElements()) {
-                        if (element instanceof Reseteable)
-                            ((Reseteable)element).reset();
-                    }
-                }
+                if (currentSituation != null) currentSituation.dispose();
+                if (adjacentSituation != null) adjacentSituation.dispose();
+                currentSituation = null;
+                adjacentSituation = null;
             }
         };
 
@@ -203,7 +206,9 @@ public class Level extends BaseScreen {
     @Override
     public void render(float delta) {
         if (DEBUG_TIME) debugTime.start();
+
         clear();
+        updateSituations();
         syncActors();
         act(delta);
         syncBodies();
@@ -214,8 +219,73 @@ public class Level extends BaseScreen {
         postUpdate();
         draw();
         checkSwitching();
+
         if (DEBUG_TIME) debugTime.end();
     }
+
+    private void updateSituations() {
+        float orbPositionY = getOrb().getPosition().y;
+
+        float orbRelativePositionY = orbPositionY / Situation.HEIGHT;
+        int currentIndex = (int) orbRelativePositionY;
+        float decimals = orbRelativePositionY - currentIndex;
+        adjacencyBefore = adjacencyNow;
+
+        if (decimals >= 0.5f) adjacencyNow = 1;
+        else adjacencyNow = -1;
+
+        int adjacentIndex = currentIndex + adjacencyNow;
+
+        if (currentSituation == null) {
+            currentSituation = situationFactory.newSituation(situationList.get(currentIndex));
+            addSituation(currentSituation, currentIndex);
+
+            if (adjacentIndex >= 0 && adjacentIndex <= situationList.size()-1) {
+                adjacentSituation = situationFactory.newSituation(situationList.get(adjacentIndex));
+                addSituation(adjacentSituation, adjacentIndex);
+            }
+        }
+
+        if (adjacencyBefore != adjacencyNow) {
+            if (adjacencyNow == -1) {
+                if (decimals > 0.25f) crossFrontierM(adjacentIndex);
+                if (decimals <= 0.25f) crossFrontierTB();
+            }
+
+            if (adjacencyNow == 1 ) {
+                if (decimals > 0.75f) crossFrontierTB();
+                if (decimals < 0.75f) crossFrontierM(adjacentIndex);
+            }
+        }
+    }
+
+    /**
+     * El Orb ha cruzado una frontera M. Se destruye la Situation adyacente, se instancia una nueva
+     * adyacente y se añade al nivel.
+     */
+    private void crossFrontierM(int adjacentIndex) {
+        if (adjacentSituation != null)
+            adjacentSituation.dispose();
+
+        if (adjacentIndex >= 0 && adjacentIndex <= situationList.size()-1) {
+            adjacentSituation = situationFactory.newSituation(situationList.get(adjacentIndex));
+            addSituation(adjacentSituation, adjacentIndex);
+        }
+        else {
+            adjacentSituation = null;
+        }
+    }
+
+    /**
+     * El Orb ha cruzado una frontera T o B. Se intercambian las Situatoin adyacente y current.
+     */
+    private void crossFrontierTB() {
+        Situation temporal = currentSituation;
+        currentSituation = adjacentSituation;
+        adjacentSituation = temporal;
+    }
+
+
 
     /**
      * {@inheritDoc}
@@ -236,6 +306,8 @@ public class Level extends BaseScreen {
      */
     @Override
     public void dispose() {
+        currentSituation.dispose();
+        adjacentSituation.dispose();
         getHUDStage().dispose();
         getGestureStage().dispose();
         getParallaxStage().dispose();
@@ -408,20 +480,20 @@ public class Level extends BaseScreen {
         lastOrbPosition.set(x, y);
     }
 
+    /**
+     * TODO
+     *
+     * @param clazz
+     */
     protected void addSituation(Class clazz) {
-        addSituation(situationFactory.newSituation(clazz));
+        // addSituation(situationFactory.newSituation(clazz));
+
+        situationList.add(clazz);
     }
 
-    /**
-     * Añade una situación al nivel actual y añade todos sus actores. El {@link Orb} siempre queda
-     * por encima.
-     *
-     * @param situation {@link Situation}
-     */
-    private void addSituation (Situation situation) {
-        situations.add(situation);
-        int size = situations.size;
-        situation.setPositionY(size-1);
+    private void addSituation (Situation situation, int positionY) {
+        // situations.add(situation);
+        situation.setPositionY(positionY);
 
         for (Element element : situation.getElements()) {
             addMainActor(element.getActor());
@@ -437,6 +509,7 @@ public class Level extends BaseScreen {
      */
     private void correctZIndexes() {
         for (Situation situation : getSituations()) {
+            if (situation == null) continue;
             for (Element element : situation.getElements()) {
                 if (element.getFlavor() == WorldElement.Flavor.BLACK)
                     element.getActor().setZIndex(Z_INDEX_BLACK);
@@ -452,6 +525,10 @@ public class Level extends BaseScreen {
      * @return SnapshotArray de {@link Situation}s
      */
     public SnapshotArray<Situation> getSituations () {
+        SnapshotArray<Situation> situations = new SnapshotArray<Situation>();
+        situations.add(currentSituation);
+        situations.add(adjacentSituation);
+
         return situations;
     }
 
@@ -508,7 +585,8 @@ public class Level extends BaseScreen {
      * No es necesaria en el caso de elementos no móviles
      */
     private void syncBodies() {
-        for (Situation situation : situations) {
+        for (Situation situation : getSituations()) {
+            if (situation == null) continue;
             for (Element element : situation.getElements()) {
                 if (element instanceof Movable)
                     element.syncBody(worldViewport);
@@ -523,7 +601,8 @@ public class Level extends BaseScreen {
      * Es necesaria en todos los casos, para que los actores se correspondan con el scroll.
      */
     public void syncActors() {
-        for (Situation situation : situations) {
+        for (Situation situation : getSituations()) {
+            if (situation == null) continue;
             for (Element element : situation.getElements()) {
                 element.syncActor(worldViewport);
             }
@@ -645,6 +724,7 @@ public class Level extends BaseScreen {
         Vector2 force = new Vector2(0, 0);
 
         for (Situation situation : getSituations()) {
+            if (situation == null) continue;
             for (Element element : situation.getElements()) {
                 if (element instanceof Magnetic) {
                     Vector2 partial = ((Magnetic)element).force(getOrb().getPosition());
@@ -801,8 +881,8 @@ public class Level extends BaseScreen {
      * @param velocityY Velocidad recogida por el {@link GestureHandler} para la coordenada y
      */
     public void impulse(float velocityX, float velocityY) {
-        float impulseX = MathUtils.clamp(velocityX * impulse, -GESTURE_MAX_FLING_IMPULSE, GESTURE_MAX_FLING_IMPULSE);
-        float impulseY = MathUtils.clamp(-velocityY * impulse, -GESTURE_MAX_FLING_IMPULSE, GESTURE_MAX_FLING_IMPULSE);
+        float impulseX = MathUtils.clamp(velocityX * impulse, -IMPULSE_MAX, IMPULSE_MAX);
+        float impulseY = MathUtils.clamp(-velocityY * impulse, -IMPULSE_MAX, IMPULSE_MAX);
 
         if (!isLocked()) {
             getOrb().unfreeze();
