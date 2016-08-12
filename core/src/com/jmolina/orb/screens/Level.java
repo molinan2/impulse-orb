@@ -48,6 +48,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 public class Level extends BaseScreen {
 
     private enum Adjacency { TOP, BOTTOM }
+    private enum Frontier { BOUNDARY, MIDDLE }
 
     private final boolean DEBUG_WORLD = false;
     private final boolean DEBUG_TIME = false;
@@ -92,9 +93,9 @@ public class Level extends BaseScreen {
     private Runnable orbIntro, orbDestroy, reset, unlock, toSuccess;
     private SituationFactory situationFactory;
 
-    private ArrayList<Class> situationList;
-    private Situation currentSituation = null, adjacentSituation = null;
-    private int adjacencyNow, adjacencyBefore;
+    private ArrayList<Class> situations;
+    private Situation currentSituation, adjacentSituation;
+    private Adjacency adjacencyNow, adjacencyLast;
 
 
     /**
@@ -105,9 +106,6 @@ public class Level extends BaseScreen {
     public Level(SuperManager sm) {
         super(sm);
 
-        situationList = new ArrayList<Class>();
-
-        physicsStepAccumulator = 0f;
         tick = new Tick();
         pixelsPerMeter = getGameManager().getPixelsPerMeter();
         impulse = IMPULSE_FACTOR / getPixelsPerMeter();
@@ -125,6 +123,7 @@ public class Level extends BaseScreen {
         gestureStage = new GestureStage(getAssetManager(), gestureViewport, getPixelsPerMeter());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getPixelsPerMeter());
         world = new World(WORLD_GRAVITY, true);
+        physicsStepAccumulator = 0f;
         setOrb(new Orb(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
         contactHandler = new ContactHandler(this);
@@ -138,16 +137,17 @@ public class Level extends BaseScreen {
                 gestureHandler
         );
 
-        // Los primeros Processor reciben antes los eventos
+        situationFactory = new SituationFactory(getAssetManager(), getWorld(), getPixelsPerMeter());
+        situations = new ArrayList<Class>();
+        currentSituation = null;
+        adjacentSituation = null;
+
         addProcessor(hudStage);
         addProcessor(gestureStage);
         addProcessor(gestureDetector);
-
         createRunnables();
         lock();
         disableTicking();
-
-        situationFactory = new SituationFactory(getAssetManager(), getWorld(), getPixelsPerMeter());
     }
 
     /**
@@ -208,7 +208,7 @@ public class Level extends BaseScreen {
         if (DEBUG_TIME) debugTime.start();
 
         clear();
-        updateSituations();
+        updateVisibility();
         syncActors();
         act(delta);
         syncBodies();
@@ -223,60 +223,130 @@ public class Level extends BaseScreen {
         if (DEBUG_TIME) debugTime.end();
     }
 
-    private void updateSituations() {
-        float orbPositionY = getOrb().getPosition().y;
+    /**
+     * Actualiza las situaciones visibles.
+     */
+    private void updateVisibility() {
+        float altitude = getOrb().getPosition().y / Situation.HEIGHT;
+        int current = (int) altitude;
+        adjacencyLast = adjacencyNow;
+        adjacencyNow = findAdjacency(altitude);
 
-        float orbRelativePositionY = orbPositionY / Situation.HEIGHT;
-        int currentIndex = (int) orbRelativePositionY;
-        float decimals = orbRelativePositionY - currentIndex;
-        adjacencyBefore = adjacencyNow;
+        int adjacent = calculateAdjacent(current);
 
-        if (decimals >= 0.5f) adjacencyNow = 1;
-        else adjacencyNow = -1;
+        if (noVisibility())
+            initializeVisibility(current, adjacent);
 
-        int adjacentIndex = currentIndex + adjacencyNow;
-
-        if (currentSituation == null) {
-            currentSituation = situationFactory.newSituation(situationList.get(currentIndex));
-            addSituation(currentSituation, currentIndex);
-
-            if (adjacentIndex >= 0 && adjacentIndex <= situationList.size()-1) {
-                adjacentSituation = situationFactory.newSituation(situationList.get(adjacentIndex));
-                addSituation(adjacentSituation, adjacentIndex);
-            }
-        }
-
-        if (adjacencyBefore != adjacencyNow) {
-            if (adjacencyNow == -1) {
-                if (decimals > 0.25f) crossFrontierM(adjacentIndex);
-                if (decimals <= 0.25f) crossFrontierTB();
-            }
-
-            if (adjacencyNow == 1 ) {
-                if (decimals > 0.75f) crossFrontierTB();
-                if (decimals < 0.75f) crossFrontierM(adjacentIndex);
+        if (crossedFrontier()) {
+            switch (findFrontier(altitude)) {
+                case MIDDLE: newAdjacent(adjacent); break;
+                case BOUNDARY: swapSituations(); break;
             }
         }
     }
 
     /**
-     * El Orb ha cruzado una frontera M. Se destruye la Situation adyacente, se instancia una nueva
-     * adyacente y se añade al nivel.
+     * Calcula el índice adyacente en función del actual
+     *
+     * @param current Índice de la situación actual
      */
-    private void crossFrontierM(int adjacentIndex) {
-        if (adjacentSituation != null) adjacentSituation.dispose();
+    private int calculateAdjacent(int current) {
+        int adjacent;
+
+        if (adjacencyNow == Adjacency.TOP)
+            adjacent = current + 1;
+        else
+            adjacent = current - 1;
+
+        return adjacent;
+    }
+
+    /**
+     * Devuelve si no hay visibilidad. Esto ocurre si la situación actual no está inicializada, por
+     * ejemplo al iniciar el nivel.
+     */
+    private boolean noVisibility() {
+        return currentSituation == null;
+    }
+
+    /**
+     * Inicializa la visibilidad: crea la situación actual y la añade al nivel. Si procede, crea la
+     * situación adyacente y la añade al nivel.
+     *
+     * @param current Índice de la situación actual
+     * @param adjacent Índice de la situación adyacente
+     */
+    private void initializeVisibility(int current, int adjacent) {
+        Class currentClass = situations.get(current);
+        currentSituation = situationFactory.newSituation(currentClass);
+        addSituation(currentSituation, current);
+
+        if (adjacent >= 0 && adjacent <= situations.size()-1) {
+            Class adjacentClass = situations.get(adjacent);
+            adjacentSituation = situationFactory.newSituation(adjacentClass);
+            addSituation(adjacentSituation, adjacent);
+        }
+    }
+
+    /**
+     * Detecta el paso del Orb por una {@link Frontier}.
+     */
+    private boolean crossedFrontier() {
+        return adjacencyLast != adjacencyNow;
+    }
+
+    /**
+     * Calcula la {@link Adjacency}, es decir, si la situación adyacente se encuentra por arriba o por debajo.
+     *
+     * @param altitude Altitud de la cámara (en unidades del mundo)
+     */
+    private Adjacency findAdjacency(float altitude) {
+        float decimalPart = Utils.decimalPart(altitude);
+
+        if (decimalPart >= 0.5f)
+            return Adjacency.TOP;
+        else
+            return Adjacency.BOTTOM;
+    }
+
+    /**
+     * Calcula la {@link Frontier} más cercana. Se asume que la velocidad del Orb no va a ser tan
+     * alta como para, en un tiempo de frame, cruzar una frontera y colocarse más cerca de OTRA
+     * frontera.
+     *
+     * @param altitude Altitud del {@link Orb} (en unidades del mundo)
+     */
+    private Frontier findFrontier(float altitude) {
+        float decimalPart = Utils.decimalPart(altitude);
+
+        if (decimalPart > 0.25f && decimalPart < 0.75f)
+            return Frontier.MIDDLE;
+        else
+            return Frontier.BOUNDARY;
+    }
+
+    /**
+     * Se destruye la anterior adyacente, se instancia una nueva y se añade al nivel.
+     *
+     * @param adjacent Índice de la situación adyacente
+     */
+    private void newAdjacent(int adjacent) {
+        if (adjacentSituation != null)
+            adjacentSituation.dispose();
+
         adjacentSituation = null;
 
-        if (adjacentIndex >= 0 && adjacentIndex <= situationList.size()-1) {
-            adjacentSituation = situationFactory.newSituation(situationList.get(adjacentIndex));
-            addSituation(adjacentSituation, adjacentIndex);
+        if (adjacent >= 0 && adjacent <= situations.size()-1) {
+            Class adjacentClass = situations.get(adjacent);
+            adjacentSituation = situationFactory.newSituation(adjacentClass);
+            addSituation(adjacentSituation, adjacent);
         }
     }
 
     /**
-     * El Orb ha cruzado una frontera T o B. Se intercambian las Situatoin adyacente y current.
+     * Se intercambian las situaciones adyacente y actual.
      */
-    private void crossFrontierTB() {
+    private void swapSituations() {
         Situation temporal = currentSituation;
         currentSituation = adjacentSituation;
         adjacentSituation = temporal;
@@ -485,7 +555,7 @@ public class Level extends BaseScreen {
     protected void addSituation(Class clazz) {
         // addSituation(situationFactory.newSituation(clazz));
 
-        situationList.add(clazz);
+        situations.add(clazz);
     }
 
     private void addSituation (Situation situation, int positionY) {
@@ -505,7 +575,7 @@ public class Level extends BaseScreen {
      * permanecer siempre por encima de los demás. El Orb debe permanecer por encima de todos.
      */
     private void correctZIndexes() {
-        for (Situation situation : getSituations()) {
+        for (Situation situation : getVisibleSituations()) {
             if (situation == null) continue;
             for (Element element : situation.getElements()) {
                 if (element.getFlavor() == WorldElement.Flavor.BLACK)
@@ -521,7 +591,7 @@ public class Level extends BaseScreen {
      *
      * @return SnapshotArray de {@link Situation}s
      */
-    public SnapshotArray<Situation> getSituations () {
+    public SnapshotArray<Situation> getVisibleSituations() {
         SnapshotArray<Situation> situations = new SnapshotArray<Situation>();
         situations.add(currentSituation);
         situations.add(adjacentSituation);
@@ -582,7 +652,7 @@ public class Level extends BaseScreen {
      * No es necesaria en el caso de elementos no móviles
      */
     private void syncBodies() {
-        for (Situation situation : getSituations()) {
+        for (Situation situation : getVisibleSituations()) {
             if (situation == null) continue;
             for (Element element : situation.getElements()) {
                 if (element instanceof Movable)
@@ -598,7 +668,7 @@ public class Level extends BaseScreen {
      * Es necesaria en todos los casos, para que los actores se correspondan con el scroll.
      */
     public void syncActors() {
-        for (Situation situation : getSituations()) {
+        for (Situation situation : getVisibleSituations()) {
             if (situation == null) continue;
             for (Element element : situation.getElements()) {
                 element.syncActor(worldViewport);
@@ -720,7 +790,7 @@ public class Level extends BaseScreen {
     private void computeForces() {
         Vector2 force = new Vector2(0, 0);
 
-        for (Situation situation : getSituations()) {
+        for (Situation situation : getVisibleSituations()) {
             if (situation == null) continue;
             for (Element element : situation.getElements()) {
                 if (element instanceof Magnetic) {

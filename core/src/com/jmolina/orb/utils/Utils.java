@@ -72,4 +72,15 @@ public class Utils {
     public static float cell(float cells) {
         return cells * CELL_SIZE;
     }
+
+    /**
+     * Parte decimal de un número
+     *
+     * @param number Número en punto flotante
+     * @return Parte decimal
+     */
+    public static float decimalPart(float number) {
+        int integerPart = (int) number;
+        return number - integerPart;
+    }
 }
