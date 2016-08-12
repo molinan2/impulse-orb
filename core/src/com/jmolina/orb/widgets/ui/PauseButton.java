@@ -1,12 +1,10 @@
 package com.jmolina.orb.widgets.ui;
 
 import com.jmolina.orb.managers.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.utils.Utils;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.widgets.BaseGroup;
 
 public class PauseButton extends BaseGroup {
@@ -19,10 +17,9 @@ public class PauseButton extends BaseGroup {
     public PauseButton(AssetManager am) {
         super(am);
 
-
         paused = false;
-        pauseDrawable = new TextureRegionDrawable(new TextureRegion(getAsset(Asset.HUD_BUTTON_PAUSE, Texture.class)));
-        resumeDrawable = new TextureRegionDrawable(new TextureRegion(getAsset(Asset.HUD_BUTTON_RESUME, Texture.class)));
+        pauseDrawable = new TextureRegionDrawable(findRegion(Atlas.HUD_BUTTON_PAUSE));
+        resumeDrawable = new TextureRegionDrawable(findRegion(Atlas.HUD_BUTTON_RESUME));
         image = new Image(pauseDrawable);
         image.setPosition(0f, 0f);
 
@@ -41,13 +38,6 @@ public class PauseButton extends BaseGroup {
     public void resume () {
         paused = false;
         image.setDrawable(pauseDrawable);
-    }
-
-    public void toggle () {
-        if (paused)
-            resume();
-        else
-            pause();
     }
 
 }

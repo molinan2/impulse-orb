@@ -1,7 +1,7 @@
 package com.jmolina.orb.widgets.game;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jmolina.orb.managers.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.utils.Utils;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
@@ -49,11 +49,11 @@ public class LinearField extends Field {
         fill.setSize(Utils.cell(w), Utils.cell(threshold));
         fill.setPosition(0, 0);
 
-        field = new Image(getAsset(Asset.GAME_MAGNETIC_FIELD_LINEAR, Texture.class));
+        field = new Image(findRegion(Atlas.GAME_MAGNETIC_FIELD_LINEAR));
         field.setSize(Utils.cell(w), Utils.cell(threshold));
         field.setPosition(0, Utils.cell(threshold));
 
-        body = new Image(getBodyTexture(flavor));
+        body = new Image(getBodyTextureRegion(flavor));
         body.setSize(Utils.cell(w), Utils.cell(h));
         body.setPosition(0, Utils.cell(threshold) - 0.5f * Utils.cell(h));
 
@@ -138,12 +138,12 @@ public class LinearField extends Field {
      *
      * @param flavor Flavor
      */
-    private Texture getBodyTexture(WorldElement.Flavor flavor) {
+    private TextureRegion getBodyTextureRegion(WorldElement.Flavor flavor) {
         switch (flavor) {
-            case RED: return getAsset(Asset.GAME_SQUARE_RED, Texture.class);
-            case VIOLET: return getAsset(Asset.GAME_SQUARE_VIOLET, Texture.class);
-            case TRANSPARENT: return getAsset(Asset.GAME_SQUARE_TRANSPARENT, Texture.class);
-            default: return getAsset(Asset.GAME_SQUARE_VIOLET, Texture.class);
+            case RED: return findRegion(Atlas.GAME_SQUARE_RED);
+            case VIOLET: return findRegion(Atlas.GAME_SQUARE_VIOLET);
+            case TRANSPARENT: return findRegion(Atlas.GAME_SQUARE_TRANSPARENT);
+            default: return findRegion(Atlas.GAME_SQUARE_VIOLET);
         }
     }
 

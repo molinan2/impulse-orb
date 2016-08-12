@@ -1,0 +1,285 @@
+
+game.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+magnetic_field_linear
+  rotate: false
+  xy: 1, 1527
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+magnetic_field_radial
+  rotate: false
+  xy: 1, 1013
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+magnetic_particle_radial.mip
+  rotate: false
+  xy: 515, 1527
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+exit
+  rotate: false
+  xy: 1029, 1783
+  size: 640, 256
+  orig: 640, 256
+  offset: 0, 0
+  index: -1
+up
+  rotate: false
+  xy: 1029, 1525
+  size: 640, 256
+  orig: 640, 256
+  offset: 0, 0
+  index: -1
+circle_black
+  rotate: false
+  xy: 1, 611
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+circle_grey
+  rotate: false
+  xy: 515, 1125
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+circle_red
+  rotate: false
+  xy: 1, 209
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+circle_transparent
+  rotate: false
+  xy: 917, 1123
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+circle_violet
+  rotate: false
+  xy: 1319, 1123
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+parallax_layer_b_blur
+  rotate: false
+  xy: 1671, 1767
+  size: 272, 272
+  orig: 272, 272
+  offset: 0, 0
+  index: -1
+gesture_arrowhead.mip
+  rotate: false
+  xy: 515, 723
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+gesture_base.mip
+  rotate: false
+  xy: 917, 721
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+gesture_line.mip
+  rotate: false
+  xy: 1319, 721
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+triangle_grey
+  rotate: false
+  xy: 403, 321
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+triangle_red
+  rotate: false
+  xy: 805, 319
+  size: 400, 400
+  orig: 400, 400
+  offset: 0, 0
+  index: -1
+box
+  rotate: false
+  xy: 1207, 687
+  size: 512, 32
+  orig: 512, 32
+  offset: 0, 0
+  index: -1
+magnetic_particle_linear
+  rotate: false
+  xy: 1207, 669
+  size: 512, 16
+  orig: 512, 16
+  offset: 0, 0
+  index: -1
+parallax_layer_a_blur
+  rotate: false
+  xy: 1207, 411
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+parallax_layer_c
+  rotate: false
+  xy: 1465, 411
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+orb_fragment_a.mip
+  rotate: false
+  xy: 1, 7
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+orb_fragment_b.mip
+  rotate: false
+  xy: 1671, 1565
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+orb_fragment_c.mip
+  rotate: false
+  xy: 203, 7
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+orb_fragment_d.mip
+  rotate: false
+  xy: 1721, 1363
+  size: 200, 200
+  orig: 200, 200
+  offset: 0, 0
+  index: -1
+button_pause
+  rotate: false
+  xy: 1945, 1943
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+button_resume
+  rotate: false
+  xy: 403, 915
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+gauge_background
+  rotate: false
+  xy: 403, 223
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+gauge_bar
+  rotate: false
+  xy: 1721, 1265
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+gauge_frame
+  rotate: false
+  xy: 1945, 1845
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+gauge_overload
+  rotate: false
+  xy: 403, 817
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+background_overlay
+  rotate: false
+  xy: 1207, 345
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+heat
+  rotate: false
+  xy: 1873, 1701
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+square_black
+  rotate: false
+  xy: 501, 255
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+square_grey
+  rotate: false
+  xy: 1721, 1199
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+square_red
+  rotate: false
+  xy: 1819, 1297
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+square_transparent
+  rotate: false
+  xy: 1945, 1779
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+square_violet
+  rotate: false
+  xy: 403, 751
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+square_white
+  rotate: false
+  xy: 1273, 345
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+background_border
+  rotate: false
+  xy: 1, 1
+  size: 64, 4
+  orig: 64, 4
+  offset: 0, 0
+  index: -1
+magnetic_particle.mip
+  rotate: false
+  xy: 1671, 1547
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1

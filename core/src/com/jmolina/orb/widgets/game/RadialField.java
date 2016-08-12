@@ -1,7 +1,7 @@
 package com.jmolina.orb.widgets.game;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jmolina.orb.managers.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.utils.Utils;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -41,11 +41,11 @@ public class RadialField extends Field {
 
         diameter = d;
 
-        field = new Image(getAsset(Asset.GAME_MAGNETIC_FIELD_RADIAL, Texture.class));
+        field = new Image(findRegion(Atlas.GAME_MAGNETIC_FIELD_RADIAL));
         field.setSize(Utils.cell(2 * threshold), Utils.cell(2 * threshold));
         field.setPosition(0, 0);
 
-        body = new Image(getBodyTexture(flavor));
+        body = new Image(getBodyTextureRegion(flavor));
         body.setSize(Utils.cell(d), Utils.cell(d));
         body.setPosition(Utils.cell(threshold) - 0.5f * Utils.cell(d), Utils.cell(threshold) - 0.5f * Utils.cell(d));
 
@@ -124,12 +124,12 @@ public class RadialField extends Field {
      *
      * @param flavor Flavor
      */
-    private Texture getBodyTexture(WorldElement.Flavor flavor) {
+    private TextureRegion getBodyTextureRegion(WorldElement.Flavor flavor) {
         switch (flavor) {
-            case RED: return getAsset(Asset.GAME_CIRCLE_RED, Texture.class);
-            case VIOLET: return getAsset(Asset.GAME_CIRCLE_VIOLET, Texture.class);
-            case TRANSPARENT: return getAsset(Asset.GAME_CIRCLE_TRANSPARENT, Texture.class);
-            default: return getAsset(Asset.GAME_CIRCLE_VIOLET, Texture.class);
+            case RED: return findRegion(Atlas.GAME_CIRCLE_RED);
+            case VIOLET: return findRegion(Atlas.GAME_CIRCLE_VIOLET);
+            case TRANSPARENT: return findRegion(Atlas.GAME_CIRCLE_TRANSPARENT);
+            default: return findRegion(Atlas.GAME_CIRCLE_VIOLET);
         }
     }
 

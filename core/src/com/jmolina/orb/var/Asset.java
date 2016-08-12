@@ -3,8 +3,9 @@ package com.jmolina.orb.var;
 // Arroja una Exception al ejecutar la version GWT (HTML)
 
 /**
- * Assets principales. {@link com.jmolina.orb.managers.AssetManager} precarga automáticamente todos
- * los assets mediante Reflection. Todos los campos públicos deben ser de tipo String.
+ * Assets principales. {@link com.jmolina.orb.managers.AssetManager} precarga automáticamente estos
+ * assets mediante {@link com.badlogic.gdx.utils.reflect.ClassReflection}. Todos los campos públicos
+ * deben ser de tipo String.
  */
 public class Asset {
 
@@ -75,45 +76,6 @@ public class Asset {
     public static final String UI_STAR_3RD = UI + "star_3rd.png";
     public static final String UI_RATING_YES = UI + "rating_yes.png";
     public static final String UI_RATING_NO = UI + "rating_no.png";
-
-    public static final String GAME_SQUARE_BLACK = GAME + "square_black.png";
-    public static final String GAME_SQUARE_GREY = GAME + "square_grey.png";
-    public static final String GAME_SQUARE_RED = GAME + "square_red.png";
-    public static final String GAME_SQUARE_WHITE = GAME + "square_white.png";
-    public static final String GAME_SQUARE_VIOLET = GAME + "square_violet.png";
-    public static final String GAME_SQUARE_TRANSPARENT = GAME + "square_transparent.png";
-    public static final String GAME_CIRCLE_BLACK = GAME + "circle_black.png";
-    public static final String GAME_CIRCLE_GREY = GAME + "circle_grey.png";
-    public static final String GAME_CIRCLE_RED = GAME + "circle_red.png";
-    public static final String GAME_CIRCLE_VIOLET = GAME + "circle_violet.png";
-    public static final String GAME_CIRCLE_TRANSPARENT = GAME + "circle_transparent.png";
-    public static final String GAME_TRIANGLE_GREY = GAME + "triangle_grey.png";
-    public static final String GAME_TRIANGLE_RED = GAME + "triangle_red.png";
-    public static final String GAME_ORB_FRAGMENT_1 = GAME + "orb_fragment_01.mip.png";
-    public static final String GAME_ORB_FRAGMENT_2 = GAME + "orb_fragment_02.mip.png";
-    public static final String GAME_ORB_FRAGMENT_3 = GAME + "orb_fragment_03.mip.png";
-    public static final String GAME_ORB_FRAGMENT_4 = GAME + "orb_fragment_04.mip.png";
-    public static final String GAME_GESTURE_BASE = GAME + "gesture_base.mip.png";
-    public static final String GAME_GESTURE_LINE = GAME + "gesture_line.mip.png";
-    public static final String GAME_GESTURE_ARROWHEAD = GAME + "gesture_arrowhead.mip.png";
-    public static final String GAME_PARALLAX_LAYER_1_BLUR = GAME + "parallax_layer_01_blur.png";
-    public static final String GAME_PARALLAX_LAYER_2_BLUR = GAME + "parallax_layer_02_blur.png";
-    public static final String GAME_PARALLAX_LAYER_3 = GAME + "parallax_layer_03.png";
-    public static final String GAME_EXIT = GAME + "exit.png";
-    public static final String GAME_UP = GAME + "up.png";
-    public static final String GAME_HEAT = GAME + "heat.png";
-    public static final String GAME_MAGNETIC_FIELD_RADIAL = GAME + "magnetic_field_radial.png";
-    public static final String GAME_MAGNETIC_FIELD_LINEAR = GAME + "magnetic_field_linear.png";
-    public static final String GAME_MAGNETIC_PARTICLE = GAME + "magnetic_particle.mip.png";
-
-    public static final String HUD_BACKGROUND_BORDER = HUD + "background_border.png";
-    public static final String HUD_BACKGROUND_OVERLAY = HUD + "background_overlay.png";
-    public static final String HUD_BUTTON_PAUSE = HUD + "button_pause.png";
-    public static final String HUD_BUTTON_RESUME = HUD + "button_resume.png";
-    public static final String HUD_GAUGE_BACKGROUND = HUD + "gauge_background.png";
-    public static final String HUD_GAUGE_FRAME = HUD + "gauge_frame.png";
-    public static final String HUD_GAUGE_BAR = HUD + "gauge_bar.png";
-    public static final String HUD_GAUGE_OVERLOAD = HUD + "gauge_overload.png";
 
     public static final String APP_ICON_256 = APP + "icon_256.png";
     public static final String APP_ICON_128 = APP + "icon_128.png";

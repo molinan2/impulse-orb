@@ -1,14 +1,9 @@
 package com.jmolina.orb.widgets;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.managers.AssetManager;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.utils.Disposable;
 import com.jmolina.orb.utils.Utils;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
@@ -26,11 +21,6 @@ public class BaseGroup extends Group {
         setOrigin(0f, 0f);
     }
 
-    @Override
-    public void draw (Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-    }
-
     public AssetManager getAssetManager() {
         return this.assetManager;
     }
@@ -41,6 +31,10 @@ public class BaseGroup extends Group {
 
     public synchronized <T> T getAsset (String fileName, Class<T> type) {
         return getAssetManager().get(fileName, type);
+    }
+
+    public TextureRegion findRegion(String name) {
+        return getAssetManager().getGameAtlas().findRegion(name);
     }
 
     /**

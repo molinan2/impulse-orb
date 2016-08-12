@@ -1,5 +1,6 @@
 package com.jmolina.orb.widgets.game;
 
+import com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,29 +14,23 @@ import com.jmolina.orb.widgets.BaseGroup;
  */
 public class TiledLayer extends BaseGroup {
 
-    private final int TIMES_X = 4;
-    private final int TIMES_Y = 20;
+    private final int TIMES_X = 2;
+    private final int TIMES_Y = 16;
 
     private Image image;
+    private TiledDrawable tiledDrawable;
 
-    public TiledLayer(AssetManager am, Texture texture, float viewportWidth, float viewportHeight) {
+    public TiledLayer(AssetManager am, TextureRegion region, float viewportWidth, float viewportHeight) {
         super(am);
 
-        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        texture.setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+        int viewportTilesX = MathUtils.round(viewportWidth / region.getRegionWidth());
+        int viewportTilesY = MathUtils.round(viewportHeight / region.getRegionHeight());
 
-        int tilesX = MathUtils.round(viewportWidth / texture.getWidth());
-        int tilesY = MathUtils.round(viewportHeight / texture.getHeight());
+        tiledDrawable = new TiledDrawable(region);
+        tiledDrawable.setMinWidth(TIMES_X * viewportTilesX * region.getRegionWidth());
+        tiledDrawable.setMinHeight(TIMES_Y * viewportTilesY * region.getRegionHeight());
 
-        TextureRegion region = new TextureRegion(texture);
-        region.setRegion(
-                0, 0,
-                TIMES_X * tilesX * texture.getWidth(),
-                TIMES_Y * tilesY * texture.getHeight()
-        );
-
-        image = new Image(region);
-        image.setSize(region.getRegionWidth(), region.getRegionHeight());
+        image = new Image(tiledDrawable);
         image.setPosition(0, 0);
 
         addActor(image);

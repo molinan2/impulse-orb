@@ -705,7 +705,7 @@ public class Level extends BaseScreen {
      * Dibuja todos los actores
      */
     private void draw() {
-        getParallaxStage().draw(worldViewport.getCamera().position.x, worldViewport.getCamera().position.y);
+        getParallaxStage().draw(worldViewport.getCamera());
         getMainStage().draw();
         getGestureStage().draw();
         getBackgroundStage().draw();

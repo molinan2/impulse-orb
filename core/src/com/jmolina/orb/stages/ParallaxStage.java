@@ -1,13 +1,13 @@
 package com.jmolina.orb.stages;
 
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.utils.Utils;
-import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.managers.AssetManager;
+import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.game.TiledLayer;
 
@@ -30,27 +30,22 @@ public class ParallaxStage extends Stage {
 
         this.pixelsPerMeter = pixelsPerMeter;
 
+        TextureRegion region1 = assetManager.getGameAtlas().findRegion(Atlas.GAME_PARALLAX_LAYER_1_BLUR);
+        TextureRegion region2 = assetManager.getGameAtlas().findRegion(Atlas.GAME_PARALLAX_LAYER_2_BLUR);
+        TextureRegion region3 = assetManager.getGameAtlas().findRegion(Atlas.GAME_PARALLAX_LAYER_3);
+
         float width = viewport.getWorldWidth();
         float height = viewport.getWorldHeight();
+        float x = -2 * region1.getRegionWidth() + region1.getRegionWidth() * 0.5f - Utils.cell(0.5f);
+        float y = -2 * region1.getRegionHeight();
+        float scale = pixelsPerMeter / Var.GRID_CELL_SIZE;
 
-        Texture layer1Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_1_BLUR, Texture.class);
-        Texture layer2Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_2_BLUR, Texture.class);
-        Texture layer3Texture = assetManager.get(Asset.GAME_PARALLAX_LAYER_3, Texture.class);
-
-        layer1 = new TiledLayer(assetManager, layer1Texture, width, height);
-        layer2 = new TiledLayer(assetManager, layer2Texture, width, height);
-        layer3 = new TiledLayer(assetManager, layer3Texture, width, height);
-
-        float positionX = -width + layer1Texture.getWidth() * 0.5f - Utils.cell(0.5f);
-        float positionY = -height;
-
-        layer1.setPosition(positionX, positionY);
-        layer2.setPosition(positionX, positionY);
-        layer3.setPosition(positionX, positionY);
-
-        // Tiene en cuenta el tamaño global de unidad del grid
-        float scale  = pixelsPerMeter / Var.GRID_CELL_SIZE;
-
+        layer1 = new TiledLayer(assetManager, region1, width, height);
+        layer2 = new TiledLayer(assetManager, region2, width, height);
+        layer3 = new TiledLayer(assetManager, region3, width, height);
+        layer1.setPosition(x, y);
+        layer2.setPosition(x, y);
+        layer3.setPosition(x, y);
         layer1.setScale(scale);
         layer2.setScale(scale);
         layer3.setScale(scale);
@@ -58,16 +53,26 @@ public class ParallaxStage extends Stage {
         addActor(layer3);
         addActor(layer2);
         addActor(layer1);
-
         getRoot().setTransform(false);
     }
 
-    public void draw(float x, float y) {
+    public void draw(Camera camera) {
+        float x = camera.position.x;
+        float y = camera.position.y;
+
         drawLayer(layer3, LAYER_3_SPEED, x, y);
         drawLayer(layer2, LAYER_2_SPEED, x, y);
         drawLayer(layer1, LAYER_1_SPEED, x, y);
     }
 
+    /**
+     * Método de dibujo de {@link Stage#draw()} modificado para que varíe la cámara de cada capa.
+     *
+     * @param layer
+     * @param speed
+     * @param x
+     * @param y
+     */
     private void drawLayer (TiledLayer layer, float speed, float x, float y) {
         Camera camera = getViewport().getCamera();
         camera.position.x = x * pixelsPerMeter * speed;

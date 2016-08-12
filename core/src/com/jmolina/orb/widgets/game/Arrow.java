@@ -1,11 +1,10 @@
 package com.jmolina.orb.widgets.game;
 
 import com.jmolina.orb.managers.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.actors.BaseActor;
+import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.widgets.BaseGroup;
 
 public class Arrow extends BaseGroup {
@@ -19,9 +18,9 @@ public class Arrow extends BaseGroup {
     public Arrow(AssetManager am, float pixelsPerMeter) {
         super(am);
 
-        base = new BaseActor(getAsset(Asset.GAME_GESTURE_BASE, Texture.class));
-        line = new BaseActor(getAsset(Asset.GAME_GESTURE_LINE, Texture.class));
-        arrowhead = new BaseActor(getAsset(Asset.GAME_GESTURE_ARROWHEAD, Texture.class));
+        base = new BaseActor(findRegion(Atlas.GAME_GESTURE_BASE));
+        line = new BaseActor(findRegion(Atlas.GAME_GESTURE_LINE));
+        arrowhead = new BaseActor(findRegion(Atlas.GAME_GESTURE_ARROWHEAD));
 
         base.setScale(pixelsPerMeter / base.getWidth());
 

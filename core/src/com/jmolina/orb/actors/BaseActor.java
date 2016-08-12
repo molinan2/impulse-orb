@@ -3,6 +3,7 @@ package com.jmolina.orb.actors;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
@@ -12,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
  */
 public class BaseActor extends Actor {
 
-    private Texture texture;
+    private TextureRegion region;
 
     public BaseActor () {
         setPosition(0f, 0f);
@@ -21,18 +22,16 @@ public class BaseActor extends Actor {
         setTouchable(Touchable.disabled);
     }
 
-    public BaseActor(Texture t) {
+    public BaseActor(TextureRegion region) {
         this();
-        setTexture(t);
+        setTextureRegion(region);
     }
 
-    public void setTexture (Texture t) {
-        texture = t;
-        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-
-        setSize(texture.getWidth(), texture.getHeight());
+    public void setTextureRegion(TextureRegion region) {
+        this.region = region;
+        setSize(region.getRegionWidth(), region.getRegionHeight());
         setBounds(getX(), getY(), getWidth(), getHeight());
-        setOrigin(0.5f * texture.getWidth(), 0.5f * texture.getHeight());
+        setOrigin(0.5f * getWidth(), 0.5f * getHeight());
     }
 
 
@@ -42,14 +41,14 @@ public class BaseActor extends Actor {
         batch.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
         // Metodo completo de dibujado
-        batch.draw(texture,
+        batch.draw(region.getTexture(),
                 this.getX(), this.getY(),
                 this.getOriginX(), this.getOriginY(),
                 this.getWidth(), this.getHeight(),
                 this.getScaleX(), this.getScaleY(),
                 this.getRotation(),
-                0, 0,
-                texture.getWidth(), texture.getHeight(),
+                region.getRegionX(), region.getRegionY(),
+                region.getRegionWidth(), region.getRegionHeight(),
                 false, false
         );
 

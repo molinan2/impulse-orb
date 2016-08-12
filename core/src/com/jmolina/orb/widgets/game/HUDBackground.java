@@ -1,10 +1,9 @@
 package com.jmolina.orb.widgets.game;
 
 import com.jmolina.orb.managers.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.utils.Utils;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.widgets.BaseGroup;
 
 public class HUDBackground extends BaseGroup {
@@ -14,10 +13,10 @@ public class HUDBackground extends BaseGroup {
     public HUDBackground(AssetManager am) {
         super(am);
 
-        overlay = new Image(getAsset(Asset.HUD_BACKGROUND_OVERLAY, Texture.class));
+        overlay = new Image(findRegion(Atlas.HUD_BACKGROUND_OVERLAY));
         overlay.setPosition(0, 0);
 
-        border = new Image(getAsset(Asset.HUD_BACKGROUND_BORDER, Texture.class));
+        border = new Image(findRegion(Atlas.HUD_BACKGROUND_BORDER));
         border.setPosition(0, 0);
 
         addActor(overlay);

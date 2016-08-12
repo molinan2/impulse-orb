@@ -9,6 +9,7 @@ public class Var {
     public static final float SCREEN_WIDTH = 768.0f;
     public static final float GRID_CELL_SIZE = 64f;
     public static final float FPS = 1/60f;
+
     public static final String EXCEPTION_EMPTY_LIST_ACCESS = "Can't access item on an empty list";
 
     public static final int COLOR_WHITE = 0xffffffff;

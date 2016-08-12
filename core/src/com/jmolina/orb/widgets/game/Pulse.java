@@ -1,9 +1,9 @@
 package com.jmolina.orb.widgets.game;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jmolina.orb.managers.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
-import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.actors.BaseActor;
+import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
@@ -30,9 +30,9 @@ public class Pulse extends BaseGroup {
     public Pulse(AssetManager am, float pixelsPerMeter) {
         super(am);
 
-        Texture texture = getAsset(Asset.GAME_GESTURE_BASE, Texture.class);
-        initialScale = (pixelsPerMeter * DIAMETER) / texture.getWidth();
-        image = new BaseActor(texture);
+        TextureRegion region = findRegion(Atlas.GAME_GESTURE_BASE);
+        initialScale = (pixelsPerMeter * DIAMETER) / region.getRegionWidth();
+        image = new BaseActor(region);
         image.setPosition(0, 0);
         image.setScale(initialScale);
 

@@ -1,12 +1,11 @@
 package com.jmolina.orb.widgets.game;
 
 import com.jmolina.orb.managers.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.utils.Utils;
-import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.widgets.BaseGroup;
 
 public class Gauge extends BaseGroup {
@@ -24,10 +23,10 @@ public class Gauge extends BaseGroup {
     public Gauge(AssetManager am) {
         super(am);
 
-        background = new Image(getAsset(Asset.HUD_GAUGE_BACKGROUND, Texture.class));
-        bar = new Image(getAsset(Asset.HUD_GAUGE_BAR, Texture.class));
-        overload = new Image(getAsset(Asset.HUD_GAUGE_OVERLOAD, Texture.class));
-        frame = new Image(getAsset(Asset.HUD_GAUGE_FRAME, Texture.class));
+        background = new Image(findRegion(Atlas.HUD_GAUGE_BACKGROUND));
+        bar = new Image(findRegion(Atlas.HUD_GAUGE_BAR));
+        overload = new Image(findRegion(Atlas.HUD_GAUGE_OVERLOAD));
+        frame = new Image(findRegion(Atlas.HUD_GAUGE_FRAME));
 
         background.setPosition(0f, 0f);
         bar.setPosition(0f, 0f);
