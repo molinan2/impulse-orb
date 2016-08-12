@@ -264,15 +264,12 @@ public class Level extends BaseScreen {
      * adyacente y se añade al nivel.
      */
     private void crossFrontierM(int adjacentIndex) {
-        if (adjacentSituation != null)
-            adjacentSituation.dispose();
+        if (adjacentSituation != null) adjacentSituation.dispose();
+        adjacentSituation = null;
 
         if (adjacentIndex >= 0 && adjacentIndex <= situationList.size()-1) {
             adjacentSituation = situationFactory.newSituation(situationList.get(adjacentIndex));
             addSituation(adjacentSituation, adjacentIndex);
-        }
-        else {
-            adjacentSituation = null;
         }
     }
 
@@ -306,8 +303,8 @@ public class Level extends BaseScreen {
      */
     @Override
     public void dispose() {
-        currentSituation.dispose();
-        adjacentSituation.dispose();
+        if (currentSituation != null) currentSituation.dispose();
+        if (adjacentSituation != null) adjacentSituation.dispose();
         getHUDStage().dispose();
         getGestureStage().dispose();
         getParallaxStage().dispose();
