@@ -106,13 +106,14 @@ public class Asset {
     public static final String GAME_MAGNETIC_FIELD_LINEAR = GAME + "magnetic_field_linear.png";
     public static final String GAME_MAGNETIC_PARTICLE = GAME + "magnetic_particle.mip.png";
 
-    public static final String HUD_BACKGROUND = HUD + "hud_background.png";
-    public static final String HUD_BUTTON_PAUSE = HUD + "hud_button_pause.png";
-    public static final String HUD_BUTTON_RESUME = HUD + "hud_button_resume.png";
-    public static final String HUD_GAUGE_BACKGROUND = HUD + "hud_gauge_background.png";
-    public static final String HUD_GAUGE_FRAME = HUD + "hud_gauge_frame.png";
-    public static final String HUD_GAUGE_BAR = HUD + "hud_gauge_bar.png";
-    public static final String HUD_GAUGE_OVERLOAD = HUD + "hud_gauge_overload.png";
+    public static final String HUD_BACKGROUND_BORDER = HUD + "background_border.png";
+    public static final String HUD_BACKGROUND_OVERLAY = HUD + "background_overlay.png";
+    public static final String HUD_BUTTON_PAUSE = HUD + "button_pause.png";
+    public static final String HUD_BUTTON_RESUME = HUD + "button_resume.png";
+    public static final String HUD_GAUGE_BACKGROUND = HUD + "gauge_background.png";
+    public static final String HUD_GAUGE_FRAME = HUD + "gauge_frame.png";
+    public static final String HUD_GAUGE_BAR = HUD + "gauge_bar.png";
+    public static final String HUD_GAUGE_OVERLOAD = HUD + "gauge_overload.png";
 
     public static final String APP_ICON_256 = APP + "icon_256.png";
     public static final String APP_ICON_128 = APP + "icon_128.png";

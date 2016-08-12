@@ -801,7 +801,6 @@ public class Level extends BaseScreen {
         }
 
         force.scl(MAGNETIC_FACTOR);
-
         getOrb().getBody().applyLinearImpulse(force, getOrb().getPosition(), true);
     }
 

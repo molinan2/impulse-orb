@@ -97,9 +97,9 @@ public class LinearMagnetic extends Magnetic {
         if (insideField(point)) {
             float factor = MAX_FORCE * (getThreshold() - distanceLine(point)) / getThreshold();
             force.set(Utils.normal(getSegment()));
-            force.scl(-1).scl(factor);
+            force.scl(factor);
 
-            if (getPolarity() == Polarity.ATTRACTIVE)
+            if (getPolarity() == Polarity.REPULSIVE)
                 force.scl(-1);
         }
 

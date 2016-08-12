@@ -9,18 +9,24 @@ import com.jmolina.orb.widgets.BaseGroup;
 
 public class HUDBackground extends BaseGroup {
 
-    private Image image;
+    private Image border, overlay;
 
     public HUDBackground(AssetManager am) {
         super(am);
 
-        image = new Image(getAsset(Asset.HUD_BACKGROUND, Texture.class));
-        image.setPosition(0, 0);
+        overlay = new Image(getAsset(Asset.HUD_BACKGROUND_OVERLAY, Texture.class));
+        overlay.setPosition(0, 0);
 
-        addActor(image);
+        border = new Image(getAsset(Asset.HUD_BACKGROUND_BORDER, Texture.class));
+        border.setPosition(0, 0);
 
-        setHeight(Utils.cell(2.5f));
-        setOrigin(image.getWidth() * 0.5f, image.getHeight() * 0.5f);
+        addActor(overlay);
+        addActor(border);
+
+        overlay.setScale(24, 28);
+        border.setScaleX(24);
+        // setSize(Utils.cell(24), Utils.cell(2.5f));
+        setOrigin(Utils.cell(12), Utils.cell(14));
     }
 
 }

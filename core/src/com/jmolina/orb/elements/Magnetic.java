@@ -20,7 +20,8 @@ public abstract class Magnetic extends Movable {
     private Polarity polarity;
 
     public Magnetic(AssetManager am, World world, float ppm, Geometry geometry, Flavor flavor, float w, float h, float x, float y, float angle, float threshold, Polarity polarity) {
-        super(am, world, ppm,
+        super(
+                am, world, ppm,
                 geometry, flavor,
                 w, h, x, y, angle
         );

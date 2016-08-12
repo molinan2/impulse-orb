@@ -68,7 +68,6 @@ public class RadialMagnetic extends Magnetic {
     }
 
     private boolean belowThreshold(Vector2 point) {
-        if (distance(point) < getThreshold()) return true;
-        else return false;
+        return distance(point) <= getThreshold();
     }
 }

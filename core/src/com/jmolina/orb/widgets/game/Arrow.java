@@ -54,7 +54,7 @@ public class Arrow extends BaseGroup {
 
         direction = new Vector2(end.x - start.x, end.y - start.y);
         angle = MathUtils.radiansToDegrees * MathUtils.atan2(direction.y, direction.x);
-        distance = (float) Math.sqrt(Math.pow(direction.x, 2) + Math.pow(direction.y, 2));
+        distance = (float) Math.sqrt(direction.x * direction.x + direction.y * direction.y);
 
         arrowhead.setRotation(angle);
         line.setRotation(angle);
