@@ -1,8 +1,8 @@
 package com.jmolina.orb.widgets.game;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.math.Interpolation;
+import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -25,8 +25,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
  */
 public class LinearField extends Field {
 
-    private float width, height;
-    private Image body, field, fill;
+    private Image filler, body, field, particle;
 
     /**
      * Constructor
@@ -42,12 +41,19 @@ public class LinearField extends Field {
     public LinearField(AssetManager am, float ppm, WorldElement.Flavor flavor, float w, float h, float threshold, Magnetic.Polarity polarity) {
         super(am, threshold, polarity);
 
-        width = w;
-        height = h;
+        filler = new Image();
+        filler.setSize(Utils.cell(w), Utils.cell(threshold));
+        filler.setPosition(0, 0);
 
-        fill = new Image();
-        fill.setSize(Utils.cell(w), Utils.cell(threshold));
-        fill.setPosition(0, 0);
+        TextureRegion region = findRegion(Atlas.GAME_MAGNETIC_PARTICLE_LINEAR);
+        particle = new Image(region);
+        particle.setSize(Utils.cell(0.25f), Utils.cell(0.25f));
+        particle.setPosition(0, Utils.cell(threshold));
+        particle.setScaleX(ppm * w / region.getRegionWidth());
+        particle.setOriginY(Utils.cell(0));
+
+        resetParticleAction();
+        particle.addAction(getParticleAction());
 
         field = new Image(findRegion(Atlas.GAME_MAGNETIC_FIELD_LINEAR));
         field.setSize(Utils.cell(w), Utils.cell(threshold));
@@ -57,41 +63,42 @@ public class LinearField extends Field {
         body.setSize(Utils.cell(w), Utils.cell(h));
         body.setPosition(0, Utils.cell(threshold) - 0.5f * Utils.cell(h));
 
-        createParticles((int) w);
-        addActors();
+        addActor(field);
+        addActor(filler);
+        addActor(particle);
+        addActor(body);
 
         setSize(Utils.cell(w), 2 * Utils.cell(threshold));
         setOrigin(0.5f * getWidth(), 0.5f * getHeight());
         setScale(ppm / Var.GRID_CELL_SIZE);
     }
 
-    @Override
-    protected void initParticle(Image particle, int index) {
+    private void resetParticleAction() {
         particle.clearActions();
-        particle.setPosition(axisX(index), axisY());
-        particle.addAction(alpha(0));
+        particle.addAction(parallel(
+                alpha(0.75f),
+                scaleTo(particle.getScaleX(), 0)
+        ));
         particle.act(0);
         particle.clearActions();
-        particle.addAction(particleAction(index));
     }
 
     @Override
-    protected Action attraction(int index) {
+    protected Action getAttraction() {
         RepeatAction forever = new RepeatAction();
         forever.setCount(RepeatAction.FOREVER);
         forever.setAction(new SequenceAction(
                 parallel(
+                        moveTo(0, Utils.cell(2 * getThreshold()) - particle.getHeight(), 0),
                         alpha(0),
-                        scaleTo(1, 1),
-                        moveTo(borderX(index), borderY())
+                        scaleTo(particle.getScaleX(), 1)
                 ),
                 parallel(
-                        alpha(PARTICLE_MAX_ALPHA, PARTICLE_PERIOD, Interpolation.pow2In),
-                        moveTo(axisX(index), axisY(), PARTICLE_PERIOD, Interpolation.pow2In)
+                        moveTo(0, Utils.cell(getThreshold()), PERIOD, Interpolation.pow2In),
+                        alpha(MAX_ALPHA, PERIOD, Interpolation.pow2In)
                 ),
                 parallel(
-                        scaleTo(0, 0, PARTICLE_SHORT_TIME),
-                        alpha(0, PARTICLE_SHORT_TIME)
+                        scaleTo(particle.getScaleX(), 0, SHORT_TIME)
                 )
         ));
 
@@ -99,38 +106,25 @@ public class LinearField extends Field {
     }
 
     @Override
-    protected Action repulsion(int index) {
+    protected Action getRepulsion() {
         RepeatAction forever = new RepeatAction();
         forever.setCount(RepeatAction.FOREVER);
         forever.setAction(new SequenceAction(
                 parallel(
-                        scaleTo(0, 0),
-                        moveTo(axisX(index), axisY())
+                        moveTo(0, Utils.cell(getThreshold()), 0),
+                        alpha(MAX_ALPHA),
+                        scaleTo(particle.getScaleX(), 0)
                 ),
                 parallel(
-                        alpha(PARTICLE_MAX_ALPHA, PARTICLE_SHORT_TIME),
-                        scaleTo(1, 1, PARTICLE_SHORT_TIME)
+                        scaleTo(particle.getScaleX(), 1, SHORT_TIME)
                 ),
                 parallel(
-                        alpha(0, PARTICLE_PERIOD, Interpolation.pow2Out),
-                        moveTo(borderX(index), borderY(), PARTICLE_PERIOD, Interpolation.pow2Out)
+                        moveTo(0, Utils.cell(2 * getThreshold()) - particle.getHeight(), PERIOD, Interpolation.pow2Out),
+                        alpha(0, PERIOD, Interpolation.pow2Out)
                 )
         ));
 
         return forever;
-    }
-
-    /**
-     * Añade los actores
-     */
-    private void addActors() {
-        addActor(field);
-        addActor(fill);
-
-        for(Image particle : getParticles())
-            addActor(particle);
-
-        addActor(body);
     }
 
     /**
@@ -145,38 +139,6 @@ public class LinearField extends Field {
             case TRANSPARENT: return findRegion(Atlas.GAME_SQUARE_TRANSPARENT);
             default: return findRegion(Atlas.GAME_SQUARE_VIOLET);
         }
-    }
-
-    /**
-     * Calcula la coordenada X del punto interior de una partícula (en el eje)
-     *
-     * @param index Índice de la partícula
-     */
-    private float axisX(int index) {
-        return index * (Utils.cell(width) - PARTICLE_DIAMETER) / (getParticleCount() -1);
-    }
-
-    /**
-     * Calcula la coordenada Y del punto interior de una partícula (en el eje)
-     */
-    private float axisY() {
-        return Utils.cell(getThreshold()) - 0.5f * PARTICLE_DIAMETER;
-    }
-
-    /**
-     * Calcula la coordenada X del punto exterior de una partícula (en el borde)
-     *
-     * @param index Índice de la partícula
-     */
-    private float borderX(int index) {
-        return axisX(index);
-    }
-
-    /**
-     * Calcula la coordenada Y del punto exterior de una partícula (en el borde)
-     */
-    private float borderY() {
-        return Utils.cell(2 * getThreshold()) - PARTICLE_DIAMETER;
     }
 
 }

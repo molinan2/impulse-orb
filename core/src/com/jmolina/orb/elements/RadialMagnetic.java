@@ -26,12 +26,6 @@ public class RadialMagnetic extends Magnetic {
         setPolarity(polarity);
     }
 
-    @Override
-    public void reset() {
-        super.reset();
-        ((RadialField)getActor()).reset();
-    }
-
     /**
      * Calcula la distancia de un punto al centro del elemento.
      *

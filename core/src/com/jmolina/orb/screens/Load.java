@@ -1,6 +1,5 @@
 package com.jmolina.orb.screens;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.managers.ScreenManager;

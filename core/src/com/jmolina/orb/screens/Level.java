@@ -122,6 +122,7 @@ public class Level extends BaseScreen {
         hudStage = new HUDStage(getAssetManager(), this, hudViewport);
         gestureStage = new GestureStage(getAssetManager(), gestureViewport, getPixelsPerMeter());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getPixelsPerMeter());
+        parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getPixelsPerMeter());
         world = new World(WORLD_GRAVITY, true);
         physicsStepAccumulator = 0f;
         setOrb(new Orb(getAssetManager(), getWorld(), getPixelsPerMeter()));
@@ -279,12 +280,12 @@ public class Level extends BaseScreen {
     private void initializeVisibility(int current, int adjacent) {
         Class currentClass = situations.get(current);
         currentSituation = situationFactory.newSituation(currentClass);
-        addSituation(currentSituation, current);
+        placeSituation(currentSituation, current);
 
         if (adjacent >= 0 && adjacent <= situations.size()-1) {
             Class adjacentClass = situations.get(adjacent);
             adjacentSituation = situationFactory.newSituation(adjacentClass);
-            addSituation(adjacentSituation, adjacent);
+            placeSituation(adjacentSituation, adjacent);
         }
     }
 
@@ -339,7 +340,7 @@ public class Level extends BaseScreen {
         if (adjacent >= 0 && adjacent <= situations.size()-1) {
             Class adjacentClass = situations.get(adjacent);
             adjacentSituation = situationFactory.newSituation(adjacentClass);
-            addSituation(adjacentSituation, adjacent);
+            placeSituation(adjacentSituation, adjacent);
         }
     }
 
@@ -548,18 +549,15 @@ public class Level extends BaseScreen {
     }
 
     /**
-     * TODO
+     * Añade una clase {@link Situation} al array de situaciones del nivel.
      *
-     * @param clazz
+     * @param clazz Una clase de tipo {@link Situation}
      */
     protected void addSituation(Class clazz) {
-        // addSituation(situationFactory.newSituation(clazz));
-
         situations.add(clazz);
     }
 
-    private void addSituation (Situation situation, int positionY) {
-        // situations.add(situation);
+    private void placeSituation(Situation situation, int positionY) {
         situation.setPositionY(positionY);
 
         for (Element element : situation.getElements()) {

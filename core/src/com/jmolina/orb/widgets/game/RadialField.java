@@ -23,8 +23,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public class RadialField extends Field {
 
-    private float diameter;
-    private Image body, field;
+    private Image body, field, particle;
 
     /**
      * Constructor
@@ -39,7 +38,14 @@ public class RadialField extends Field {
     public RadialField(AssetManager am, float ppm, WorldElement.Flavor flavor, float d, float threshold, Magnetic.Polarity polarity) {
         super(am, threshold, polarity);
 
-        diameter = d;
+        TextureRegion region = findRegion(Atlas.GAME_MAGNETIC_PARTICLE_RADIAL);
+        particle = new Image(region);
+        particle.setSize(Utils.cell(2 * threshold), Utils.cell(2 * threshold));
+        particle.setPosition(0, 0);
+        particle.setOrigin(Utils.cell(threshold), Utils.cell(threshold));
+
+        resetParticleAction();
+        particle.addAction(getParticleAction());
 
         field = new Image(findRegion(Atlas.GAME_MAGNETIC_FIELD_RADIAL));
         field.setSize(Utils.cell(2 * threshold), Utils.cell(2 * threshold));
@@ -49,74 +55,59 @@ public class RadialField extends Field {
         body.setSize(Utils.cell(d), Utils.cell(d));
         body.setPosition(Utils.cell(threshold) - 0.5f * Utils.cell(d), Utils.cell(threshold) - 0.5f * Utils.cell(d));
 
-        createParticles(12);
-        addActors();
+        addActor(field);
+        addActor(particle);
+        addActor(body);
 
         setSize(2 * Utils.cell(threshold), 2 * Utils.cell(threshold));
         setOrigin(0.5f * getWidth(), 0.5f * getHeight());
         setScale(ppm / Var.GRID_CELL_SIZE);
     }
 
-    @Override
-    protected void initParticle(Image particle, int index) {
+    private void resetParticleAction() {
         particle.clearActions();
-        particle.setPosition(centerX(), centerY());
-        particle.addAction(alpha(0));
+        particle.addAction(parallel(
+                alpha(0),
+                scaleTo(1, 1)
+        ));
         particle.act(0);
         particle.clearActions();
-        particle.addAction(particleAction(index));
     }
 
     @Override
-    protected Action attraction(int index) {
+    protected Action getAttraction() {
         RepeatAction forever = new RepeatAction();
         forever.setCount(RepeatAction.FOREVER);
         forever.setAction(new SequenceAction(
                 parallel(
                         scaleTo(1, 1),
-                        alpha(0),
-                        moveTo(borderX(index), borderY(index))
+                        alpha(0)
                 ),
                 parallel(
-                        alpha(PARTICLE_MAX_ALPHA, PARTICLE_PERIOD, Interpolation.pow2In),
-                        moveTo(centerX(), centerY(), PARTICLE_PERIOD, Interpolation.pow2In)
-                ),
-                scaleTo(0, 0, PARTICLE_SHORT_TIME)
-        ));
-
-        return forever;
-    }
-
-    @Override
-    protected Action repulsion(int index) {
-        RepeatAction forever = new RepeatAction();
-        forever.setCount(RepeatAction.FOREVER);
-        forever.setAction(new SequenceAction(
-                scaleTo(0, 0),
-                scaleTo(1, 1, PARTICLE_SHORT_TIME),
-                parallel(
-                        alpha(PARTICLE_MAX_ALPHA),
-                        moveTo(centerX(), centerY())
-                ),
-                parallel(
-                        alpha(0, PARTICLE_PERIOD, Interpolation.pow2Out),
-                        moveTo(borderX(index), borderY(index), PARTICLE_PERIOD, Interpolation.pow2Out)
+                        scaleTo(0, 0, PERIOD, Interpolation.pow2In),
+                        alpha(MAX_ALPHA, PERIOD, Interpolation.pow2In)
                 )
         ));
 
         return forever;
     }
 
-    /**
-     * Añade los actores, en orden.
-     */
-    private void addActors() {
-        addActor(field);
+    @Override
+    protected Action getRepulsion() {
+        RepeatAction forever = new RepeatAction();
+        forever.setCount(RepeatAction.FOREVER);
+        forever.setAction(new SequenceAction(
+                parallel(
+                        scaleTo(0, 0),
+                        alpha(MAX_ALPHA)
+                ),
+                parallel(
+                        scaleTo(1, 1, PERIOD, Interpolation.pow2Out),
+                        alpha(0, PERIOD, Interpolation.pow2Out)
+                )
+        ));
 
-        for(Image particle : getParticles())
-            addActor(particle);
-
-        addActor(body);
+        return forever;
     }
 
     /**
@@ -131,47 +122,6 @@ public class RadialField extends Field {
             case TRANSPARENT: return findRegion(Atlas.GAME_CIRCLE_TRANSPARENT);
             default: return findRegion(Atlas.GAME_CIRCLE_VIOLET);
         }
-    }
-
-    /**
-     * Devuelve la coordenada X de la posición de una partícula situada en el centro
-     */
-    private float centerX() {
-        return Utils.cell(getThreshold()) - 0.5f * PARTICLE_DIAMETER;
-    }
-
-    /**
-     * Devuelve la coordenada Y de la posición de una partícula situada en el centro
-     */
-    private float centerY() {
-        return Utils.cell(getThreshold()) - 0.5f * PARTICLE_DIAMETER;
-    }
-
-    /**
-     * Devuelve la coordenada X de la posición de una partícula situada en el borde del umbral.
-     *
-     * @param index Índice de la partícula
-     */
-    private float borderX(int index) {
-        return Utils.cell(getThreshold()) * (1 + MathUtils.cosDeg(angle(index))) - 0.5f * PARTICLE_DIAMETER;
-    }
-
-    /**
-     * Devuelve la coordenada Y de la posición de una partícula situada en el borde del umbral.
-     *
-     * @param index Índice de la partícula
-     */
-    private float borderY(int index) {
-        return Utils.cell(getThreshold()) * (1 + MathUtils.sinDeg(angle(index))) - 0.5f * PARTICLE_DIAMETER;
-    }
-
-    /**
-     * Calcula el ángulo en base al índice de sector circular
-     *
-     * @param i Índice de sector circular
-     */
-    private float angle(int i) {
-        return 360.0f * (float) i / (float) getParticleCount();
     }
 
 }

@@ -30,12 +30,6 @@ public class LinearMagnetic extends Magnetic {
         setPolarity(polarity);
     }
 
-    @Override
-    public void reset() {
-        super.reset();
-        ((LinearField)getActor()).reset();
-    }
-
     /**
      * Calcula la distancia de un punto al eje principal del elemento (eje 'x').
      *

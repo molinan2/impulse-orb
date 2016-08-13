@@ -15,7 +15,7 @@ public class Var {
     public static final int COLOR_WHITE = 0xffffffff;
     public static final int COLOR_LILAC = 0x765AE0ff;
     public static final int COLOR_DARK_LILAC = 0x625499ff;
-    public static final int COLOR_DARK_GREEN = 0x009345ff;
+    public static final int COLOR_DARK_GREEN = 0x008C42ff;
     public static final int COLOR_BLACK = 0x404040ff;
     public static final int COLOR_RED = 0xff0000ff;
 

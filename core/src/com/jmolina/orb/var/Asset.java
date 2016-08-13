@@ -12,8 +12,6 @@ public class Asset {
     private static final String FONT = "font/";
     private static final String UI = "ui/";
     private static final String APP = "app/";
-    private static final String GAME = "game/";
-    private static final String HUD = "hud/";
     private static final String SOUND = "sound/";
     private static final String MUSIC = "music/";
 

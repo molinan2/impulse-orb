@@ -11,9 +11,11 @@ public class Credits extends Menu {
     private final String LICENSE = "Source code licensed under GPLv3 [1]. Original content comprised of sound effects and graphic art, and licensed under CC BY-SA 4.0 [2].";
     private final String RESOURCES = "All music themes composed by Benjamin Tissot [1] and licensed under CC BY-ND 3.0 [2]. Music themes are \"Funky element\" [3], \"The lounge\" [4] and \"Pop dance\" [5]. \"Padlock icon\" designed by Dave Gandy [6] for FLATICON [7] and licensed under CC BY 3.0 [8]. Roboto font designed by Christian Robertson for Google [9] and licensed under Apache License 2.0 [10].";
     private final String LIBRARIES = "This application makes extensive use of libGDX [1], a game-development framework created by Mario Zechner and Nathan Sweet and maintained by the community [2]. libGDX is licensed under the Apache License 2.0 [3].";
-    private final String TOOLS = "Fonts rendered with Hiero [1], a Bitmap Font Tool created by Kevin Glass and adapted by Nathan Sweet [2].\n" +
+    private final String TOOLS = "Fonts rendered with Hiero [1], a Bitmap Font converter/creator by Kevin Glass and adapted by Nathan Sweet [2].\n" +
             "\n" +
-            "UI and ingame sound effects designed with Sfxr [3], a retro sound effects synthesizer created by Tomas Pettersson.";
+            "UI and ingame sound effects designed with Sfxr [3], a retro sound effects synthesizer by Tomas Pettersson.\n" +
+            "\n" +
+            "Textures packed with GDX Texture Packer [4], an efficient image packing tool by Aurelien Ribon [5].";
     private final String THANKS = "To Manuel Jesús Marín Jiménez for his guidance and help with the planning.\n" +
             "\n" +
             "To the Free Software community.";
@@ -59,6 +61,8 @@ public class Credits extends Menu {
         tools.addLink("Hiero", "https://libgdx.badlogicgames.com/tools.html");
         tools.addLink("libGDX Fonts", "http://www.badlogicgames.com/wordpress/?p=1247");
         tools.addLink("Sfxr", "http://www.drpetter.se/project_sfxr.html");
+        tools.addLink("Gdx Texture Packer", "https://code.google.com/archive/p/libgdx-texturepacker-gui/");
+        tools.addLink("Aurelien Ribon's blog", "http://www.aurelienribon.com/blog/about/");
 
         thanks = new Credit(getAssetManager(), "THANKS", THANKS);
 
