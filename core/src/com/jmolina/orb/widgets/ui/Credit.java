@@ -76,9 +76,9 @@ public class Credit extends BaseGroup {
         Label link = new Label("[" + linkIndex + "]: " + text, style);
         link.setTouchable(Touchable.enabled);
         link.setPosition(0f, 0f);
-        link.setWidth(Utils.cell(10));
         link.setAlignment(Align.left);
         link.setHeight(link.getPrefHeight());
+        link.setWidth(link.getPrefWidth());
         link.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
