@@ -4,7 +4,7 @@ import com.jmolina.orb.managers.ScreenManager;
 
 public class Var {
 
-    public static final ScreenManager.Key FIRST_SCREEN = ScreenManager.Key.LEVEL_3;
+    public static final ScreenManager.Key FIRST_SCREEN = ScreenManager.Key.LEVEL_4;
 
     public static final boolean INVULNERABILITY = true;
     public static final boolean WORLD_RENDERER = false;

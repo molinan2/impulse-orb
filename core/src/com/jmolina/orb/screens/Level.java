@@ -797,7 +797,6 @@ public class Level extends BaseScreen {
             }
         }
 
-        System.out.println(force);
         getOrb().getBody().applyLinearImpulse(force, getOrb().getPosition(), true);
     }
 
