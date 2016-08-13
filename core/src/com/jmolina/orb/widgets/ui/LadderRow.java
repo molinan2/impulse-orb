@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Utils;
-import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
@@ -23,8 +22,8 @@ public class LadderRow extends BaseGroup {
 
         Label.LabelStyle regular = new Label.LabelStyle();
         Label.LabelStyle strong = new Label.LabelStyle();
-        regular.fontColor = new Color(Var.COLOR_DARK_LILAC);
-        strong.fontColor = new Color(Var.COLOR_DARK_LILAC);
+        regular.fontColor = new Color(Var.COLOR_LILAC_DARK);
+        strong.fontColor = new Color(Var.COLOR_LILAC_DARK);
         regular.font = new BitmapFont(
                 Gdx.files.internal(Font.FONT_ROBOTO_REGULAR_30),
                 findRegion(Atlas.FONT_ROBOTO_REGULAR_30)

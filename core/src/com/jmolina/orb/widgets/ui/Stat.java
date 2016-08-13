@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Utils;
-import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
@@ -42,7 +41,7 @@ public class Stat extends BaseGroup {
         nameStyle = new Label.LabelStyle();
         dataStyle = new Label.LabelStyle();
 
-        nameStyle.fontColor = new Color(Var.COLOR_DARK_LILAC);
+        nameStyle.fontColor = new Color(Var.COLOR_LILAC_DARK);
         dataStyle.fontColor = new Color(Var.COLOR_BLACK);
         nameStyle.font = new BitmapFont(
                 Gdx.files.internal(Font.FONT_ROBOTO_REGULAR_45),

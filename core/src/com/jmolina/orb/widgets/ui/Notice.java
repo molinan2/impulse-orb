@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Utils;
-import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
@@ -23,7 +22,7 @@ public class Notice extends BaseGroup {
         super(am);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.fontColor = new Color(Var.COLOR_DARK_LILAC);
+        labelStyle.fontColor = new Color(Var.COLOR_LILAC_DARK);
         labelStyle.font = new BitmapFont(
                 Gdx.files.internal(Font.FONT_ROBOTO_REGULAR_30),
                 findRegion(Atlas.FONT_ROBOTO_REGULAR_30)

@@ -54,7 +54,7 @@ public class Ladder extends BaseGroup {
         background.setPosition(0f, 0f);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_LILAC);
+        style.fontColor = new Color(Var.COLOR_GREEN_DARK);
         style.font = new BitmapFont(
                 Gdx.files.internal(Font.FONT_ROBOTO_BOLD_30),
                 findRegion(Atlas.FONT_ROBOTO_BOLD_30)

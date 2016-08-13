@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Utils;
-import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
@@ -24,10 +23,10 @@ public class Title extends BaseGroup {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_LILAC);
+        style.fontColor = new Color(Var.COLOR_GREEN_DARK);
         style.font = new BitmapFont(
-                Gdx.files.internal(Font.FONT_ROBOTO_BOLD_90),
-                findRegion(Atlas.FONT_ROBOTO_BOLD_90)
+                Gdx.files.internal(Font.FONT_ROBOTO_BLACK_90),
+                findRegion(Atlas.FONT_ROBOTO_BLACK_90)
         );
 
         label = new Label(name, style);

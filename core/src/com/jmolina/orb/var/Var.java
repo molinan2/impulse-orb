@@ -12,10 +12,11 @@ public class Var {
 
     public static final String EXCEPTION_EMPTY_LIST_ACCESS = "Can't access item on an empty list";
 
-    public static final int COLOR_WHITE = 0xffffffff;
     public static final int COLOR_LILAC = 0x765AE0ff;
-    public static final int COLOR_DARK_LILAC = 0x625499ff;
-    public static final int COLOR_DARK_GREEN = 0x008C42ff;
+    public static final int COLOR_LILAC_MEDIUM = 0x9391A1ff;
+    public static final int COLOR_LILAC_DARK = 0x646273ff;
+    public static final int COLOR_GREEN_DARK = 0x269964ff;
+    public static final int COLOR_WHITE = 0xffffffff;
     public static final int COLOR_BLACK = 0x404040ff;
     public static final int COLOR_RED = 0xff0000ff;
 

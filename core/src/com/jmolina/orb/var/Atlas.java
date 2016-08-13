@@ -55,11 +55,12 @@ public class Atlas {
     public static final String UI_BUTTON_FRAME = "button_frame";
     public static final String UI_BACKGROUND = "background";
 
-    public static final String FONT_ROBOTO_BOLD_90 = "roboto_bold_90s";
-    public static final String FONT_ROBOTO_BOLD_30 = "roboto_bold_30s";
-    public static final String FONT_ROBOTO_BOLD_45 = "roboto_bold_45s";
-    public static final String FONT_ROBOTO_MEDIUM_45 = "roboto_medium_45s";
     public static final String FONT_ROBOTO_REGULAR_30 = "roboto_regular_30s";
     public static final String FONT_ROBOTO_REGULAR_45 = "roboto_regular_45s";
+    public static final String FONT_ROBOTO_MEDIUM_45 = "roboto_medium_45s";
+    public static final String FONT_ROBOTO_BOLD_30 = "roboto_bold_30s";
+    public static final String FONT_ROBOTO_BOLD_45 = "roboto_bold_45s";
+    public static final String FONT_ROBOTO_BOLD_90 = "roboto_bold_90s";
+    public static final String FONT_ROBOTO_BLACK_90 = "roboto_black_90s";
 
 }

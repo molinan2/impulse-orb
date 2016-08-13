@@ -35,7 +35,7 @@ public class MultiOption extends BaseGroup {
         super(am);
 
         Label.LabelStyle style = new Label.LabelStyle();
-        style.fontColor = new Color(Var.COLOR_DARK_LILAC);
+        style.fontColor = new Color(Var.COLOR_LILAC_DARK);
         style.font = new BitmapFont(
                 Gdx.files.internal(Font.FONT_ROBOTO_MEDIUM_45),
                 findRegion(Atlas.FONT_ROBOTO_MEDIUM_45)

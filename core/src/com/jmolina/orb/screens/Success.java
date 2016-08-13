@@ -40,8 +40,8 @@ public class Success extends BaseScreen {
 
         title = new SuccessTitle(getAssetManager(), label);
         cover = new SuccessCover(getAssetManager(), getCoverTexture(thisKey));
-        timeHeading = new Heading(getAssetManager(), "Time", Align.center, Heading.Weight.Regular, Var.COLOR_DARK_LILAC);
-        distanceHeading = new Heading(getAssetManager(), "Distance", Align.center, Heading.Weight.Regular, Var.COLOR_DARK_LILAC);
+        timeHeading = new Heading(getAssetManager(), "Time", Align.center, Heading.Weight.Regular, Var.COLOR_LILAC_DARK);
+        distanceHeading = new Heading(getAssetManager(), "Distance", Align.center, Heading.Weight.Regular, Var.COLOR_LILAC_DARK);
         time = new BigText(getAssetManager(), Utils.formatTime(attempt.getTime()));
         distance = new BigText(getAssetManager(), Utils.formatDistance(attempt.getDistance()));
 

@@ -34,7 +34,7 @@ public class Rating extends BaseGroup {
         super(am);
 
         rating = new Group();
-        heading = new Heading(getAssetManager(), getText(numericRating), Align.center, Heading.Weight.Regular, Var.COLOR_DARK_LILAC);
+        heading = new Heading(getAssetManager(), getText(numericRating), Align.center, Heading.Weight.Regular, Var.COLOR_LILAC_DARK);
         points = new ArrayList<Image>();
 
         for (int i=MIN; i<MAX; i++) {

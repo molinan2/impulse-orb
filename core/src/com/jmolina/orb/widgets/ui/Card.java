@@ -53,7 +53,7 @@ public class Card extends BaseGroup {
         padlock.setPosition(Utils.cell(1.75f), Utils.cell(1));
 
         Label.LabelStyle titleStyle = new Label.LabelStyle();
-        titleStyle.fontColor = new Color(Var.COLOR_LILAC);
+        titleStyle.fontColor = new Color(Var.COLOR_GREEN_DARK);
         titleStyle.font = new BitmapFont(
                 Gdx.files.internal(Font.FONT_ROBOTO_BOLD_45),
                 findRegion(Atlas.FONT_ROBOTO_BOLD_45)
@@ -67,7 +67,7 @@ public class Card extends BaseGroup {
         titleLabel.setAlignment(Align.right);
 
         Label.LabelStyle timeStyle = new Label.LabelStyle();
-        timeStyle.fontColor = new Color(Var.COLOR_BLACK);
+        timeStyle.fontColor = new Color(Var.COLOR_LILAC_DARK);
         timeStyle.font = new BitmapFont(
                 Gdx.files.internal(Font.FONT_ROBOTO_REGULAR_30),
                 findRegion(Atlas.FONT_ROBOTO_REGULAR_30)
