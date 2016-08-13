@@ -1,5 +1,6 @@
 package com.jmolina.orb.widgets.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -13,6 +14,8 @@ import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.utils.Utils;
+import com.jmolina.orb.var.Atlas;
+import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BaseGroup;
 
@@ -52,7 +55,10 @@ public class Ladder extends BaseGroup {
 
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = new Color(Var.COLOR_LILAC);
-        style.font = getAsset(Asset.FONT_ROBOTO_BOLD_30, BitmapFont.class);
+        style.font = new BitmapFont(
+                Gdx.files.internal(Font.FONT_ROBOTO_BOLD_30),
+                findRegion(Atlas.FONT_ROBOTO_BOLD_30)
+        );
 
         titleLabel = new Label(title.toUpperCase(), style);
         titleLabel.setPosition(Utils.cell(0.5f), Utils.cell(3.125f));

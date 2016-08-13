@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.Atlas;
+import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BaseGroup;
 
@@ -30,11 +32,17 @@ public class Credit extends BaseGroup {
 
         Label.LabelStyle bodyStyle = new Label.LabelStyle();
         bodyStyle.fontColor = new Color(Var.COLOR_BLACK);
-        bodyStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
+        bodyStyle.font = new BitmapFont(
+                Gdx.files.internal(Font.FONT_ROBOTO_REGULAR_30),
+                findRegion(Atlas.FONT_ROBOTO_REGULAR_30)
+        );
 
         Label.LabelStyle headerStyle = new Label.LabelStyle();
         headerStyle.fontColor = new Color(Var.COLOR_LILAC);
-        headerStyle.font = getAsset(Asset.FONT_ROBOTO_MEDIUM_45, BitmapFont.class);
+        headerStyle.font = new BitmapFont(
+                Gdx.files.internal(Font.FONT_ROBOTO_MEDIUM_45),
+                findRegion(Atlas.FONT_ROBOTO_MEDIUM_45)
+        );
 
         this.body = new Label(body, bodyStyle);
         this.body.setTouchable(Touchable.disabled);
@@ -59,7 +67,10 @@ public class Credit extends BaseGroup {
     public void addLink(String text, final String uri) {
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = new Color(Var.COLOR_DARK_LILAC);
-        style.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
+        style.font = new BitmapFont(
+                Gdx.files.internal(Font.FONT_ROBOTO_REGULAR_30),
+                findRegion(Atlas.FONT_ROBOTO_REGULAR_30)
+        );
 
         int linkIndex = links.size() + 1;
         Label link = new Label("[" + linkIndex + "]: " + text, style);

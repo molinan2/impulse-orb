@@ -38,13 +38,26 @@ public class Atlas {
     public static final String GAME_MAGNETIC_PARTICLE_LINEAR = "magnetic_particle_linear";
     public static final String GAME_MAGNETIC_PARTICLE_RADIAL = "magnetic_particle_radial";
 
-    public static final String HUD_BACKGROUND_BORDER = "background_border";
-    public static final String HUD_BACKGROUND_OVERLAY = "background_overlay";
-    public static final String HUD_BUTTON_PAUSE = "button_pause";
-    public static final String HUD_BUTTON_RESUME = "button_resume";
+    public static final String HUD_BACKGROUND_BORDER = "hud_background_border";
+    public static final String HUD_BACKGROUND_OVERLAY = "hud_background_overlay";
+    public static final String HUD_BUTTON_PAUSE = "hud_button_pause";
+    public static final String HUD_BUTTON_RESUME = "hud_button_resume";
     public static final String HUD_GAUGE_BACKGROUND = "gauge_background";
     public static final String HUD_GAUGE_FRAME = "gauge_frame";
     public static final String HUD_GAUGE_BAR = "gauge_bar";
     public static final String HUD_GAUGE_OVERLOAD = "gauge_overload";
+
+    public static final String UI_BUTTON_DEFAULT = "button_default";
+    public static final String UI_BUTTON_SUCCESS = "button_success";
+    public static final String UI_BUTTON_DANGER = "button_danger";
+    public static final String UI_BUTTON_WARNING = "button_warning";
+    public static final String UI_BUTTON_FRAME = "button_frame";
+
+    public static final String FONT_ROBOTO_BOLD_90 = "roboto_bold_90s";
+    public static final String FONT_ROBOTO_BOLD_30 = "roboto_bold_30s";
+    public static final String FONT_ROBOTO_BOLD_45 = "roboto_bold_45s";
+    public static final String FONT_ROBOTO_MEDIUM_45 = "roboto_medium_45s";
+    public static final String FONT_ROBOTO_REGULAR_30 = "roboto_regular_30s";
+    public static final String FONT_ROBOTO_REGULAR_45 = "roboto_regular_45s";
 
 }

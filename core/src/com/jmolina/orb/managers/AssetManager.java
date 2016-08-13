@@ -35,7 +35,6 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
         load(Asset.UI_BACKGROUND, Texture.class);
         load(Asset.UI_SPLASH_BODY, Texture.class);
         load(Asset.UI_SPLASH_REFLECTIONS, Texture.class);
-        load(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
         load(Asset.UI_PROGRESS_BASE, Texture.class);
         load(Asset.UI_PROGRESS_FILL, Texture.class);
         load(AssetManager.GAME_ATLAS, TextureAtlas.class);

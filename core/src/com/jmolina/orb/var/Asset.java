@@ -9,29 +9,16 @@ package com.jmolina.orb.var;
  */
 public class Asset {
 
-    private static final String FONT = "font/";
     private static final String UI = "ui/";
     private static final String APP = "app/";
     private static final String SOUND = "sound/";
     private static final String MUSIC = "music/";
-
-    public static final String FONT_ROBOTO_BOLD_30 = FONT + "roboto_bold_30.fnt";
-    public static final String FONT_ROBOTO_BOLD_45 = FONT + "roboto_bold_45.fnt";
-    public static final String FONT_ROBOTO_BOLD_90 = FONT + "roboto_bold_90.fnt";
-    public static final String FONT_ROBOTO_MEDIUM_45 = FONT + "roboto_medium_45.fnt";
-    public static final String FONT_ROBOTO_REGULAR_30 = FONT + "roboto_regular_30.fnt";
-    public static final String FONT_ROBOTO_REGULAR_45 = FONT + "roboto_regular_45.fnt";
 
     public static final String UI_CHECKBOX_CHECKED = UI + "checkbox_checked.png";
     public static final String UI_CHECKBOX_UNCHECKED = UI + "checkbox_unchecked.png";
     public static final String UI_MULTICHECK_0 = UI + "multicheck_0.png";
     public static final String UI_MULTICHECK_1 = UI + "multicheck_1.png";
     public static final String UI_MULTICHECK_2 = UI + "multicheck_2.png";
-    public static final String UI_BUTTON_DEFAULT = UI + "button_default.png";
-    public static final String UI_BUTTON_SUCCESS = UI + "button_success.png";
-    public static final String UI_BUTTON_DANGER = UI + "button_danger.png";
-    public static final String UI_BUTTON_WARNING = UI + "button_warning.png";
-    public static final String UI_BUTTON_FRAME = UI + "button_frame.png";
     public static final String UI_CARD_COVER_1 = UI + "card_cover_1.png";
     public static final String UI_CARD_COVER_2 = UI + "card_cover_2.png";
     public static final String UI_CARD_COVER_3 = UI + "card_cover_3.png";

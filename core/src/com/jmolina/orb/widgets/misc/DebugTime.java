@@ -1,5 +1,6 @@
 package com.jmolina.orb.widgets.misc;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.Atlas;
+import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
 
 
@@ -29,7 +32,10 @@ public class DebugTime {
 
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = new Color(Var.COLOR_RED);
-        style.font = am.get(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
+        style.font = new BitmapFont(
+                Gdx.files.internal(Font.FONT_ROBOTO_BOLD_45),
+                am.getGameAtlas().findRegion(Atlas.FONT_ROBOTO_BOLD_45)
+        );
 
         frametime = new Label("", style);
         frametime.setPosition(Utils.cell(1), Utils.cell(1));

@@ -3,266 +3,343 @@ game.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+roboto_bold_90s
+  rotate: false
+  xy: 1, 1523
+  size: 1024, 512
+  orig: 1024, 512
+  offset: 0, 0
+  index: -1
 magnetic_field_linear
   rotate: false
-  xy: 1, 1527
+  xy: 1, 1009
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 magnetic_field_radial
   rotate: false
-  xy: 1, 1013
+  xy: 1027, 1523
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 magnetic_particle_radial
   rotate: false
-  xy: 515, 1527
+  xy: 1, 495
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+roboto_bold_30s
+  rotate: false
+  xy: 515, 1009
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+roboto_bold_45s
+  rotate: false
+  xy: 1541, 1523
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+roboto_medium_45s
+  rotate: false
+  xy: 515, 495
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+roboto_regular_30s
+  rotate: false
+  xy: 1029, 1009
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+roboto_regular_45s
+  rotate: false
+  xy: 2055, 1523
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 exit
   rotate: false
-  xy: 1029, 1783
+  xy: 1, 237
   size: 640, 256
   orig: 640, 256
   offset: 0, 0
   index: -1
 up
   rotate: false
-  xy: 1029, 1525
+  xy: 1543, 1265
   size: 640, 256
   orig: 640, 256
   offset: 0, 0
   index: -1
 circle_black
   rotate: false
-  xy: 1, 611
+  xy: 1029, 607
   size: 400, 400
   orig: 400, 400
   offset: 0, 0
   index: -1
 circle_grey
   rotate: false
-  xy: 515, 1125
+  xy: 2569, 1635
   size: 400, 400
   orig: 400, 400
   offset: 0, 0
   index: -1
 circle_red
   rotate: false
-  xy: 1, 209
+  xy: 2971, 1635
   size: 400, 400
   orig: 400, 400
   offset: 0, 0
   index: -1
 circle_transparent
   rotate: false
-  xy: 917, 1123
+  xy: 3373, 1635
   size: 400, 400
   orig: 400, 400
   offset: 0, 0
   index: -1
 circle_violet
   rotate: false
-  xy: 1319, 1123
+  xy: 1543, 863
   size: 400, 400
   orig: 400, 400
   offset: 0, 0
   index: -1
-parallax_layer_b_blur
-  rotate: false
-  xy: 1671, 1767
-  size: 272, 272
-  orig: 272, 272
-  offset: 0, 0
-  index: -1
 gesture_arrowhead.mip
   rotate: false
-  xy: 515, 723
+  xy: 643, 93
   size: 400, 400
   orig: 400, 400
   offset: 0, 0
   index: -1
 gesture_base.mip
   rotate: false
-  xy: 917, 721
+  xy: 1045, 205
   size: 400, 400
   orig: 400, 400
   offset: 0, 0
   index: -1
 gesture_line.mip
   rotate: false
-  xy: 1319, 721
+  xy: 2185, 1121
   size: 400, 400
   orig: 400, 400
   offset: 0, 0
   index: -1
 triangle_grey
   rotate: false
-  xy: 403, 321
+  xy: 2587, 1233
   size: 400, 400
   orig: 400, 400
   offset: 0, 0
   index: -1
 triangle_red
   rotate: false
-  xy: 805, 319
+  xy: 2989, 1233
   size: 400, 400
   orig: 400, 400
   offset: 0, 0
   index: -1
+button_danger
+  rotate: false
+  xy: 1, 139
+  size: 512, 96
+  orig: 512, 96
+  offset: 0, 0
+  index: -1
+button_default
+  rotate: false
+  xy: 2587, 1135
+  size: 512, 96
+  orig: 512, 96
+  offset: 0, 0
+  index: -1
+button_frame
+  rotate: false
+  xy: 1, 41
+  size: 512, 96
+  orig: 512, 96
+  offset: 0, 0
+  index: -1
 box
   rotate: false
-  xy: 1207, 687
+  xy: 1, 7
   size: 512, 32
   orig: 512, 32
   offset: 0, 0
   index: -1
+parallax_layer_b_blur
+  rotate: false
+  xy: 3775, 1763
+  size: 272, 272
+  orig: 272, 272
+  offset: 0, 0
+  index: -1
+button_success
+  rotate: false
+  xy: 2587, 1037
+  size: 512, 96
+  orig: 512, 96
+  offset: 0, 0
+  index: -1
 parallax_layer_a_blur
   rotate: false
-  xy: 1207, 429
+  xy: 3391, 1377
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
+button_warning
+  rotate: false
+  xy: 1431, 765
+  size: 512, 96
+  orig: 512, 96
+  offset: 0, 0
+  index: -1
 parallax_layer_c
   rotate: false
-  xy: 1465, 429
+  xy: 3101, 975
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 orb_fragment_a.mip
   rotate: false
-  xy: 1, 7
+  xy: 1945, 1063
   size: 200, 200
   orig: 200, 200
   offset: 0, 0
   index: -1
 orb_fragment_b.mip
   rotate: false
-  xy: 1671, 1565
+  xy: 1945, 861
   size: 200, 200
   orig: 200, 200
   offset: 0, 0
   index: -1
 orb_fragment_c.mip
   rotate: false
-  xy: 203, 7
+  xy: 2147, 919
   size: 200, 200
   orig: 200, 200
   offset: 0, 0
   index: -1
 orb_fragment_d.mip
   rotate: false
-  xy: 1721, 1363
+  xy: 2349, 919
   size: 200, 200
   orig: 200, 200
   offset: 0, 0
   index: -1
-button_pause
-  rotate: false
-  xy: 1945, 1943
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-button_resume
-  rotate: false
-  xy: 403, 915
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
 gauge_background
   rotate: false
-  xy: 1207, 331
+  xy: 1045, 107
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 gauge_bar
   rotate: false
-  xy: 403, 223
+  xy: 515, 139
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 gauge_frame
   rotate: false
-  xy: 1721, 1265
+  xy: 3775, 1665
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 gauge_overload
   rotate: false
-  xy: 1945, 1845
+  xy: 3391, 1279
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-background_overlay
+hud_button_pause
   rotate: false
-  xy: 1873, 1701
-  size: 64, 64
-  orig: 64, 64
+  xy: 3649, 1537
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+hud_button_resume
+  rotate: false
+  xy: 1431, 667
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: -1
 heat
   rotate: false
-  xy: 403, 849
+  xy: 1431, 943
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+hud_background_overlay
+  rotate: false
+  xy: 1945, 795
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 square_black
   rotate: false
-  xy: 1305, 363
+  xy: 1143, 139
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 square_grey
   rotate: false
-  xy: 501, 255
+  xy: 515, 73
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 square_red
   rotate: false
-  xy: 1721, 1199
+  xy: 3873, 1697
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 square_transparent
   rotate: false
-  xy: 1819, 1297
+  xy: 3489, 1311
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 square_violet
   rotate: false
-  xy: 1945, 1779
+  xy: 3649, 1471
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 square_white
   rotate: false
-  xy: 1873, 1635
+  xy: 1529, 699
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-background_border
+hud_background_border
   rotate: false
   xy: 1, 1
   size: 64, 4
@@ -271,7 +348,7 @@ background_border
   index: -1
 magnetic_particle_linear
   rotate: false
-  xy: 1671, 1547
+  xy: 2569, 1617
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

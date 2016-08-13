@@ -1,5 +1,6 @@
 package com.jmolina.orb.widgets.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -16,6 +17,8 @@ import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.Atlas;
+import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BaseGroup;
 
@@ -51,7 +54,10 @@ public class Card extends BaseGroup {
 
         Label.LabelStyle titleStyle = new Label.LabelStyle();
         titleStyle.fontColor = new Color(Var.COLOR_LILAC);
-        titleStyle.font = getAsset(Asset.FONT_ROBOTO_BOLD_45, BitmapFont.class);
+        titleStyle.font = new BitmapFont(
+                Gdx.files.internal(Font.FONT_ROBOTO_BOLD_45),
+                findRegion(Atlas.FONT_ROBOTO_BOLD_45)
+        );
 
         titleLabel = new Label(title, titleStyle);
         titleLabel.setTouchable(Touchable.disabled);
@@ -62,7 +68,10 @@ public class Card extends BaseGroup {
 
         Label.LabelStyle timeStyle = new Label.LabelStyle();
         timeStyle.fontColor = new Color(Var.COLOR_BLACK);
-        timeStyle.font = getAsset(Asset.FONT_ROBOTO_REGULAR_30, BitmapFont.class);
+        timeStyle.font = new BitmapFont(
+                Gdx.files.internal(Font.FONT_ROBOTO_REGULAR_30),
+                findRegion(Atlas.FONT_ROBOTO_REGULAR_30)
+        );
 
         timeLabel = new Label(time, timeStyle);
         timeLabel.setTouchable(Touchable.disabled);
