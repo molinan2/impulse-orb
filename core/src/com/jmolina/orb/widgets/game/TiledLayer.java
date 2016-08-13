@@ -20,14 +20,9 @@ public class TiledLayer extends BaseGroup {
 
     private Image image;
     private TiledDrawable tiledDrawable;
-    private TextureRegion region;
-    private Viewport viewport;
 
     public TiledLayer(AssetManager am, TextureRegion region, Viewport viewport) {
         super(am);
-
-        this.region = region;
-        this.viewport = viewport;
 
         int viewportTilesX = MathUtils.round(viewport.getWorldWidth() / region.getRegionWidth());
         int viewportTilesY = MathUtils.round(viewport.getWorldHeight() / region.getRegionHeight());

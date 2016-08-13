@@ -53,6 +53,7 @@ public class Atlas {
     public static final String UI_BUTTON_DANGER = "button_danger";
     public static final String UI_BUTTON_WARNING = "button_warning";
     public static final String UI_BUTTON_FRAME = "button_frame";
+    public static final String UI_BACKGROUND = "background";
 
     public static final String FONT_ROBOTO_BOLD_90 = "roboto_bold_90s";
     public static final String FONT_ROBOTO_BOLD_30 = "roboto_bold_30s";

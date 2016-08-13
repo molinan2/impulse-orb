@@ -192,7 +192,7 @@ button_success
   orig: 512, 96
   offset: 0, 0
   index: -1
-parallax_layer_a_blur
+background
   rotate: false
   xy: 3391, 1377
   size: 256, 256
@@ -206,7 +206,7 @@ button_warning
   orig: 512, 96
   offset: 0, 0
   index: -1
-parallax_layer_c
+parallax_layer_a_blur
   rotate: false
   xy: 3101, 975
   size: 256, 256
@@ -220,23 +220,30 @@ orb_fragment_a.mip
   orig: 200, 200
   offset: 0, 0
   index: -1
+parallax_layer_c
+  rotate: false
+  xy: 1945, 805
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
 orb_fragment_b.mip
   rotate: false
-  xy: 1945, 861
+  xy: 3391, 1175
   size: 200, 200
   orig: 200, 200
   offset: 0, 0
   index: -1
 orb_fragment_c.mip
   rotate: false
-  xy: 2147, 919
+  xy: 3359, 973
   size: 200, 200
   orig: 200, 200
   offset: 0, 0
   index: -1
 orb_fragment_d.mip
   rotate: false
-  xy: 2349, 919
+  xy: 2203, 919
   size: 200, 200
   orig: 200, 200
   offset: 0, 0
@@ -264,35 +271,35 @@ gauge_frame
   index: -1
 gauge_overload
   rotate: false
-  xy: 3391, 1279
+  xy: 3649, 1537
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 hud_button_frame
   rotate: false
-  xy: 3649, 1537
+  xy: 1431, 667
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 hud_button_pause
   rotate: false
-  xy: 1431, 667
+  xy: 1431, 911
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 hud_button_resume
   rotate: false
-  xy: 1431, 911
+  xy: 2405, 1023
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 heat
   rotate: false
-  xy: 1945, 795
+  xy: 2203, 853
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
@@ -320,28 +327,28 @@ square_grey
   index: -1
 square_red
   rotate: false
-  xy: 3489, 1311
+  xy: 3649, 1471
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 square_transparent
   rotate: false
-  xy: 3649, 1471
+  xy: 1529, 699
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 square_violet
   rotate: false
-  xy: 1529, 699
+  xy: 2405, 957
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 square_white
   rotate: false
-  xy: 2011, 795
+  xy: 2503, 1055
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

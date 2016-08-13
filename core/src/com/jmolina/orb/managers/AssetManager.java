@@ -32,7 +32,6 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
      * {@link com.badlogic.gdx.assets.AssetManager#finishLoading()}: does the actual load.
      */
     public void loadLoadScreenAssets() {
-        load(Asset.UI_BACKGROUND, Texture.class);
         load(Asset.UI_SPLASH_BODY, Texture.class);
         load(Asset.UI_SPLASH_REFLECTIONS, Texture.class);
         load(Asset.UI_PROGRESS_BASE, Texture.class);

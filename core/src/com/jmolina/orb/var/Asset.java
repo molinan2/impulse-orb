@@ -47,7 +47,6 @@ public class Asset {
     public static final String UI_MAIN_TITLE_ORB = UI + "maintitle_orb.mip.png";
     public static final String UI_BACK = UI + "back.png";
     public static final String UI_BACK_FRAME = UI + "back_frame.png";
-    public static final String UI_BACKGROUND = UI + "background.png";
     public static final String UI_PROGRESS_BASE = UI + "progress_base.png";
     public static final String UI_PROGRESS_FILL = UI + "progress_fill.png";
     public static final String UI_SUCCESS_COVER_1 = UI + "success_cover_1.png";

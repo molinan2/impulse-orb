@@ -11,13 +11,8 @@ public class BackgroundStage extends Stage {
 
     public BackgroundStage(AssetManager am, Viewport vp) {
         super(vp);
-        staticBackground = new StaticBackground(am, vp.getWorldWidth(), vp.getWorldHeight());
+        staticBackground = new StaticBackground(am, vp);
         addActor(staticBackground);
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
     }
 
 }
