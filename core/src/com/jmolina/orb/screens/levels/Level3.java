@@ -69,7 +69,7 @@ public class Level3 extends Level {
         addSituation(Situation311.class);
         addSituation(Situation311.class);
         addSituation(Situation311.class);
-        addSituation(Situation311.class);
+        addSituation(Situation301.class);
         addSituation(Situation303.class);
         addSituation(Situation303.class);
         addSituation(Situation399.class);

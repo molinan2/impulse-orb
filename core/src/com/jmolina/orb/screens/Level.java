@@ -71,7 +71,6 @@ public class Level extends BaseScreen {
     private final boolean WOLRD_ACCUMULATED_STEP = false;
     private final int Z_INDEX_ORB = 20000;
     private final int Z_INDEX_BLACK = 10000;
-    private final float MAGNETIC_FACTOR = 0.2f;
     private final float IMPULSE_FACTOR = 0.6f;
     private final float IMPULSE_MAX = 50f;
 
@@ -798,7 +797,7 @@ public class Level extends BaseScreen {
             }
         }
 
-        force.scl(MAGNETIC_FACTOR);
+        System.out.println(force);
         getOrb().getBody().applyLinearImpulse(force, getOrb().getPosition(), true);
     }
 

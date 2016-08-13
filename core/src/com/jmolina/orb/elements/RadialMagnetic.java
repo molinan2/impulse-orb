@@ -27,15 +27,6 @@ public class RadialMagnetic extends Magnetic {
     }
 
     /**
-     * Calcula la distancia de un punto al centro del elemento.
-     *
-     * @param point Punto en unidades del mundo
-     */
-    private float distance(Vector2 point) {
-        return Utils.distance(point, getPosition());
-    }
-
-    /**
      * Devuelve la fuerza que ejerce este elemento sobre un punto dado.
      * <p>
      * La fórmula de la atracción está simplificada:
@@ -63,5 +54,14 @@ public class RadialMagnetic extends Magnetic {
 
     private boolean belowThreshold(Vector2 point) {
         return distance(point) <= getThreshold();
+    }
+
+    /**
+     * Calcula la distancia de un punto al centro del elemento.
+     *
+     * @param point Punto en unidades del mundo
+     */
+    private float distance(Vector2 point) {
+        return Utils.distance(point, getPosition());
     }
 }

@@ -38,7 +38,7 @@ public class Utils {
      * Distancia entre 2 puntos
      */
     public static float distance(Vector2 pointA, Vector2 pointB) {
-        return pointA.dst2(pointB);
+        return pointA.dst(pointB);
     }
 
     public static Vector2 normal(Vector2 vector) {
