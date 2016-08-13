@@ -50,9 +50,9 @@ public class Level extends BaseScreen {
     private enum Adjacency { TOP, BOTTOM }
     private enum Frontier { BOUNDARY, MIDDLE }
 
-    private final boolean DEBUG_WORLD = false;
-    private final boolean DEBUG_TIME = false;
-    private final boolean DEBUG_INVULNERABLE = false;
+    private final boolean DEBUG_WORLD = Var.WORLD_RENDERER;
+    private final boolean DEBUG_TIME = Var.FRAME_TIME;
+    private final boolean DEBUG_INVULNERABLE = Var.INVULNERABILITY;
     private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     private DebugTime debugTime = new DebugTime(getAssetManager());
 

@@ -7,9 +7,9 @@ import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.situations.SideWalls;
 
 
-public class Situation207 extends SideWalls {
+public class Situation207CW extends SideWalls {
 
-    public Situation207(AssetManager am, World world, float pixelsPerMeter) {
+    public Situation207CW(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter);
     }
 
@@ -42,11 +42,10 @@ public class Situation207 extends SideWalls {
 
         Movable platform = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                4, 1, 2.5f, 14.5f, 0
+                4, 1, 6, 14.5f, 0
         );
 
         platform.addRotation(0.5f);
-        platform.addDisplacement(0.25f, 7);
 
         addElement(circle);
         addElement(blade1);

@@ -2,6 +2,10 @@ package com.jmolina.orb.var;
 
 public class Var {
 
+    public static final boolean INVULNERABILITY = true;
+    public static final boolean WORLD_RENDERER = false;
+    public static final boolean FRAME_TIME = false;
+
     public static final String APP_NAME = "Orb";
     public static final String APP_VERSION = "0.7";
     public static final String APP_AUTHOR = "Juan M. Molina";
@@ -24,10 +28,10 @@ public class Var {
     public static final float TIME_LEVEL_1_GOLD = 66;
     public static final float TIME_LEVEL_1_SILVER = 80;
     public static final float TIME_LEVEL_1_BRONZE = 110;
-    public static final float TIME_LEVEL_2_DEV = 102.43f;
+    public static final float TIME_LEVEL_2_DEV = 105.89f;
     public static final float TIME_LEVEL_2_GOLD = 115;
     public static final float TIME_LEVEL_2_SILVER = 145;
-    public static final float TIME_LEVEL_2_BRONZE = 240;
+    public static final float TIME_LEVEL_2_BRONZE = 190;
     public static final float TIME_LEVEL_3_DEV = 102.43f;
     public static final float TIME_LEVEL_3_GOLD = 115;
     public static final float TIME_LEVEL_3_SILVER = 145;

@@ -15,63 +15,34 @@ public class Level2 extends Level {
         setSuccessScreen(ScreenManager.Key.SUCCESS_2);
 
         addSituation(Situation200.class);
-
         addSituation(Situation201.class);
         addSituation(Situation201.class);
-        addSituation(Situation201.class);
-        addSituation(Situation201.class);
-
         addSituation(Situation202.class);
         addSituation(Situation202.class);
-        addSituation(Situation202.class);
-        addSituation(Situation202.class);
-
-        addSituation(Situation201.class);
-
         addSituation(Situation203.class);
         addSituation(Situation203.class);
         addSituation(Situation203.class);
-        addSituation(Situation203.class);
-
         addSituation(Situation204.class);
         addSituation(Situation204.class);
-        addSituation(Situation204.class);
-        addSituation(Situation204.class);
-
         addSituation(Situation201.class);
-
         addSituation(Situation205.class);
         addSituation(Situation205.class);
         addSituation(Situation205.class);
-        addSituation(Situation205.class);
-
         addSituation(Situation206.class);
-        addSituation(Situation206.class);
-        addSituation(Situation206.class);
-        addSituation(Situation206.class);
-
         addSituation(Situation201.class);
-
-        addSituation(Situation207.class);
-        addSituation(Situation207.class);
-        addSituation(Situation207.class);
-        addSituation(Situation207.class);
-
+        addSituation(Situation207CW.class);
+        addSituation(Situation207CCW.class);
+        addSituation(Situation207CW.class);
+        addSituation(Situation207CCW.class);
         addSituation(Situation208.class);
         addSituation(Situation208.class);
-
         addSituation(Situation201.class);
-
         addSituation(Situation209.class);
         addSituation(Situation209.class);
         addSituation(Situation209.class);
-        addSituation(Situation209.class);
-
         addSituation(Situation210.class);
         addSituation(Situation210.class);
         addSituation(Situation210.class);
-        addSituation(Situation210.class);
-
         addSituation(Situation299.class);
 
         setOrbStartPosition(6, 10);

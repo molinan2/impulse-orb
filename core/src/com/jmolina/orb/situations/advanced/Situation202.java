@@ -20,13 +20,13 @@ public class Situation202 extends SideWalls {
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 3, 1, 6, 15.5f, 0);
 
-        Element platform2a = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platform1L = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                3, 1, 3, 2.5f, 0);
+                4.5f, 1, 2.25f, 2.5f, 0);
 
-        Element platform2b = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platform1R = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                3, 1, 9, 2.5f, 0);
+                4.5f, 1, 9.75f, 2.5f, 0);
 
         Movable gateLeft = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
@@ -59,8 +59,8 @@ public class Situation202 extends SideWalls {
         gateRight.addDisplacement(0.25f, -6);
 
         addElement(platform1);
-        addElement(platform2a);
-        addElement(platform2b);
+        addElement(platform1L);
+        addElement(platform1R);
         addElement(gateLeft);
         addElement(gateRight);
         addElement(destroyerRight);
