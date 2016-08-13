@@ -72,6 +72,4 @@ public class MainButton extends BaseGroup {
         }
     }
 
-
-
 }

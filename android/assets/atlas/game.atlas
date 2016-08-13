@@ -269,72 +269,79 @@ gauge_overload
   orig: 96, 96
   offset: 0, 0
   index: -1
-hud_button_pause
+hud_button_frame
   rotate: false
   xy: 3649, 1537
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-hud_button_resume
+hud_button_pause
   rotate: false
   xy: 1431, 667
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
-heat
+hud_button_resume
   rotate: false
-  xy: 1431, 943
-  size: 64, 64
-  orig: 64, 64
+  xy: 1431, 911
+  size: 96, 96
+  orig: 96, 96
   offset: 0, 0
   index: -1
-hud_background_overlay
+heat
   rotate: false
   xy: 1945, 795
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-square_black
+hud_background_overlay
   rotate: false
   xy: 1143, 139
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-square_grey
+square_black
   rotate: false
   xy: 515, 73
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-square_red
+square_grey
   rotate: false
   xy: 3873, 1697
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-square_transparent
+square_red
   rotate: false
   xy: 3489, 1311
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-square_violet
+square_transparent
   rotate: false
   xy: 3649, 1471
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-square_white
+square_violet
   rotate: false
   xy: 1529, 699
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+square_white
+  rotate: false
+  xy: 2011, 795
   size: 64, 64
   orig: 64, 64
   offset: 0, 0

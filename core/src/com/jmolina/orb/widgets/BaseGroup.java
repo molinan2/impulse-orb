@@ -54,7 +54,7 @@ public class BaseGroup extends Group {
      *
      * @param frame
      */
-    public void setFrame(Image frame) {
+    protected void setFrame(Image frame) {
         this.frame = frame;
     }
 

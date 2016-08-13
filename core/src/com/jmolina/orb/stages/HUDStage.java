@@ -13,7 +13,7 @@ import com.jmolina.orb.utils.Utils;
 import com.jmolina.orb.widgets.game.Gauge;
 import com.jmolina.orb.widgets.game.HUDBackground;
 import com.jmolina.orb.widgets.game.Curtain;
-import com.jmolina.orb.widgets.ui.PauseButton;
+import com.jmolina.orb.widgets.game.PauseButton;
 import com.jmolina.orb.widgets.ui.PauseMenu;
 import com.jmolina.orb.widgets.game.Timer;
 
@@ -129,6 +129,7 @@ public class HUDStage extends Stage {
         toggleListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                pauseButton.clickEffect();
                 if (!getLevel().isLocked())
                     getLevel().pauseGame();
                 else

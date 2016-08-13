@@ -42,6 +42,7 @@ public class Atlas {
     public static final String HUD_BACKGROUND_OVERLAY = "hud_background_overlay";
     public static final String HUD_BUTTON_PAUSE = "hud_button_pause";
     public static final String HUD_BUTTON_RESUME = "hud_button_resume";
+    public static final String HUD_BUTTON_FRAME = "hud_button_frame";
     public static final String HUD_GAUGE_BACKGROUND = "gauge_background";
     public static final String HUD_GAUGE_FRAME = "gauge_frame";
     public static final String HUD_GAUGE_BAR = "gauge_bar";
