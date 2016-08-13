@@ -101,15 +101,11 @@ public class Credit extends BaseGroup {
     private float getLinksPrefHeight() {
         float height = 0f;
 
-        for(Label link : links) {
+        for (Label link : links) {
             height += link.getPrefHeight();
         }
 
         return height;
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-    }
 }
