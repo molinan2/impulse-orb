@@ -22,24 +22,24 @@ public class Situation307 extends SideWalls {
         Vortex radial = new Vortex(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 6, 9,
-                4, Magnetic.Polarity.ATTRACTIVE
+                4, Magnetic.Polarity.REPULSIVE
         );
 
         Movable triangle11 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.GREY,
-                3, 3, 3, 3, 0);
+                4, 4, 1, 3, 0);
 
         Movable triangle12 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.GREY,
-                3, 3, 9, 3, 0);
+                4, 4, 11, 3, 0);
 
         Movable triangle21 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.GREY,
-                3, 3, 3, 15, 0);
+                4, 4, 1, 15, 0);
 
         Movable triangle22 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.GREY,
-                3, 3, 9, 15, 0);
+                4, 4, 11, 15, 0);
 
         radial.addRotation(0.5f);
         triangle11.addRotation(0.25f, false);

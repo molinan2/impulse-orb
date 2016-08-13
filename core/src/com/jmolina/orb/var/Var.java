@@ -1,6 +1,10 @@
 package com.jmolina.orb.var;
 
+import com.jmolina.orb.managers.ScreenManager;
+
 public class Var {
+
+    public static final ScreenManager.Key FIRST_SCREEN = ScreenManager.Key.LEVEL_3;
 
     public static final boolean INVULNERABILITY = true;
     public static final boolean WORLD_RENDERER = false;
@@ -32,10 +36,10 @@ public class Var {
     public static final float TIME_LEVEL_2_GOLD = 115;
     public static final float TIME_LEVEL_2_SILVER = 145;
     public static final float TIME_LEVEL_2_BRONZE = 190;
-    public static final float TIME_LEVEL_3_DEV = 102.43f;
-    public static final float TIME_LEVEL_3_GOLD = 115;
-    public static final float TIME_LEVEL_3_SILVER = 145;
-    public static final float TIME_LEVEL_3_BRONZE = 240;
+    public static final float TIME_LEVEL_3_DEV = 122.62f;
+    public static final float TIME_LEVEL_3_GOLD = 135;
+    public static final float TIME_LEVEL_3_SILVER = 170;
+    public static final float TIME_LEVEL_3_BRONZE = 220;
     public static final float TIME_LEVEL_4_DEV = 102.43f;
     public static final float TIME_LEVEL_4_GOLD = 115;
     public static final float TIME_LEVEL_4_SILVER = 145;

@@ -26,17 +26,19 @@ public class Situation305 extends SideWalls {
                 6, Magnetic.Polarity.ATTRACTIVE
         );
 
-        Element platformHigh = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                6, 1, 6, 13, 0);
+        LinearMagnetic platformHigh = new LinearMagnetic(
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Flavor.VIOLET,
+                6, 1, 6, 13, 180,
+                6, Magnetic.Polarity.ATTRACTIVE);
 
         Element platformLeft = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                4, 1, 2, 9, 0);
+                3, 1, 1.5f, 9, 0);
 
         Element platformRight = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                4, 1, 10, 9, 0);
+                3, 1, 10.5f, 9, 0);
 
         addElement(attractor);
         addElement(platformHigh);

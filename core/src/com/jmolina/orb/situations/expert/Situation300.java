@@ -28,10 +28,18 @@ public class Situation300 extends BottomWalls {
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
                 12, 0.5f, 6, 0.75f, 0,
-                4, Magnetic.Polarity.REPULSIVE
+                6, Magnetic.Polarity.REPULSIVE
+        );
+
+        RadialMagnetic radial = new RadialMagnetic(
+                getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Flavor.VIOLET,
+                1, 6, 12.5f,
+                6, Magnetic.Polarity.ATTRACTIVE
         );
 
         addElement(magnet);
+        addElement(radial);
         addElement(up);
 
         super.createInnerElements();

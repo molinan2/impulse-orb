@@ -3,6 +3,7 @@ package com.jmolina.orb.screens;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.managers.ScreenManager;
+import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.ui.ProgressBar;
 import com.jmolina.orb.widgets.ui.Splash;
 
@@ -10,7 +11,7 @@ import static com.jmolina.orb.managers.ScreenManager.Key.*;
 
 public class Load extends BaseScreen {
 
-    private final ScreenManager.Key FIRST_SCREEN = LEVEL_2;
+    private final ScreenManager.Key FIRST_SCREEN = Var.FIRST_SCREEN;
 
     private Splash splash;
     private ProgressBar bar;

@@ -1,5 +1,7 @@
 package com.jmolina.orb.situations.expert;
 
+import com.jmolina.orb.elements.Element;
+import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Magnetic;
@@ -23,15 +25,27 @@ public class Situation310 extends SideWalls {
                 5, Magnetic.Polarity.REPULSIVE
         );
 
+        Element triangleL = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.GREY,
+                4, 4, 0.5f, 9, -90
+        );
+
+        Element triangleR = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.GREY,
+                4, 4, 11.5f, 9, 90
+        );
+
         RadialMagnetic radial2 = new RadialMagnetic(
                 getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.RED,
                 1, 6, 13.5f,
-                5, Magnetic.Polarity.REPULSIVE
+                5, Magnetic.Polarity.ATTRACTIVE
         );
 
         addElement(radial1);
         addElement(radial2);
+        addElement(triangleL);
+        addElement(triangleR);
     }
 
 }

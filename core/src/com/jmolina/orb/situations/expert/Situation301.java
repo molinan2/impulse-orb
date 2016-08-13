@@ -34,21 +34,13 @@ public class Situation301 extends SideWalls {
                 6, Magnetic.Polarity.REPULSIVE
         );
 
-        /*Element box1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                1, 1, 6, 0, 45);
-
-        Element box2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                1, 1, 6, 9, 45);*/
-
         Element box1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                6, 0.5f, 9, 0, 0);
+                6, 1, 9, 0, 0);
 
         Element box2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                6, 0.5f, 3, 9, 0);
+                6, 1, 3, 9, 0);
 
         addElement(magnetLeft);
         addElement(magnetRight);

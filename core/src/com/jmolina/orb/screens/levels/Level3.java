@@ -15,22 +15,15 @@ public class Level3 extends Level {
         setSuccessScreen(ScreenManager.Key.SUCCESS_3);
 
         addSituation(Situation300.class);
-
-        addSituation(Situation301.class);
-        addSituation(Situation301.class);
-        addSituation(Situation301.class);
-        addSituation(Situation301.class);
-
         addSituation(Situation302.class);
         addSituation(Situation302.class);
         addSituation(Situation302.class);
-        addSituation(Situation302.class);
-
+        addSituation(Situation301.class);
+        addSituation(Situation301.class);
+        addSituation(Situation301.class);
         addSituation(Situation303.class);
         addSituation(Situation303.class);
         addSituation(Situation303.class);
-        addSituation(Situation303.class);
-
         addSituation(Situation304.class);
         addSituation(Situation304.class);
         addSituation(Situation304.class);
@@ -39,54 +32,46 @@ public class Level3 extends Level {
         addSituation(Situation304.class);
         addSituation(Situation304.class);
         addSituation(Situation304.class);
-
         addSituation(Situation305.class);
-
         addSituation(Situation306.class);
         addSituation(Situation306.class);
         addSituation(Situation306.class);
         addSituation(Situation306.class);
         addSituation(Situation306.class);
         addSituation(Situation306.class);
-
-        addSituation(Situation307.class);
-        addSituation(Situation307.class);
-        addSituation(Situation307.class);
-        addSituation(Situation307.class);
-
+        addSituation(Situation306.class);
+        addSituation(Situation306.class);
         addSituation(Situation305.class);
-
-        addSituation(Situation308L.class);
-        addSituation(Situation308L.class);
-        addSituation(Situation308L.class);
-        addSituation(Situation308L.class);
-
-        addSituation(Situation308R.class);
-        addSituation(Situation308R.class);
-        addSituation(Situation308R.class);
-        addSituation(Situation308R.class);
-
-        addSituation(Situation303.class);
-
-        addSituation(Situation309.class);
-        addSituation(Situation309.class);
-        addSituation(Situation309.class);
-        addSituation(Situation309.class);
-
-        addSituation(Situation310.class);
-        addSituation(Situation310.class);
-        addSituation(Situation310.class);
-        addSituation(Situation310.class);
-
+        addSituation(Situation307.class);
+        addSituation(Situation307.class);
+        addSituation(Situation307.class);
+        addSituation(Situation307.class);
         addSituation(Situation305.class);
-
+        addSituation(Situation308R.class);
+        addSituation(Situation308R.class);
+        addSituation(Situation308R.class);
+        addSituation(Situation308R.class);
+        addSituation(Situation308L.class);
+        addSituation(Situation308L.class);
+        addSituation(Situation308L.class);
+        addSituation(Situation308L.class);
+        addSituation(Situation301.class);
+        addSituation(Situation309.class);
+        addSituation(Situation309.class);
+        addSituation(Situation309.class);
+        addSituation(Situation309.class);
+        addSituation(Situation305.class);
+        addSituation(Situation310.class);
+        addSituation(Situation310.class);
+        addSituation(Situation310.class);
+        addSituation(Situation310.class);
+        addSituation(Situation301.class);
         addSituation(Situation311.class);
         addSituation(Situation311.class);
         addSituation(Situation311.class);
         addSituation(Situation311.class);
-
         addSituation(Situation303.class);
-
+        addSituation(Situation303.class);
         addSituation(Situation399.class);
 
         setOrbStartPosition(6, 9);
