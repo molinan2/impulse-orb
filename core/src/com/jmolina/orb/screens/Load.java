@@ -10,7 +10,7 @@ import static com.jmolina.orb.managers.ScreenManager.Key.*;
 
 public class Load extends BaseScreen {
 
-    private final ScreenManager.Key FIRST_SCREEN = MAIN;
+    private final ScreenManager.Key FIRST_SCREEN = LEVEL_1;
 
     private Splash splash;
     private ProgressBar bar;

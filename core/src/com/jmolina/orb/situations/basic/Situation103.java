@@ -14,7 +14,7 @@ public class Situation103 extends SideWalls {
     }
 
     protected void createInnerElements () {
-        float side = 8 * (float) Math.sqrt(2);
+        float side = 6 * (float) Math.sqrt(2);
 
         Element squareLeft = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,

@@ -20,12 +20,10 @@ public class Var {
     public static final int COLOR_BLACK = 0x404040ff;
     public static final int COLOR_RED = 0xff0000ff;
 
-    // LEVEL 1: 102.43f
-
-    public static final float TIME_LEVEL_1_DEV = 2;
-    public static final float TIME_LEVEL_1_GOLD = 4;
-    public static final float TIME_LEVEL_1_SILVER = 6;
-    public static final float TIME_LEVEL_1_BRONZE = 8;
+    public static final float TIME_LEVEL_1_DEV = 59.80f;
+    public static final float TIME_LEVEL_1_GOLD = 66;
+    public static final float TIME_LEVEL_1_SILVER = 80;
+    public static final float TIME_LEVEL_1_BRONZE = 110;
     public static final float TIME_LEVEL_2_DEV = 102.43f;
     public static final float TIME_LEVEL_2_GOLD = 115;
     public static final float TIME_LEVEL_2_SILVER = 145;

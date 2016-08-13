@@ -23,15 +23,15 @@ public class Situation100 extends BottomWalls {
 
         Element platform = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                6, 1, 6, 6, 0);
-
-        Element platformRight = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                3, 1, 10.5f, 12, 0);
+                4, 1, 6, 6, 0);
 
         Element platformLeft = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                3, 1, 1.5f, 12, 0);
+                4, 1, 2f, 12, 0);
+
+        Element platformRight = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
+                4, 1, 10f, 12, 0);
 
         addElement(up);
         addElement(platform);

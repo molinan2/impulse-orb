@@ -7,28 +7,33 @@ import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.situations.SideWalls;
 
 
-public class Situation107 extends SideWalls {
+public class Situation102R extends SideWalls {
 
-    public Situation107(AssetManager am, World world, float pixelsPerMeter) {
+    public Situation102R(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter);
     }
 
     protected void createInnerElements () {
         Element platform1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                4, 1, 6, 3, 0);
+                8, 1, 4, 2, 0);
 
         Element platform2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                4, 1, 6, 9, 0);
+                8, 1, 8, 6.5f, 0);
 
         Element platform3 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                4, 1, 6, 15, 0);
+                8, 1, 4, 11f, 0);
+
+        Element platform4 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
+                8, 1, 8, 15.5f, 0);
 
         addElement(platform1);
         addElement(platform2);
         addElement(platform3);
+        addElement(platform4);
     }
 
 }

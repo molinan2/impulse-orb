@@ -16,11 +16,11 @@ public class Situation109 extends SideWalls {
     protected void createInnerElements () {
         Element squareLeft = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                10, 7.5f, 5, 3.75f, 0);
+                9, 6.5f, 4.5f, 3.75f, 0);
 
         Element squareRight = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                10, 7.5f, 7, 12.75f, 0);
+                9, 6.5f, 7.5f, 12.75f, 0);
 
         addElement(squareLeft);
         addElement(squareRight);

@@ -16,7 +16,7 @@ public class Situation105 extends SideWalls {
     protected void createInnerElements () {
         Element circleCenter1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
-                2, 2, 6, 2, 0);
+                4, 4, 6, 2, 0);
 
         Element circleLeft1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
@@ -28,7 +28,7 @@ public class Situation105 extends SideWalls {
 
         Element circleCenter2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
-                2, 2, 6, 11, 0);
+                4, 4, 6, 11, 0);
 
         Element circleLeft2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.CIRCLE, WorldElement.Flavor.GREY,
