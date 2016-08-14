@@ -782,7 +782,7 @@ public class Level extends BaseScreen {
     }
 
     /**
-     * Calcula las fuerzas de atracción y repulsión activas en el orbe y las aplica.
+     * Calcula las fuerzas de atracción y repulsión activas sobre el orbe y las aplica.
      */
     private void computeForces() {
         Vector2 force = new Vector2(0, 0);
@@ -791,7 +791,7 @@ public class Level extends BaseScreen {
             if (situation == null) continue;
             for (Element element : situation.getElements()) {
                 if (element instanceof Magnetic) {
-                    Vector2 partial = ((Magnetic)element).force(getOrb().getPosition());
+                    Vector2 partial = ((Magnetic)element).getForce(getOrb().getPosition());
                     force.add(partial);
                 }
             }

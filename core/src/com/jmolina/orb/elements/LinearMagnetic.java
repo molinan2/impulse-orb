@@ -85,16 +85,18 @@ public class LinearMagnetic extends Magnetic {
      * @param point Punto expresado en unidades del mundo
      */
     @Override
-    public Vector2 force(Vector2 point) {
+    public Vector2 getForce(Vector2 point) {
         Vector2 force = new Vector2(0, 0);
 
-        if (insideField(point)) {
-            float factor = MAX_FORCE * (getThreshold() - distanceLine(point)) / getThreshold();
-            force.set(Utils.normal(getSegment()));
-            force.scl(factor);
+        if (closeRange(point)) {
+            if (insideField(point)) {
+                float factor = MAX_FORCE * (getThreshold() - distanceLine(point)) / getThreshold();
+                force.set(Utils.normal(getSegment()));
+                force.scl(factor);
 
-            if (getPolarity() == Polarity.REPULSIVE)
-                force.scl(-1);
+                if (getPolarity() == Polarity.REPULSIVE)
+                    force.scl(-1);
+            }
         }
 
         return force;
@@ -138,6 +140,25 @@ public class LinearMagnetic extends Magnetic {
      */
     private boolean belowThreshold(Vector2 point) {
         return distanceLine(point) <= getThreshold();
+    }
+
+    /**
+     * Indica si un punto se encuentra en "rango cercano" del elemento. "Rango cercano" es la distancia entre
+     * el centro del elemento y el pico más alejado del campo magnético. Cualquier punto más alejado
+     * no se verá afectado por el campo. Se usa para evitar el cálculo de fuerza en los elementos
+     * que no estén suficientemente cerca del punto.
+     *
+     * Compara las distancias al cuadrado para evitar el cálculo de las raíces cuadradas.
+     *
+     * @param point Un punto en coordenadas del mundo
+     * @return
+     */
+    private boolean closeRange(Vector2 point) {
+        float maximumFieldDistance2 = 0.25f * getWidth() * getWidth() + getThreshold() * getThreshold();
+        float pointCenterDistance2 = point.dst2(getPosition());
+
+        return pointCenterDistance2 <= maximumFieldDistance2;
+
     }
 
 }

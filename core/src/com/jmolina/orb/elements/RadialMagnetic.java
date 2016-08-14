@@ -37,7 +37,7 @@ public class RadialMagnetic extends Magnetic {
      * @param point Punto expresado en unidades del mundo
      */
     @Override
-    public Vector2 force(Vector2 point) {
+    public Vector2 getForce(Vector2 point) {
         Vector2 force = new Vector2(0, 0);
 
         if (belowThreshold(point)) {
@@ -52,8 +52,16 @@ public class RadialMagnetic extends Magnetic {
         return force;
     }
 
+    /**
+     * Indica si un punto se encuentra dentro del campo de acción.
+     *
+     * Compara distancias al cuadrado para evitar el cálculo de raíces cuadradas.
+     *
+     * @param point Punto en unidades del mundo
+     * @return
+     */
     private boolean belowThreshold(Vector2 point) {
-        return distance(point) <= getThreshold();
+        return point.dst2(getPosition()) <= getThreshold() * getThreshold();
     }
 
     /**

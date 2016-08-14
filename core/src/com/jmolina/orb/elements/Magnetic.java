@@ -51,6 +51,6 @@ public abstract class Magnetic extends Movable {
      *
      * @param point Punto expresado en unidades del mundo
      */
-    public abstract Vector2 force(Vector2 point);
+    public abstract Vector2 getForce(Vector2 point);
 
 }
