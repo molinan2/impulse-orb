@@ -55,7 +55,8 @@ public class RadialMagnetic extends Magnetic {
     /**
      * Indica si un punto se encuentra dentro del campo de acción.
      *
-     * Compara distancias al cuadrado para evitar el cálculo de raíces cuadradas.
+     * Compara distancias al cuadrado para evitar el cálculo de raíces cuadradas. Esta función
+     * actúa de primera discriminante para calcular la fuerza ejercida sobre el punto.
      *
      * @param point Punto en unidades del mundo
      * @return

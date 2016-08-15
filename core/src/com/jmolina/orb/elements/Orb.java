@@ -23,10 +23,10 @@ public class Orb extends Element {
     private final float OVER_DAMPING = 10f;
     private final float HEAT_MIN = 0f;
     private final float HEAT_MAX = 1f;
-    private final float HEAT_INCREMENT = 0.25f;
-    private final float COOLING_RATE = 0.16f;
-    private final float OVERLOAD_TIME = 2.5f;
-    private final float FREEZE_TIME = 1.15f;
+    private final float HEAT_INCREMENT = 0.2f;
+    private final float COOLING_RATE = 0.2f;
+    private final float OVERLOAD_TIME = 2f;
+    private final float FREEZE_TIME = 1f;
     private final float SCALE_CORRECTION = 1.025f;
 
     private boolean frozen, overloaded;

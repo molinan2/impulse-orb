@@ -50,16 +50,16 @@ public class Level extends BaseScreen {
     private enum Adjacency { TOP, BOTTOM }
     private enum Frontier { BOUNDARY, MIDDLE }
 
-    private final boolean DEBUG_WORLD = Var.WORLD_RENDERER;
-    private final boolean DEBUG_TIME = Var.FRAME_TIME;
-    private final boolean DEBUG_INVULNERABLE = Var.INVULNERABILITY;
+    private final boolean DEBUG_WORLD = Var.DEBUG_RENDERER;
+    private final boolean DEBUG_TIME = Var.DEBUG_FRAME_TIME;
+    private final boolean DEBUG_INVULNERABLE = Var.DEBUG_INVULNERABILITY;
     private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     private DebugTime debugTime = new DebugTime(getAssetManager());
 
     public static final float INTRO_SEQUENCE_TIME = 1f;
 
     private final float BACKGROUND_FADE_TIME = 0.5f;
-    private final float GESTURE_HALF_TAP_SQUARE_SIZE = 14.0f;
+    private final float GESTURE_HALF_TAP_SQUARE_SIZE = 13.0f;
     private final float GESTURE_TAP_COUNT_INTERVAL = 0.4f;
     private final float GESTURE_LONG_PRESS_DURATION = 1.1f;
     private final float GESTURE_MAX_FLING_DELAY = 0.1f;

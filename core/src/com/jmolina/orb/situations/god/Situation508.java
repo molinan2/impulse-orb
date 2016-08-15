@@ -86,8 +86,6 @@ public class Situation508 extends SideWalls {
         lever3.addDisplacement(0.2f, 10);
         lever4.addDisplacement(0.2f, -10);
 
-        addElement(destroyerL);
-        addElement(destroyerR);
         addElement(lever1);
         addElement(lever2);
         addElement(lever3);
@@ -96,6 +94,8 @@ public class Situation508 extends SideWalls {
         addElement(center2);
         addElement(center3);
         addElement(center4);
+        addElement(destroyerL);
+        addElement(destroyerR);
     }
 
 }

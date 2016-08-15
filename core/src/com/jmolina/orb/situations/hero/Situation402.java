@@ -18,7 +18,7 @@ public class Situation402 extends SideWalls {
     @Override
     protected void createInnerElements () {
         Heater heater = new Heater(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                5.95f, 18, 6, 9
+                5.95f, 17.95f, 6, 10.5f
         );
 
         Element cube1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
@@ -26,19 +26,39 @@ public class Situation402 extends SideWalls {
                 6, 6, 6, 4.5f, 0
         );
 
+        Element platform1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
+                3, 1, 10.5f, 2f, 0
+        );
+
+        Element destroyer1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
+                3, 1, 10.5f, 3f, 0
+        );
+
         Element cube2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 6, 6, 6, 13.5f, 0
         );
 
+        Element platform2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
+                3, 1, 1.5f, 11, 0
+        );
+
+        Element destroyer2 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
+                3, 1, 1.5f, 12, 0
+        );
+
         Movable destroyerL = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
-                3f, 2.5f, 4.75f, 4.5f, 0
+                3f, 1, 4.75f, 4.5f, 0
         );
 
         Movable destroyerR = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
-                3f, 2.5f, 7.25f, 13.5f, 0
+                3f, 1, 7.25f, 13.5f, 0
         );
 
         destroyerL.addDisplacement(0.25f, -2.75f);
@@ -49,6 +69,10 @@ public class Situation402 extends SideWalls {
         addElement(heater);
         addElement(cube1);
         addElement(cube2);
+        addElement(platform1);
+        addElement(platform2);
+        addElement(destroyer1);
+        addElement(destroyer2);
     }
 
 }

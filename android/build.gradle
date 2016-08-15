@@ -16,7 +16,7 @@ android {
     }
     defaultConfig {
         applicationId "com.jmolina.orb"
-        minSdkVersion 8
+        minSdkVersion 17
         targetSdkVersion 23
     }
 }

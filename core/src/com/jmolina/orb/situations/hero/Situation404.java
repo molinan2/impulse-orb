@@ -23,40 +23,66 @@ public class Situation404 extends SideWalls {
                 12, 6, 6, 3
         );
 
-        Movable gateLeft = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Movable gateTopL = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 6, 0.5f, 0, 6, 0
         );
 
-        Movable gateRight = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Movable gateTopR = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
                 6, 0.5f, 12, 6, 0
         );
 
-        Element gateLeftOver = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platformTopL = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 3, 1, 1.5f, 6, 0
         );
 
-        Element gateRightOver = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Element platformTopR = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
                 3, 1, 10.5f, 6, 0
         );
 
-        Element platform = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Movable gateBottomL = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                6, 1, 6, 12, 0
+                6, 0.5f, 0, 0, 0
         );
 
-        gateLeft.addDisplacement(0.25f, 3);
-        gateRight.addDisplacement(0.25f, -3);
+        Movable gateBottomR = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
+                6, 0.5f, 12, 0, 0
+        );
+
+        Element platformBottomL = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
+                3, 1, 1.5f, 0, 0
+        );
+
+        Element platformBottomR = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.SQUARE, WorldElement.Flavor.BLACK,
+                3, 1, 10.5f, 0, 0
+        );
+
+        Element triangle = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.GREY,
+                3, 3, 6, 13.5f, 180
+        );
+
+        gateTopL.addDisplacement(0.25f, 3);
+        gateTopR.addDisplacement(0.25f, -3);
+        gateBottomL.addDisplacement(0.5f, 3);
+        gateBottomR.addDisplacement(0.5f, -3);
 
         addElement(heater);
-        addElement(gateLeft);
-        addElement(gateRight);
-        addElement(gateLeftOver);
-        addElement(gateRightOver);
-        addElement(platform);
+        addElement(gateTopL);
+        addElement(gateTopR);
+        addElement(platformTopL);
+        addElement(platformTopR);
+        addElement(gateBottomL);
+        addElement(gateBottomR);
+        addElement(platformBottomL);
+        addElement(platformBottomR);
+        addElement(triangle);
     }
 
 }

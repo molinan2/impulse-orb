@@ -20,7 +20,7 @@ public class Situation401 extends SideWalls {
     protected void createInnerElements () {
         Element platformBottomC = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,
-                5, 0.5f, 6, 3, 0
+                5, 0.5f, 6, 3f, 0
         );
 
         Element platformBottomL = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),

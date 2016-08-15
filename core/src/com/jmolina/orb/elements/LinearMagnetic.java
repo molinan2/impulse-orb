@@ -148,7 +148,8 @@ public class LinearMagnetic extends Magnetic {
      * no se verá afectado por el campo. Se usa para evitar el cálculo de fuerza en los elementos
      * que no estén suficientemente cerca del punto.
      *
-     * Compara las distancias al cuadrado para evitar el cálculo de las raíces cuadradas.
+     * Compara las distancias al cuadrado para evitar el cálculo de las raíces cuadradas. Esta función
+     * actúa de primera discriminante para calcular la fuerza ejercida sobre el punto.
      *
      * @param point Un punto en coordenadas del mundo
      * @return

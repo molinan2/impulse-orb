@@ -1,5 +1,7 @@
 package com.jmolina.orb.situations.hero;
 
+import com.jmolina.orb.elements.Magnetic;
+import com.jmolina.orb.elements.RadialMagnetic;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Element;
@@ -18,7 +20,7 @@ public class Situation405 extends SideWalls {
     @Override
     protected void createInnerElements () {
         Heater heater = new Heater(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                5.95f, 18, 3, 9
+                5.95f, 17.8f, 3, 9
         );
 
         Element cube1 = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
@@ -31,15 +33,21 @@ public class Situation405 extends SideWalls {
                 6, 6, 3, 15, 0
         );
 
-        Movable destroyer = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+        Movable destroyer1 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.RED,
-                3.33f, 3.33f, 9, 9, 0
+                3.5f, 3.5f, 9, 9, 90
         );
 
-        destroyer.addRotation(0.25f);
+        Movable destroyer2 = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.RED,
+                3.5f, 3.5f, 9, 9, 270
+        );
+
+        // destroyer.addRotation(0.25f);
         // destroyer.addDisplacement(0.25f, 0, 6);
 
-        addElement(destroyer);
+        addElement(destroyer1);
+        addElement(destroyer2);
         addElement(heater);
         addElement(cube1);
         addElement(cube2);

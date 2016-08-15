@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.situations.SideWalls;
+import com.jmolina.orb.var.Constant;
 
 
 public class Situation103 extends SideWalls {
@@ -14,7 +15,7 @@ public class Situation103 extends SideWalls {
     }
 
     protected void createInnerElements () {
-        float side = 6 * (float) Math.sqrt(2);
+        float side = 6 * Constant.SQRT_2;
 
         Element squareLeft = new Element(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.GREY,

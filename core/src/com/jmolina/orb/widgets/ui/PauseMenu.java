@@ -33,6 +33,7 @@ public class PauseMenu extends BaseGroup {
         resumeListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                resumeButton.clickEffect();
                 if (getLevel().isLocked())
                     getLevel().resumeGame();
 
@@ -43,6 +44,7 @@ public class PauseMenu extends BaseGroup {
         restartListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                restartButton.clickEffect();
                 getLevel().restartGame();
                 event.cancel();
             }
@@ -51,6 +53,7 @@ public class PauseMenu extends BaseGroup {
         leaveListener = new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                leaveButton.clickEffect();
                 getLevel().leaveGame();
                 event.cancel();
             }

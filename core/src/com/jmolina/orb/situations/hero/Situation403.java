@@ -20,34 +20,29 @@ public class Situation403 extends SideWalls {
 
     @Override
     protected void createInnerElements () {
-        Heater heater1 = new Heater(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                12, 4.5f, 6, 2.25f
-        );
-
         Heater heater2 = new Heater(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                12, 4.5f, 6, 15.75f
+                12, 8.5f, 6, 13.75f
         );
 
         LinearMagnetic platformL = new LinearMagnetic(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                4, 1, 2, 13.5f, 180,
-                8, Magnetic.Polarity.ATTRACTIVE
+                4, 1, 2, 0.5f, 0,
+                8, Magnetic.Polarity.REPULSIVE
         );
 
         LinearMagnetic platformR = new LinearMagnetic(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                4, 1, 10, 13.5f, 180,
-                8, Magnetic.Polarity.ATTRACTIVE
+                4, 1, 10, 0.5f, 0,
+                8, Magnetic.Polarity.REPULSIVE
         );
 
         LinearMagnetic platformC = new LinearMagnetic(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Flavor.VIOLET,
-                4, 1, 6, 4.5f, 0,
-                8, Magnetic.Polarity.REPULSIVE
+                4, 1, 6, 9.5f, 180,
+                8, Magnetic.Polarity.ATTRACTIVE
         );
 
 
-        addElement(heater1);
         addElement(heater2);
         addElement(platformL);
         addElement(platformR);

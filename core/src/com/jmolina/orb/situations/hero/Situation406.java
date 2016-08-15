@@ -1,5 +1,6 @@
 package com.jmolina.orb.situations.hero;
 
+import com.jmolina.orb.elements.Propeller;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Element;
@@ -45,16 +46,14 @@ public class Situation406 extends SideWalls {
                 6, 4.5f, 9, 7 * octave, 0
         );
 
-        LinearMagnetic magnet1 = new LinearMagnetic(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Flavor.VIOLET,
-                4.5f, 0.5f, 0.75f, 3 * octave, -90,
-                4, Magnetic.Polarity.ATTRACTIVE
+        Propeller magnet1 = new Propeller(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                4.5f, 6, 3 * octave, 90,
+                4, Magnetic.Polarity.REPULSIVE
         );
 
-        LinearMagnetic magnet2 = new LinearMagnetic(getAssetManager(), getWorld(), getPixelsPerMeter(),
-                WorldElement.Flavor.VIOLET,
-                4.5f, 0.5f, 0.75f, 7 * octave, -90,
-                4, Magnetic.Polarity.ATTRACTIVE
+        Propeller magnet2 = new Propeller(getAssetManager(), getWorld(), getPixelsPerMeter(),
+                4.5f, 6, 7 * octave, 90,
+                4, Magnetic.Polarity.REPULSIVE
         );
 
         cube1.addDisplacement(0.25f, 6);

@@ -4,14 +4,14 @@ import com.jmolina.orb.managers.ScreenManager;
 
 public class Var {
 
-    public static final ScreenManager.Key FIRST_SCREEN = ScreenManager.Key.MAIN;
+    public static final ScreenManager.Key FIRST_SCREEN = ScreenManager.Key.LEVEL_5;
 
-    public static final boolean INVULNERABILITY = false;
-    public static final boolean WORLD_RENDERER = false;
-    public static final boolean FRAME_TIME = false;
+    public static final boolean DEBUG_INVULNERABILITY = false;
+    public static final boolean DEBUG_RENDERER = false;
+    public static final boolean DEBUG_FRAME_TIME = false;
 
     public static final String APP_NAME = "Orb";
-    public static final String APP_VERSION = "0.7";
+    public static final String APP_VERSION = "0.8";
     public static final String APP_AUTHOR = "Juan M. Molina";
     public static final float SCREEN_HEIGHT = 1184.0f;
     public static final float SCREEN_WIDTH = 768.0f;
@@ -33,20 +33,20 @@ public class Var {
     public static final float TIME_LEVEL_1_SILVER = 80;
     public static final float TIME_LEVEL_1_BRONZE = 110;
     public static final float TIME_LEVEL_2_DEV = 105.89f;
-    public static final float TIME_LEVEL_2_GOLD = 115;
-    public static final float TIME_LEVEL_2_SILVER = 145;
-    public static final float TIME_LEVEL_2_BRONZE = 190;
+    public static final float TIME_LEVEL_2_GOLD = 120;
+    public static final float TIME_LEVEL_2_SILVER = 150;
+    public static final float TIME_LEVEL_2_BRONZE = 200;
     public static final float TIME_LEVEL_3_DEV = 122.62f;
-    public static final float TIME_LEVEL_3_GOLD = 135;
-    public static final float TIME_LEVEL_3_SILVER = 170;
-    public static final float TIME_LEVEL_3_BRONZE = 220;
-    public static final float TIME_LEVEL_4_DEV = 102.43f;
-    public static final float TIME_LEVEL_4_GOLD = 115;
-    public static final float TIME_LEVEL_4_SILVER = 145;
-    public static final float TIME_LEVEL_4_BRONZE = 240;
-    public static final float TIME_LEVEL_5_DEV = 102.43f;
-    public static final float TIME_LEVEL_5_GOLD = 115;
-    public static final float TIME_LEVEL_5_SILVER = 145;
-    public static final float TIME_LEVEL_5_BRONZE = 240;
+    public static final float TIME_LEVEL_3_GOLD = 137;
+    public static final float TIME_LEVEL_3_SILVER = 167;
+    public static final float TIME_LEVEL_3_BRONZE = 217;
+    public static final float TIME_LEVEL_4_DEV = 135.49f;
+    public static final float TIME_LEVEL_4_GOLD = 148;
+    public static final float TIME_LEVEL_4_SILVER = 178;
+    public static final float TIME_LEVEL_4_BRONZE = 228;
+    public static final float TIME_LEVEL_5_DEV = 162.27f;
+    public static final float TIME_LEVEL_5_GOLD = 182;
+    public static final float TIME_LEVEL_5_SILVER = 220;
+    public static final float TIME_LEVEL_5_BRONZE = 270;
 
 }

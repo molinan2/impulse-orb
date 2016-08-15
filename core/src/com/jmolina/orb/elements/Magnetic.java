@@ -14,7 +14,7 @@ public abstract class Magnetic extends Movable {
     public enum Polarity { ATTRACTIVE, REPULSIVE }
 
     private final float MIN_THRESHOLD = 1f;
-    protected float MAX_FORCE = 1.6f;
+    protected float MAX_FORCE = 1.4f;
 
     private float threshold;
     private Polarity polarity;

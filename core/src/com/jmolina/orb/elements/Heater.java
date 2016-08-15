@@ -21,8 +21,8 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 public class Heater extends Element implements Reseteable {
 
     private final float TICK_AMOUNT = 0.2f;
-    private final float TICK_PERIOD = 0.8f;
-    private final float BLINK_TIME = 0.66f;
+    private final float TICK_PERIOD = 0.66f;
+    private final float BLINK_HALF_TIME = 0.5f;
 
     /**
      * {@inheritDoc}
@@ -54,8 +54,8 @@ public class Heater extends Element implements Reseteable {
         RepeatAction forever = new RepeatAction();
         forever.setCount(RepeatAction.FOREVER);
         forever.setAction(new SequenceAction(
-                alpha(1, BLINK_TIME, Interpolation.pow2),
-                alpha(0.4f, BLINK_TIME, Interpolation.pow2)
+                alpha(1, BLINK_HALF_TIME, Interpolation.pow2),
+                alpha(0.4f, BLINK_HALF_TIME, Interpolation.pow2)
         ));
 
         return forever;

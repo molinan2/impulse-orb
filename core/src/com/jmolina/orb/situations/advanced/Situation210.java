@@ -6,6 +6,7 @@ import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.situations.SideWalls;
+import com.jmolina.orb.var.Constant;
 
 
 public class Situation210 extends SideWalls {
@@ -18,7 +19,7 @@ public class Situation210 extends SideWalls {
     protected void createInnerElements () {
         Movable destroyer = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
-                (float) Math.sqrt(2), (float) Math.sqrt(2), 6, 9, 0
+                Constant.SQRT_2, Constant.SQRT_2, 6, 9, 0
         );
 
         destroyer.addRotation(0.25f);
