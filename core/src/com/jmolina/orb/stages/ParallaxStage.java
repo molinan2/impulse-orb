@@ -34,7 +34,7 @@ public class ParallaxStage extends Stage {
         TextureRegion region3 = assetManager.getGameAtlas().findRegion(Atlas.GAME_PARALLAX_LAYER_3);
 
         float x = -2 * region1.getRegionWidth() + region1.getRegionWidth() * 0.5f - Utils.cell(0.5f);
-        float y = -2 * region1.getRegionHeight();
+        float y = -8 * region1.getRegionHeight();
         float scale = pixelsPerMeter / Var.GRID_CELL_SIZE;
 
         layer1 = new TiledLayer(assetManager, region1, viewport);

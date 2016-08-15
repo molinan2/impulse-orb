@@ -144,7 +144,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     }
 
     protected void clear() {
-        Gdx.gl.glClearColor(0.51f, 0.51f, 0.51f, 1.0f);
+        Gdx.gl.glClearColor(0.19921875f, 0.19921875f, 0.19921875f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
