@@ -17,4 +17,6 @@ public interface SuperManager {
 
     public void createGameManager();
 
+    public PlayServices getServiceManager();
+
 }

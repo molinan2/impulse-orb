@@ -65,7 +65,7 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        compile 'com.google.android.gms:play-services-games:9.4.0'
+        // compile 'com.google.android.gms:play-services-games:9.4.0'
         compile project(':BaseGameUtils')
     }
 }

@@ -10,12 +10,9 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.GameHelper;
-import com.jmolina.orb.interfaces.ActionResolver;
 import com.jmolina.orb.interfaces.PlayServices;
 
 public class AndroidLauncher extends AndroidApplication implements PlayServices {
-
-	ActionResolver playGames = new PlayGames();
 
 	private GameHelper gameHelper;
 	private final static int requestCode = 1;
@@ -47,11 +44,10 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
 	}
 
 
-	// Multidex support
-
 	/*@Override
 	protected void attachBaseContext(Context base) {
 		super.attachBaseContext(base);
+		// Multidex support
 		MultiDex.install(this);
 	}*/
 

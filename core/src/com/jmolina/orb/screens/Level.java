@@ -871,6 +871,7 @@ public class Level extends BaseScreen {
 
         unsetInputProcessor();
         getGameManager().play(GameManager.Fx.Exit);
+        getGameManager().unlockAchievement(GameManager.Achievement.Level1);
         getOrb().outro(toSuccess);
     }
 

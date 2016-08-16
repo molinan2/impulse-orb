@@ -17,8 +17,7 @@ public class OrbApp implements ApplicationListener, SuperManager {
 	private AssetManager assetManager;
 	private ScreenManager screenManager;
 	private GameManager gameManager;
-
-	private PlayServices playServices;
+	private PlayServices serviceManager;
 
 
 	/**
@@ -30,8 +29,8 @@ public class OrbApp implements ApplicationListener, SuperManager {
 	/**
 	 * Constructor
 	 */
-	public OrbApp(PlayServices playServices) {
-		this.playServices = this.playServices;
+	public OrbApp(PlayServices serviceManager) {
+		this.serviceManager = serviceManager;
 	}
 
 
@@ -95,6 +94,11 @@ public class OrbApp implements ApplicationListener, SuperManager {
 	@Override
 	public void createGameManager() {
 		gameManager = new GameManager(this);
+	}
+
+	@Override
+	public PlayServices getServiceManager() {
+		return serviceManager;
 	}
 
 	/**

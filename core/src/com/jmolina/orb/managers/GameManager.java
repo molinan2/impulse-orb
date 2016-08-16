@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
+import com.jmolina.orb.interfaces.PlayServices;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.interfaces.SuperManager;
@@ -17,6 +18,7 @@ public class GameManager {
     public enum Fx { Back, Button, ElementCollision, WallCollision, Destroy, Error, Exit, Fling, Init, Option, Tap, Tick, Warning }
     public enum Track { Menu, Game, Success }
     public enum Length { Short, Medium, Long }
+    public enum Achievement { Level1, Level2, Level3, Level4, Level5 }
 
     private final float PIXELS_PER_METER = Var.GRID_CELL_SIZE;
     private final float ZOOM_MULTIPLIER = 1.66f;
@@ -28,6 +30,7 @@ public class GameManager {
 
     private SuperManager superManager;
     private PrefsManager prefsManager;
+    private PlayServices serviceManager;
     private Attempt cachedAttempt;
     private int cachedRank;
     private boolean vibration = true;
@@ -37,7 +40,6 @@ public class GameManager {
     private Sound backSound, buttonSound, elementCollisionSound, wallCollisionSound, destroySound,
             errorSound, exitSound, flingSound, initSound, optionSound, tapSound, tickSound, warningSound;
     private Music menuMusic, gameMusic, successMusic;
-
     private ArrayList<ArrayList<Float>> times;
 
     /**
@@ -46,6 +48,7 @@ public class GameManager {
     public GameManager (SuperManager sm) {
         cachedRank = 0;
         prefsManager = sm.getPrefsManager();
+        serviceManager = sm.getServiceManager();
         superManager = sm;
         cachedAttempt = new Attempt();
         cachedAttempt.setSuccessful(true);
@@ -289,6 +292,10 @@ public class GameManager {
         else if (time < levelTimes.get(2)) return 2;
         else if (time < levelTimes.get(3)) return 1;
         else return 0;
+    }
+
+    public void unlockAchievement(Achievement achievement) {
+        serviceManager.unlockAchievement();
     }
 
 }
