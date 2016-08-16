@@ -1,13 +1,12 @@
 package com.jmolina.orb;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.games.Games;
+
 import com.jmolina.orb.interfaces.ActionResolver;
 
 public class PlayGames implements ActionResolver {
 
     public PlayGames() {
-        GoogleApiClient.Builder builder = null;
+        // GoogleApiClient.Builder builder = null;
     }
 
     @Override

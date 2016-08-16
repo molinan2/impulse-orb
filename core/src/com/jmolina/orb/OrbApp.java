@@ -2,7 +2,7 @@ package com.jmolina.orb;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.jmolina.orb.interfaces.ActionResolver;
+import com.jmolina.orb.interfaces.PlayServices;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.managers.GameManager;
@@ -18,14 +18,20 @@ public class OrbApp implements ApplicationListener, SuperManager {
 	private ScreenManager screenManager;
 	private GameManager gameManager;
 
-	private ActionResolver actionResolver;
+	private PlayServices playServices;
 
 
 	/**
 	 * Constructor
 	 */
-	public OrbApp(ActionResolver actionResolver) {
-		this.actionResolver = actionResolver;
+	public OrbApp() {
+	}
+
+	/**
+	 * Constructor
+	 */
+	public OrbApp(PlayServices playServices) {
+		this.playServices = this.playServices;
 	}
 
 
