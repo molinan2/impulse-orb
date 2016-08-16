@@ -10,8 +10,8 @@ public class Var {
     public static final boolean DEBUG_RENDERER = false;
     public static final boolean DEBUG_FRAME_TIME = false;
 
-    public static final String APP_NAME = "Orb";
-    public static final String APP_VERSION = "0.8";
+    public static final String APP_NAME = "Impulse Orb";
+    public static final String APP_VERSION = "0.8.1";
     public static final String APP_AUTHOR = "Juan M. Molina";
     public static final float SCREEN_HEIGHT = 1184.0f;
     public static final float SCREEN_WIDTH = 768.0f;
@@ -28,25 +28,25 @@ public class Var {
     public static final int COLOR_BLACK = 0x404040ff;
     public static final int COLOR_RED = 0xff0000ff;
 
-    public static final float TIME_LEVEL_1_DEV = 59.80f;
-    public static final float TIME_LEVEL_1_GOLD = 66;
-    public static final float TIME_LEVEL_1_SILVER = 80;
-    public static final float TIME_LEVEL_1_BRONZE = 110;
-    public static final float TIME_LEVEL_2_DEV = 105.89f;
+    public static final float TIME_LEVEL_1_DEV = 57.43f;
+    public static final float TIME_LEVEL_1_GOLD = 70;
+    public static final float TIME_LEVEL_1_SILVER = 95;
+    public static final float TIME_LEVEL_1_BRONZE = 129;
+    public static final float TIME_LEVEL_2_DEV = 97.87f;
     public static final float TIME_LEVEL_2_GOLD = 120;
-    public static final float TIME_LEVEL_2_SILVER = 150;
-    public static final float TIME_LEVEL_2_BRONZE = 200;
-    public static final float TIME_LEVEL_3_DEV = 122.62f;
-    public static final float TIME_LEVEL_3_GOLD = 137;
-    public static final float TIME_LEVEL_3_SILVER = 167;
+    public static final float TIME_LEVEL_2_SILVER = 130;
+    public static final float TIME_LEVEL_2_BRONZE = 220;
+    public static final float TIME_LEVEL_3_DEV = 95.66f;
+    public static final float TIME_LEVEL_3_GOLD = 127;
+    public static final float TIME_LEVEL_3_SILVER = 157;
     public static final float TIME_LEVEL_3_BRONZE = 217;
-    public static final float TIME_LEVEL_4_DEV = 135.49f;
+    public static final float TIME_LEVEL_4_DEV = 126.37f;
     public static final float TIME_LEVEL_4_GOLD = 148;
-    public static final float TIME_LEVEL_4_SILVER = 178;
-    public static final float TIME_LEVEL_4_BRONZE = 228;
-    public static final float TIME_LEVEL_5_DEV = 162.27f;
-    public static final float TIME_LEVEL_5_GOLD = 182;
-    public static final float TIME_LEVEL_5_SILVER = 220;
+    public static final float TIME_LEVEL_4_SILVER = 188;
+    public static final float TIME_LEVEL_4_BRONZE = 263;
+    public static final float TIME_LEVEL_5_DEV = 129.50f;
+    public static final float TIME_LEVEL_5_GOLD = 149;
+    public static final float TIME_LEVEL_5_SILVER = 189;
     public static final float TIME_LEVEL_5_BRONZE = 270;
 
 }
