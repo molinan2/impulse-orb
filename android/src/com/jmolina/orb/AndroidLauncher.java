@@ -31,7 +31,7 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices 
 		config.useCompass = false;
 		config.hideStatusBar = true;
 
-		initialize(new OrbApp(this), config);
+		initialize(new ImpulseOrb(this), config);
 	}
 
 	@Override

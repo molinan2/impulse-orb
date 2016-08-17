@@ -3,14 +3,14 @@ package com.jmolina.orb.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.MathUtils;
-import com.jmolina.orb.OrbApp;
+import com.jmolina.orb.ImpulseOrb;
 import com.jmolina.orb.data.GameStats;
 import com.jmolina.orb.data.TopTimes;
 import com.jmolina.orb.var.Var;
 
 public class PrefsManager {
 
-    public static final String FILE_NAME = OrbApp.class.getPackage().getName() + ".settings";
+    public static final String FILE_NAME = ImpulseOrb.class.getPackage().getName() + ".settings";
     public static final int OPTION_ZOOM_MIN = 0;
     public static final int OPTION_ZOOM_DEFAULT = 1;
     public static final int OPTION_ZOOM_MAX = 2;

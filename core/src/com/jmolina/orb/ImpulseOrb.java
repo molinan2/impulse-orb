@@ -11,7 +11,7 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.screens.BaseScreen;
 
 
-public class OrbApp implements ApplicationListener, SuperManager {
+public class ImpulseOrb implements ApplicationListener, SuperManager {
 
 	private PrefsManager prefsManager;
 	private AssetManager assetManager;
@@ -23,13 +23,13 @@ public class OrbApp implements ApplicationListener, SuperManager {
 	/**
 	 * Constructor
 	 */
-	public OrbApp() {
+	public ImpulseOrb() {
 	}
 
 	/**
 	 * Constructor
 	 */
-	public OrbApp(PlayServices serviceManager) {
+	public ImpulseOrb(PlayServices serviceManager) {
 		this.serviceManager = serviceManager;
 	}
 

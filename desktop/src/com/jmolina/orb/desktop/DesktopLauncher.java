@@ -3,7 +3,7 @@ package com.jmolina.orb.desktop;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.jmolina.orb.OrbApp;
+import com.jmolina.orb.ImpulseOrb;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Var;
 
@@ -21,6 +21,6 @@ public class DesktopLauncher {
 		config.addIcon(Asset.APP_ICON_32, Files.FileType.Internal);
 		config.addIcon(Asset.APP_ICON_16, Files.FileType.Internal);
 
-		new LwjglApplication(new OrbApp(), config);
+		new LwjglApplication(new ImpulseOrb(), config);
 	}
 }

@@ -9,7 +9,9 @@ public class Credits extends Menu {
     private final String AUTHORS = "Game design, programming, interface design and sound effects design by Juan M. Molina [1].";
     private final String LICENSE = "Source code licensed under GPLv3 [1]. Original content comprised of sound effects and graphic art, and licensed under CC BY-SA 4.0 [2].";
     private final String RESOURCES = "All music themes composed by Benjamin Tissot [1] and licensed under CC BY-ND 3.0 [2]. Music themes are \"Funky element\" [3], \"The lounge\" [4] and \"Pop dance\" [5]. \"Padlock icon\" designed by Dave Gandy [6] for FLATICON [7] and licensed under CC BY 3.0 [8]. Roboto font designed by Christian Robertson for Google [9] and licensed under Apache License 2.0 [10].";
-    private final String LIBRARIES = "This application makes extensive use of libGDX [1], a game-development framework created by Mario Zechner and Nathan Sweet and maintained by the community [2]. libGDX is licensed under the Apache License 2.0 [3].";
+    private final String LIBRARIES = "This application makes extensive use of libGDX [1], a game-development framework created by Mario Zechner and Nathan Sweet and maintained by the community [2]. libGDX is licensed under the Apache License 2.0 [3].\n" +
+            "\n" +
+            "Connection to Google Play Services with the help of BaseGameUtils [4], a set of utils created by Google to help manage connection process and exception handling, licensed under the Apache License 2.0 [3].";
     private final String TOOLS = "Fonts rendered with Hiero [1], a Bitmap Font converter/creator by Kevin Glass and adapted by Nathan Sweet [2].\n" +
             "\n" +
             "UI and ingame sound effects designed with Sfxr [3], a retro sound effects synthesizer by Tomas Pettersson.\n" +
@@ -55,6 +57,7 @@ public class Credits extends Menu {
         libraries.addLink("libGDX", "https://libgdx.badlogicgames.com");
         libraries.addLink("libGDX on GitHub", "https://github.com/libgdx/libgdx");
         libraries.addLink("Apache License 2.0", "http://www.apache.org/licenses/LICENSE-2.0");
+        libraries.addLink("BaseGameUtils", "https://github.com/playgameservices/android-basic-samples/tree/master/BasicSamples/libraries/BaseGameUtils");
 
         tools = new Credit(getAssetManager(), "TOOLS", TOOLS);
         tools.addLink("Hiero", "https://libgdx.badlogicgames.com/tools.html");
