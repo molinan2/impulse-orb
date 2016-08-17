@@ -8,9 +8,9 @@ import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.situations.SideWalls;
 
 
-public class Situation209 extends SideWalls {
+public class Situation209CW extends SideWalls {
 
-    public Situation209(AssetManager am, World world, float pixelsPerMeter) {
+    public Situation209CW(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter);
     }
 

@@ -37,9 +37,9 @@ public class Level2 extends Level {
         addSituation(Situation208.class);
         addSituation(Situation208.class);
         addSituation(Situation201.class);
-        addSituation(Situation209.class);
-        addSituation(Situation209.class);
-        addSituation(Situation209.class);
+        addSituation(Situation209CW.class);
+        addSituation(Situation209CCW.class);
+        addSituation(Situation209CW.class);
         addSituation(Situation210.class);
         addSituation(Situation210.class);
         addSituation(Situation210.class);

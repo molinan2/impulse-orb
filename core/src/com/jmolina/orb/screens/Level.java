@@ -1,6 +1,7 @@
 package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
@@ -19,6 +20,7 @@ import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.elements.WorldElement;
+import com.jmolina.orb.interfaces.PlayServices;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.listeners.ContactHandler;
@@ -76,7 +78,7 @@ public class Level extends BaseScreen {
 
     private Tick tick;
     private float pixelsPerMeter, impulse, physicsStepAccumulator;
-    private boolean locked, ticking;
+    private boolean locked, ticking, achievedRobocop, achievedItsOver9000, achievedHyperdrive;
     private World world;
     private ContactHandler contactHandler;
     private Viewport worldViewport, gestureViewport, hudViewport, parallaxViewport;
@@ -91,7 +93,6 @@ public class Level extends BaseScreen {
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
     private Runnable orbIntro, orbDestroy, reset, unlock, toSuccess;
     private SituationFactory situationFactory;
-
     private ArrayList<Class> situations;
     private Situation currentSituation, adjacentSituation;
     private Adjacency adjacencyNow, adjacencyLast;
@@ -104,6 +105,10 @@ public class Level extends BaseScreen {
      */
     public Level(SuperManager sm) {
         super(sm);
+
+        achievedRobocop = false;
+        achievedItsOver9000 = false;
+        achievedHyperdrive = false;
 
         tick = new Tick();
         pixelsPerMeter = getGameManager().getPixelsPerMeter();
@@ -219,8 +224,15 @@ public class Level extends BaseScreen {
         postUpdate();
         draw();
         checkSwitching();
+        checkAchievements();
 
         if (DEBUG_TIME) debugTime.end();
+    }
+
+    @Override
+    protected void clear() {
+        Gdx.gl.glClearColor(0.19921875f, 0.19921875f, 0.19921875f, 1.0f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     /**
@@ -800,6 +812,34 @@ public class Level extends BaseScreen {
         getOrb().getBody().applyLinearImpulse(force, getOrb().getPosition(), true);
     }
 
+    /**
+     * Comprobación y desbloqueo de los logros que se obtienen en mitad del gameplay.
+     */
+    private void checkAchievements() {
+        if (!achievedRobocop) {
+            if (getStats().getCurrentTime() > GameManager.ACHIEVEMENT_ROBOCOP_TIME) {
+                if (getThisKey() != ScreenManager.Key.LEVEL_1) {
+                    achievedRobocop = true;
+                    getGameManager().unlockAchievement(PlayServices.Achievement.Robocop);
+                }
+            }
+        }
+
+        if (!achievedItsOver9000) {
+            if (getStats().getCurrentDistance() > GameManager.ACHIEVEMENT_OVER9000_DISTANCE) {
+                achievedItsOver9000 = true;
+                getGameManager().unlockAchievement(PlayServices.Achievement.ItsOver9000);
+            }
+        }
+
+        if (!achievedHyperdrive) {
+            if (getOrb().getBody().getLinearVelocity().len2() > GameManager.ACHIEVEMENT_HYPERDRIVE_SPEED2) {
+                achievedHyperdrive = true;
+                getGameManager().unlockAchievement(PlayServices.Achievement.Hyperdrive);
+            }
+        }
+    }
+
     private void firstGame() {
         stats.newTry();
         getBackgroundStage().addAction(alpha(1));
@@ -858,20 +898,22 @@ public class Level extends BaseScreen {
     }
 
     /**
-     * Completa el juego, guardando las estadísticas y lanzando la pantalla de Success
+     * Completa el juego, guardando las estadísticas y lanzando la pantalla de Success.
+     * También sube el tiempo a Google Play Games.
      */
     public void successGame() {
         lock();
         getStats().setSuccessfull(true);
 
-        if (getStats().getLastAttempt() != null) {
+        if (getStats().getCurrentAttempt() != null) {
             int rank = getPrefsManager().saveStats(getStats(), getThisKey());
-            getGameManager().cache(getStats().getLastAttempt(), rank);
+            getGameManager().cache(getStats().getCurrentAttempt(), rank);
+            getGameManager().submitTime(getThisKey(), getStats().getCurrentTime());
         }
 
         unsetInputProcessor();
         getGameManager().play(GameManager.Fx.Exit);
-        getGameManager().unlockAchievement(GameManager.Achievement.Level1);
+        getGameManager().unlockLevelAchievement(getThisKey());
         getOrb().outro(toSuccess);
     }
 
@@ -970,6 +1012,10 @@ public class Level extends BaseScreen {
 
         lock();
         getStats().setFailed(true);
+
+        if (getStats().getCurrentTime() < GameManager.ACHIEVEMENT_KENNY_TIME)
+            getGameManager().unlockAchievement(PlayServices.Achievement.Kenny);
+
         getGameManager().vibrate(GameManager.Length.Long);
         getGameManager().play(GameManager.Fx.Destroy);
         getHUDStage().destroy(orbDestroy, reset, orbIntro, unlock);

@@ -10,7 +10,7 @@ import com.jmolina.orb.var.Var;
 
 public class PrefsManager {
 
-    private final String FILE_NAME = OrbApp.class.getPackage().getName() + ".settings";
+    public static final String FILE_NAME = OrbApp.class.getPackage().getName() + ".settings";
     public static final int OPTION_ZOOM_MIN = 0;
     public static final int OPTION_ZOOM_DEFAULT = 1;
     public static final int OPTION_ZOOM_MAX = 2;
@@ -198,8 +198,8 @@ public class PrefsManager {
 
             // Guarda los mejores tiempos
             TopTimes times = new TopTimes(prefs, level);
-            if (stats.getLastAttempt() != null)
-                rank = times.addAttempt(stats.getLastAttempt());
+            if (stats.getCurrentAttempt() != null)
+                rank = times.addAttempt(stats.getCurrentAttempt());
 
             save();
         }

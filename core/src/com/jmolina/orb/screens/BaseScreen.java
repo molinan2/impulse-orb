@@ -42,6 +42,8 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     /** Flujo de navegación de la pantalla */
     public enum Flow { ENTERING, LEAVING }
 
+    private final float PERIODIC_TASK_TIME = 1f;
+
     private SuperManager superManager;
     private Viewport mainViewport, backgroundViewport;
     private BackableStage mainStage;
@@ -51,6 +53,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     private InputMultiplexer multiplexer;
     private ScreenManager.Key previousKey, thisKey;
     private ScreenFlag screenFlag;
+    private float timer;
 
 
     /**
@@ -58,6 +61,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
      */
     public BaseScreen(SuperManager sm) {
         superManager = sm;
+        timer = 0f;
         screenFlag = new ScreenFlag();
         actors = new SnapshotArray<Actor>();
         mainViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
@@ -99,8 +103,23 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         mainStage.act(Math.min(Gdx.graphics.getDeltaTime(), MIN_DELTA_TIME));
         mainStage.draw();
 
+        update();
         checkSwitching();
     }
+
+    private void update() {
+        timer += Gdx.graphics.getDeltaTime();
+        if (timer > PERIODIC_TASK_TIME) {
+            timer = 0;
+            periodicTask();
+        }
+    }
+
+    /**
+     * Este método permite a las clases derivadas ejecutar cualquier tarea con una periodicidad de
+     * {@link #PERIODIC_TASK_TIME}.
+     */
+    protected void periodicTask() {}
 
     @Override
     public void resize(int width, int height) {
@@ -144,7 +163,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     }
 
     protected void clear() {
-        Gdx.gl.glClearColor(0.19921875f, 0.19921875f, 0.19921875f, 1.0f);
+        Gdx.gl.glClearColor(0.980392157f, 0.980392157f, 0.980392157f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 

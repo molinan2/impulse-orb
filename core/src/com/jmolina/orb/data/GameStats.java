@@ -12,7 +12,7 @@ public class GameStats {
         attempts = new ArrayList<Attempt>();
     }
 
-    private Attempt getLastAttemp() {
+    private Attempt getCurrentAttemp() {
         return attempts.get(attempts.size()-1);
     }
 
@@ -27,38 +27,38 @@ public class GameStats {
 
     public void addTime(float time) {
         if (hasAttemps()) {
-            getLastAttemp().addTime(time);
+            getCurrentAttemp().addTime(time);
         }
     }
 
     public void addDistance(float distance) {
         if (hasAttemps()) {
-            getLastAttemp().addDistance(distance);
+            getCurrentAttemp().addDistance(distance);
         }
     }
 
     public void setFailed(boolean failed) {
         if (hasAttemps()) {
-            getLastAttemp().setFailed(failed);
+            getCurrentAttemp().setFailed(failed);
         }
     }
 
     public void setSuccessfull(boolean successful) {
         if (hasAttemps()) {
-            getLastAttemp().setSuccessful(successful);
+            getCurrentAttemp().setSuccessful(successful);
         }
     }
 
     public float getCurrentDistance() {
         if (hasAttemps())
-            return getLastAttemp().getDistance();
+            return getCurrentAttemp().getDistance();
         else
             return 0f;
     }
 
     public float getCurrentTime() {
         if (hasAttemps())
-            return getLastAttemp().getTime();
+            return getCurrentAttemp().getTime();
         else
             return 0f;
     }
@@ -245,7 +245,7 @@ public class GameStats {
         }
     }
 
-    public Attempt getLastAttempt() {
+    public Attempt getCurrentAttempt() {
         if (!isEmpty())
             return attempts.get(attempts.size()-1);
         else

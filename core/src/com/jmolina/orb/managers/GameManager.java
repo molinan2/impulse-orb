@@ -18,7 +18,16 @@ public class GameManager {
     public enum Fx { Back, Button, ElementCollision, WallCollision, Destroy, Error, Exit, Fling, Init, Option, Tap, Tick, Warning }
     public enum Track { Menu, Game, Success }
     public enum Length { Short, Medium, Long }
-    public enum Achievement { Level1, Level2, Level3, Level4, Level5 }
+
+    public static final int RATING_DEVELOPER = 4;
+    public static final int RATING_GOLD = 3;
+    public static final int RATING_SILVER = 2;
+    public static final int RATING_BRONZE = 1;
+    public static final int RATING_UNRATED = 0;
+    public static final float ACHIEVEMENT_KENNY_TIME = 5f;
+    public static final float ACHIEVEMENT_ROBOCOP_TIME = 180f;
+    public static final float ACHIEVEMENT_OVER9000_DISTANCE = 9000f;
+    public static final float ACHIEVEMENT_HYPERDRIVE_SPEED2 = 60000f;
 
     private final float PIXELS_PER_METER = Var.GRID_CELL_SIZE;
     private final float ZOOM_MULTIPLIER = 1.66f;
@@ -36,6 +45,7 @@ public class GameManager {
     private boolean vibration = true;
     private boolean sound = true;
     private boolean music = true;
+    private boolean online = true;
     private int zoom = PrefsManager.OPTION_ZOOM_DEFAULT;
     private Sound backSound, buttonSound, elementCollisionSound, wallCollisionSound, destroySound,
             errorSound, exitSound, flingSound, initSound, optionSound, tapSound, tickSound, warningSound;
@@ -83,6 +93,7 @@ public class GameManager {
         vibration = prefsManager.getOptionVibration();
         sound = prefsManager.getOptionSound();
         music = prefsManager.getOptionMusic();
+        online = prefsManager.getOptionOnline();
         zoom = MathUtils.clamp(prefsManager.getOptionZoom(), PrefsManager.OPTION_ZOOM_MIN, PrefsManager.OPTION_ZOOM_MAX);
     }
 
@@ -119,9 +130,9 @@ public class GameManager {
 
     public float getPixelsPerMeter() {
         switch (zoom) {
-            case 0: return PIXELS_PER_METER / ZOOM_MULTIPLIER;
-            case 1: return PIXELS_PER_METER;
-            case 2: return PIXELS_PER_METER * ZOOM_MULTIPLIER;
+            case PrefsManager.OPTION_ZOOM_MIN: return PIXELS_PER_METER / ZOOM_MULTIPLIER;
+            case PrefsManager.OPTION_ZOOM_DEFAULT: return PIXELS_PER_METER;
+            case PrefsManager.OPTION_ZOOM_MAX: return PIXELS_PER_METER * ZOOM_MULTIPLIER;
             default: return PIXELS_PER_METER;
         }
     }
@@ -282,20 +293,93 @@ public class GameManager {
      *
      * @param levelIndex
      * @param time
-     * @return
+     * @return Rating numérico
      */
     public int getNumericRating(int levelIndex, float time) {
         ArrayList<Float> levelTimes = getTimes(levelIndex);
 
-        if (time < levelTimes.get(0)) return 4;
-        else if (time < levelTimes.get(1)) return 3;
-        else if (time < levelTimes.get(2)) return 2;
-        else if (time < levelTimes.get(3)) return 1;
-        else return 0;
+        if (time < levelTimes.get(0)) return RATING_DEVELOPER;
+        else if (time < levelTimes.get(1)) return RATING_GOLD;
+        else if (time < levelTimes.get(2)) return RATING_SILVER;
+        else if (time < levelTimes.get(3)) return RATING_BRONZE;
+        else return RATING_UNRATED;
     }
 
-    public void unlockAchievement(Achievement achievement) {
-        serviceManager.unlockAchievement();
+    /**
+     * Desbloquea un logro de nivel (nivel X completado).
+     *
+     * @param level Nivel
+     */
+    public void unlockLevelAchievement(ScreenManager.Key level) {
+        switch (level) {
+            case LEVEL_1: unlockAchievement(PlayServices.Achievement.KnowHow); break;
+            case LEVEL_2: unlockAchievement(PlayServices.Achievement.TheRealDeal); break;
+            case LEVEL_3: unlockAchievement(PlayServices.Achievement.BecomingAnExpert); break;
+            case LEVEL_4: unlockAchievement(PlayServices.Achievement.AHeroWasBorn); break;
+            case LEVEL_5: unlockAchievement(PlayServices.Achievement.OneAboveAll); break;
+            default:
+        }
+    }
+
+    /**
+     * Desbloquea un logro "Fast & Furious" (mejor tiempo que el desarrollador en el nivel X).
+     *
+     * @param level Nivel
+     */
+    public void unlockFastFuriousAchievement(ScreenManager.Key level) {
+        switch (level) {
+            case LEVEL_1: unlockAchievement(PlayServices.Achievement.FastFurious1); break;
+            case LEVEL_2: unlockAchievement(PlayServices.Achievement.FastFurious2); break;
+            case LEVEL_3: unlockAchievement(PlayServices.Achievement.FastFurious3); break;
+            case LEVEL_4: unlockAchievement(PlayServices.Achievement.FastFurious4); break;
+            case LEVEL_5: unlockAchievement(PlayServices.Achievement.FastFurious5); break;
+            default:
+        }
+    }
+
+    /**
+     * Desbloquea un logro de Google Play Games.
+     *
+     * @param achievement Logro
+     */
+    public void unlockAchievement(PlayServices.Achievement achievement) {
+        if (!online) return;
+
+        serviceManager.unlockAchievement(achievement);
+    }
+
+    /**
+     * Sube a Google Play Games el tiempo realizado en un nivel.
+     *
+     * @param level
+     * @param time
+     */
+    public void submitTime(ScreenManager.Key level, float time) {
+        if (!online) return;
+
+        long score = (long) (1000 * time);
+
+        switch (level) {
+            case LEVEL_1: serviceManager.submitScore(PlayServices.Leaderboard.Level1, score); break;
+            case LEVEL_2: serviceManager.submitScore(PlayServices.Leaderboard.Level2, score); break;
+            case LEVEL_3: serviceManager.submitScore(PlayServices.Leaderboard.Level3, score); break;
+            case LEVEL_4: serviceManager.submitScore(PlayServices.Leaderboard.Level4, score); break;
+            case LEVEL_5: serviceManager.submitScore(PlayServices.Leaderboard.Level5, score); break;
+            default:
+        }
+    }
+
+    public void showTime(ScreenManager.Key level) {
+        if (!online) return;
+
+        switch (level) {
+            case LEVEL_1: serviceManager.showScore(PlayServices.Leaderboard.Level1); break;
+            case LEVEL_2: serviceManager.showScore(PlayServices.Leaderboard.Level2); break;
+            case LEVEL_3: serviceManager.showScore(PlayServices.Leaderboard.Level3); break;
+            case LEVEL_4: serviceManager.showScore(PlayServices.Leaderboard.Level4); break;
+            case LEVEL_5: serviceManager.showScore(PlayServices.Leaderboard.Level5); break;
+            default:
+        }
     }
 
 }

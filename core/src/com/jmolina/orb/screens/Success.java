@@ -30,6 +30,7 @@ public class Success extends BaseScreen {
     private MainButton button;
     private Star podium;
     private Rating rating;
+    private int numericRating;
 
     public Success(SuperManager superManager, ScreenManager.Key thisKey, String label) {
         super(superManager);
@@ -37,6 +38,7 @@ public class Success extends BaseScreen {
         setThisKey(thisKey);
 
         Attempt attempt = getGameManager().getCachedAttempt();
+        numericRating = getNumericRating(thisKey, attempt.getTime());
 
         title = new SuccessTitle(getAssetManager(), label);
         cover = new SuccessCover(getAssetManager(), getCoverTexture(thisKey));
@@ -56,7 +58,7 @@ public class Success extends BaseScreen {
         });
 
         podium = new Star(getAssetManager(), getGameManager().getCachedRank());
-        rating = new Rating(getAssetManager(), getNumericRating(thisKey, attempt.getTime()));
+        rating = new Rating(getAssetManager(), numericRating);
 
         title.setPositionGrid(1, 16.5f);
         cover.setPositionGrid(1, 12f);
@@ -83,6 +85,9 @@ public class Success extends BaseScreen {
     public void show() {
         super.show();
         getGameManager().play(GameManager.Track.Success);
+
+        if (numericRating == GameManager.RATING_DEVELOPER)
+            getGameManager().unlockFastFuriousAchievement(getThisKey());
     }
 
     /**
@@ -99,7 +104,7 @@ public class Success extends BaseScreen {
             case SUCCESS_3: return getGameManager().getNumericRating(3, time);
             case SUCCESS_4: return getGameManager().getNumericRating(4, time);
             case SUCCESS_5: return getGameManager().getNumericRating(5, time);
-            default: return 0;
+            default: return GameManager.RATING_UNRATED;
         }
     }
 

@@ -16,7 +16,6 @@ public class Options extends Menu {
     private Option vibration;
     private Option online;
     private MultiOption zoom;
-    // private String username;
 
     private PrefsManager prefsManager;
 
@@ -84,6 +83,13 @@ public class Options extends Menu {
                 online.toggle();
                 getGameManager().play(GameManager.Fx.Option);
                 prefsManager.putOptionOnline(online.isChecked());
+                prefsManager.save();
+                getGameManager().fetchOptions();
+
+                if (getPrefsManager().getOptionOnline())
+                    getSuperManager().getServiceManager().signIn();
+                else
+                    getSuperManager().getServiceManager().signOut();
             }
         });
 
@@ -123,6 +129,15 @@ public class Options extends Menu {
         vibration.setChecked(prefsManager.getOptionVibration());
         online.setChecked(prefsManager.getOptionOnline());
         zoom.setValue(prefsManager.getOptionZoom());
+    }
+
+    /**
+     * Sincroniza periódicamente el valor de la checkbox "online", ya que no se conoce a priori
+     * el resultado de la petición de login.
+     */
+    @Override
+    protected void periodicTask() {
+        online.setChecked(prefsManager.getOptionOnline());
     }
 
 }

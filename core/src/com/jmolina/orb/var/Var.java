@@ -11,7 +11,7 @@ public class Var {
     public static final boolean DEBUG_FRAME_TIME = false;
 
     public static final String APP_NAME = "Impulse Orb";
-    public static final String APP_VERSION = "0.8.1";
+    public static final String APP_VERSION = "0.8.2";
     public static final String APP_AUTHOR = "Juan M. Molina";
     public static final float SCREEN_HEIGHT = 1184.0f;
     public static final float SCREEN_WIDTH = 768.0f;
@@ -28,13 +28,13 @@ public class Var {
     public static final int COLOR_BLACK = 0x404040ff;
     public static final int COLOR_RED = 0xff0000ff;
 
-    public static final float TIME_LEVEL_1_DEV = 57.43f;
+    public static final float TIME_LEVEL_1_DEV = 53.75f;
     public static final float TIME_LEVEL_1_GOLD = 70;
     public static final float TIME_LEVEL_1_SILVER = 95;
     public static final float TIME_LEVEL_1_BRONZE = 129;
     public static final float TIME_LEVEL_2_DEV = 97.87f;
     public static final float TIME_LEVEL_2_GOLD = 120;
-    public static final float TIME_LEVEL_2_SILVER = 130;
+    public static final float TIME_LEVEL_2_SILVER = 155;
     public static final float TIME_LEVEL_2_BRONZE = 220;
     public static final float TIME_LEVEL_3_DEV = 95.66f;
     public static final float TIME_LEVEL_3_GOLD = 127;

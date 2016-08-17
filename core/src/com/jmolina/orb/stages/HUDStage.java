@@ -252,4 +252,8 @@ public class HUDStage extends Stage {
         return level;
     }
 
+    public float getTime() {
+        return timer.getTime();
+    }
+
 }

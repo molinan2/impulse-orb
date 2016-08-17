@@ -357,6 +357,23 @@ public class GameHelper implements GoogleApiClient.ConnectionCallbacks,
         mShowErrorDialogs = show;
     }
 
+    /** Version of onStart() that does not perform a signIn */
+    public void onStartWithoutSignIn(Activity act) {
+        mActivity = act;
+        mAppContext = act.getApplicationContext();
+
+        debugLog("onStart");
+        assertConfigured("onStart");
+        debugLog("Not attempting to connect because of user preferences");
+        debugLog("Instead, reporting a sign-in failure.");
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                notifyListener(false);
+            }
+        }, 1000);
+    }
+
     /** Call this method from your Activity's onStart(). */
     public void onStart(Activity act) {
         mActivity = act;
