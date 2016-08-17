@@ -5,13 +5,13 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.SnapshotArray;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.data.ScreenFlag;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.AssetManager;
@@ -32,8 +32,15 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public class BaseScreen extends ScreenAdapter implements Backable {
 
-    public final static float VIEWPORT_WIDTH = Var.SCREEN_WIDTH;
-    public final static float VIEWPORT_HEIGHT = Var.SCREEN_HEIGHT;
+    public static final float TRANSITION_DURATION = 0.3f;
+    public static final Interpolation INTERPOLATION_IN = Interpolation.pow2In;
+    public static final Interpolation INTERPOLATION_OUT = Interpolation.pow2Out;
+    public static final float SCALE_FACTOR = 1.35f;
+    public static final float SIZE_SMALL = 1 / SCALE_FACTOR;
+    public static final float SIZE_LARGE = SCALE_FACTOR;
+
+    public static final float VIEWPORT_WIDTH = Var.SCREEN_WIDTH;
+    public static final float VIEWPORT_HEIGHT = Var.SCREEN_HEIGHT;
     public final float MIN_DELTA_TIME = Var.FPS;
 
     /** Jerarquía de esta pantalla respecto de la siguiente */
@@ -49,7 +56,6 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     private BackableStage mainStage;
     private BackgroundStage backgroundStage;
     private Hierarchy hierarchy;
-    private SnapshotArray<Actor> actors;
     private InputMultiplexer multiplexer;
     private ScreenManager.Key previousKey, thisKey;
     private ScreenFlag screenFlag;
@@ -63,10 +69,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         superManager = sm;
         timer = 0f;
         screenFlag = new ScreenFlag();
-        actors = new SnapshotArray<Actor>();
         mainViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         backgroundViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        mainStage = new BackableStage(mainViewport, UIRunnable.backOperation(this));
+        mainStage = new BackableStage(mainViewport, getBackRunnable());
         backgroundStage = new BackgroundStage(getAssetManager(), backgroundViewport);
         multiplexer = new InputMultiplexer();
 
@@ -74,8 +79,8 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         mainStage.getRoot().setSize(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         mainStage.getRoot().setScale(1f);
         mainStage.getRoot().setPosition(0f, 0f);
-        addProcessor(mainStage);
 
+        addProcessor(mainStage);
         hierarchy = Hierarchy.LOWER;
     }
 
@@ -90,7 +95,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         unsetInputProcessor();
         addMainAction(sequence(
                 transition(Flow.ENTERING, getHierarchy()),
-                run(UIRunnable.setInputProcessor(getProcessor()))
+                run(getSetAsInputProcessorRunnable())
         ));
     }
 
@@ -262,8 +267,35 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         clearRootActions();
         addMainAction(sequence(
                 transition(Flow.LEAVING, Hierarchy.HIGHER),
-                run(UIRunnable.exit())
+                run(getExitRunnable())
         ));
+    }
+
+    private Runnable getExitRunnable() {
+        return new Runnable() {
+            @Override
+            public void run() {
+                Gdx.app.exit();
+            }
+        };
+    }
+
+    private Runnable getBackRunnable() {
+        return new Runnable() {
+            @Override
+            public void run() {
+                back();
+            }
+        };
+    }
+
+    protected Runnable getSetAsInputProcessorRunnable() {
+        return new Runnable() {
+            @Override
+            public void run() {
+                Gdx.input.setInputProcessor(getProcessor());
+            }
+        };
     }
 
     protected void clearRootActions() {
@@ -284,24 +316,83 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         switch (flow) {
             case ENTERING: return transitionEntering(hierarchy);
             case LEAVING: return transitionLeaving(hierarchy);
-            default: return UIAction.reset();
+            default: return resetAction();
         }
     }
 
     private Action transitionEntering(Hierarchy hierarchy) {
         switch (hierarchy) {
-            case LOWER: return UIAction.fromInside();
-            case HIGHER: return UIAction.fromOutside();
-            default: return UIAction.appear();
+            case LOWER: return fromInsideAction();
+            case HIGHER: return fromOutsideAction();
+            default: return appearAction();
         }
     }
 
     private Action transitionLeaving(Hierarchy hierarchy) {
         switch (hierarchy) {
-            case LOWER: return UIAction.toOutside();
-            case HIGHER: return UIAction.toInside();
-            default: return UIAction.disappear();
+            case LOWER: return toOutsideAction();
+            case HIGHER: return toInsideAction();
+            default: return disappearAction();
         }
+    }
+
+    private Action toOutsideAction() {
+        return new SequenceAction(parallel(
+                fadeOut(TRANSITION_DURATION, INTERPOLATION_IN),
+                scaleTo(SIZE_LARGE, SIZE_LARGE, TRANSITION_DURATION, INTERPOLATION_IN)
+        ));
+    }
+
+    private Action toInsideAction() {
+        return new SequenceAction(parallel(
+                fadeOut(TRANSITION_DURATION, INTERPOLATION_IN),
+                scaleTo(SIZE_SMALL, SIZE_SMALL, TRANSITION_DURATION, INTERPOLATION_IN)
+        ));
+    }
+
+    private Action fromInsideAction() {
+        return new SequenceAction(
+                alpha(0f),
+                scaleTo(SIZE_SMALL, SIZE_SMALL),
+                parallel(
+                        fadeIn(TRANSITION_DURATION, INTERPOLATION_OUT),
+                        scaleTo(1f, 1f, TRANSITION_DURATION, INTERPOLATION_OUT)
+                )
+        );
+    }
+
+    private Action fromOutsideAction() {
+        return new SequenceAction(
+                alpha(0f),
+                scaleTo(SIZE_LARGE, SIZE_LARGE),
+                parallel(
+                        fadeIn(TRANSITION_DURATION, INTERPOLATION_OUT),
+                        scaleTo(1f, 1f, TRANSITION_DURATION, INTERPOLATION_OUT)
+                )
+        );
+    }
+
+    private Action appearAction() {
+        return new SequenceAction(
+                alpha(0f),
+                scaleTo(BaseScreen.SIZE_LARGE, BaseScreen.SIZE_LARGE),
+                fadeIn(BaseScreen.TRANSITION_DURATION, BaseScreen.INTERPOLATION_IN)
+        );
+    }
+
+    private Action disappearAction() {
+        return new SequenceAction(
+                alpha(1f),
+                scaleTo(1f, 1f),
+                fadeOut(BaseScreen.TRANSITION_DURATION, BaseScreen.INTERPOLATION_IN)
+        );
+    }
+
+    private Action resetAction() {
+        return new SequenceAction(
+                alpha(1f),
+                scaleTo(1f, 1f)
+        );
     }
 
     /**
@@ -309,15 +400,6 @@ public class BaseScreen extends ScreenAdapter implements Backable {
      */
     public void addMainActor(Actor actor) {
         mainStage.addActor(actor);
-        registerActor(actor);
-    }
-
-    /**
-     * Registra un actor para poder realizarle operaciones automáticas
-     * @param actor Actor
-     */
-    protected void registerActor(Actor actor) {
-        this.actors.add(actor);
     }
 
     protected Stage getMainStage() {

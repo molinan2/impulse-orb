@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.interfaces.Visitor;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
@@ -133,13 +132,13 @@ public class Card extends BaseGroup {
                 else {
                     gameManager.play(GameManager.Fx.Error);
                     padlock.clearActions();
-                    padlock.addAction(UIAction.blink());
+                    padlock.addAction(sequence(
+                            alpha(0f),
+                            fadeIn(0.5f),
+                            fadeOut(0.5f),
+                            fadeIn(0.5f)
+                    ));
 
-                    // Si creara un metodo publico para lockBlink(), la Screen podria llamarlo si
-                    // isLocked(), con lo que no necesitaria entrar con el Visitor. Sin embargo,
-                    // necesitaria crear el listener, y es mas limpio hacerlo aqui. La Screen no
-                    // tiene por que saber lo que hay que hacer si isLocked() es true; su
-                    // responsabilidad es solo indicar la pantalla destino.
                 }
             }
         });

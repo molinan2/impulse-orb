@@ -63,8 +63,6 @@ public class Menu extends BaseScreen {
                 .width(width * Utils.cell(1))
                 .expandX()
                 .padBottom(bottomPadding * Utils.cell(1));
-
-        registerActor(actor);
     }
 
     @Override

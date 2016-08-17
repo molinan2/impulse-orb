@@ -11,8 +11,9 @@ public class Var {
     public static final boolean DEBUG_FRAME_TIME = false;
 
     public static final String APP_NAME = "Impulse Orb";
-    public static final String APP_VERSION = "0.8.3";
+    public static final String APP_VERSION = "0.8.4";
     public static final String APP_AUTHOR = "Juan M. Molina";
+
     public static final float SCREEN_HEIGHT = 1184.0f;
     public static final float SCREEN_WIDTH = 768.0f;
     public static final float GRID_CELL_SIZE = 64f;

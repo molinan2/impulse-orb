@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jmolina.orb.actions.UIAction;
 import com.jmolina.orb.data.GameStats;
 import com.jmolina.orb.data.Tick;
 import com.jmolina.orb.elements.Element;
@@ -449,8 +448,8 @@ public class Level extends BaseScreen {
         };
 
         getHUDStage().addAction(sequence(
-                Actions.addAction(fadeIn(UIAction.DURATION, Interpolation.pow2), getBackgroundStage().getRoot()),
-                delay(UIAction.DURATION),
+                Actions.addAction(fadeIn(BaseScreen.TRANSITION_DURATION, Interpolation.pow2), getBackgroundStage().getRoot()),
+                delay(BaseScreen.TRANSITION_DURATION),
                 transition(Flow.LEAVING, hierarchy),
                 run(flagSwitch)
         ));
@@ -847,13 +846,13 @@ public class Level extends BaseScreen {
 
         getHUDStage().addAction(sequence(
                 alpha(0),
-                scaleTo(UIAction.SMALL, UIAction.SMALL),
+                scaleTo(BaseScreen.SIZE_SMALL, BaseScreen.SIZE_SMALL),
                 transition(Flow.ENTERING, getHierarchy()),
                 Actions.addAction(sequence(alpha(1), fadeOut(BACKGROUND_FADE_TIME)), getBackgroundStage().getRoot()),
                 delay(0.5f * BACKGROUND_FADE_TIME),
                 run(orbIntro),
                 delay(INTRO_SEQUENCE_TIME),
-                run(UIRunnable.setInputProcessor(getProcessor())),
+                run(getSetAsInputProcessorRunnable()),
                 run(unlock)
         ));
     }
