@@ -1,5 +1,6 @@
 package com.jmolina.orb.managers;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -344,6 +345,7 @@ public class GameManager {
      */
     public void unlockAchievement(PlayServices.Achievement achievement) {
         if (!online) return;
+        if (Gdx.app.getType() != Application.ApplicationType.Android) return;
 
         serviceManager.unlockAchievement(achievement);
     }
@@ -356,6 +358,7 @@ public class GameManager {
      */
     public void submitTime(ScreenManager.Key level, float time) {
         if (!online) return;
+        if (Gdx.app.getType() != Application.ApplicationType.Android) return;
 
         long score = (long) (1000 * time);
 
@@ -371,6 +374,7 @@ public class GameManager {
 
     public void showTime(ScreenManager.Key level) {
         if (!online) return;
+        if (Gdx.app.getType() != Application.ApplicationType.Android) return;
 
         switch (level) {
             case LEVEL_1: serviceManager.showScore(PlayServices.Leaderboard.Level1); break;
@@ -380,6 +384,20 @@ public class GameManager {
             case LEVEL_5: serviceManager.showScore(PlayServices.Leaderboard.Level5); break;
             default:
         }
+    }
+
+    public void signIn() {
+        if (!online) return;
+        if (Gdx.app.getType() != Application.ApplicationType.Android) return;
+
+        serviceManager.signIn();
+    }
+
+    public void signOut() {
+        if (!online) return;
+        if (Gdx.app.getType() != Application.ApplicationType.Android) return;
+
+        serviceManager.signOut();
     }
 
 }

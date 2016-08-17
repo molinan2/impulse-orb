@@ -33,7 +33,7 @@ public class Credits extends Menu {
         setTitle("CREDITS");
 
         authors = new Credit(getAssetManager(), "AUTHORS", AUTHORS);
-        authors.addLink("Juan M. Molina's blog", "https://jmolinan.wordpress.com/");
+        authors.addLink("Juan M. Molina's blog", "https://drefactor.wordpress.com");
 
         license = new Credit(getAssetManager(), "LICENSE", LICENSE);
         license.addLink("GPLv3 license", "https://www.gnu.org/licenses/gpl-3.0.en.html");

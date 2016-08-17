@@ -87,9 +87,9 @@ public class Options extends Menu {
                 getGameManager().fetchOptions();
 
                 if (getPrefsManager().getOptionOnline())
-                    getSuperManager().getServiceManager().signIn();
+                    getSuperManager().getGameManager().signIn();
                 else
-                    getSuperManager().getServiceManager().signOut();
+                    getSuperManager().getGameManager().signOut();
             }
         });
 
