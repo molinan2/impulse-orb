@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.utils.Utils;
+import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.ui.Title;
 

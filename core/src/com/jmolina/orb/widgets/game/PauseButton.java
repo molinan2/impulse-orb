@@ -3,7 +3,7 @@ package com.jmolina.orb.widgets.game;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.jmolina.orb.utils.Utils;
+import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.widgets.BaseGroup;
 

@@ -1,4 +1,4 @@
-package com.jmolina.orb.utils;
+package com.jmolina.orb.var;
 
 import com.badlogic.gdx.math.Vector2;
 import com.jmolina.orb.var.Var;

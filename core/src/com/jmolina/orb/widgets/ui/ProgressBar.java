@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.jmolina.orb.utils.Utils;
+import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.var.Font;

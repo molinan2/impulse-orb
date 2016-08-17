@@ -32,7 +32,7 @@ import com.jmolina.orb.situations.SituationFactory;
 import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
 import com.jmolina.orb.stages.ParallaxStage;
-import com.jmolina.orb.utils.Utils;
+import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.misc.DebugTime;
 
@@ -223,8 +223,8 @@ public class Level extends BaseScreen {
         syncActors();
         postUpdate();
         draw();
-        checkSwitching();
         checkAchievements();
+        checkSwitching();
 
         if (DEBUG_TIME) debugTime.end();
     }

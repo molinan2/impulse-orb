@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.data.Displacement;
 import com.jmolina.orb.data.Rotation;
 import com.jmolina.orb.interfaces.Reseteable;
-import com.jmolina.orb.utils.Utils;
+import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;

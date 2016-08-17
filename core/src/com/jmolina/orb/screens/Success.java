@@ -9,7 +9,7 @@ import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.utils.Utils;
+import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.ui.BigText;
 import com.jmolina.orb.widgets.ui.Heading;

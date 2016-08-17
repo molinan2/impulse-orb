@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.screens.Level;
-import com.jmolina.orb.utils.Utils;
+import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.widgets.game.Gauge;
 import com.jmolina.orb.widgets.game.HUDBackground;
 import com.jmolina.orb.widgets.game.Curtain;

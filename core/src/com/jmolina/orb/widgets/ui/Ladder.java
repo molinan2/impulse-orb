@@ -13,7 +13,7 @@ import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.var.Asset;
-import com.jmolina.orb.utils.Utils;
+import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
