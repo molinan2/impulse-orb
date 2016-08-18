@@ -25,7 +25,6 @@ import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.listeners.ContactHandler;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
-import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.situations.SituationFactory;
 import com.jmolina.orb.stages.GestureStage;
@@ -448,8 +447,8 @@ public class Level extends BaseScreen {
         };
 
         getHUDStage().addAction(sequence(
-                Actions.addAction(fadeIn(BaseScreen.TRANSITION_DURATION, Interpolation.pow2), getBackgroundStage().getRoot()),
-                delay(BaseScreen.TRANSITION_DURATION),
+                Actions.addAction(fadeIn(TRANSITION_DURATION, Interpolation.pow2), getBackgroundStage().getRoot()),
+                delay(TRANSITION_DURATION),
                 transition(Flow.LEAVING, hierarchy),
                 run(flagSwitch)
         ));
@@ -846,7 +845,7 @@ public class Level extends BaseScreen {
 
         getHUDStage().addAction(sequence(
                 alpha(0),
-                scaleTo(BaseScreen.SIZE_SMALL, BaseScreen.SIZE_SMALL),
+                scaleTo(SIZE_SMALL, SIZE_SMALL),
                 transition(Flow.ENTERING, getHierarchy()),
                 Actions.addAction(sequence(alpha(1), fadeOut(BACKGROUND_FADE_TIME)), getBackgroundStage().getRoot()),
                 delay(0.5f * BACKGROUND_FADE_TIME),

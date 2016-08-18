@@ -7,11 +7,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Stage que ejecuta una operación cuando se pulsa la tecla BACK
  */
-public class BackableStage extends Stage {
+public class MainStage extends Stage {
 
     private Runnable operation;
 
-    public BackableStage(Viewport viewport, Runnable operation) {
+    public MainStage(Viewport viewport, Runnable operation) {
         super(viewport);
         this.operation = operation;
 

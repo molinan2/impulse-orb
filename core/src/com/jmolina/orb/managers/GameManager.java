@@ -387,14 +387,12 @@ public class GameManager {
     }
 
     public void signIn() {
-        if (!online) return;
         if (Gdx.app.getType() != Application.ApplicationType.Android) return;
 
         serviceManager.signIn();
     }
 
     public void signOut() {
-        if (!online) return;
         if (Gdx.app.getType() != Application.ApplicationType.Android) return;
 
         serviceManager.signOut();

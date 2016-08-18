@@ -4,7 +4,6 @@ import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.jmolina.orb.elements.Element;
-import com.jmolina.orb.var.Var;
 
 /**
  * Una lista de elementos creados y configurados, posicionados respecto a (0,0)
@@ -83,14 +82,9 @@ public abstract class Situation {
         return this.world;
     }
 
-    public synchronized <T> T getAsset (String fileName, Class<T> type) {
-        return getAssetManager().get(fileName, type);
-    }
-
     public void dispose() {
-        for (Element element : getElements()) {
+        for (Element element : getElements())
             element.dispose();
-        }
 
         assetManager = null;
         world = null;

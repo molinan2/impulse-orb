@@ -19,9 +19,8 @@ import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.interfaces.Backable;
-import com.jmolina.orb.runnables.UIRunnable;
 import com.jmolina.orb.stages.BackgroundStage;
-import com.jmolina.orb.stages.BackableStage;
+import com.jmolina.orb.stages.MainStage;
 import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -32,12 +31,12 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public class BaseScreen extends ScreenAdapter implements Backable {
 
-    public static final float TRANSITION_DURATION = 0.3f;
-    public static final Interpolation INTERPOLATION_IN = Interpolation.pow2In;
-    public static final Interpolation INTERPOLATION_OUT = Interpolation.pow2Out;
-    public static final float SCALE_FACTOR = 1.35f;
-    public static final float SIZE_SMALL = 1 / SCALE_FACTOR;
-    public static final float SIZE_LARGE = SCALE_FACTOR;
+    protected final float TRANSITION_DURATION = 0.3f;
+    private final Interpolation INTERPOLATION_IN = Interpolation.pow2In;
+    private final Interpolation INTERPOLATION_OUT = Interpolation.pow2Out;
+    private final float SCALE_FACTOR = 1.35f;
+    protected final float SIZE_SMALL = 1 / SCALE_FACTOR;
+    protected final float SIZE_LARGE = SCALE_FACTOR;
 
     public static final float VIEWPORT_WIDTH = Var.SCREEN_WIDTH;
     public static final float VIEWPORT_HEIGHT = Var.SCREEN_HEIGHT;
@@ -53,7 +52,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
 
     private SuperManager superManager;
     private Viewport mainViewport, backgroundViewport;
-    private BackableStage mainStage;
+    private MainStage mainStage;
     private BackgroundStage backgroundStage;
     private Hierarchy hierarchy;
     private InputMultiplexer multiplexer;
@@ -71,7 +70,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         screenFlag = new ScreenFlag();
         mainViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         backgroundViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        mainStage = new BackableStage(mainViewport, getBackRunnable());
+        mainStage = new MainStage(mainViewport, getBackRunnable());
         backgroundStage = new BackgroundStage(getAssetManager(), backgroundViewport);
         multiplexer = new InputMultiplexer();
 
@@ -375,8 +374,8 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     private Action appearAction() {
         return new SequenceAction(
                 alpha(0f),
-                scaleTo(BaseScreen.SIZE_LARGE, BaseScreen.SIZE_LARGE),
-                fadeIn(BaseScreen.TRANSITION_DURATION, BaseScreen.INTERPOLATION_IN)
+                scaleTo(SIZE_LARGE, SIZE_LARGE),
+                fadeIn(TRANSITION_DURATION, INTERPOLATION_IN)
         );
     }
 
@@ -384,7 +383,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         return new SequenceAction(
                 alpha(1f),
                 scaleTo(1f, 1f),
-                fadeOut(BaseScreen.TRANSITION_DURATION, BaseScreen.INTERPOLATION_IN)
+                fadeOut(TRANSITION_DURATION, INTERPOLATION_IN)
         );
     }
 
