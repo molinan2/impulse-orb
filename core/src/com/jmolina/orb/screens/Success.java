@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.jmolina.orb.interfaces.PlayServices;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.data.Attempt;
 import com.jmolina.orb.interfaces.SuperManager;
@@ -85,7 +86,7 @@ public class Success extends BaseScreen {
         getGameManager().play(GameManager.Track.Success);
 
         if (numericRating == GameManager.RATING_DEVELOPER)
-            getGameManager().unlockFastFuriousAchievement(getThisKey());
+            unlockFastFuriousAchievement(getThisKey());
     }
 
     /**
@@ -114,6 +115,17 @@ public class Success extends BaseScreen {
             case SUCCESS_4: return getAsset(Asset.UI_SUCCESS_COVER_4, Texture.class);
             case SUCCESS_5: return getAsset(Asset.UI_SUCCESS_COVER_5, Texture.class);
             default: return getAsset(Asset.UI_SUCCESS_COVER_1, Texture.class);
+        }
+    }
+
+    public void unlockFastFuriousAchievement(ScreenManager.Key key) {
+        switch (key) {
+            case SUCCESS_1: getGameManager().unlockAchievement(PlayServices.Achievement.FastFurious1); break;
+            case SUCCESS_2: getGameManager().unlockAchievement(PlayServices.Achievement.FastFurious2); break;
+            case SUCCESS_3: getGameManager().unlockAchievement(PlayServices.Achievement.FastFurious3); break;
+            case SUCCESS_4: getGameManager().unlockAchievement(PlayServices.Achievement.FastFurious4); break;
+            case SUCCESS_5: getGameManager().unlockAchievement(PlayServices.Achievement.FastFurious5); break;
+            default:
         }
     }
 

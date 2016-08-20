@@ -816,27 +816,37 @@ public class Level extends BaseScreen {
      * Comprobación y desbloqueo de los logros que se obtienen en mitad del gameplay.
      */
     private void checkAchievements() {
-        if (!achievedRobocop) {
-            if (getStats().getCurrentTime() > GameManager.ACHIEVEMENT_ROBOCOP_TIME) {
-                if (getThisKey() != ScreenManager.Key.LEVEL_1) {
-                    achievedRobocop = true;
-                    getGameManager().unlockAchievement(PlayServices.Achievement.Robocop);
-                }
+        checkRobocopAchievement();
+        checkOver9000Achievement();
+        checkHyperdriveAchievement();
+    }
+
+    private void checkRobocopAchievement() {
+        if (achievedRobocop) return;
+
+        if (getStats().getCurrentTime() > GameManager.ACHIEVEMENT_ROBOCOP_TIME) {
+            if (getThisKey() != ScreenManager.Key.LEVEL_1) {
+                achievedRobocop = true;
+                getGameManager().unlockAchievement(PlayServices.Achievement.Robocop);
             }
         }
+    }
 
-        if (!achievedItsOver9000) {
-            if (getStats().getCurrentDistance() > GameManager.ACHIEVEMENT_OVER9000_DISTANCE) {
-                achievedItsOver9000 = true;
-                getGameManager().unlockAchievement(PlayServices.Achievement.ItsOver9000);
-            }
+    private void checkOver9000Achievement() {
+        if (achievedItsOver9000) return;
+
+        if (getStats().getCurrentDistance() > GameManager.ACHIEVEMENT_OVER9000_DISTANCE) {
+            achievedItsOver9000 = true;
+            getGameManager().unlockAchievement(PlayServices.Achievement.ItsOver9000);
         }
+    }
 
-        if (!achievedHyperdrive) {
-            if (getOrb().getBody().getLinearVelocity().len2() > GameManager.ACHIEVEMENT_HYPERDRIVE_SPEED2) {
-                achievedHyperdrive = true;
-                getGameManager().unlockAchievement(PlayServices.Achievement.Hyperdrive);
-            }
+    private void checkHyperdriveAchievement() {
+        if (achievedHyperdrive) return;
+
+        if (getOrb().getBody().getLinearVelocity().len2() > GameManager.ACHIEVEMENT_HYPERDRIVE_SPEED2) {
+            achievedHyperdrive = true;
+            getGameManager().unlockAchievement(PlayServices.Achievement.Hyperdrive);
         }
     }
 
@@ -908,7 +918,7 @@ public class Level extends BaseScreen {
 
         unsetInputProcessor();
         getGameManager().play(GameManager.Fx.Exit);
-        getGameManager().unlockLevelAchievement(getThisKey());
+        unlockLevelAchievement(getThisKey());
         getOrb().applyOutroAction(toSuccess);
     }
 
@@ -1064,6 +1074,17 @@ public class Level extends BaseScreen {
         getOrb().setOverloaded(true);
         getHUDStage().setGaugeOverload(true);
         getGameManager().play(GameManager.Fx.Warning);
+    }
+
+    public void unlockLevelAchievement(ScreenManager.Key key) {
+        switch (key) {
+            case LEVEL_1: getGameManager().unlockAchievement(PlayServices.Achievement.KnowHow); break;
+            case LEVEL_2: getGameManager().unlockAchievement(PlayServices.Achievement.TheRealDeal); break;
+            case LEVEL_3: getGameManager().unlockAchievement(PlayServices.Achievement.BecomingAnExpert); break;
+            case LEVEL_4: getGameManager().unlockAchievement(PlayServices.Achievement.AHeroWasBorn); break;
+            case LEVEL_5: getGameManager().unlockAchievement(PlayServices.Achievement.OneAboveAll); break;
+            default:
+        }
     }
 
 }

@@ -307,38 +307,6 @@ public class GameManager {
     }
 
     /**
-     * Desbloquea un logro de nivel (nivel X completado).
-     *
-     * @param level Nivel
-     */
-    public void unlockLevelAchievement(ScreenManager.Key level) {
-        switch (level) {
-            case LEVEL_1: unlockAchievement(PlayServices.Achievement.KnowHow); break;
-            case LEVEL_2: unlockAchievement(PlayServices.Achievement.TheRealDeal); break;
-            case LEVEL_3: unlockAchievement(PlayServices.Achievement.BecomingAnExpert); break;
-            case LEVEL_4: unlockAchievement(PlayServices.Achievement.AHeroWasBorn); break;
-            case LEVEL_5: unlockAchievement(PlayServices.Achievement.OneAboveAll); break;
-            default:
-        }
-    }
-
-    /**
-     * Desbloquea un logro "Fast & Furious" (mejor tiempo que el desarrollador en el nivel X).
-     *
-     * @param level Nivel
-     */
-    public void unlockFastFuriousAchievement(ScreenManager.Key level) {
-        switch (level) {
-            case LEVEL_1: unlockAchievement(PlayServices.Achievement.FastFurious1); break;
-            case LEVEL_2: unlockAchievement(PlayServices.Achievement.FastFurious2); break;
-            case LEVEL_3: unlockAchievement(PlayServices.Achievement.FastFurious3); break;
-            case LEVEL_4: unlockAchievement(PlayServices.Achievement.FastFurious4); break;
-            case LEVEL_5: unlockAchievement(PlayServices.Achievement.FastFurious5); break;
-            default:
-        }
-    }
-
-    /**
      * Desbloquea un logro de Google Play Games.
      *
      * @param achievement Logro
