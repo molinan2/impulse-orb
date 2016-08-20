@@ -918,7 +918,7 @@ public class Level extends BaseScreen {
 
         unsetInputProcessor();
         getGameManager().play(GameManager.Fx.Exit);
-        unlockLevelAchievement(getThisKey());
+        unlockLevelAchievement();
         getOrb().applyOutroAction(toSuccess);
     }
 
@@ -1076,8 +1076,11 @@ public class Level extends BaseScreen {
         getGameManager().play(GameManager.Fx.Warning);
     }
 
-    public void unlockLevelAchievement(ScreenManager.Key key) {
-        switch (key) {
+    /**
+     * Desbloquea el logro de nivel correspondiente a este nivel
+     */
+    public void unlockLevelAchievement() {
+        switch (getThisKey()) {
             case LEVEL_1: getGameManager().unlockAchievement(PlayServices.Achievement.KnowHow); break;
             case LEVEL_2: getGameManager().unlockAchievement(PlayServices.Achievement.TheRealDeal); break;
             case LEVEL_3: getGameManager().unlockAchievement(PlayServices.Achievement.BecomingAnExpert); break;

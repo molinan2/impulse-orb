@@ -86,7 +86,7 @@ public class Success extends BaseScreen {
         getGameManager().play(GameManager.Track.Success);
 
         if (numericRating == GameManager.RATING_DEVELOPER)
-            unlockFastFuriousAchievement(getThisKey());
+            unlockFastFuriousAchievement();
     }
 
     /**
@@ -118,8 +118,11 @@ public class Success extends BaseScreen {
         }
     }
 
-    public void unlockFastFuriousAchievement(ScreenManager.Key key) {
-        switch (key) {
+    /**
+     * Desbloquea el logro Fast & Furious correspondiente al nivel de esta pantalla
+     */
+    public void unlockFastFuriousAchievement() {
+        switch (getThisKey()) {
             case SUCCESS_1: getGameManager().unlockAchievement(PlayServices.Achievement.FastFurious1); break;
             case SUCCESS_2: getGameManager().unlockAchievement(PlayServices.Achievement.FastFurious2); break;
             case SUCCESS_3: getGameManager().unlockAchievement(PlayServices.Achievement.FastFurious3); break;
