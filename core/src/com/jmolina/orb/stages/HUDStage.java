@@ -1,6 +1,7 @@
 package com.jmolina.orb.stages;
 
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
+import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.widgets.game.Gauge;
@@ -29,6 +31,9 @@ public class HUDStage extends Stage {
     private final Interpolation FADE_INTERPOLATION = Interpolation.pow2;
     private final float HUD_BACKGROUND_X = -6f;
     private final float HUD_BACKGROUND_Y = 16f;
+
+    private final float BACKGROUND_FADE_TIME = 0.5f;
+    public static final float INTRO_SEQUENCE_TIME = 1f;
 
     private Level level;
     private Curtain curtain;
@@ -189,7 +194,7 @@ public class HUDStage extends Stage {
                 run(reset),
                 run(intro),
                 Actions.addAction(fadeOut(OVERLAY_FADE_TIME, FADE_INTERPOLATION), curtain),
-                delay(Math.max(OVERLAY_FADE_TIME, Level.INTRO_SEQUENCE_TIME)),
+                delay(Math.max(OVERLAY_FADE_TIME, INTRO_SEQUENCE_TIME)),
                 run(toggleButton),
                 run(enableTouchables),
                 run(unlock)
@@ -208,15 +213,25 @@ public class HUDStage extends Stage {
                 run(reset),
                 run(intro),
                 Actions.addAction(fadeOut(OVERLAY_FADE_TIME, FADE_INTERPOLATION), curtain),
-                delay(Math.max(OVERLAY_FADE_TIME, Level.INTRO_SEQUENCE_TIME)),
+                delay(Math.max(OVERLAY_FADE_TIME, INTRO_SEQUENCE_TIME)),
                 run(toggleButton),
                 run(enableTouchables),
                 run(unlock)
         ));
     }
 
-    public void init() {
-
+    public void init(Action transitionAction, Stage backgroundStage, Runnable orbIntro, Runnable setAsProcessor, Runnable unlock) {
+        this.addAction(sequence(
+                alpha(0),
+                scaleTo(BaseScreen.SIZE_SMALL, BaseScreen.SIZE_SMALL),
+                transitionAction,
+                Actions.addAction(sequence(alpha(1), fadeOut(BACKGROUND_FADE_TIME)), backgroundStage.getRoot()),
+                delay(0.5f * BACKGROUND_FADE_TIME),
+                run(orbIntro),
+                delay(INTRO_SEQUENCE_TIME),
+                run(setAsProcessor),
+                run(unlock)
+        ));
     }
 
     public void updateTimer() {

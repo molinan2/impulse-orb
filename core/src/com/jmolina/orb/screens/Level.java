@@ -56,9 +56,6 @@ public class Level extends BaseScreen {
     private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     private DebugTime debugTime = new DebugTime(getAssetManager());
 
-    public static final float INTRO_SEQUENCE_TIME = 1f;
-
-    private final float BACKGROUND_FADE_TIME = 0.5f;
     private final float GESTURE_HALF_TAP_SQUARE_SIZE = 13.0f;
     private final float GESTURE_TAP_COUNT_INTERVAL = 0.4f;
     private final float GESTURE_LONG_PRESS_DURATION = 1.1f;
@@ -847,18 +844,13 @@ public class Level extends BaseScreen {
         stats.newTry();
         getBackgroundStage().addAction(alpha(1));
         getOrb().getActor().addAction(alpha(0));
-
-        getHUDStage().addAction(sequence(
-                alpha(0),
-                scaleTo(SIZE_SMALL, SIZE_SMALL),
+        getHUDStage().init(
                 getTransitionAction(Flow.ENTERING, getHierarchy()),
-                Actions.addAction(sequence(alpha(1), fadeOut(BACKGROUND_FADE_TIME)), getBackgroundStage().getRoot()),
-                delay(0.5f * BACKGROUND_FADE_TIME),
-                run(orbIntro),
-                delay(INTRO_SEQUENCE_TIME),
-                run(getSetAsInputProcessorRunnable()),
-                run(unlock)
-        ));
+                getBackgroundStage(),
+                orbIntro,
+                getSetAsInputProcessorRunnable(),
+                unlock
+        );
     }
 
     /**
