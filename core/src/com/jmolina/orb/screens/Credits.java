@@ -21,12 +21,7 @@ public class Credits extends Menu {
             "\n" +
             "To the Free Software community.";
 
-    private Credit tools;
-    private Credit authors;
-    private Credit license;
-    private Credit libraries;
-    private Credit resources;
-    private Credit thanks;
+    private Credit tools, authors, license, libraries, resources, thanks;
 
     public Credits(SuperManager superManager) {
         super(superManager);

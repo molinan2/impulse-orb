@@ -9,7 +9,7 @@ public class ScreenFlag {
     private ScreenManager.Key screen;
     private BaseScreen.Hierarchy hierarchy;
 
-    public void Flag() {
+    public ScreenFlag() {
         this.flag = false;
     }
 

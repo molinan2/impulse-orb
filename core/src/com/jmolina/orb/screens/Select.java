@@ -35,10 +35,10 @@ public class Select extends Menu {
         level5.setOnClickOperation(visitor(LAUNCH_5));
 
         level1.unlock();
-        if (getPrefsManager().levelCompleted(LEVEL_1)) level2.unlock();
-        if (getPrefsManager().levelCompleted(LEVEL_2)) level3.unlock();
-        if (getPrefsManager().levelCompleted(LEVEL_3)) level4.unlock();
-        if (getPrefsManager().levelCompleted(LEVEL_4)) level5.unlock();
+        if (getPrefsManager().isLevelCompleted(LEVEL_1)) level2.unlock();
+        if (getPrefsManager().isLevelCompleted(LEVEL_2)) level3.unlock();
+        if (getPrefsManager().isLevelCompleted(LEVEL_3)) level4.unlock();
+        if (getPrefsManager().isLevelCompleted(LEVEL_4)) level5.unlock();
 
 
         add(level1);
@@ -46,8 +46,6 @@ public class Select extends Menu {
         add(level3);
         add(level4);
         add(level5);
-        // add(levelTest1);
-        // add(levelTest2);
     }
 
     private Visitor visitor(final ScreenManager.Key screen) {

@@ -116,7 +116,7 @@ public class Card extends BaseGroup {
         padlock.addAction(alpha(0f));
     }
 
-    public boolean isAvailable() {
+    private boolean isAvailable() {
         return available;
     }
 

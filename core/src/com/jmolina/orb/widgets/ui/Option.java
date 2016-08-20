@@ -15,7 +15,7 @@ import com.jmolina.orb.widgets.BaseGroup;
 public class Option extends BaseGroup {
 
     private Label label;
-    private com.jmolina.orb.widgets.ui.Checkbox checkbox;
+    private Checkbox checkbox;
 
     public Option(AssetManager am, String name) {
         this(am, name, true);
@@ -36,7 +36,7 @@ public class Option extends BaseGroup {
         label.setPosition(0f, 0f);
         label.setHeight(Utils.cell(1.5f));
 
-        checkbox = new com.jmolina.orb.widgets.ui.Checkbox(getAssetManager(), checked);
+        checkbox = new Checkbox(getAssetManager(), checked);
         checkbox.setPosition(Utils.cell(8.5f), 0f);
 
         addActor(label);

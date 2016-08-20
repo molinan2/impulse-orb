@@ -11,22 +11,9 @@ import static com.jmolina.orb.managers.PrefsManager.*;
 
 public class Stats extends Menu {
 
-    private Stat played;
-    private Stat distance;
-    private Stat fails;
-    private Stat successes;
-    private Stat avgTimeAlive;
-    private Stat avgDistanceAlive;
-    private Stat minTimeAlive;
-    private Stat maxTimeAlive;
-    private Stat minDistanceAlive;
-    private Stat maxDistanceAlive;
-
-    private Heading generalHeading;
-    private Heading attemptsHeading;
-    private Heading timeHeading;
-    private Heading distanceHeading;
-
+    private Stat played, distance, fails, successes, avgTimeAlive, avgDistanceAlive,
+            minTimeAlive, minDistanceAlive, maxTimeAlive, maxDistanceAlive;
+    private Heading generalHeading, attemptsHeading, timeHeading, distanceHeading;
     private Preferences prefs;
 
     public Stats(SuperManager superManager) {

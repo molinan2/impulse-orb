@@ -13,11 +13,7 @@ import static com.jmolina.orb.managers.ScreenManager.Key.*;
 public class Main extends BaseScreen {
 
     private GameTitle gameTitle;
-    private MainButton play;
-    private MainButton options;
-    private MainButton stats;
-    private MainButton credits;
-    private MainButton exit;
+    private MainButton play, options, stats, credits, exit;
     private Notice notice;
 
     public Main(SuperManager superManager) {

@@ -1,4 +1,4 @@
-package com.jmolina.orb.widgets.misc;
+package com.jmolina.orb.widgets.debug;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

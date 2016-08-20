@@ -1,4 +1,4 @@
-package com.jmolina.orb.actors;
+package com.jmolina.orb.widgets;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,7 +15,7 @@ public class BaseActor extends Actor {
 
     private TextureRegion region;
 
-    public BaseActor () {
+    public BaseActor() {
         setPosition(0f, 0f);
         setScale(1.0f, 1.0f);
         setVisible(true);

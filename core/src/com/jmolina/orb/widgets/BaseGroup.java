@@ -15,25 +15,21 @@ public class BaseGroup extends Group {
     private Image frame;
 
     public BaseGroup(AssetManager am) {
-        setAssetManager(am);
+        assetManager = am;
         setTransform(true); // Transform=false improves drawing performance
         setScale(1.0f, 1.0f);
         setOrigin(0f, 0f);
     }
 
-    public AssetManager getAssetManager() {
+    protected AssetManager getAssetManager() {
         return this.assetManager;
     }
 
-    public void setAssetManager(AssetManager am) {
-        this.assetManager = am;
-    }
-
-    public synchronized <T> T getAsset (String fileName, Class<T> type) {
+    protected synchronized <T> T getAsset (String fileName, Class<T> type) {
         return getAssetManager().get(fileName, type);
     }
 
-    public TextureRegion findRegion(String name) {
+    protected TextureRegion findRegion(String name) {
         return getAssetManager().getGameAtlas().findRegion(name);
     }
 

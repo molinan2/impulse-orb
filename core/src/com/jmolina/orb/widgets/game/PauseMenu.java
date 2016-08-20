@@ -1,4 +1,4 @@
-package com.jmolina.orb.widgets.ui;
+package com.jmolina.orb.widgets.game;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -7,6 +7,9 @@ import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.*;
+import com.jmolina.orb.widgets.ui.Heading;
+import com.jmolina.orb.widgets.ui.MainButton;
+import com.jmolina.orb.widgets.ui.Stat;
 
 public class PauseMenu extends BaseGroup {
 

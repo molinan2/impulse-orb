@@ -32,7 +32,7 @@ import com.jmolina.orb.stages.HUDStage;
 import com.jmolina.orb.stages.ParallaxStage;
 import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Var;
-import com.jmolina.orb.widgets.misc.DebugTime;
+import com.jmolina.orb.widgets.debug.DebugTime;
 
 import java.util.ArrayList;
 
@@ -160,7 +160,7 @@ public class Level extends BaseScreen {
         orbIntro = new Runnable() {
             @Override
             public void run() {
-                getOrb().intro();
+                getOrb().applyIntroAction();
                 getGameManager().play(GameManager.Fx.Init);
             }
         };
@@ -258,7 +258,7 @@ public class Level extends BaseScreen {
     /**
      * Calcula el índice adyacente en función del actual
      *
-     * @param current Índice de la situación actual
+     * @param current Indice de la situacion actual
      */
     private int calculateAdjacent(int current) {
         int adjacent;
@@ -283,8 +283,8 @@ public class Level extends BaseScreen {
      * Inicializa la visibilidad: crea la situación actual y la añade al nivel. Si procede, crea la
      * situación adyacente y la añade al nivel.
      *
-     * @param current Índice de la situación actual
-     * @param adjacent Índice de la situación adyacente
+     * @param current Indice de la situacion actual
+     * @param adjacent Indice de la situacion adyacente
      */
     private void initializeVisibility(int current, int adjacent) {
         Class currentClass = situations.get(current);
@@ -338,7 +338,7 @@ public class Level extends BaseScreen {
     /**
      * Se destruye la anterior adyacente, se instancia una nueva y se añade al nivel.
      *
-     * @param adjacent Índice de la situación adyacente
+     * @param adjacent Indice de la situacion adyacente
      */
     private void newAdjacent(int adjacent) {
         if (adjacentSituation != null)
@@ -449,7 +449,7 @@ public class Level extends BaseScreen {
         getHUDStage().addAction(sequence(
                 Actions.addAction(fadeIn(TRANSITION_DURATION, Interpolation.pow2), getBackgroundStage().getRoot()),
                 delay(TRANSITION_DURATION),
-                transition(Flow.LEAVING, hierarchy),
+                getTransitionAction(Flow.LEAVING, hierarchy),
                 run(flagSwitch)
         ));
     }
@@ -459,7 +459,7 @@ public class Level extends BaseScreen {
      *
      * @return {@link #pixelsPerMeter}
      */
-    public float getPixelsPerMeter() {
+    private float getPixelsPerMeter() {
         return pixelsPerMeter;
     }
 
@@ -468,7 +468,7 @@ public class Level extends BaseScreen {
      *
      * @return {@link #world}
      */
-    public World getWorld() {
+    private World getWorld() {
         return world;
     }
 
@@ -477,7 +477,7 @@ public class Level extends BaseScreen {
      *
      * @return {@link #parallaxStage}
      */
-    public ParallaxStage getParallaxStage() {
+    private ParallaxStage getParallaxStage() {
         return parallaxStage;
     }
 
@@ -486,7 +486,7 @@ public class Level extends BaseScreen {
      *
      * @return {@link #gestureStage}
      */
-    public GestureStage getGestureStage() {
+    private GestureStage getGestureStage() {
         return gestureStage;
     }
 
@@ -495,7 +495,7 @@ public class Level extends BaseScreen {
      *
      * @return {@link #hudStage}
      */
-    public HUDStage getHUDStage() {
+    private HUDStage getHUDStage() {
         return hudStage;
     }
 
@@ -504,14 +504,14 @@ public class Level extends BaseScreen {
      *
      * @return {@link #stats}
      */
-    public GameStats getStats() {
+    private GameStats getStats() {
         return stats;
     }
 
     /**
      * Guarda la pantalla de éxito correspondiente a este nivel
      */
-    public void setSuccessScreen(ScreenManager.Key key) {
+    protected void setSuccessScreen(ScreenManager.Key key) {
         successScreen = key;
     }
 
@@ -520,7 +520,7 @@ public class Level extends BaseScreen {
      *
      * @return {@link #successScreen}
      */
-    public ScreenManager.Key getSuccessScreen() {
+    private ScreenManager.Key getSuccessScreen() {
         return successScreen;
     }
 
@@ -529,7 +529,7 @@ public class Level extends BaseScreen {
      *
      * @param orb {@link Orb}
      */
-    public void setOrb(Orb orb) {
+    private void setOrb(Orb orb) {
         addMainActor(orb.getActor());
         orb.syncActor(worldViewport);
         orb.getActor().setZIndex(Z_INDEX_ORB);
@@ -551,7 +551,7 @@ public class Level extends BaseScreen {
      * @param x Coordenada x del mundo
      * @param y Coordenada y del mundo
      */
-    public void setOrbStartPosition (float x, float y) {
+    protected void setOrbStartPosition (float x, float y) {
         getOrb().setPosition(x, y);
         orbStartPosition.set(x, y);
         lastOrbPosition.set(x, y);
@@ -598,7 +598,7 @@ public class Level extends BaseScreen {
      *
      * @return SnapshotArray de {@link Situation}s
      */
-    public SnapshotArray<Situation> getVisibleSituations() {
+    private SnapshotArray<Situation> getVisibleSituations() {
         SnapshotArray<Situation> situations = new SnapshotArray<Situation>();
         situations.add(currentSituation);
         situations.add(adjacentSituation);
@@ -616,7 +616,7 @@ public class Level extends BaseScreen {
      *
      * Si sobran los recursos, es más recomendable usar un timestep fijo.
      */
-    public void stepPhysics(float delta) {
+    private void stepPhysics(float delta) {
         if (isLocked()) return;
 
         if (WOLRD_ACCUMULATED_STEP) accumulatedPhysics(delta);
@@ -674,7 +674,7 @@ public class Level extends BaseScreen {
      * Sincroniza la posición y rotación de los actores con las de sus cuerpos.
      * Es necesaria en todos los casos, para que los actores se correspondan con el scroll.
      */
-    public void syncActors() {
+    private void syncActors() {
         for (Situation situation : getVisibleSituations()) {
             if (situation == null) continue;
             for (Element element : situation.getElements()) {
@@ -846,7 +846,7 @@ public class Level extends BaseScreen {
         getHUDStage().addAction(sequence(
                 alpha(0),
                 scaleTo(SIZE_SMALL, SIZE_SMALL),
-                transition(Flow.ENTERING, getHierarchy()),
+                getTransitionAction(Flow.ENTERING, getHierarchy()),
                 Actions.addAction(sequence(alpha(1), fadeOut(BACKGROUND_FADE_TIME)), getBackgroundStage().getRoot()),
                 delay(0.5f * BACKGROUND_FADE_TIME),
                 run(orbIntro),
@@ -912,7 +912,7 @@ public class Level extends BaseScreen {
         unsetInputProcessor();
         getGameManager().play(GameManager.Fx.Exit);
         getGameManager().unlockLevelAchievement(getThisKey());
-        getOrb().outro(toSuccess);
+        getOrb().applyOutroAction(toSuccess);
     }
 
     /**
@@ -953,10 +953,6 @@ public class Level extends BaseScreen {
             getGameManager().play(GameManager.Fx.WallCollision);
         else
             getGameManager().play(GameManager.Fx.ElementCollision);
-    }
-
-    public void collide() {
-        collide(false);
     }
 
     /**

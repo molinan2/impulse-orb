@@ -277,7 +277,7 @@ public class GameManager {
     /**
      *
      *
-     * @param levelIndex Índice de nivel en número natural: {1,5}
+     * @param levelIndex Indice de nivel en numero natural: {1,5}
      * @return
      */
     public ArrayList<Float> getTimes(int levelIndex) {

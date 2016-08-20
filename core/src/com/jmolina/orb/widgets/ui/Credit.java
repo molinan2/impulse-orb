@@ -19,8 +19,7 @@ import java.util.ArrayList;
 
 public class Credit extends BaseGroup {
 
-    private Label header;
-    private Label body;
+    private Label header, body;
     private ArrayList<Label> links;
 
     public Credit(AssetManager am, String header, String body) {

@@ -11,10 +11,7 @@ import com.jmolina.orb.widgets.ui.MultiOption;
 
 public class Options extends Menu {
 
-    private Option music;
-    private Option sound;
-    private Option vibration;
-    private Option online;
+    private Option music, sound, vibration, online;
     private MultiOption zoom;
 
     private PrefsManager prefsManager;

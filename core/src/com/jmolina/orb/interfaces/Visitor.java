@@ -6,5 +6,7 @@ package com.jmolina.orb.interfaces;
  * It could handle an Object parameter: run(Object object)
  */
 public interface Visitor {
+
     void run();
+
 }

@@ -5,6 +5,7 @@ import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
+import com.jmolina.orb.widgets.game.Fragments;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -31,14 +32,14 @@ public class Orb extends Element {
 
     private boolean frozen, overloaded;
     private float heat, naturalScale, freezeTime, overloadTime;
-    private com.jmolina.orb.actors.Fragments fragments;
+    private Fragments fragments;
 
     public Orb(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter, Geometry.CIRCLE, Flavor.GREEN, 1f, 1f, 6, 2, 0);
 
         heat = 0f;
         frozen = overloaded = false;
-        fragments = new com.jmolina.orb.actors.Fragments(am);
+        fragments = new Fragments(am);
         naturalScale = pixelsPerMeter * SCALE_CORRECTION * DIAMETER / fragments.getWidth();
         fragments.setScale(naturalScale);
         setActor(fragments);
@@ -64,7 +65,7 @@ public class Orb extends Element {
         getBody().setAngularDamping(0);
     }
 
-    public void resetVelocity() {
+    private void resetVelocity() {
         getBody().setLinearVelocity(0, 0);
         getBody().setAngularVelocity(0);
     }
@@ -91,7 +92,7 @@ public class Orb extends Element {
         heat = level;
     }
 
-    public void resetHeat () {
+    private void resetHeat () {
         setHeat(HEAT_MIN);
         setOverloaded(false);
     }
@@ -121,7 +122,7 @@ public class Orb extends Element {
         return naturalScale;
     }
 
-    public void resetAngle() {
+    private void resetAngle() {
         getActor().setRotation(0);
         getBody().setTransform(getBody().getPosition().x, getBody().getPosition().y, 0);
     }
@@ -135,7 +136,7 @@ public class Orb extends Element {
         unfreeze();
     }
 
-    public void intro() {
+    public void applyIntroAction() {
         getActor().addAction(sequence(
                 parallel(
                         scaleBy(4 * this.getNaturalScale(), 4 * this.getNaturalScale(), 0),
@@ -150,7 +151,7 @@ public class Orb extends Element {
         ));
     }
 
-    public void outro(Runnable toSuccess) {
+    public void applyOutroAction(Runnable toSuccess) {
         getActor().addAction(sequence(
                 parallel(
                         rotateBy(1080, OUTRO_TIME, Interpolation.pow2Out),

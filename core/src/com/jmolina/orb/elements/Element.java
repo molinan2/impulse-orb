@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.jmolina.orb.actors.BaseActor;
+import com.jmolina.orb.widgets.BaseActor;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.var.Var;
 
@@ -216,7 +216,7 @@ public class Element extends WorldElement {
         }
     }
 
-    public float getPPM() {
+    protected float getPPM() {
         return pixelsPerMeter;
     }
 
@@ -229,7 +229,7 @@ public class Element extends WorldElement {
         actor = null;
     }
 
-    protected TextureRegion findRegion(String name) {
+    private TextureRegion findRegion(String name) {
         return getAssetManager().getGameAtlas().findRegion(name);
     }
 

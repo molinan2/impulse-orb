@@ -23,10 +23,8 @@ public class Success extends BaseScreen {
 
     private SuccessTitle title;
     private SuccessCover cover;
-    private Heading timeHeading;
-    private Heading distanceHeading;
-    private BigText time;
-    private BigText distance;
+    private Heading timeHeading, distanceHeading;
+    private BigText time, distance;
     private MainButton button;
     private Star podium;
     private Rating rating;

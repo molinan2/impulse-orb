@@ -60,13 +60,9 @@ public class PrefsManager {
      * Constructor
      */
     public PrefsManager() {
-        setPrefs(Gdx.app.getPreferences(FILE_NAME));
+        this.prefs = Gdx.app.getPreferences(FILE_NAME);
         initialize();
         save();
-    }
-
-    public void setPrefs(Preferences prefs) {
-        this.prefs = prefs;
     }
 
     public Preferences getPrefs() {
@@ -76,7 +72,7 @@ public class PrefsManager {
     /**
      * Si alguna preferencia no esta configurada, la guarda con un valor por defecto
      */
-    public void initialize() {
+    private void initialize() {
         if (!prefs.contains(VERSION)) prefs.putString(VERSION, Var.APP_VERSION);
         if (!prefs.contains(OPTION_MUSIC)) prefs.putBoolean(OPTION_MUSIC, true);
         if (!prefs.contains(OPTION_SOUND)) prefs.putBoolean(OPTION_SOUND, true);
@@ -207,7 +203,7 @@ public class PrefsManager {
         return rank;
     }
 
-    public boolean levelCompleted(ScreenManager.Key level) {
+    public boolean isLevelCompleted(ScreenManager.Key level) {
         switch (level) {
             case LEVEL_1: if (prefs.contains(LADDER_1_1)) return true;
             case LEVEL_2: if (prefs.contains(LADDER_2_1)) return true;

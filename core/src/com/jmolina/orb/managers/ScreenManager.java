@@ -41,8 +41,14 @@ public class ScreenManager {
     private BaseScreen screen;
 
 
+    /**
+     * Constructor
+     *
+     * @param superManager SuperManager
+     */
     public ScreenManager(SuperManager superManager) {
         this.superManager = superManager;
+        switchToScreen(ScreenManager.Key.LOAD, BaseScreen.Hierarchy.LOWER);
     }
 
     private SuperManager getSuperManager() {
@@ -53,19 +59,15 @@ public class ScreenManager {
         return this.screen;
     }
 
-    private void setCurrent(BaseScreen screen) {
-        this.screen = screen;
-    }
-
     private void setScreen(BaseScreen baseScreen) {
         this.screen = baseScreen;
     }
 
-    public void hideCurrent() {
+    private void hideCurrent() {
         if (getCurrent() != null) getCurrent().hide();
     }
 
-    public void showCurrent() {
+    private void showCurrent() {
         if (getCurrent() != null) getCurrent().show();
     }
 
@@ -90,10 +92,6 @@ public class ScreenManager {
         getCurrent().dispose();
     }
 
-    public void back() {
-        getCurrent().back();
-    }
-
     public void switchToScreen(Key key, BaseScreen.Hierarchy hierarchy) {
         if (getCurrent() != null) {
             hideCurrent();
@@ -113,7 +111,7 @@ public class ScreenManager {
     /**
      *
      */
-    public BaseScreen createScreen(Key key) {
+    private BaseScreen createScreen(Key key) {
         switch (key) {
             case LOAD:
                 Load load = new Load(getSuperManager());

@@ -32,14 +32,6 @@ public class Attempt {
         time += timeIncrement;
     }
 
-    public void addDistance(float distanceIncrement) {
-        distance += distanceIncrement;
-    }
-
-    public float getDistance() {
-        return distance;
-    }
-
     public void setTime(float time) {
         this.time = time;
     }
@@ -48,8 +40,16 @@ public class Attempt {
         return time;
     }
 
+    public void addDistance(float distanceIncrement) {
+        distance += distanceIncrement;
+    }
+
     public void setDistance(float distance) {
         this.distance = distance;
+    }
+
+    public float getDistance() {
+        return distance;
     }
 
     public boolean isFailed() {

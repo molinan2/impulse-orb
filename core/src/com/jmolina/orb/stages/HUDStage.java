@@ -14,7 +14,7 @@ import com.jmolina.orb.widgets.game.Gauge;
 import com.jmolina.orb.widgets.game.HUDBackground;
 import com.jmolina.orb.widgets.game.Curtain;
 import com.jmolina.orb.widgets.game.PauseButton;
-import com.jmolina.orb.widgets.ui.PauseMenu;
+import com.jmolina.orb.widgets.game.PauseMenu;
 import com.jmolina.orb.widgets.game.Timer;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;

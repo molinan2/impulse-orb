@@ -19,7 +19,6 @@ public class TiledLayer extends BaseGroup {
     private final int TIMES_Y = 16; // LEVEL_ALT * SIT_H * SPEED1 + 2
 
     private Image image;
-    private TiledDrawable tiledDrawable;
 
     public TiledLayer(AssetManager am, TextureRegion region, Viewport viewport) {
         super(am);
@@ -27,7 +26,7 @@ public class TiledLayer extends BaseGroup {
         int viewportTilesX = MathUtils.round(viewport.getWorldWidth() / region.getRegionWidth());
         int viewportTilesY = MathUtils.round(viewport.getWorldHeight() / region.getRegionHeight());
 
-        tiledDrawable = new TiledDrawable(region);
+        TiledDrawable tiledDrawable = new TiledDrawable(region);
         tiledDrawable.setMinWidth(TIMES_X * viewportTilesX * region.getRegionWidth());
         tiledDrawable.setMinHeight(TIMES_Y * viewportTilesY * region.getRegionHeight());
 

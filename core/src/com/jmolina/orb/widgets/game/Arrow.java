@@ -3,7 +3,7 @@ package com.jmolina.orb.widgets.game;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.jmolina.orb.actors.BaseActor;
+import com.jmolina.orb.widgets.BaseActor;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.widgets.BaseGroup;
 
@@ -11,9 +11,7 @@ public class Arrow extends BaseGroup {
 
     private final float LINE_WIDTH_RATIO = 0.125f;
 
-    private BaseActor base;
-    private BaseActor line;
-    private BaseActor arrowhead;
+    private BaseActor base, line, arrowhead;
 
     public Arrow(AssetManager am, float pixelsPerMeter) {
         super(am);

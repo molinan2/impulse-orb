@@ -38,10 +38,9 @@ public class ImpulseOrb implements ApplicationListener, SuperManager {
 	public void create () {
 		setCatchBackKey(true);
 		prefsManager = new PrefsManager();
-		screenManager = new ScreenManager(this);
 		assetManager = new AssetManager();
 		assetManager.loadLoadScreenAssets();
-		screenManager.switchToScreen(ScreenManager.Key.LOAD, BaseScreen.Hierarchy.LOWER);
+		screenManager = new ScreenManager(this);
 	}
 
 	@Override
@@ -72,6 +71,11 @@ public class ImpulseOrb implements ApplicationListener, SuperManager {
 		assetManager.dispose();
 	}
 
+	@Override
+	public void createGameManager() {
+		gameManager = new GameManager(this);
+	}
+
 	public PrefsManager getPrefsManager() {
 		return prefsManager;
 	}
@@ -89,11 +93,6 @@ public class ImpulseOrb implements ApplicationListener, SuperManager {
 	@Override
 	public GameManager getGameManager() {
 		return this.gameManager;
-	}
-
-	@Override
-	public void createGameManager() {
-		gameManager = new GameManager(this);
 	}
 
 	@Override

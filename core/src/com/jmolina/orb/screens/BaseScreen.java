@@ -58,7 +58,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     private InputMultiplexer multiplexer;
     private ScreenManager.Key previousKey, thisKey;
     private ScreenFlag screenFlag;
-    private float timer;
+    private float periodicTimer;
 
 
     /**
@@ -66,7 +66,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
      */
     public BaseScreen(SuperManager sm) {
         superManager = sm;
-        timer = 0f;
+        periodicTimer = 0f;
         screenFlag = new ScreenFlag();
         mainViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         backgroundViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
@@ -93,7 +93,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         clearRootActions();
         unsetInputProcessor();
         addMainAction(sequence(
-                transition(Flow.ENTERING, getHierarchy()),
+                getTransitionAction(Flow.ENTERING, getHierarchy()),
                 run(getSetAsInputProcessorRunnable())
         ));
     }
@@ -110,20 +110,6 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         update();
         checkSwitching();
     }
-
-    private void update() {
-        timer += Gdx.graphics.getDeltaTime();
-        if (timer > PERIODIC_TASK_TIME) {
-            timer = 0;
-            periodicTask();
-        }
-    }
-
-    /**
-     * Este método permite a las clases derivadas ejecutar cualquier tarea con una periodicidad de
-     * {@link #PERIODIC_TASK_TIME}.
-     */
-    protected void periodicTask() {}
 
     @Override
     public void resize(int width, int height) {
@@ -142,16 +128,26 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         backgroundStage.dispose();
     }
 
-
-    /**
-     * Backable methods
-     */
-
     @Override
     public void back() {
         getGameManager().play(GameManager.Fx.Back);
         switchToScreen(this.previousKey, Hierarchy.HIGHER);
     }
+
+    private void update() {
+        periodicTimer += Gdx.graphics.getDeltaTime();
+        if (periodicTimer > PERIODIC_TASK_TIME) {
+            periodicTimer = 0;
+            periodicTask();
+        }
+    }
+
+
+    /**
+     * Este método permite a las clases derivadas ejecutar cualquier tarea con una periodicidad de
+     * {@link #PERIODIC_TASK_TIME}.
+     */
+    protected void periodicTask() {}
 
 
     /**
@@ -240,7 +236,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         };
 
         addMainAction(sequence(
-                transition(Flow.LEAVING, hierarchy),
+                getTransitionAction(Flow.LEAVING, hierarchy),
                 run(flagSwitch)
         ));
     }
@@ -265,7 +261,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     public void exitApplication() {
         clearRootActions();
         addMainAction(sequence(
-                transition(Flow.LEAVING, Hierarchy.HIGHER),
+                getTransitionAction(Flow.LEAVING, Hierarchy.HIGHER),
                 run(getExitRunnable())
         ));
     }
@@ -311,7 +307,7 @@ public class BaseScreen extends ScreenAdapter implements Backable {
      * @param flow Flow Flujo de la pantalla actual
      * @param hierarchy Hierarchy Jerarquía de la siguiente pantalla respecto de la actual
      */
-    protected Action transition(Flow flow, Hierarchy hierarchy) {
+    protected Action getTransitionAction(Flow flow, Hierarchy hierarchy) {
         switch (flow) {
             case ENTERING: return transitionEntering(hierarchy);
             case LEAVING: return transitionLeaving(hierarchy);

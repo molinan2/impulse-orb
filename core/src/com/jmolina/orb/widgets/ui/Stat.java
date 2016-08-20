@@ -22,10 +22,8 @@ import java.text.DecimalFormat;
  */
 public class Stat extends BaseGroup {
 
-    private Label name;
-    private Label data;
-    private Label.LabelStyle nameStyle;
-    private Label.LabelStyle dataStyle;
+    private Label name, data;
+    private Label.LabelStyle nameStyle, dataStyle;
 
     public Stat (AssetManager am, String name) {
         this(am, name, 0);

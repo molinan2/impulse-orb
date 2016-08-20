@@ -13,12 +13,9 @@ public class Gauge extends BaseGroup {
     private final float LEVEL_MIN = 0f;
     private final float LEVEL_MAX = 1f;
 
-    private Image background;
-    private Image bar;
-    private Image overload;
-    private Image frame;
-    private float level;
+    private Image background, bar, overload, frame;
     private boolean overloaded = false;
+    private float level;
 
     public Gauge(AssetManager am) {
         super(am);

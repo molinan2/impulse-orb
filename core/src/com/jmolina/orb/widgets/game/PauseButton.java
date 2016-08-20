@@ -12,8 +12,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
 public class PauseButton extends BaseGroup {
 
     private Image image, frame;
-    private TextureRegionDrawable pauseDrawable;
-    private TextureRegionDrawable resumeDrawable;
+    private TextureRegionDrawable pauseDrawable, resumeDrawable;
 
     public PauseButton(AssetManager am) {
         super(am);

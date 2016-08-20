@@ -2,7 +2,7 @@ package com.jmolina.orb.widgets.game;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.jmolina.orb.managers.AssetManager;
-import com.jmolina.orb.actors.BaseActor;
+import com.jmolina.orb.widgets.BaseActor;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.widgets.BaseGroup;
 

@@ -1,4 +1,4 @@
-package com.jmolina.orb.actors;
+package com.jmolina.orb.widgets.game;
 
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.math.Interpolation;
@@ -25,11 +25,7 @@ public class Fragments extends BaseGroup {
 
     private final float ANIMATION_TIME = 2.0f;
 
-    private Image explosion;
-    private Image fragment1;
-    private Image fragment2;
-    private Image fragment3;
-    private Image fragment4;
+    private Image explosion, fragment1, fragment2, fragment3, fragment4;
 
     public Fragments(AssetManager am) {
         super(am);
@@ -57,11 +53,11 @@ public class Fragments extends BaseGroup {
         reset();
     }
 
-    public float randomDistance() {
+    private float randomDistance() {
         return Utils.cell(4) * (float) (Math.random() - 0.5f);
     }
 
-    public float randomAngle() {
+    private float randomAngle() {
         return 4 * 360 * (float) (2 * Math.random() - 1);
     }
 
@@ -73,10 +69,10 @@ public class Fragments extends BaseGroup {
                         fadeOut(0.3f, Interpolation.exp5Out)
                 )
         ));
-        fragment1.addAction(destruction());
-        fragment2.addAction(destruction());
-        fragment3.addAction(destruction());
-        fragment4.addAction(destruction());
+        fragment1.addAction(getDestructionAction());
+        fragment2.addAction(getDestructionAction());
+        fragment3.addAction(getDestructionAction());
+        fragment4.addAction(getDestructionAction());
 
         addAction(sequence(
                 delay(0.25f * ANIMATION_TIME),
@@ -121,7 +117,7 @@ public class Fragments extends BaseGroup {
         explosion.setScale(1.5f);
     };
 
-    private Action destruction() {
+    private Action getDestructionAction() {
         return new ParallelAction(
                 Actions.rotateBy(randomAngle(), ANIMATION_TIME),
                 Actions.moveBy(randomDistance(), randomDistance(), ANIMATION_TIME)

@@ -4,24 +4,24 @@ public class Tick {
 
     public float amount;
     public float period;
-    public float timer;
+    public float time;
 
     public Tick() {
         amount = 0f;
         period = 0f;
-        timer = 0f;
+        time = 0f;
     }
 
     public boolean expired() {
-        return timer > period;
+        return time > period;
     }
 
     public void reset() {
-        timer = 0f;
+        time = 0f;
     }
 
     public void update(float time) {
-        timer += time;
+        this.time += time;
     }
 
 }

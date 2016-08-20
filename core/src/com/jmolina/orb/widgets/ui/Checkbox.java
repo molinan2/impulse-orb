@@ -11,8 +11,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 public class Checkbox extends BaseGroup {
 
-    private Image checkedImage;
-    private Image uncheckedImage;
+    private Image checkedImage, uncheckedImage;
     private boolean checked;
 
     public Checkbox(AssetManager am, boolean checked) {
@@ -32,7 +31,7 @@ public class Checkbox extends BaseGroup {
         setHeight(checkedImage.getHeight());
         setWidth(checkedImage.getWidth());
 
-        // Solo el Grupo responda a eventos. Asi se identifica su clase en MultiOption.
+        // Solo el Grupo responde a eventos. Asi se identifica su clase en MultiOption.
         checkedImage.setTouchable(Touchable.disabled);
         uncheckedImage.setTouchable(Touchable.disabled);
         setTouchable(Touchable.enabled);

@@ -160,15 +160,15 @@ public class WorldElement {
         userData.effect = effect;
     }
 
-    public void setEffect(Effect effect) {
+    protected void setEffect(Effect effect) {
         userData.effect = effect;
     }
 
-    public UserData getUserData() {
+    protected UserData getUserData() {
         return userData;
     }
 
-    public void setAsSensor(boolean sensor) {
+    protected void setAsSensor(boolean sensor) {
         getBody().getFixtureList().first().setSensor(sensor);
     }
 
@@ -233,10 +233,10 @@ public class WorldElement {
     }
 
     /**
-     * Ángulo inicial en grados. Es importante si el objeto es variante, ya que debe resetearse y
-     * recuperar su ángulo inicial. Si no es variante, nunca se resetea.
+     * Angulo inicial en grados. Es importante si el objeto es variante, ya que debe resetearse y
+     * recuperar su angulo inicial. Si no es variante, nunca se resetea.
      *
-     * @param angle Ángulo en grados.
+     * @param angle Angulo en grados.
      */
     public void setInitialAngle(float angle) {
         initialAngle = angle;
