@@ -215,6 +215,10 @@ public class HUDStage extends Stage {
         ));
     }
 
+    public void init() {
+
+    }
+
     public void updateTimer() {
         timer.update();
     }

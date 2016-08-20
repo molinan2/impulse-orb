@@ -34,12 +34,13 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     protected final float TRANSITION_DURATION = 0.3f;
     private final Interpolation INTERPOLATION_IN = Interpolation.pow2In;
     private final Interpolation INTERPOLATION_OUT = Interpolation.pow2Out;
-    private final float SCALE_FACTOR = 1.35f;
-    protected final float SIZE_SMALL = 1 / SCALE_FACTOR;
-    protected final float SIZE_LARGE = SCALE_FACTOR;
 
+    private static final float SCALE_FACTOR = 1.35f;
+    public static final float SIZE_SMALL = 1 / SCALE_FACTOR;
+    public static final float SIZE_LARGE = SCALE_FACTOR;
     public static final float VIEWPORT_WIDTH = Var.SCREEN_WIDTH;
     public static final float VIEWPORT_HEIGHT = Var.SCREEN_HEIGHT;
+
     public final float MIN_DELTA_TIME = Var.FPS;
 
     /** Jerarquía de esta pantalla respecto de la siguiente */

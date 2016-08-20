@@ -171,11 +171,7 @@ public class Level extends BaseScreen {
                 getOrb().reset(orbStartPosition.x, orbStartPosition.y);
                 getHUDStage().reset();
                 stats.newTry();
-
-                if (currentSituation != null) currentSituation.dispose();
-                if (adjacentSituation != null) adjacentSituation.dispose();
-                currentSituation = null;
-                adjacentSituation = null;
+                removeSituations();
             }
         };
 
@@ -211,7 +207,7 @@ public class Level extends BaseScreen {
         if (DEBUG_TIME) debugTime.start();
 
         clear();
-        updateVisibility();
+        updateSituations();
         syncActors();
         act(delta);
         syncBodies();
@@ -234,9 +230,19 @@ public class Level extends BaseScreen {
     }
 
     /**
+     * Destruye las situaciones y libera su memoria.
+     */
+    private void removeSituations() {
+        if (currentSituation != null) currentSituation.dispose();
+        if (adjacentSituation != null) adjacentSituation.dispose();
+        currentSituation = null;
+        adjacentSituation = null;
+    }
+
+    /**
      * Actualiza las situaciones visibles.
      */
-    private void updateVisibility() {
+    private void updateSituations() {
         float altitude = getOrb().getPosition().y / Situation.HEIGHT;
         int current = (int) altitude;
         adjacencyLast = adjacencyNow;
@@ -383,8 +389,7 @@ public class Level extends BaseScreen {
      */
     @Override
     public void dispose() {
-        if (currentSituation != null) currentSituation.dispose();
-        if (adjacentSituation != null) adjacentSituation.dispose();
+        removeSituations();
         getHUDStage().dispose();
         getGestureStage().dispose();
         getParallaxStage().dispose();
