@@ -3,6 +3,7 @@ package com.jmolina.orb.widgets.game;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.jmolina.orb.interfaces.LevelManager;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.var.Var;
@@ -13,54 +14,21 @@ import com.jmolina.orb.widgets.ui.Stat;
 
 public class PauseMenu extends BaseGroup {
 
-    private Level level;
+    private LevelManager levelManager;
     private MainButton resumeButton, restartButton, leaveButton;
     private Heading fullHeading;
     private Stat distanceStat, fullTimeStat, fullDistanceStat, fullDestroyedStat;
-    private ClickListener resumeListener, restartListener, leaveListener;
 
-    public PauseMenu(AssetManager assetManager, Level level) {
+    public PauseMenu(AssetManager assetManager, LevelManager levelManager) {
         super(assetManager);
 
-        this.level = level;
-        createListeners();
+        this.levelManager = levelManager;
         createActors();
         addActors();
     }
 
-    private Level getLevel() {
-        return this.level;
-    }
-
-    private void createListeners() {
-        resumeListener = new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                resumeButton.clickEffect();
-                if (getLevel().isLocked())
-                    getLevel().resumeGame();
-
-                event.cancel();
-            }
-        };
-
-        restartListener = new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                restartButton.clickEffect();
-                getLevel().restartGame();
-                event.cancel();
-            }
-        };
-
-        leaveListener = new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                leaveButton.clickEffect();
-                getLevel().leaveGame();
-                event.cancel();
-            }
-        };
+    private LevelManager getLevelManager() {
+        return this.levelManager;
     }
 
     private void createActors() {
@@ -87,9 +55,9 @@ public class PauseMenu extends BaseGroup {
         fullDistanceStat.setLabelColor(Var.COLOR_WHITE);
         fullDestroyedStat.setLabelColor(Var.COLOR_WHITE);
 
-        resumeButton.addListener(resumeListener);
-        restartButton.addListener(restartListener);
-        leaveButton.addListener(leaveListener);
+        resumeButton.addListener(getResumeListener());
+        restartButton.addListener(getRestartListener());
+        leaveButton.addListener(getLeaveListener());
     }
 
     private void addActors() {
@@ -101,6 +69,41 @@ public class PauseMenu extends BaseGroup {
         addActor(fullTimeStat);
         addActor(fullDistanceStat);
         addActor(fullDestroyedStat);
+    }
+
+    private ClickListener getResumeListener() {
+        return new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                resumeButton.clickEffect();
+                if (getLevelManager().isLocked())
+                    getLevelManager().resumeGame();
+
+                event.cancel();
+            }
+        };
+    }
+
+    private ClickListener getRestartListener() {
+        return new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                restartButton.clickEffect();
+                getLevelManager().restartGame();
+                event.cancel();
+            }
+        };
+    }
+
+    private ClickListener getLeaveListener() {
+        return new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                leaveButton.clickEffect();
+                getLevelManager().leaveGame();
+                event.cancel();
+            }
+        };
     }
 
     public void setDistanceValue(float distance) {

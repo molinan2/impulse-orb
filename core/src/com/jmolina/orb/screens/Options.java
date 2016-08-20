@@ -13,7 +13,6 @@ public class Options extends Menu {
 
     private Option music, sound, vibration, online;
     private MultiOption zoom;
-
     private PrefsManager prefsManager;
 
     public Options(SuperManager superManager) {

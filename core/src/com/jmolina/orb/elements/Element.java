@@ -176,7 +176,7 @@ public class Element extends WorldElement {
             case GREY: return findRegion(Atlas.GAME_CIRCLE_GREY);
             case RED: return findRegion(Atlas.GAME_CIRCLE_RED);
             case VIOLET: return findRegion(Atlas.GAME_CIRCLE_VIOLET);
-            case TRANSPARENT: return findRegion(Atlas.GAME_CIRCLE_TRANSPARENT);
+            case AIR: return findRegion(Atlas.GAME_CIRCLE_TRANSPARENT);
             default: return findRegion(Atlas.GAME_CIRCLE_GREY);
         }
     }

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.jmolina.orb.interfaces.LevelManager;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.Level;
@@ -35,7 +36,7 @@ public class HUDStage extends Stage {
     private final float BACKGROUND_FADE_TIME = 0.5f;
     public static final float INTRO_SEQUENCE_TIME = 1f;
 
-    private Level level;
+    private LevelManager levelManager;
     private Curtain curtain;
     private HUDBackground background;
     private Gauge gauge;
@@ -43,22 +44,20 @@ public class HUDStage extends Stage {
     private PauseButton pauseButton;
     private PauseMenu pauseMenu;
     private Runnable enableTouchables, toggleButton, enableMenuVisibility, disableMenuVisibility;
-    private ClickListener toggleListener;
 
     /**
      * Constructor
      *
      * @param assetManager AssetManager
-     * @param level Level Futuro GameManager
+     * @param levelManager LevelManager
      * @param viewport Viewport
      */
-    public HUDStage(AssetManager assetManager, Level level, Viewport viewport) {
+    public HUDStage(AssetManager assetManager, LevelManager levelManager, Viewport viewport) {
         super(viewport);
 
-        this.level = level;
+        this.levelManager = levelManager;
 
-        createListeners();
-        createActors(assetManager, level);
+        createActors(assetManager);
         addActors();
         createRunnables();
 
@@ -68,13 +67,13 @@ public class HUDStage extends Stage {
         getRoot().setPosition(0f, 0f);
     }
 
-    private void createActors(AssetManager am, Level gm) {
+    private void createActors(AssetManager am) {
         background = new HUDBackground(am);
         timer = new Timer(am);
         pauseButton = new PauseButton(am);
         gauge = new Gauge(am);
         curtain = new Curtain(am);
-        pauseMenu = new PauseMenu(am, gm);
+        pauseMenu = new PauseMenu(am, levelManager);
 
         background.setPositionGrid(HUD_BACKGROUND_X, HUD_BACKGROUND_Y);
         curtain.setPositionGrid(0, 0);
@@ -87,7 +86,7 @@ public class HUDStage extends Stage {
         pauseMenu.setVisible(false);
         pauseMenu.addAction(alpha(0));
 
-        pauseButton.addListener(toggleListener);
+        pauseButton.addListener(getToggleListener());
     }
 
     private void addActors() {
@@ -130,15 +129,15 @@ public class HUDStage extends Stage {
         };
     }
 
-    private void createListeners() {
-        toggleListener = new ClickListener(){
+    private ClickListener getToggleListener() {
+        return new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 pauseButton.clickEffect();
-                if (!getLevel().isLocked())
-                    getLevel().pauseGame();
+                if (!getLevelManager().isLocked())
+                    getLevelManager().pauseGame();
                 else
-                    getLevel().resumeGame();
+                    getLevelManager().resumeGame();
 
                 event.cancel();
             }
@@ -267,8 +266,8 @@ public class HUDStage extends Stage {
         gauge.reset();
     }
 
-    private Level getLevel() {
-        return level;
+    private LevelManager getLevelManager() {
+        return levelManager;
     }
 
     public float getTime() {

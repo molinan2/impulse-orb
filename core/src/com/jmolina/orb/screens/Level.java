@@ -19,6 +19,7 @@ import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.elements.WorldElement;
+import com.jmolina.orb.interfaces.LevelManager;
 import com.jmolina.orb.interfaces.PlayServices;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
@@ -45,7 +46,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  * Renderiza todos los elementos del juego y los sincroniza con el mundo físico. Controla los
  * eventos del juego.
  */
-public class Level extends BaseScreen {
+public class Level extends BaseScreen implements LevelManager {
 
     private enum Adjacency { TOP, BOTTOM }
     private enum Frontier { BOUNDARY, MIDDLE }
@@ -126,7 +127,7 @@ public class Level extends BaseScreen {
         physicsStepAccumulator = 0f;
         setOrb(new Orb(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
-        contactHandler = new ContactHandler(this);
+        contactHandler = new ContactHandler(this, getOrb());
         world.setContactListener(contactHandler);
         gestureHandler = new GestureHandler(this);
         gestureDetector = new GestureDetector(
@@ -850,7 +851,8 @@ public class Level extends BaseScreen {
         }
     }
 
-    private void firstGame() {
+    @Override
+    public void firstGame() {
         stats.newTry();
         getBackgroundStage().addAction(alpha(1));
         getOrb().getActor().addAction(alpha(0));
@@ -863,9 +865,7 @@ public class Level extends BaseScreen {
         );
     }
 
-    /**
-     * Inicia el menú de pausa del juego
-     */
+    @Override
     public void pauseGame() {
         if (!isLocked()) {
             lock();
@@ -874,9 +874,7 @@ public class Level extends BaseScreen {
         }
     }
 
-    /**
-     * Reanuda el juego desde el menú de pausa
-     */
+    @Override
     public void resumeGame() {
         if (isLocked()) {
             getHUDStage().resume(unlock);
@@ -884,17 +882,13 @@ public class Level extends BaseScreen {
         }
     }
 
-    /**
-     * Reinicia el juego desde el menú de pausa
-     */
+    @Override
     public void restartGame() {
         getHUDStage().restart(reset, orbIntro, unlock);
         getGameManager().play(GameManager.Fx.Button);
     }
 
-    /**
-     * Abandona el juego desde el menú de pausa
-     */
+    @Override
     public void leaveGame() {
         unsetInputProcessor();
         getPrefsManager().saveStats(stats, getThisKey());
@@ -902,10 +896,7 @@ public class Level extends BaseScreen {
         switchToScreen(getPreviousScreen(), Hierarchy.HIGHER);
     }
 
-    /**
-     * Completa el juego, guardando las estadísticas y lanzando la pantalla de Success.
-     * También sube el tiempo a Google Play Games.
-     */
+    @Override
     public void successGame() {
         lock();
         getStats().setSuccessfull(true);
@@ -922,37 +913,22 @@ public class Level extends BaseScreen {
         getOrb().applyOutroAction(toSuccess);
     }
 
-    /**
-     * Bloquea el juego.
-     *
-     * Mientras el juego está bloqueado, no se pueden actualizar datos ni estados, ni activar o
-     * desactivar el menú de pausa.
-     */
+    @Override
     public void lock() {
         locked = true;
     }
 
-    /**
-     * Desbloquea el juego
-     */
+    @Override
     public void unlock() {
         locked = false;
     }
 
-    /**
-     * Devuelve true si el juego está bloqueado
-     *
-     * @return {@link #locked}
-     */
+    @Override
     public boolean isLocked() {
         return locked;
     }
 
-    /**
-     * Reproduce el sonido y la vibración correspondientes a una colisión
-     *
-     * @param wall Indica si se colisiona contra un muro
-     */
+    @Override
     public void collide(boolean wall) {
         getGameManager().vibrate(GameManager.Length.Short);
 
@@ -962,9 +938,7 @@ public class Level extends BaseScreen {
             getGameManager().play(GameManager.Fx.ElementCollision);
     }
 
-    /**
-     * Ejecuta un freeze sobre el {@link Orb} y dibuja su animación
-     */
+    @Override
     public void freeze() {
         if (!isLocked()) {
             getOrb().freeze();
@@ -980,12 +954,7 @@ public class Level extends BaseScreen {
         }
     }
 
-    /**
-     * Ejecuta un impulso sobre el {@link Orb} y dibuja su animación
-     *
-     * @param velocityX Velocidad recogida por el {@link GestureHandler} para la coordenada x
-     * @param velocityY Velocidad recogida por el {@link GestureHandler} para la coordenada y
-     */
+    @Override
     public void impulse(float velocityX, float velocityY) {
         float impulseX = MathUtils.clamp(velocityX * impulse, -IMPULSE_MAX, IMPULSE_MAX);
         float impulseY = MathUtils.clamp(-velocityY * impulse, -IMPULSE_MAX, IMPULSE_MAX);
@@ -1005,9 +974,7 @@ public class Level extends BaseScreen {
         }
     }
 
-    /**
-     * Destruye el {@link Orb}, dibuja su animación y reinicia el juego
-     */
+    @Override
     public void destroy() {
         if (DEBUG_INVULNERABLE) return;
 
@@ -1022,10 +989,7 @@ public class Level extends BaseScreen {
         getHUDStage().destroy(orbDestroy, reset, orbIntro, unlock);
     }
 
-    /**
-     * Activa el incremento continuo de calor del {@link Orb} (ticking). Al empezar (entrar en una
-     * zona caliente), siempre ocurre un tick.
-     */
+    @Override
     public void enableTicking(Tick tick) {
         this.tick.amount = tick.amount;
         this.tick.period = tick.period;
@@ -1034,26 +998,19 @@ public class Level extends BaseScreen {
         tick();
     }
 
-    /**
-     * Desactiva el ticking.
-     */
+    @Override
     public void disableTicking() {
         ticking = false;
         tick.reset();
     }
 
-    /**
-     * Devuelve true si el {@link Orb} está en una zona caliente ({@link #ticking}).
-     */
-    private boolean isTicking() {
+    @Override
+    public boolean isTicking() {
         return ticking;
     }
 
-    /**
-     * Ejecuta un tick de calentamiento en el {@link Orb}. Este tick puede implicar overload y
-     * destroy.
-     */
-    private void tick() {
+    @Override
+    public void tick() {
         getGameManager().play(GameManager.Fx.Tick);
 
         if (getOrb().isOverloaded()) {
@@ -1067,10 +1024,8 @@ public class Level extends BaseScreen {
             overload();
     }
 
-    /**
-     * Activa la sobrecarga (overload) del Orb y actualizando la visualización del HUD.
-     */
-    private void overload() {
+    @Override
+    public void overload() {
         getOrb().setOverloaded(true);
         getHUDStage().setGaugeOverload(true);
         getGameManager().play(GameManager.Fx.Warning);

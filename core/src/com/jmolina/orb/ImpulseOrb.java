@@ -9,6 +9,7 @@ import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.screens.BaseScreen;
+import com.jmolina.orb.var.Var;
 
 
 public class ImpulseOrb implements ApplicationListener, SuperManager {

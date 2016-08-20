@@ -30,10 +30,11 @@ public class WorldElement {
      * GREEN: Elementos dinámicos (sólo el {@link Orb})
      * GREY: Elementos kinéticos genéricos
      * RED: Elementos kinéticos destructivos
-     * BLUE: Elementos kinéticos etéreos
+     * BLUE: Elementos kinéticos etéreos visibles
      * VIOLET: Elementos kinéticos magnéticos
+     * AIR: Elementos kinéticos etéreos invisibles
      */
-    public enum Flavor { BLACK, GREEN, GREY, RED, BLUE, VIOLET, TRANSPARENT }
+    public enum Flavor { BLACK, GREEN, GREY, RED, BLUE, VIOLET, AIR }
 
     /**
      * Efecto del elemento al contacto con el Orb.
@@ -43,7 +44,7 @@ public class WorldElement {
      * DESTROY: Provoca la destrucción del orbe
      * HEAT: Provoca el calentamiento del orbe
      */
-    public enum Effect { NONE, EXIT, DESTROY, HEAT, INTERRUPTOR }
+    public enum Effect { NONE, EXIT, DESTROY, HEAT }
 
     private final float DENSITY = 1.0f;
     private final float RESTITUTION = 0.6f;
@@ -90,7 +91,7 @@ public class WorldElement {
         body.setUserData(getUserData());
         fixtureDef.shape.dispose();
 
-        if (flavor == Flavor.TRANSPARENT) setAsSensor(true);
+        if (flavor == Flavor.AIR) setAsSensor(true);
     }
 
     private BodyDef.BodyType type(Flavor flavor) {

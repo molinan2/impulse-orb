@@ -26,7 +26,7 @@ public class Rating extends BaseGroup {
     private final String GOLD = "Gold!";
     private final String DEVELOPER = "You have beaten the developer!";
 
-    private ArrayList<Image> points;
+    private ArrayList<Image> medals;
     private Group rating;
     private Heading heading;
 
@@ -35,23 +35,23 @@ public class Rating extends BaseGroup {
 
         rating = new Group();
         heading = new Heading(getAssetManager(), getText(numericRating), Align.center, Heading.Weight.Regular, Var.COLOR_LILAC_DARK);
-        points = new ArrayList<Image>();
+        medals = new ArrayList<Image>();
 
         for (int i=MIN; i<MAX; i++) {
             if (i < numericRating) {
-                points.add(new Image(getAsset(Asset.UI_RATING_YES, Texture.class)));
-                points.get(i).addAction(forever(sequence(
+                medals.add(new Image(getAsset(Asset.UI_RATING_YES, Texture.class)));
+                medals.get(i).addAction(forever(sequence(
                         alpha(0.5f, 0.25f),
                         alpha(1f, 0.25f),
                         delay(1f)
                 )));
             }
             else {
-                points.add(new Image(getAsset(Asset.UI_RATING_NO, Texture.class)));
+                medals.add(new Image(getAsset(Asset.UI_RATING_NO, Texture.class)));
             }
 
-            points.get(i).setPosition(i * Utils.cell(1.25f), Utils.cell(0));
-            rating.addActor(points.get(i));
+            medals.get(i).setPosition(i * Utils.cell(1.25f), Utils.cell(0));
+            rating.addActor(medals.get(i));
         }
 
         rating.setPosition(Utils.cell(2.75f), Utils.cell(0));

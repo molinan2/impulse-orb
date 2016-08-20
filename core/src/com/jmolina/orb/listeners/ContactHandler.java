@@ -6,19 +6,20 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.jmolina.orb.data.UserData;
+import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.elements.WorldElement;
-import com.jmolina.orb.screens.Level;
+import com.jmolina.orb.interfaces.LevelManager;
 
 public class ContactHandler implements ContactListener {
 
     private enum Instant { BEGINNING, ENDING }
 
-    private Level level;
-    private Body bodyOrb;
+    private LevelManager levelManager;
+    private Body orbBody;
 
-    public ContactHandler(Level level) {
-        this.level = level;
-        this.bodyOrb = level.getOrb().getBody();
+    public ContactHandler(LevelManager levelManager, Orb orb) {
+        this.levelManager = levelManager;
+        orbBody = orb.getBody();
     }
 
     @Override
@@ -28,9 +29,9 @@ public class ContactHandler implements ContactListener {
         UserData userDataA = (UserData) bodyA.getUserData();
         UserData userDataB = (UserData) bodyB.getUserData();
 
-        if (bodyA.equals(bodyOrb))
+        if (bodyA.equals(orbBody))
             decideBeginning(userDataB);
-        else if (bodyB.equals(bodyOrb))
+        else if (bodyB.equals(orbBody))
             decideBeginning(userDataA);
     }
 
@@ -41,9 +42,9 @@ public class ContactHandler implements ContactListener {
         UserData userDataA = (UserData) bodyA.getUserData();
         UserData userDataB = (UserData) bodyB.getUserData();
 
-        if (bodyA.equals(bodyOrb))
+        if (bodyA.equals(orbBody))
             decideEnding(userDataB);
-        else if (bodyB.equals(bodyOrb))
+        else if (bodyB.equals(orbBody))
             decideEnding(userDataA);
     }
 
@@ -59,25 +60,25 @@ public class ContactHandler implements ContactListener {
 
     private void decideBeginning(UserData userData) {
         switch (userData.effect) {
-            case EXIT: level.successGame(); return;
-            case DESTROY: level.destroy(); return;
-            case HEAT: level.enableTicking(userData.tick); return;
+            case EXIT: levelManager.successGame(); return;
+            case DESTROY: levelManager.destroy(); return;
+            case HEAT: levelManager.enableTicking(userData.tick); return;
             default: decideBeginningOnFlavor(userData.flavor);
         }
     }
 
     private void decideBeginningOnFlavor(WorldElement.Flavor flavor) {
         switch (flavor) {
-            case BLACK: level.collide(true); return;
-            case GREY: level.collide(false); return;
-            case VIOLET: level.collide(false); return;
+            case BLACK: levelManager.collide(true); return;
+            case GREY: levelManager.collide(false); return;
+            case VIOLET: levelManager.collide(false); return;
             default:
         }
     }
 
     private void decideEnding(UserData userData) {
         switch (userData.effect) {
-            case HEAT: level.disableTicking(); return;
+            case HEAT: levelManager.disableTicking(); return;
             default:
         }
     }

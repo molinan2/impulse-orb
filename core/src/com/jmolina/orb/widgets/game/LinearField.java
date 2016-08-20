@@ -136,7 +136,7 @@ public class LinearField extends Field {
         switch (flavor) {
             case RED: return findRegion(Atlas.GAME_SQUARE_RED);
             case VIOLET: return findRegion(Atlas.GAME_SQUARE_VIOLET);
-            case TRANSPARENT: return findRegion(Atlas.GAME_SQUARE_TRANSPARENT);
+            case AIR: return findRegion(Atlas.GAME_SQUARE_TRANSPARENT);
             default: return findRegion(Atlas.GAME_SQUARE_VIOLET);
         }
     }
