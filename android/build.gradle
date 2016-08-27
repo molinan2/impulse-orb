@@ -1,6 +1,6 @@
 android {
-    buildToolsVersion "23.0.3"
-    compileSdkVersion 23
+    compileSdkVersion sdkVersion
+    buildToolsVersion sdkBuildToolsVersion
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -19,7 +19,11 @@ android {
         minSdkVersion 17
         targetSdkVersion 23
     }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
 }
+
 // called every time gradle gets executed, takes the native dependencies of
 // the natives configuration, and extracts them to the proper libs/ folders
 // so they get packed with the APK.
@@ -46,6 +50,7 @@ task copyAndroidNatives() {
         }
     }
 }
+
 task run(type: Exec) {
     def path
     def localProperties = project.file("../local.properties")
@@ -67,6 +72,7 @@ task run(type: Exec) {
     def adb = path + "/platform-tools/adb"
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.jmolina.orb/com.jmolina.orb.AndroidLauncher'
 }
+
 // sets up the Android Eclipse project, using the old Ant based build.
 eclipse {
     // need to specify Java source sets explicitly, SpringSource Gradle Eclipse plugin
@@ -97,6 +103,7 @@ eclipse {
         buildCommand "com.android.ide.eclipse.adt.ApkBuilder"
     }
 }
+
 // sets up the Android Idea project, using the old Ant based build.
 idea {
     module {
@@ -119,5 +126,6 @@ idea {
         }
     }
 }
+
 dependencies {
 }
