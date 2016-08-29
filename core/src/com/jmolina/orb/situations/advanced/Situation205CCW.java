@@ -1,15 +1,15 @@
 package com.jmolina.orb.situations.advanced;
 
-import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.WorldElement;
+import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.situations.SideWalls;
 
 
-public class Situation205 extends SideWalls {
+public class Situation205CCW extends SideWalls {
 
-    public Situation205(AssetManager am, World world, float pixelsPerMeter) {
+    public Situation205CCW(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter);
     }
 
@@ -19,8 +19,6 @@ public class Situation205 extends SideWalls {
                 WorldElement.Geometry.TRIANGLE, WorldElement.Flavor.GREY,
                 6, 6, 6, 9, 0
         );
-
-        triangle.addRotation(0.125f);
 
         Movable destroyerLeftBottom = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
@@ -32,9 +30,6 @@ public class Situation205 extends SideWalls {
                 2, 2, 0, 18, 45
         );
 
-        destroyerLeftBottom.addDisplacement(0.25f, 0, 18);
-        destroyerLeftTop.addDisplacement(0.25f, 0, -18);
-
         Movable destroyerRightBottom = new Movable(getAssetManager(), getWorld(), getPixelsPerMeter(),
                 WorldElement.Geometry.SQUARE, WorldElement.Flavor.RED,
                 2, 2, 12, 0, 45
@@ -45,6 +40,9 @@ public class Situation205 extends SideWalls {
                 2, 2, 12, 18, 45
         );
 
+        triangle.addRotation(0.125f, false);
+        destroyerLeftBottom.addDisplacement(0.25f, 0, 18);
+        destroyerLeftTop.addDisplacement(0.25f, 0, -18);
         destroyerRightBottom.addDisplacement(0.25f, 0, 18);
         destroyerRightTop.addDisplacement(0.25f, 0, -18);
 
