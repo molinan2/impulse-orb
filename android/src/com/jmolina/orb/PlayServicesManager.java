@@ -162,6 +162,13 @@ public class PlayServicesManager implements PlayServices {
                     );
                     break;
 
+                case EasterHunter:
+                    Games.Achievements.unlock(
+                            gameHelper.getApiClient(),
+                            activity.getString(R.string.achievement_easter_hunter)
+                    );
+                    break;
+
                 default:
             }
         }

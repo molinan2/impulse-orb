@@ -20,6 +20,7 @@ Save this file as res/values/games-ids.xml in your project.
     <string name="achievement_fast__furious_4">***REMOVED***</string>
     <string name="achievement_fast__furious_5">***REMOVED***</string>
     <string name="achievement_its_over_9000">***REMOVED***</string>
+    <string name="achievement_easter_hunter">***REMOVED***</string>
     <string name="leaderboard_level_1_basics">***REMOVED***</string>
     <string name="leaderboard_level_2_advance">***REMOVED***</string>
     <string name="leaderboard_level_3_expert">***REMOVED***</string>

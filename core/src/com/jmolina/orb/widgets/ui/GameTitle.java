@@ -4,9 +4,11 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.jmolina.orb.interfaces.PlayServices;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.BaseGroup;
@@ -17,10 +19,12 @@ public class GameTitle extends BaseGroup {
 
     private Image text, orb;
     private int clicks;
+    private GameManager gameManager;
 
-    public GameTitle(AssetManager am) {
+    public GameTitle(AssetManager am, GameManager gm) {
         super(am);
 
+        gameManager = gm;
         clicks = 0;
         text = new Image(getAsset(Asset.UI_MAIN_TITLE_TEXT, Texture.class));
         text.setPosition(0, 0);
@@ -70,6 +74,8 @@ public class GameTitle extends BaseGroup {
                                     Actions.rotateBy(720, 2, Interpolation.pow2Out)
                             )
                     ));
+
+                    gameManager.unlockAchievement(PlayServices.Achievement.EasterHunter);
                 }
             }
         };

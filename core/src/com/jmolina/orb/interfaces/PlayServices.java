@@ -8,7 +8,7 @@ public interface PlayServices {
     public enum Achievement {
         KnowHow, TheRealDeal, BecomingAnExpert, AHeroWasBorn, OneAboveAll,
         FastFurious1, FastFurious2, FastFurious3, FastFurious4, FastFurious5,
-        Kenny, Robocop, Hyperdrive, ItsOver9000
+        Kenny, Robocop, Hyperdrive, ItsOver9000, EasterHunter
     }
 
     public enum Leaderboard {

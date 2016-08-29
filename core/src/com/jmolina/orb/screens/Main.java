@@ -19,7 +19,7 @@ public class Main extends BaseScreen {
     public Main(SuperManager superManager) {
         super(superManager);
 
-        gameTitle = new GameTitle(getAssetManager());
+        gameTitle = new GameTitle(getAssetManager(), getGameManager());
         play = new MainButton(getAssetManager(), "PLAY", MainButton.Type.SUCCESS);
         options = new MainButton(getAssetManager(), "OPTIONS", MainButton.Type.DEFAULT);
         stats = new MainButton(getAssetManager(), "STATS", MainButton.Type.DEFAULT);
