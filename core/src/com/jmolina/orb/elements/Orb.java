@@ -1,6 +1,7 @@
 package com.jmolina.orb.elements;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
@@ -32,11 +33,13 @@ public class Orb extends Element {
 
     private boolean frozen, overloaded;
     private float heat, naturalScale, freezeTime, overloadTime;
+    private Vector2 startPosition;
     private Fragments fragments;
 
     public Orb(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter, Geometry.CIRCLE, Flavor.GREEN, 1f, 1f, 6, 2, 0);
 
+        startPosition = new Vector2();
         heat = 0f;
         frozen = overloaded = false;
         fragments = new Fragments(am);
@@ -45,6 +48,7 @@ public class Orb extends Element {
         setActor(fragments);
         getBody().setSleepingAllowed(false); // Evita que se quede dormido. ¡La Gravedad no despierta!
         setPosition(DEFAULT_X, DEFAULT_Y);
+        setStartPosition(DEFAULT_X, DEFAULT_Y);
     }
 
     /**
@@ -127,8 +131,8 @@ public class Orb extends Element {
         getBody().setTransform(getBody().getPosition().x, getBody().getPosition().y, 0);
     }
 
-    public void reset(float x, float y) {
-        setPosition(x, y);
+    public void reset() {
+        setPosition(startPosition.x, startPosition.y);
         resetAngle();
         resetHeat();
         resetVelocity();
@@ -179,6 +183,10 @@ public class Orb extends Element {
 
         if (overloadTime > OVERLOAD_TIME)
             setOverloaded(false);
+    }
+
+    public void setStartPosition(float x, float y) {
+        startPosition.set(x, y);
     }
 
 }

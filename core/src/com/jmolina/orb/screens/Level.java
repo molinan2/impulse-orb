@@ -61,12 +61,10 @@ public class Level extends BaseScreen implements LevelManager {
     private boolean locked, ticking, achievedRobocop, achievedItsOver9000, achievedHyperdrive;
     private Viewport worldViewport, gestureViewport, hudViewport, parallaxViewport;
     private GestureStage gestureStage;
-    private GestureDetector gestureDetector;
-    private GestureHandler gestureHandler;
     private ParallaxStage parallaxStage;
     private HUDStage hudStage;
     private Orb orb;
-    private Vector2 orbStartPosition, lastOrbPosition;
+    private Vector2 lastOrbPosition;
     private GameStats stats;
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
     private Runnable orbIntro, orbDestroy, reset, unlock, toSuccess;
@@ -88,7 +86,6 @@ public class Level extends BaseScreen implements LevelManager {
         tick = new Tick();
         pixelsPerMeter = getGameManager().getPixelsPerMeter();
         impulse = IMPULSE_FACTOR / getPixelsPerMeter();
-        orbStartPosition = new Vector2();
         lastOrbPosition = new Vector2();
         stats = new GameStats();
 
@@ -98,22 +95,21 @@ public class Level extends BaseScreen implements LevelManager {
         gestureViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         parallaxViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         hudViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+
         hudStage = new HUDStage(getAssetManager(), this, hudViewport);
         gestureStage = new GestureStage(getAssetManager(), gestureViewport, getPixelsPerMeter());
-        parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getPixelsPerMeter());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getPixelsPerMeter());
 
         worldManager = new WorldManager();
         setOrb(new Orb(getAssetManager(), worldManager.getWorld(), getPixelsPerMeter()));
         worldManager.bindContactHandler(this, getOrb());
 
-        gestureHandler = new GestureHandler(this);
-        gestureDetector = new GestureDetector(
+        GestureDetector gestureDetector = new GestureDetector(
                 GESTURE_HALF_TAP_SQUARE_SIZE,
                 GESTURE_TAP_COUNT_INTERVAL,
                 GESTURE_LONG_PRESS_DURATION,
                 GESTURE_MAX_FLING_DELAY,
-                gestureHandler
+                new GestureHandler(this)
         );
 
         situationManager = new SituationManager(getAssetManager(), worldManager.getWorld(), getOrb(), getPixelsPerMeter(), getMainStage(), worldViewport);
@@ -122,8 +118,8 @@ public class Level extends BaseScreen implements LevelManager {
         addProcessor(gestureStage);
         addProcessor(gestureDetector);
         createRunnables();
-        lock();
         disableTicking();
+        lock();
     }
 
     /**
@@ -141,7 +137,7 @@ public class Level extends BaseScreen implements LevelManager {
         reset = new Runnable() {
             @Override
             public void run() {
-                getOrb().reset(orbStartPosition.x, orbStartPosition.y);
+                getOrb().reset();
                 getHUDStage().reset();
                 stats.newTry();
                 situationManager.removeSituations();
@@ -386,7 +382,7 @@ public class Level extends BaseScreen implements LevelManager {
      */
     protected void setOrbStartPosition (float x, float y) {
         getOrb().setPosition(x, y);
-        orbStartPosition.set(x, y);
+        getOrb().setStartPosition(x, y);
         lastOrbPosition.set(x, y);
     }
 
