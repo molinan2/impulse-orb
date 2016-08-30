@@ -7,9 +7,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.data.GameStats;
@@ -18,25 +16,21 @@ import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.elements.Movable;
 import com.jmolina.orb.elements.Orb;
-import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.interfaces.LevelManager;
 import com.jmolina.orb.interfaces.PlayServices;
 import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.listeners.GestureHandler;
-import com.jmolina.orb.listeners.ContactHandler;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.managers.SituationManager;
+import com.jmolina.orb.managers.WorldManager;
 import com.jmolina.orb.situations.Situation;
-import com.jmolina.orb.situations.SituationFactory;
 import com.jmolina.orb.stages.GestureStage;
 import com.jmolina.orb.stages.HUDStage;
 import com.jmolina.orb.stages.ParallaxStage;
 import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.debug.DebugTime;
-
-import java.util.ArrayList;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
@@ -59,20 +53,12 @@ public class Level extends BaseScreen implements LevelManager {
     private final float GESTURE_TAP_COUNT_INTERVAL = 0.4f;
     private final float GESTURE_LONG_PRESS_DURATION = 1.1f;
     private final float GESTURE_MAX_FLING_DELAY = 0.1f;
-    private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
-    private final float WORLD_TIME_STEP = Var.FPS;
-    private final int WORLD_STEP_MULTIPLIER = 4;
-    private final int WORLD_VELOCITY_ITERATIONS = 8;
-    private final int WORLD_POSITION_ITERATIONS = 3;
-    private final boolean WOLRD_ACCUMULATED_STEP = false;
     private final float IMPULSE_FACTOR = 0.6f;
     private final float IMPULSE_MAX = 50f;
 
     private Tick tick;
-    private float pixelsPerMeter, impulse, physicsStepAccumulator;
+    private float pixelsPerMeter, impulse;
     private boolean locked, ticking, achievedRobocop, achievedItsOver9000, achievedHyperdrive;
-    private World world;
-    private ContactHandler contactHandler;
     private Viewport worldViewport, gestureViewport, hudViewport, parallaxViewport;
     private GestureStage gestureStage;
     private GestureDetector gestureDetector;
@@ -85,6 +71,7 @@ public class Level extends BaseScreen implements LevelManager {
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
     private Runnable orbIntro, orbDestroy, reset, unlock, toSuccess;
     private SituationManager situationManager;
+    private WorldManager worldManager;
 
     /**
      * Constructor
@@ -115,12 +102,11 @@ public class Level extends BaseScreen implements LevelManager {
         gestureStage = new GestureStage(getAssetManager(), gestureViewport, getPixelsPerMeter());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getPixelsPerMeter());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getPixelsPerMeter());
-        world = new World(WORLD_GRAVITY, true);
-        physicsStepAccumulator = 0f;
-        setOrb(new Orb(getAssetManager(), getWorld(), getPixelsPerMeter()));
 
-        contactHandler = new ContactHandler(this, getOrb());
-        world.setContactListener(contactHandler);
+        worldManager = new WorldManager();
+        setOrb(new Orb(getAssetManager(), worldManager.getWorld(), getPixelsPerMeter()));
+        worldManager.bindContactHandler(this, getOrb());
+
         gestureHandler = new GestureHandler(this);
         gestureDetector = new GestureDetector(
                 GESTURE_HALF_TAP_SQUARE_SIZE,
@@ -130,7 +116,7 @@ public class Level extends BaseScreen implements LevelManager {
                 gestureHandler
         );
 
-        situationManager = new SituationManager(getAssetManager(), getWorld(), getOrb(), getPixelsPerMeter(), getMainStage(), worldViewport);
+        situationManager = new SituationManager(getAssetManager(), worldManager.getWorld(), getOrb(), getPixelsPerMeter(), getMainStage(), worldViewport);
 
         addProcessor(hudStage);
         addProcessor(gestureStage);
@@ -239,7 +225,7 @@ public class Level extends BaseScreen implements LevelManager {
         getHUDStage().dispose();
         getGestureStage().dispose();
         getParallaxStage().dispose();
-        getWorld().dispose();
+        worldManager.dispose();
         super.dispose();
     }
 
@@ -305,6 +291,12 @@ public class Level extends BaseScreen implements LevelManager {
         ));
     }
 
+    private void stepPhysics(float delta) {
+        if (isLocked()) return;
+
+        worldManager.step(delta);
+    }
+
     /**
      * Devuelve el valor actual de {@link #pixelsPerMeter}
      *
@@ -312,15 +304,6 @@ public class Level extends BaseScreen implements LevelManager {
      */
     private float getPixelsPerMeter() {
         return pixelsPerMeter;
-    }
-
-    /**
-     * Devuelve el mundo Box2D
-     *
-     * @return {@link #world}
-     */
-    private World getWorld() {
-        return world;
     }
 
     /**
@@ -416,52 +399,7 @@ public class Level extends BaseScreen implements LevelManager {
         situationManager.addSituation(clazz);
     }
 
-    /**
-     * Avanza la simulación usando el método del acumulador. Este método es útil para entornos con
-     * pocos recursos, en los que es habitual que el tiempo de frame supere el tiempo máximo por
-     * frame (1/60 a 60 fps), ya que permite "avanzar más" la simulación hasta alcanzar el tiempo
-     * de frame. Tiene la desventaja de que quedan residuos temporales en el acumulador, que pueden
-     * provocar saltos en frames posteriores (aliasing temporal).
-     *
-     * Si sobran los recursos, es más recomendable usar un timestep fijo.
-     */
-    private void stepPhysics(float delta) {
-        if (isLocked()) return;
 
-        if (WOLRD_ACCUMULATED_STEP) accumulatedPhysics(delta);
-        else multiStepPhysics();
-    }
-
-    /**
-     * Acumula el tiempo de frame y realiza pasos de la simulación hasta alcanzarlo. Es más apropiado
-     * cuando la ejecución es lenta (más de 16 ms de tiempo de frame).
-     *
-     * @param delta
-     */
-    private void accumulatedPhysics(float delta) {
-        float frameTime = Math.min(delta, 0.166666f);
-        physicsStepAccumulator += frameTime;
-        while (physicsStepAccumulator >= WORLD_TIME_STEP) {
-            world.step(WORLD_TIME_STEP, WORLD_VELOCITY_ITERATIONS, WORLD_POSITION_ITERATIONS);
-            physicsStepAccumulator -= WORLD_TIME_STEP;
-        }
-    }
-
-    /**
-     * Realiza {@link #WORLD_STEP_MULTIPLIER} pasos de la simulación física por cada fotograma. Un
-     * mayor número de pasos aumenta la precisión de las colisiones, a costa de mayor consumo de
-     * recursos. Es más apropiado cuando la ejecución es muy rápida (menos de 16 ms de tiempo de
-     * frame).
-     */
-    private void multiStepPhysics() {
-        for (int i=0; i<WORLD_STEP_MULTIPLIER; i++) {
-            world.step(
-                    WORLD_TIME_STEP / (float) WORLD_STEP_MULTIPLIER,
-                    WORLD_VELOCITY_ITERATIONS,
-                    WORLD_POSITION_ITERATIONS
-            );
-        }
-    }
 
     /**
      * Sincroniza la posición y rotación de los cuerpos con las de sus actores.
@@ -525,7 +463,7 @@ public class Level extends BaseScreen implements LevelManager {
         getMainStage().draw();
         getGestureStage().draw();
         getBackgroundStage().draw();
-        if (DEBUG_WORLD) debugRenderer.render(world, worldViewport.getCamera().combined);
+        if (DEBUG_WORLD) debugRenderer.render(worldManager.getWorld(), worldViewport.getCamera().combined);
         getHUDStage().draw();
     }
 
