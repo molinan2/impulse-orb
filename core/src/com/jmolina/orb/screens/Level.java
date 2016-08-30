@@ -26,6 +26,7 @@ import com.jmolina.orb.listeners.GestureHandler;
 import com.jmolina.orb.listeners.ContactHandler;
 import com.jmolina.orb.managers.GameManager;
 import com.jmolina.orb.managers.ScreenManager;
+import com.jmolina.orb.managers.SituationManager;
 import com.jmolina.orb.situations.Situation;
 import com.jmolina.orb.situations.SituationFactory;
 import com.jmolina.orb.stages.GestureStage;
@@ -48,9 +49,6 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public class Level extends BaseScreen implements LevelManager {
 
-    private enum Adjacency { TOP, BOTTOM }
-    private enum Frontier { BOUNDARY, MIDDLE }
-
     private final boolean DEBUG_WORLD = Var.DEBUG_RENDERER;
     private final boolean DEBUG_TIME = Var.DEBUG_FRAME_TIME;
     private final boolean DEBUG_INVULNERABLE = Var.DEBUG_INVULNERABILITY;
@@ -67,8 +65,6 @@ public class Level extends BaseScreen implements LevelManager {
     private final int WORLD_VELOCITY_ITERATIONS = 8;
     private final int WORLD_POSITION_ITERATIONS = 3;
     private final boolean WOLRD_ACCUMULATED_STEP = false;
-    private final int Z_INDEX_ORB = 20000;
-    private final int Z_INDEX_BLACK = 10000;
     private final float IMPULSE_FACTOR = 0.6f;
     private final float IMPULSE_MAX = 50f;
 
@@ -88,11 +84,7 @@ public class Level extends BaseScreen implements LevelManager {
     private GameStats stats;
     private ScreenManager.Key successScreen = ScreenManager.Key.LEVEL_SELECT;
     private Runnable orbIntro, orbDestroy, reset, unlock, toSuccess;
-    private SituationFactory situationFactory;
-    private ArrayList<Class> situations;
-    private Situation currentSituation, adjacentSituation;
-    private Adjacency adjacencyNow, adjacencyLast;
-
+    private SituationManager situationManager;
 
     /**
      * Constructor
@@ -138,10 +130,7 @@ public class Level extends BaseScreen implements LevelManager {
                 gestureHandler
         );
 
-        situationFactory = new SituationFactory(getAssetManager(), getWorld(), getPixelsPerMeter());
-        situations = new ArrayList<Class>();
-        currentSituation = null;
-        adjacentSituation = null;
+        situationManager = new SituationManager(getAssetManager(), getWorld(), getOrb(), getPixelsPerMeter(), getMainStage(), worldViewport);
 
         addProcessor(hudStage);
         addProcessor(gestureStage);
@@ -169,7 +158,7 @@ public class Level extends BaseScreen implements LevelManager {
                 getOrb().reset(orbStartPosition.x, orbStartPosition.y);
                 getHUDStage().reset();
                 stats.newTry();
-                removeSituations();
+                situationManager.removeSituations();
             }
         };
 
@@ -205,7 +194,7 @@ public class Level extends BaseScreen implements LevelManager {
         if (DEBUG_TIME) debugTime.start();
 
         clear();
-        updateSituations();
+        situationManager.updateSituations();
         syncActors();
         act(delta);
         syncBodies();
@@ -228,147 +217,6 @@ public class Level extends BaseScreen implements LevelManager {
     }
 
     /**
-     * Destruye las situaciones y libera su memoria.
-     */
-    private void removeSituations() {
-        if (currentSituation != null) currentSituation.dispose();
-        if (adjacentSituation != null) adjacentSituation.dispose();
-        currentSituation = null;
-        adjacentSituation = null;
-    }
-
-    /**
-     * Actualiza las situaciones visibles.
-     */
-    private void updateSituations() {
-        float altitude = getOrb().getPosition().y / Situation.HEIGHT;
-        int current = (int) altitude;
-        adjacencyLast = adjacencyNow;
-        adjacencyNow = findAdjacency(altitude);
-
-        int adjacent = calculateAdjacent(current);
-
-        if (noVisibility())
-            initializeVisibility(current, adjacent);
-
-        if (crossedFrontier()) {
-            switch (findFrontier(altitude)) {
-                case MIDDLE: newAdjacent(adjacent); break;
-                case BOUNDARY: swapSituations(); break;
-            }
-        }
-    }
-
-    /**
-     * Calcula el índice adyacente en función del actual
-     *
-     * @param current Indice de la situacion actual
-     */
-    private int calculateAdjacent(int current) {
-        int adjacent;
-
-        if (adjacencyNow == Adjacency.TOP)
-            adjacent = current + 1;
-        else
-            adjacent = current - 1;
-
-        return adjacent;
-    }
-
-    /**
-     * Devuelve si no hay visibilidad. Esto ocurre si la situación actual no está inicializada, por
-     * ejemplo al iniciar el nivel.
-     */
-    private boolean noVisibility() {
-        return currentSituation == null;
-    }
-
-    /**
-     * Inicializa la visibilidad: crea la situación actual y la añade al nivel. Si procede, crea la
-     * situación adyacente y la añade al nivel.
-     *
-     * @param current Indice de la situacion actual
-     * @param adjacent Indice de la situacion adyacente
-     */
-    private void initializeVisibility(int current, int adjacent) {
-        Class currentClass = situations.get(current);
-        currentSituation = situationFactory.newSituation(currentClass);
-        placeSituation(currentSituation, current);
-
-        if (adjacent >= 0 && adjacent <= situations.size()-1) {
-            Class adjacentClass = situations.get(adjacent);
-            adjacentSituation = situationFactory.newSituation(adjacentClass);
-            placeSituation(adjacentSituation, adjacent);
-        }
-    }
-
-    /**
-     * Detecta el paso del Orb por una {@link Frontier}.
-     */
-    private boolean crossedFrontier() {
-        return adjacencyLast != adjacencyNow;
-    }
-
-    /**
-     * Calcula la {@link Adjacency}, es decir, si la situación adyacente se encuentra por arriba o por debajo.
-     *
-     * @param altitude Altitud de la cámara (en unidades del mundo)
-     */
-    private Adjacency findAdjacency(float altitude) {
-        float decimalPart = Utils.decimalPart(altitude);
-
-        if (decimalPart >= 0.5f)
-            return Adjacency.TOP;
-        else
-            return Adjacency.BOTTOM;
-    }
-
-    /**
-     * Calcula la {@link Frontier} más cercana. Se asume que la velocidad del Orb no va a ser tan
-     * alta como para, en un tiempo de frame, cruzar una frontera y colocarse más cerca de OTRA
-     * frontera.
-     *
-     * @param altitude Altitud del {@link Orb} (en unidades del mundo)
-     */
-    private Frontier findFrontier(float altitude) {
-        float decimalPart = Utils.decimalPart(altitude);
-
-        if (decimalPart > 0.25f && decimalPart < 0.75f)
-            return Frontier.MIDDLE;
-        else
-            return Frontier.BOUNDARY;
-    }
-
-    /**
-     * Se destruye la anterior adyacente, se instancia una nueva y se añade al nivel.
-     *
-     * @param adjacent Indice de la situacion adyacente
-     */
-    private void newAdjacent(int adjacent) {
-        if (adjacentSituation != null)
-            adjacentSituation.dispose();
-
-        adjacentSituation = null;
-
-        if (adjacent >= 0 && adjacent <= situations.size()-1) {
-            Class adjacentClass = situations.get(adjacent);
-            adjacentSituation = situationFactory.newSituation(adjacentClass);
-            placeSituation(adjacentSituation, adjacent);
-        }
-    }
-
-    /**
-     * Se intercambian las situaciones adyacente y actual.
-     */
-    private void swapSituations() {
-        Situation temporal = currentSituation;
-        currentSituation = adjacentSituation;
-        adjacentSituation = temporal;
-    }
-
-
-
-    /**
      * {@inheritDoc}
      * Actualiza los viewports del juego
      */
@@ -387,7 +235,7 @@ public class Level extends BaseScreen implements LevelManager {
      */
     @Override
     public void dispose() {
-        removeSituations();
+        situationManager.removeSituations();
         getHUDStage().dispose();
         getGestureStage().dispose();
         getParallaxStage().dispose();
@@ -535,7 +383,6 @@ public class Level extends BaseScreen implements LevelManager {
     private void setOrb(Orb orb) {
         addMainActor(orb.getActor());
         orb.syncActor(worldViewport);
-        orb.getActor().setZIndex(Z_INDEX_ORB);
         this.orb = orb;
     }
 
@@ -566,49 +413,8 @@ public class Level extends BaseScreen implements LevelManager {
      * @param clazz Una clase de tipo {@link Situation}
      */
     protected void addSituation(Class clazz) {
-        situations.add(clazz);
+        situationManager.addSituation(clazz);
     }
-
-    private void placeSituation(Situation situation, int positionY) {
-        situation.setPositionY(positionY);
-
-        for (Element element : situation.getElements()) {
-            addMainActor(element.getActor());
-            element.syncActor(worldViewport);
-        }
-
-        correctZIndexes();
-    }
-
-    /**
-     * Corrige los Z index de los elementos BLACK (muros) y el Orb. Los elementos BLACK deben
-     * permanecer siempre por encima de los demás. El Orb debe permanecer por encima de todos.
-     */
-    private void correctZIndexes() {
-        for (Situation situation : getVisibleSituations()) {
-            if (situation == null) continue;
-            for (Element element : situation.getElements()) {
-                if (element.getFlavor() == WorldElement.Flavor.BLACK)
-                    element.getActor().setZIndex(Z_INDEX_BLACK);
-            }
-        }
-
-        getOrb().getActor().setZIndex(Z_INDEX_ORB);
-    }
-
-    /**
-     * Devuelve el array de situaciones del nivel actual
-     *
-     * @return SnapshotArray de {@link Situation}s
-     */
-    private SnapshotArray<Situation> getVisibleSituations() {
-        SnapshotArray<Situation> situations = new SnapshotArray<Situation>();
-        situations.add(currentSituation);
-        situations.add(adjacentSituation);
-
-        return situations;
-    }
-
 
     /**
      * Avanza la simulación usando el método del acumulador. Este método es útil para entornos con
@@ -662,7 +468,7 @@ public class Level extends BaseScreen implements LevelManager {
      * No es necesaria en el caso de elementos no móviles
      */
     private void syncBodies() {
-        for (Situation situation : getVisibleSituations()) {
+        for (Situation situation : situationManager.getVisibleSituations()) {
             if (situation == null) continue;
             for (Element element : situation.getElements()) {
                 if (element instanceof Movable)
@@ -678,7 +484,7 @@ public class Level extends BaseScreen implements LevelManager {
      * Es necesaria en todos los casos, para que los actores se correspondan con el scroll.
      */
     private void syncActors() {
-        for (Situation situation : getVisibleSituations()) {
+        for (Situation situation : situationManager.getVisibleSituations()) {
             if (situation == null) continue;
             for (Element element : situation.getElements()) {
                 element.syncActor(worldViewport);
@@ -800,7 +606,7 @@ public class Level extends BaseScreen implements LevelManager {
     private void computeForces() {
         Vector2 force = new Vector2(0, 0);
 
-        for (Situation situation : getVisibleSituations()) {
+        for (Situation situation : situationManager.getVisibleSituations()) {
             if (situation == null) continue;
             for (Element element : situation.getElements()) {
                 if (element instanceof Magnetic) {
