@@ -8,6 +8,9 @@ import java.util.Collections;
 
 import static com.jmolina.orb.managers.PrefsManager.*;
 
+/**
+ * Clase intermedia para representar los 3 mejores tiempos de nivel
+ */
 public class TopTimes {
 
     private String LADDER_1ST;
@@ -18,6 +21,12 @@ public class TopTimes {
     private ScreenManager.Key screenKey;
     private ArrayList<Float> times;
 
+    /**
+     * Constructor
+     *
+     * @param prefs Preferencias
+     * @param screenKey Pantalla correspondiente al nivel
+     */
     public TopTimes(Preferences prefs, ScreenManager.Key screenKey) {
         this.prefs = prefs;
         this.screenKey = screenKey;
@@ -73,6 +82,9 @@ public class TopTimes {
         if (times.size() > 2) prefs.putFloat(LADDER_3RD, times.get(2));
     }
 
+    /**
+     * Detecta los 3 mejores tiempos en funcion del nivel
+     */
     private void detectLevel() {
         switch (screenKey) {
             case LEVEL_1:

@@ -331,11 +331,11 @@ public class GameManager {
         long score = (long) (1000 * time);
 
         switch (level) {
-            case LEVEL_1: serviceManager.submitScore(PlayServices.Leaderboard.Level1, score); break;
-            case LEVEL_2: serviceManager.submitScore(PlayServices.Leaderboard.Level2, score); break;
-            case LEVEL_3: serviceManager.submitScore(PlayServices.Leaderboard.Level3, score); break;
-            case LEVEL_4: serviceManager.submitScore(PlayServices.Leaderboard.Level4, score); break;
-            case LEVEL_5: serviceManager.submitScore(PlayServices.Leaderboard.Level5, score); break;
+            case LEVEL_1: serviceManager.submitScore(PlayServices.Leaderboard.Leaderboard1, score); break;
+            case LEVEL_2: serviceManager.submitScore(PlayServices.Leaderboard.Leaderboard2, score); break;
+            case LEVEL_3: serviceManager.submitScore(PlayServices.Leaderboard.Leaderboard3, score); break;
+            case LEVEL_4: serviceManager.submitScore(PlayServices.Leaderboard.Leaderboard4, score); break;
+            case LEVEL_5: serviceManager.submitScore(PlayServices.Leaderboard.Leaderboard5, score); break;
             default:
         }
     }
@@ -345,11 +345,11 @@ public class GameManager {
         if (Gdx.app.getType() != Application.ApplicationType.Android) return;
 
         switch (level) {
-            case LEVEL_1: serviceManager.showScore(PlayServices.Leaderboard.Level1); break;
-            case LEVEL_2: serviceManager.showScore(PlayServices.Leaderboard.Level2); break;
-            case LEVEL_3: serviceManager.showScore(PlayServices.Leaderboard.Level3); break;
-            case LEVEL_4: serviceManager.showScore(PlayServices.Leaderboard.Level4); break;
-            case LEVEL_5: serviceManager.showScore(PlayServices.Leaderboard.Level5); break;
+            case LEVEL_1: serviceManager.showScore(PlayServices.Leaderboard.Leaderboard1); break;
+            case LEVEL_2: serviceManager.showScore(PlayServices.Leaderboard.Leaderboard2); break;
+            case LEVEL_3: serviceManager.showScore(PlayServices.Leaderboard.Leaderboard3); break;
+            case LEVEL_4: serviceManager.showScore(PlayServices.Leaderboard.Leaderboard4); break;
+            case LEVEL_5: serviceManager.showScore(PlayServices.Leaderboard.Leaderboard5); break;
             default:
         }
     }

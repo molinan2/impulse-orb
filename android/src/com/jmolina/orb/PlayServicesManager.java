@@ -178,35 +178,35 @@ public class PlayServicesManager implements PlayServices {
     public void submitScore(Leaderboard leaderboard, long score) {
         if (isSignedIn()) {
             switch (leaderboard) {
-                case Level1:
+                case Leaderboard1:
                     Games.Leaderboards.submitScore(
                             gameHelper.getApiClient(),
                             activity.getString(R.string.leaderboard_level_1_basics),
                             score
                     );
                     break;
-                case Level2:
+                case Leaderboard2:
                     Games.Leaderboards.submitScore(
                             gameHelper.getApiClient(),
                             activity.getString(R.string.leaderboard_level_2_advance),
                             score
                     );
                     break;
-                case Level3:
+                case Leaderboard3:
                     Games.Leaderboards.submitScore(
                             gameHelper.getApiClient(),
                             activity.getString(R.string.leaderboard_level_3_expert),
                             score
                     );
                     break;
-                case Level4:
+                case Leaderboard4:
                     Games.Leaderboards.submitScore(
                             gameHelper.getApiClient(),
                             activity.getString(R.string.leaderboard_level_4_hero),
                             score
                     );
                     break;
-                case Level5:
+                case Leaderboard5:
                     Games.Leaderboards.submitScore(
                             gameHelper.getApiClient(),
                             activity.getString(R.string.leaderboard_level_5_god),
@@ -235,7 +235,7 @@ public class PlayServicesManager implements PlayServices {
     public void showScore(Leaderboard leaderboard) {
         if (isSignedIn()) {
             switch (leaderboard) {
-                case Level1:
+                case Leaderboard1:
                     activity.startActivityForResult(
                             Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(),
                                     activity.getString(R.string.leaderboard_level_1_basics)),
@@ -243,7 +243,7 @@ public class PlayServicesManager implements PlayServices {
                     );
                     break;
 
-                case Level2:
+                case Leaderboard2:
                     activity.startActivityForResult(
                             Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(),
                                     activity.getString(R.string.leaderboard_level_2_advance)),
@@ -251,7 +251,7 @@ public class PlayServicesManager implements PlayServices {
                     );
                     break;
 
-                case Level3:
+                case Leaderboard3:
                     activity.startActivityForResult(
                             Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(),
                                     activity.getString(R.string.leaderboard_level_3_expert)),
@@ -259,7 +259,7 @@ public class PlayServicesManager implements PlayServices {
                     );
                     break;
 
-                case Level4:
+                case Leaderboard4:
                     activity.startActivityForResult(
                             Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(),
                                     activity.getString(R.string.leaderboard_level_4_hero)),
@@ -267,7 +267,7 @@ public class PlayServicesManager implements PlayServices {
                     );
                     break;
 
-                case Level5:
+                case Leaderboard5:
                     activity.startActivityForResult(
                             Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(),
                                     activity.getString(R.string.leaderboard_level_5_god)),

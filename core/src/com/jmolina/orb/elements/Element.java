@@ -20,6 +20,8 @@ import com.jmolina.orb.var.Var;
  */
 public class Element extends WorldElement {
 
+    private final float TRIANGLE_CORRECTION = 1.162790697674f; // 400f / 344f
+
     private AssetManager assetManager;
     private Actor actor;
     private float pixelsPerMeter;
@@ -208,10 +210,9 @@ public class Element extends WorldElement {
         // Corrección específica para la textura del triángulo, que es distinta para que el origen
         // del actor coincida con el centroide del triángulo equilátero
         if (getGeometry() == Geometry.TRIANGLE) {
-            float correction = 400f / 344f;
             actor.setScale(
-                    actor.getScaleX() * correction,
-                    actor.getScaleY() * correction
+                    actor.getScaleX() * TRIANGLE_CORRECTION,
+                    actor.getScaleY() * TRIANGLE_CORRECTION
             );
         }
     }

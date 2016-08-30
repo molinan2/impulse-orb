@@ -96,7 +96,7 @@ public class Level extends BaseScreen implements LevelManager {
         parallaxViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         hudViewport = new FitViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
-        hudStage = new HUDStage(getAssetManager(), this, hudViewport);
+        hudStage = new HUDStage(this, getAssetManager(), hudViewport);
         gestureStage = new GestureStage(getAssetManager(), gestureViewport, getPixelsPerMeter());
         parallaxStage = new ParallaxStage(getAssetManager(), parallaxViewport, getPixelsPerMeter());
 
@@ -112,7 +112,14 @@ public class Level extends BaseScreen implements LevelManager {
                 new GestureHandler(this)
         );
 
-        situationManager = new SituationManager(getAssetManager(), worldManager.getWorld(), getOrb(), getPixelsPerMeter(), getMainStage(), worldViewport);
+        situationManager = new SituationManager(
+                getAssetManager(),
+                worldManager.getWorld(),
+                getOrb(),
+                getPixelsPerMeter(),
+                getMainStage(),
+                worldViewport
+        );
 
         addProcessor(hudStage);
         addProcessor(gestureStage);
@@ -140,6 +147,7 @@ public class Level extends BaseScreen implements LevelManager {
                 getOrb().reset();
                 getHUDStage().reset();
                 stats.newTry();
+                lastOrbPosition = getOrb().getStartPosition();
                 situationManager.removeSituations();
             }
         };
@@ -591,6 +599,20 @@ public class Level extends BaseScreen implements LevelManager {
         }
     }
 
+    /**
+     * Desbloquea el logro de nivel correspondiente a este nivel
+     */
+    public void unlockLevelAchievement() {
+        switch (getThisKey()) {
+            case LEVEL_1: getGameManager().unlockAchievement(PlayServices.Achievement.KnowHow); break;
+            case LEVEL_2: getGameManager().unlockAchievement(PlayServices.Achievement.TheRealDeal); break;
+            case LEVEL_3: getGameManager().unlockAchievement(PlayServices.Achievement.BecomingAnExpert); break;
+            case LEVEL_4: getGameManager().unlockAchievement(PlayServices.Achievement.AHeroWasBorn); break;
+            case LEVEL_5: getGameManager().unlockAchievement(PlayServices.Achievement.OneAboveAll); break;
+            default:
+        }
+    }
+
     @Override
     public void firstGame() {
         stats.newTry();
@@ -769,20 +791,6 @@ public class Level extends BaseScreen implements LevelManager {
         getOrb().setOverloaded(true);
         getHUDStage().setGaugeOverload(true);
         getGameManager().play(GameManager.Fx.Warning);
-    }
-
-    /**
-     * Desbloquea el logro de nivel correspondiente a este nivel
-     */
-    public void unlockLevelAchievement() {
-        switch (getThisKey()) {
-            case LEVEL_1: getGameManager().unlockAchievement(PlayServices.Achievement.KnowHow); break;
-            case LEVEL_2: getGameManager().unlockAchievement(PlayServices.Achievement.TheRealDeal); break;
-            case LEVEL_3: getGameManager().unlockAchievement(PlayServices.Achievement.BecomingAnExpert); break;
-            case LEVEL_4: getGameManager().unlockAchievement(PlayServices.Achievement.AHeroWasBorn); break;
-            case LEVEL_5: getGameManager().unlockAchievement(PlayServices.Achievement.OneAboveAll); break;
-            default:
-        }
     }
 
 }

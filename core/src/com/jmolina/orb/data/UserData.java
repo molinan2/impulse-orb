@@ -8,10 +8,18 @@ import com.jmolina.orb.elements.WorldElement;
  */
 public class UserData {
 
+    /** Sabor del elemento */
     public WorldElement.Flavor flavor;
+
+    /** Efecto del elemento */
     public WorldElement.Effect effect;
+
+    /** Características del tick (en caso de ser calentador) */
     public Tick tick;
 
+    /**
+     * Constructor
+     */
     public UserData() {
         tick = new Tick();
     }

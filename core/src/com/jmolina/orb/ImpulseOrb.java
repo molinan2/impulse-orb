@@ -12,6 +12,11 @@ import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.var.Var;
 
 
+/**
+ * Punto de entrada de la aplicación. Implementa {@link ApplicationListener} para escuchar los
+ * eventos de Android. Implementa {@link SuperManager} para gestionar el resto de managers de nivel
+ * de aplicación.
+ */
 public class ImpulseOrb implements ApplicationListener, SuperManager {
 
 	private PrefsManager prefsManager;
@@ -25,6 +30,7 @@ public class ImpulseOrb implements ApplicationListener, SuperManager {
 	 * Constructor
 	 */
 	public ImpulseOrb() {
+		this.serviceManager = null;
 	}
 
 	/**
@@ -37,7 +43,7 @@ public class ImpulseOrb implements ApplicationListener, SuperManager {
 
 	@Override
 	public void create () {
-		setCatchBackKey(true);
+		Gdx.input.setCatchBackKey(true);
 		prefsManager = new PrefsManager();
 		assetManager = new AssetManager();
 		assetManager.loadLoadScreenAssets();
@@ -77,6 +83,7 @@ public class ImpulseOrb implements ApplicationListener, SuperManager {
 		gameManager = new GameManager(this);
 	}
 
+	@Override
 	public PrefsManager getPrefsManager() {
 		return prefsManager;
 	}
@@ -99,14 +106,6 @@ public class ImpulseOrb implements ApplicationListener, SuperManager {
 	@Override
 	public PlayServices getServiceManager() {
 		return serviceManager;
-	}
-
-	/**
-	 * Android Back key
-	 * @param back boolean
-     */
-	private void setCatchBackKey(boolean back) {
-		Gdx.input.setCatchBackKey(back);
 	}
 
 }

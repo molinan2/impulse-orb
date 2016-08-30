@@ -47,12 +47,11 @@ public class HUDStage extends Stage {
 
     /**
      * Constructor
-     *
+     *  @param levelManager LevelManager
      * @param assetManager AssetManager
-     * @param levelManager LevelManager
      * @param viewport Viewport
      */
-    public HUDStage(AssetManager assetManager, LevelManager levelManager, Viewport viewport) {
+    public HUDStage(LevelManager levelManager, AssetManager assetManager, Viewport viewport) {
         super(viewport);
 
         this.levelManager = levelManager;

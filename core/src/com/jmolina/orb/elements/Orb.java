@@ -189,4 +189,8 @@ public class Orb extends Element {
         startPosition.set(x, y);
     }
 
+    public Vector2 getStartPosition() {
+        return startPosition;
+    }
+
 }
