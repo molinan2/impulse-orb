@@ -15,12 +15,26 @@ import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
+/**
+ * Titulo del juego
+ */
 public class GameTitle extends BaseGroup {
 
+    /** Imagen del texto del titulo, y orbe */
     private Image text, orb;
+
+    /** Contador de clicks */
     private int clicks;
+
+    /** Referencia a GameManager */
     private GameManager gameManager;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param gm GameManager
+     */
     public GameTitle(AssetManager am, GameManager gm) {
         super(am);
 

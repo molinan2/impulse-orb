@@ -36,7 +36,6 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 
 /**
- * {@inheritDoc}
  * Clase base para los niveles del juego. Permite su construcción a partir de {@link Situation}s.
  * Renderiza todos los elementos del juego y los sincroniza con el mundo físico. Controla los
  * eventos del juego.

@@ -13,11 +13,19 @@ import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Nota de pie de pagina con autor y version
+ */
 public class Notice extends BaseGroup {
 
-    private Label author;
-    private Label version;
+    /** Autor y version */
+    private Label author, version;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     */
     public Notice(AssetManager am) {
         super(am);
 

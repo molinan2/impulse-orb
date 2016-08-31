@@ -14,6 +14,9 @@ import com.jmolina.orb.widgets.ui.Rating;
 
 import java.util.ArrayList;
 
+/**
+ * Manager de juego. Contiene los metodos para acceder a los recursos.
+ */
 public class GameManager {
 
     public enum Fx { Back, Button, ElementCollision, WallCollision, Destroy, Error, Exit, Fling, Init, Option, Tap, Tick, Warning }
@@ -41,16 +44,28 @@ public class GameManager {
     private SuperManager superManager;
     private PrefsManager prefsManager;
     private PlayServices serviceManager;
+
+    /** Intento en cache para conservar la informacion entre pantallas */
     private Attempt cachedAttempt;
+
+    /** Rango en cache para conservarlo entre pantallas (por algun motivo no funcionaba el del intento) */
     private int cachedRank;
+
+    /** Ultima lectura de las opciones de usuario */
     private boolean vibration = true;
     private boolean sound = true;
     private boolean music = true;
     private boolean online = true;
     private int zoom = PrefsManager.OPTION_ZOOM_DEFAULT;
+
+    /** Sonidos de la aplicacion */
     private Sound backSound, buttonSound, elementCollisionSound, wallCollisionSound, destroySound,
             errorSound, exitSound, flingSound, initSound, optionSound, tapSound, tickSound, warningSound;
+
+    /** Temas musicas de la aplicacion */
     private Music menuMusic, gameMusic, successMusic;
+
+    /** Matriz de tiempos prestablecidos */
     private ArrayList<ArrayList<Float>> times;
 
     /**
@@ -69,6 +84,9 @@ public class GameManager {
         createTimes();
     }
 
+    /**
+     * Libera los recursos
+     */
     public void dispose() {
         backSound.dispose();
         buttonSound.dispose();
@@ -98,6 +116,12 @@ public class GameManager {
         zoom = MathUtils.clamp(prefsManager.getOptionZoom(), PrefsManager.OPTION_ZOOM_MIN, PrefsManager.OPTION_ZOOM_MAX);
     }
 
+    /**
+     * Guarda en la cache un intento y el rango conseguido por su tiempo
+     *
+     * @param attempt Intento
+     * @param rank Rango
+     */
     public void cache(Attempt attempt, int rank) {
         if (attempt != null) {
             cachedAttempt.setDistance(attempt.getDistance());
@@ -106,14 +130,25 @@ public class GameManager {
         }
     }
 
+    /**
+     * Devuelve el intento en cache
+     */
     public Attempt getCachedAttempt() {
         return cachedAttempt;
     }
 
+    /**
+     * Devuelve el rango en cache
+     */
     public int getCachedRank() {
         return cachedRank;
     }
 
+    /**
+     * Produce una vibracion de una duracion predeterminada
+     *
+     * @param length Duracion de la vibracion
+     */
     public void vibrate(Length length) {
         switch (length) {
             case Short: vibrate(VIBRATION_SHORT); break;
@@ -123,12 +158,20 @@ public class GameManager {
         }
     }
 
+    /**
+     * Produce una vibracion de una duracion determinado (ms)
+     *
+     * @param duration Duracion de la vibracion en ms
+     */
     private void vibrate(int duration) {
         if (!vibration) return;
 
         Gdx.input.vibrate(duration);
     }
 
+    /**
+     * Devuelve el ratio metros/pixeles
+     */
     public float getPixelsPerMeter() {
         switch (zoom) {
             case PrefsManager.OPTION_ZOOM_MIN: return PIXELS_PER_METER / ZOOM_MULTIPLIER;
@@ -138,6 +181,9 @@ public class GameManager {
         }
     }
 
+    /**
+     * Crea los sonidos
+     */
     private void createSounds() {
         backSound = getAsset(Asset.SOUND_BACK, Sound.class);
         buttonSound = getAsset(Asset.SOUND_BUTTON, Sound.class);
@@ -154,6 +200,9 @@ public class GameManager {
         warningSound = getAsset(Asset.SOUND_WARNING, Sound.class);
     }
 
+    /**
+     * Crea los temas musicales
+     */
     private void createMusic() {
         menuMusic = getAsset(Asset.MUSIC_MENU, Music.class);
         gameMusic = getAsset(Asset.MUSIC_GAME, Music.class);
@@ -174,14 +223,29 @@ public class GameManager {
         successMusic.setOnCompletionListener(replay);
     }
 
+    /**
+     * Reproduce un sonido
+     *
+     * @param fx Sonido
+     */
     public void play(Fx fx) {
         playFx(fx);
     }
 
+    /**
+     * Reproduce una pista de musica
+     *
+     * @param track Pista de musica
+     */
     public void play(Track track) {
         playTrack(track);
     }
 
+    /**
+     * Reproduce un sonido
+     *
+     * @param fx Sonido
+     */
     private void playFx(Fx fx) {
         if (!sound) return;
 
@@ -203,6 +267,11 @@ public class GameManager {
         }
     }
 
+    /**
+     * Reproduce una pista de musica
+     *
+     * @param track Pista de musica
+     */
     private void playTrack(Track track) {
         if (!music) return;
 
@@ -227,16 +296,28 @@ public class GameManager {
         }
     }
 
+    /**
+     * Devuelve un asset
+     *
+     * @param fileName Descriptor del fichero
+     * @param type Tipo de asset
+     */
     private synchronized <T> T getAsset (String fileName, Class<T> type) {
         return superManager.getAssetManager().get(fileName, type);
     }
 
+    /**
+     * Detiene toda la musica
+     */
     public void stopMusic() {
         gameMusic.stop();
         menuMusic.stop();
         successMusic.stop();
     }
 
+    /**
+     * Rellena la matriz de tiempos prestablecidos
+     */
     private void createTimes() {
         times = new ArrayList<ArrayList<Float>>();
 
@@ -275,25 +356,27 @@ public class GameManager {
     }
 
     /**
-     *
+     * Devuelve la matriz de tiempos prestablecidos
      *
      * @param levelIndex Indice de nivel en numero natural: {1,5}
-     * @return
      */
     public ArrayList<Float> getTimes(int levelIndex) {
         levelIndex = MathUtils.clamp(levelIndex-1, Rating.MIN, Rating.MAX);
         return times.get(levelIndex);
     }
 
+    /**
+     * Indica si la musica esta habilitada
+     */
     public boolean isEnabledMusic() {
         return music;
     }
 
     /**
-     * Obtiene el rating numérico
+     * Obtiene el rating numérico de un tiempo
      *
-     * @param levelIndex
-     * @param time
+     * @param levelIndex Indice del nivel
+     * @param time Tiempo
      * @return Rating numérico
      */
     public int getNumericRating(int levelIndex, float time) {
@@ -321,8 +404,8 @@ public class GameManager {
     /**
      * Sube a Google Play Games el tiempo realizado en un nivel.
      *
-     * @param level
-     * @param time
+     * @param level Clave de pantalla de nivel
+     * @param time Tiempo
      */
     public void submitTime(ScreenManager.Key level, float time) {
         if (!online) return;
@@ -340,6 +423,10 @@ public class GameManager {
         }
     }
 
+    /**
+     * Muestra los tiempos de Play Store para un nivel
+     * @param level
+     */
     public void showTime(ScreenManager.Key level) {
         if (!online) return;
         if (Gdx.app.getType() != Application.ApplicationType.Android) return;
@@ -354,12 +441,18 @@ public class GameManager {
         }
     }
 
+    /**
+     * Loguea al usuario en Play Games
+     */
     public void signIn() {
         if (Gdx.app.getType() != Application.ApplicationType.Android) return;
 
         serviceManager.signIn();
     }
 
+    /**
+     * Desconecta al usuario de Play Games
+     */
     public void signOut() {
         if (Gdx.app.getType() != Application.ApplicationType.Android) return;
 

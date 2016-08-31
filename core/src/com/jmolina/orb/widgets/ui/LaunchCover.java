@@ -7,10 +7,20 @@ import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Portada de la pantalla de lanzamiento de nivel
+ */
 public class LaunchCover extends BaseGroup {
 
+    /** Portada y marco */
     private Image cover, frame;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param texture Textura de la portada
+     */
     public LaunchCover(AssetManager am, Texture texture) {
         super(am);
 

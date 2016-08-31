@@ -12,15 +12,34 @@ import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Opcion que engloba una checkbox
+ */
 public class Option extends BaseGroup {
 
+    /** Etiqueta */
     private Label label;
+
+    /** Checkbox */
     private Checkbox checkbox;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param name Etiqueta
+     */
     public Option(AssetManager am, String name) {
         this(am, name, true);
     }
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param name Etiqueta
+     * @param checked Estado
+     */
     public Option(AssetManager am, String name, boolean checked) {
         super(am);
 
@@ -45,14 +64,25 @@ public class Option extends BaseGroup {
         setTouchable(Touchable.childrenOnly);
     }
 
+    /**
+     * Invierte el estado de la opcion
+     */
     public void toggle() {
         checkbox.toggle();
     }
 
+    /**
+     * Indica si esta activada la opcion
+     */
     public boolean isChecked() {
         return checkbox.isChecked();
     }
 
+    /**
+     * Fija la opcion activada o desactivada
+     *
+     * @param checked Si esta activada
+     */
     public void setChecked(boolean checked) {
         if (checked) checkbox.check();
         else checkbox.uncheck();

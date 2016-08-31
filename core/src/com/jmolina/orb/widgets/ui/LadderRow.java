@@ -12,11 +12,25 @@ import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Una fila de la clasificacion
+ */
 public class LadderRow extends BaseGroup {
 
+    /** Etiquetas de rango, tiempo y usuario */
     private Label rankLabel, timeLabel, userLabel;
+
+    /** Rating (medallas) del tiempo */
     private Rating rating;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param rank Rango
+     * @param time Tiempo
+     * @param numericRating Rating numerico (medallas)
+     */
     public LadderRow(AssetManager am, int rank, float time, int numericRating) {
         super(am);
 
@@ -65,6 +79,11 @@ public class LadderRow extends BaseGroup {
         setHeight(Utils.cell(0.5f));
     }
 
+    /**
+     * Devuelve el tiempo formateado
+     *
+     * @param time Tiempo
+     */
     private String formatTime(float time) {
         if (time > 0)
             return Utils.formatTime(time);

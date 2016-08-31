@@ -7,12 +7,22 @@ import com.jmolina.orb.widgets.BaseActor;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Flecha que representa un gesto de impulso
+ */
 public class Arrow extends BaseGroup {
 
     private final float LINE_WIDTH_RATIO = 0.125f;
 
+    /** Componentes de la flecha: base, linea y punta de flecha */
     private BaseActor base, line, arrowhead;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param pixelsPerMeter Ratio de pixels/metros
+     */
     public Arrow(AssetManager am, float pixelsPerMeter) {
         super(am);
 
@@ -35,6 +45,12 @@ public class Arrow extends BaseGroup {
         setTransform(false);
     }
 
+    /**
+     * Fija el punto de inicio y fin de la flecha
+     *
+     * @param start Punto de inicio en pixeles
+     * @param end Punto de fin en pixeles
+     */
     public void set(Vector2 start, Vector2 end) {
         Vector2 direction;
         float angle, distance;

@@ -17,15 +17,27 @@ import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
+/**
+ * Boton principal de la aplicacion
+ */
 public class MainButton extends BaseGroup {
 
-    public enum Type {
-        SUCCESS, DANGER, DEFAULT, WARNING
-    }
+    /** Tipo de boton (color) */
+    public enum Type { SUCCESS, DANGER, DEFAULT, WARNING }
 
+    /** Texto del boton */
     private Label label;
+
+    /** Fondo y marco del boton */
     private Image background, frame;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param name Nombre del boton
+     * @param type Tipo
+     */
     public MainButton(AssetManager am, String name, Type type) {
         super(am);
 
@@ -60,6 +72,11 @@ public class MainButton extends BaseGroup {
         setOrigin(background.getWidth() * 0.5f, background.getHeight() * 0.5f);
     }
 
+    /**
+     * Devuelve la regin de textura correspondiente al tipo indicado
+     *
+     * @param type Tipo
+     */
     private TextureRegion getBackgroundRegion(Type type) {
         switch (type) {
             case DEFAULT: return findRegion(Atlas.UI_BUTTON_DEFAULT);

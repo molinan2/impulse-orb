@@ -7,38 +7,69 @@ import com.jmolina.orb.interfaces.LevelManager;
 import com.jmolina.orb.listeners.ContactHandler;
 import com.jmolina.orb.var.Var;
 
+/**
+ * Manager del mundo fisico
+ */
 public class WorldManager {
 
+    /** Variables internas del mundo */
     private final Vector2 WORLD_GRAVITY = new Vector2(0, -20f);
     private final float TIME_STEP = Var.FPS;
     private final int STEP_MULTIPLIER = 4;
     private final int VELOCITY_ITERATIONS = 8;
     private final int POSITION_ITERATIONS = 3;
 
+    /** Indica que los pasos de la simulacion deben hacerse acumulados */
     private boolean accumulated;
+
+    /** Acumulador de tiempo para los pasos acumulados */
     private float accumulator;
+
+    /** Mundo fisico */
     private World world;
+
+    /** Gestor del listener de contacto entre cuerpos */
     private ContactHandler contactHandler;
 
+    /**
+     * Constructor
+     */
     public WorldManager() {
         this(false);
     }
 
+    /**
+     * Constructor
+     *
+     * @param accumulated Indica si los pasos de simulacion son acumulados
+     */
     public WorldManager(boolean accumulated) {
         this.accumulated = accumulated;
         accumulator = 0f;
         world = new World(WORLD_GRAVITY, true);
     }
 
+    /**
+     * Fija el gestor del listener de contacto
+     *
+     * @param levelManager LevelManager
+     * @param orb Orbe
+     */
     public void bindContactHandler(LevelManager levelManager, Orb orb) {
         contactHandler = new ContactHandler(levelManager, orb);
         world.setContactListener(contactHandler);
     }
 
+    /**
+     * Libera recursos
+     */
     public void dispose() {
         world.dispose();
     }
 
+    /**
+     * Devuelve el mundo fisico
+     */
     public World getWorld() {
         return world;
     }

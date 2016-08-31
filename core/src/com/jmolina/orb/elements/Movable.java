@@ -13,23 +13,38 @@ import com.jmolina.orb.var.Var;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-
 /**
- * Elemento movible y rotable
+ * Elemento movible (desplazamiento armonico y rotacion)
  */
 public class Movable extends Element implements Reseteable {
 
     private final Interpolation INTERPOLATION = Interpolation.sine;
 
+    /** Factor de correccion del zoom */
     private float zoomCorrectionFactor;
+
+    /** Bandera de salto de sincronizacion */
     private boolean skipBodySync;
+
+    /** Datos de rotacion */
     private Rotation rotation;
+
+    /** Datos de desplazamiento */
     private Displacement displacement;
 
     /**
-     * {@inheritDoc}
+     * Constructor
      *
-     * Crea un elemento movible (rotación y desplazamiento)
+     * @param am AssetManager
+     * @param world Mundo fisico
+     * @param ppm Ratio de conversion pixeles/metros
+     * @param geometry Geometria
+     * @param flavor Sabor
+     * @param w Anchura en unidades del mundo
+     * @param h Altura en unidades del mundo
+     * @param x Coordenada X de la posicion en unidades del mundo
+     * @param y Coordenada X de la posicion en unidades del mundo
+     * @param angle Angulo en grados
      */
     public Movable(AssetManager am, World world, float ppm, Geometry geometry, Flavor flavor, float w, float h, float x, float y, float angle) {
         super(am, world, ppm, geometry, flavor, w, h, x, y, angle);
@@ -81,6 +96,11 @@ public class Movable extends Element implements Reseteable {
         ));
     }
 
+    /**
+     * Añade rotacion lineal en sentido de las agujas del reloj
+     *
+     * @param frequency Frecuencia
+     */
     public void addRotation(float frequency) {
         addRotation(frequency, true);
     }
@@ -90,8 +110,8 @@ public class Movable extends Element implements Reseteable {
      * elemento.
      *
      * @param frequency Frecuencia del desplazamiento completo
-     * @param x Coordenada X destino (en unidades del mundo)
-     * @param y Coordenada Y destino (en unidades del mundo)
+     * @param x Amplitud del desplazamiento en el eje XX' (en unidades del mundo)
+     * @param y Amplitud del desplazamiento en el eje YY' (en unidades del mundo)
      */
     public void addDisplacement(float frequency, float x, float y) {
         displacement.frequency = MathUtils.clamp(frequency, 0, frequency);
@@ -108,6 +128,12 @@ public class Movable extends Element implements Reseteable {
         ));
     }
 
+    /**
+     * Añade un desplazamiento lineal armonico en el eje XX'
+     *
+     * @param frequency Frecuencia
+     * @param x Amplitud del desplazamiento
+     */
     public void addDisplacement(float frequency, float x) {
         addDisplacement(frequency, x, 0);
     }
@@ -144,10 +170,16 @@ public class Movable extends Element implements Reseteable {
         skipBodySync = true;
     }
 
+    /**
+     * Desactiva el salto de sincronizacion del cuerpo
+     */
     private void allowBodySync() {
         skipBodySync = false;
     }
 
+    /**
+     * Indica si se esta saltando la sincronizacion del cuerpo
+     */
     private boolean isSkippingBodySync() {
         return skipBodySync;
     }

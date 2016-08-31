@@ -5,9 +5,16 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.situations.hero.*;
 
-
+/**
+ * Nivel 4
+ */
 public class Level4 extends Level {
 
+    /**
+     * Consntructor
+     *
+     * @param sm SuperManager
+     */
     public Level4(SuperManager sm) {
         super(sm);
 

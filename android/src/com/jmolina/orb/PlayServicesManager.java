@@ -9,12 +9,21 @@ import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.GameHelper;
 import com.jmolina.orb.interfaces.PlayServices;
 
+/**
+ * Manager de Play Services
+ */
 public class PlayServicesManager implements PlayServices {
 
     private GameHelper gameHelper;
     private Activity activity;
     private final static int requestCode = 1;
 
+    /**
+     * Constructor
+     *
+     * @param activity Activity
+     * @param gameHelper GameHelper
+     */
     public PlayServicesManager(Activity activity, GameHelper gameHelper) {
         this.gameHelper = gameHelper;
         this.activity = activity;

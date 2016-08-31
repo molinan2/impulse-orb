@@ -14,7 +14,6 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
-
 /**
  * Elemento calentador
  */
@@ -25,9 +24,15 @@ public class Heater extends Element implements Reseteable {
     private final float BLINK_HALF_TIME = 0.5f;
 
     /**
-     * {@inheritDoc}
+     * Constructor
      *
-     * Crea un elemento etéreo calentador de dimensiones fijas: 10x10.
+     * @param am AssetManager
+     * @param world Mundo fisico
+     * @param ppm Ratio de conversion pixeles/metros
+     * @param w Anchura
+     * @param h Altura
+     * @param x Coordenada X de la posicion en unidades del mundo
+     * @param y Coordenada Y de la posicion en unidades del mundo
      */
     public Heater(AssetManager am, World world, float ppm, float w, float h, float x, float y) {
         super(am, world, am.getGameAtlas().findRegion(Atlas.GAME_HEAT), ppm,
@@ -42,6 +47,9 @@ public class Heater extends Element implements Reseteable {
         getActor().addAction(blinkAction());
     }
 
+    /**
+     * Resetea la animacion del elemento
+     */
     @Override
     public void reset() {
         getActor().clearActions();
@@ -50,6 +58,9 @@ public class Heater extends Element implements Reseteable {
         getActor().addAction(blinkAction());
     }
 
+    /**
+     * Devuelve una animacion de parpadeo
+     */
     private Action blinkAction() {
         RepeatAction forever = new RepeatAction();
         forever.setCount(RepeatAction.FOREVER);

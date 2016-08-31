@@ -1,11 +1,11 @@
 package com.jmolina.orb.var;
 
-// Arroja una Exception al ejecutar la version GWT (HTML)
-
 /**
  * Assets principales. {@link com.jmolina.orb.managers.AssetManager} precarga automáticamente estos
  * assets mediante {@link com.badlogic.gdx.utils.reflect.ClassReflection}. Todos los campos públicos
  * deben ser de tipo String.
+ *
+ * Arroja una Exception al ejecutar la version GWT (HTML)
  */
 public class Asset {
 

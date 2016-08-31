@@ -4,10 +4,18 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.jmolina.orb.interfaces.LevelManager;
 import com.jmolina.orb.screens.Level;
 
+/**
+ * Listener de la entrada gestual en los niveles de juego
+ */
 public class GestureHandler extends GestureDetector.GestureAdapter {
 
     private LevelManager levelManager;
 
+    /**
+     * Constructor
+     *
+     * @param levelManager LevelManager
+     */
     public GestureHandler(LevelManager levelManager) {
         this.levelManager = levelManager;
     }

@@ -9,11 +9,23 @@ import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
+/**
+ * Una checkbox interactiva
+ */
 public class Checkbox extends BaseGroup {
 
+    /** Imagenes marcada y desmarcada */
     private Image checkedImage, uncheckedImage;
+
+    /** Estado de la checkbox */
     private boolean checked;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param checked Estado
+     */
     public Checkbox(AssetManager am, boolean checked) {
         super(am);
 
@@ -37,6 +49,9 @@ public class Checkbox extends BaseGroup {
         setTouchable(Touchable.enabled);
     }
 
+    /**
+     * Marca la checkbox
+     */
     public void check() {
         checkedImage.clearActions();
         checkedImage.addAction(fadeIn(0));
@@ -45,6 +60,9 @@ public class Checkbox extends BaseGroup {
         checked = true;
     }
 
+    /**
+     * Desmarca la checkbox
+     */
     public void uncheck() {
         uncheckedImage.clearActions();
         uncheckedImage.addAction(fadeIn(0));
@@ -53,11 +71,17 @@ public class Checkbox extends BaseGroup {
         checked = false;
     }
 
+    /**
+     * Cambia el estado de la checkbox
+     */
     public void toggle() {
         if (isChecked()) uncheck();
         else check();
     }
 
+    /**
+     * Indica si esta marcada o no
+     */
     public boolean isChecked() {
         return checked;
     }

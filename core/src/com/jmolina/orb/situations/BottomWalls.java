@@ -4,13 +4,23 @@ import com.jmolina.orb.managers.AssetManager;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.elements.Element;
 
-
+/**
+ * Situacion basica de conveniencia. Contiene muros laterales e inferiores.
+ */
 public class BottomWalls extends SideWalls {
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param world Mundo fisico
+     * @param pixelsPerMeter Factor de correcion pixeles/metros
+     */
     public BottomWalls(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter);
     }
 
+    @Override
     protected void createInnerElements () {
         // Muro abajo centro
         addElement(new Element(

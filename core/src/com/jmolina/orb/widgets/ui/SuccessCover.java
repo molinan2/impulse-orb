@@ -6,10 +6,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Portada de una pantalla de exito
+ */
 public class SuccessCover extends BaseGroup {
 
+    /** Imagen de portada (felicitacion) */
     private Image greeting;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param greetingTexture Textura de la portada
+     */
     public SuccessCover(AssetManager am, Texture greetingTexture) {
         super(am);
 

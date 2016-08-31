@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.jmolina.orb.widgets.BaseGroup;
 
 /**
- * Dibuja una capa basada en tiles, del tamaño del nivel. Actualmente, se dibuja una dimensión
+ * Una capa basada en tiles, del tamaño del nivel. Actualmente, se dibuja una dimensión
  * constante que cubre todos los niveles (en lugar de adaptarse a su tamaño).
  */
 public class TiledLayer extends BaseGroup {
@@ -18,8 +18,16 @@ public class TiledLayer extends BaseGroup {
     private final int TIMES_X = 2; // LEVEL_LAT * SIT_W + 1
     private final int TIMES_Y = 16; // LEVEL_ALT * SIT_H * SPEED1 + 2
 
+    /** Imagen tilable */
     private Image image;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param region Regin de textura
+     * @param viewport Viewport
+     */
     public TiledLayer(AssetManager am, TextureRegion region, Viewport viewport) {
         super(am);
 

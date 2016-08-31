@@ -9,12 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 
 /**
  * Actor base que implementa los métodos necesarios para que sean efectivas rotaciones, escalado,
- * posicionado, etc.
+ * posicionado, alpha blending, etc.
  */
 public class BaseActor extends Actor {
 
+    /** Region de textura del actor */
     private TextureRegion region;
 
+    /**
+     * Constructor
+     */
     public BaseActor() {
         setPosition(0f, 0f);
         setScale(1.0f, 1.0f);
@@ -22,11 +26,21 @@ public class BaseActor extends Actor {
         setTouchable(Touchable.disabled);
     }
 
+    /**
+     * Constructor
+     *
+     * @param region Region de textura del actor
+     */
     public BaseActor(TextureRegion region) {
         this();
         setTextureRegion(region);
     }
 
+    /**
+     * Fija la region de textura del actor
+     *
+     * @param region Region de textura
+     */
     public void setTextureRegion(TextureRegion region) {
         this.region = region;
         setSize(region.getRegionWidth(), region.getRegionHeight());
@@ -34,7 +48,12 @@ public class BaseActor extends Actor {
         setOrigin(0.5f * getWidth(), 0.5f * getHeight());
     }
 
-
+    /**
+     * Dibuja el actor
+     *
+     * @param batch Batch
+     * @param parentAlpha Nivel alpha del padre
+     */
     @Override
     public void draw(Batch batch, float parentAlpha) {
         Color color = getColor();

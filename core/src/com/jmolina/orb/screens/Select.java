@@ -12,10 +12,19 @@ import com.jmolina.orb.widgets.ui.Card;
 import static com.jmolina.orb.managers.ScreenManager.Key.*;
 import static com.jmolina.orb.screens.BaseScreen.Hierarchy.*;
 
+/**
+ * Pantalla de seleccion de nivel
+ */
 public class Select extends Menu {
 
+    /** Fichas de nivel */
     private Card level1, level2, level3, level4, level5;
 
+    /**
+     * Constructor
+     *
+     * @param superManager SuperManager
+     */
     public Select(SuperManager superManager) {
         super(superManager);
 
@@ -40,7 +49,6 @@ public class Select extends Menu {
         if (getPrefsManager().isLevelCompleted(LEVEL_3)) level4.unlock();
         if (getPrefsManager().isLevelCompleted(LEVEL_4)) level5.unlock();
 
-
         add(level1);
         add(level2);
         add(level3);
@@ -48,6 +56,11 @@ public class Select extends Menu {
         add(level5);
     }
 
+    /**
+     * Devuelve un visitor que ejecuta un cambio de pantalla
+     *
+     * @param screen Pantalla a la que cambiar
+     */
     private Visitor visitor(final ScreenManager.Key screen) {
         return new Visitor() {
             @Override
@@ -58,6 +71,11 @@ public class Select extends Menu {
         };
     }
 
+    /**
+     * Devuelve formateado el mejor tiempo del nivel
+     *
+     * @param key Clave de pantalla del nivel
+     */
     private String getFormattedBestTime(ScreenManager.Key key) {
         float time = getBestTime(key);
 
@@ -67,6 +85,11 @@ public class Select extends Menu {
             return "--";
     }
 
+    /**
+     * Devuelve el mejor tiempo del nivel
+     *
+     * @param key Clave de nivel
+     */
     private Float getBestTime(ScreenManager.Key key) {
         Preferences prefs = getPrefsManager().getPrefs();
 

@@ -8,6 +8,9 @@ import com.jmolina.orb.data.GameStats;
 import com.jmolina.orb.data.TopTimes;
 import com.jmolina.orb.var.Var;
 
+/**
+ * Manager de preferencias guardadas en almacenamiento externo
+ */
 public class PrefsManager {
 
     public static final String FILE_NAME = ImpulseOrb.class.getPackage().getName() + ".settings";
@@ -15,6 +18,7 @@ public class PrefsManager {
     public static final int OPTION_ZOOM_DEFAULT = 1;
     public static final int OPTION_ZOOM_MAX = 2;
 
+    /** Codigos de texto de cada preferencia */
     private final String VERSION = "version";
     private final String OPTION_MUSIC = "music";
     private final String OPTION_SOUND = "sound";
@@ -54,6 +58,7 @@ public class PrefsManager {
     public static final String LADDER_TEST2_2 = "ladder_test2_3";
     public static final String LADDER_TEST2_3 = "ladder_test2_3";
 
+    /** Preferencias */
     private Preferences prefs;
 
     /**
@@ -65,6 +70,9 @@ public class PrefsManager {
         save();
     }
 
+    /**
+     * Devuelve las preferencias
+     */
     public Preferences getPrefs() {
         return this.prefs;
     }
@@ -92,22 +100,37 @@ public class PrefsManager {
         if (!prefs.contains(STAT_AVG_DISTANCE_ALIVE)) prefs.putFloat(STAT_AVG_DISTANCE_ALIVE, 0f);
     }
 
+    /**
+     * Devuelve el valor de la opcion "musica"
+     */
     public boolean getOptionMusic() {
         return getPrefs().getBoolean(OPTION_MUSIC);
     }
 
+    /**
+     * Devuelve el valor de la opcion "sonido"
+     */
     public boolean getOptionSound() {
         return getPrefs().getBoolean(OPTION_SOUND);
     }
 
+    /**
+     * Devuelve el valor de la opcion "vibracion"
+     */
     public boolean getOptionVibration() {
         return getPrefs().getBoolean(OPTION_VIBRATION);
     }
 
+    /**
+     * Devuelve el valor de la opcion "online"
+     */
     public boolean getOptionOnline() {
         return getPrefs().getBoolean(OPTION_ONLINE);
     }
 
+    /**
+     * Devuelve el valor de la opcion "zoom"
+     */
     public int getOptionZoom() {
         return MathUtils.clamp(
                 getPrefs().getInteger(OPTION_ZOOM),
@@ -116,22 +139,37 @@ public class PrefsManager {
         );
     }
 
+    /**
+     * Fija el valor de la opcion "musica"
+     */
     public void putOptionMusic(boolean isEnabled) {
         getPrefs().putBoolean(OPTION_MUSIC, isEnabled);
     }
 
+    /**
+     * Fija el valor de la opcion "sonido"
+     */
     public void putOptionSound(boolean isEnabled) {
         getPrefs().putBoolean(OPTION_SOUND, isEnabled);
     }
 
+    /**
+     * Fija el valor de la opcion "vibracion"
+     */
     public void putOptionVibration(boolean isEnabled) {
         getPrefs().putBoolean(OPTION_VIBRATION, isEnabled);
     }
 
+    /**
+     * Fija el valor de la opcion "online"
+     */
     public void putOptionOnline(boolean isEnabled) {
         getPrefs().putBoolean(OPTION_ONLINE, isEnabled);
     }
 
+    /**
+     * Fija el valor de la opcion "zoom"
+     */
     public void putOptionZoom(int zoom) {
         getPrefs().putInteger(OPTION_ZOOM, MathUtils.clamp(
                 zoom,
@@ -140,14 +178,20 @@ public class PrefsManager {
         ));
     }
 
+    /**
+     * Guarda las preferencias en el almacenamiento externo
+     */
     public void save() {
         getPrefs().flush();
     }
 
     /**
-     * @param stats
-     * @param level
-     * @return El rango conseguido por el tiempo
+     * Lee las estadisticas de juego para un nivel y actualiza los valores del almacenamiento externo
+     *
+     * @param stats Estadisticas de juego
+     * @param level Nivel de juego al que corresponden
+     *
+     * @return El rango conseguido por el tiempo del intento exitoso
      */
     public int saveStats(GameStats stats, ScreenManager.Key level) {
         int rank = 0;
@@ -203,6 +247,11 @@ public class PrefsManager {
         return rank;
     }
 
+    /**
+     * Indica si un nivel ha sido previamente completado
+     *
+     * @param level Nivel
+     */
     public boolean isLevelCompleted(ScreenManager.Key level) {
         switch (level) {
             case LEVEL_1: if (prefs.contains(LADDER_1_1)) return true;

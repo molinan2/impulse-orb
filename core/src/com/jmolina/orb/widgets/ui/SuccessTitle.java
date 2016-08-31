@@ -15,11 +15,23 @@ import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Titulo de una pantalla exito
+ */
 public class SuccessTitle extends BaseGroup {
 
+    /** Texto */
     private Label label;
+
+    /** Fondo */
     private Image background;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param title Titulo
+     */
     public SuccessTitle(AssetManager am, String title) {
         super(am);
 

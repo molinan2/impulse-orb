@@ -7,12 +7,20 @@ import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
+/**
+ * Titulo de pantalla con boton atras
+ */
 public class Back extends BaseGroup {
 
+    /** Imagen del botonn y marco*/
     private Image image, frame;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     */
     public Back(AssetManager am) {
         super(am);
 
@@ -24,7 +32,6 @@ public class Back extends BaseGroup {
         frame.act(0);
 
         setFrame(frame);
-
         addActor(image);
         addActor(frame);
     }

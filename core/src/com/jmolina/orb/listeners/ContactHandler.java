@@ -10,18 +10,33 @@ import com.jmolina.orb.elements.Orb;
 import com.jmolina.orb.elements.WorldElement;
 import com.jmolina.orb.interfaces.LevelManager;
 
+/**
+ * Listener de contacto entre los cuerpos del mundo fisico
+ */
 public class ContactHandler implements ContactListener {
 
-    private enum Instant { BEGINNING, ENDING }
-
     private LevelManager levelManager;
+
+    /** Cuerpo del orbe*/
     private Body orbBody;
 
+    /**
+     * Constructor
+     *
+     * @param levelManager LevelManager
+     * @param orb Orbe
+     */
     public ContactHandler(LevelManager levelManager, Orb orb) {
         this.levelManager = levelManager;
         orbBody = orb.getBody();
     }
 
+    /**
+     * Cuando se inicia el contacto entre 2 cuerpos, se comprueba si alguno de ellos es el orbe.
+     * En base a la {@link UserData} almacenada en el otro cuerpo, se decide el efecto de inicio.
+     *
+     * @param contact Contacto de Box2D
+     */
     @Override
     public void beginContact(Contact contact) {
         Body bodyA = contact.getFixtureA().getBody();
@@ -35,6 +50,12 @@ public class ContactHandler implements ContactListener {
             decideBeginning(userDataA);
     }
 
+    /**
+     * Cuando se termina el contacto entre 2 cuerpos, se comprueba si alguno de ellos es el orbe.
+     * En base a la {@link UserData} almacenada en el otro cuerpo, se decide el efecto de fin.
+     *
+     * @param contact Contacto de Box2D
+     */
     @Override
     public void endContact(Contact contact) {
         Body bodyA = contact.getFixtureA().getBody();
@@ -58,6 +79,11 @@ public class ContactHandler implements ContactListener {
         // System.out.println("postsolve");
     }
 
+    /**
+     * Decide la consecuencia de la colision en base al efecto almacenado en la UserData del cuerpo.
+     *
+     * @param userData UserData
+     */
     private void decideBeginning(UserData userData) {
         switch (userData.effect) {
             case EXIT: levelManager.successGame(); return;
@@ -67,6 +93,11 @@ public class ContactHandler implements ContactListener {
         }
     }
 
+    /**
+     * Decide la consecuencia de la colision en base al sabor almacenado en la UserData del cuerpo.
+     *
+     * @param flavor Sabor
+     */
     private void decideBeginningOnFlavor(WorldElement.Flavor flavor) {
         switch (flavor) {
             case BLACK: levelManager.collide(true); return;
@@ -76,6 +107,12 @@ public class ContactHandler implements ContactListener {
         }
     }
 
+    /**
+     * Decide la consecuencia de la finalizacion de la colision en base al efecto almacenado en la
+     * UserData del cuerpo.
+     *
+     * @param userData UserData
+     */
     private void decideEnding(UserData userData) {
         switch (userData.effect) {
             case HEAT: levelManager.disableTicking(); return;

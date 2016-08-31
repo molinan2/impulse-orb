@@ -50,13 +50,29 @@ public class BaseScreen extends ScreenAdapter implements Backable {
     private final float PERIODIC_TASK_TIME = 1f;
 
     private SuperManager superManager;
+
+    /** Viewports de las stages Main y Background */
     private Viewport mainViewport, backgroundViewport;
+
+    /** Stage principal */
     private MainStage mainStage;
+
+    /** Stage del fondo estatico */
     private BackgroundStage backgroundStage;
+
+    /** Jerarquia de la pantalla */
     private Hierarchy hierarchy;
+
+    /** Multiplexor de procesador de entrada */
     private InputMultiplexer multiplexer;
+
+    /** Claves de la pantalla anterior y esta*/
     private ScreenManager.Key previousKey, thisKey;
+
+    /** Bandera de cambio de pantalla */
     private ScreenFlag screenFlag;
+
+    /** Cronometro de eventos periodicos */
     private float periodicTimer;
 
 
@@ -81,11 +97,6 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         addProcessor(mainStage);
         hierarchy = Hierarchy.LOWER;
     }
-
-
-    /**
-     * Screen methods
-     */
 
     @Override
     public void show() {
@@ -148,78 +159,133 @@ public class BaseScreen extends ScreenAdapter implements Backable {
      */
     protected void periodicTask() {}
 
-
     /**
-     * Class methods
+     * Fija la clave de la pantalla
+     *
+     * @param key Clave de pantalla
      */
-
     public void setThisKey(ScreenManager.Key key) {
         thisKey = key;
     }
 
+    /**
+     * Devuelve la clave de la pantalla
+     */
     public ScreenManager.Key getThisKey() {
         return thisKey;
     }
 
+    /**
+     * Limpia la pantalla (antes de dibujar)
+     */
     protected void clear() {
         Gdx.gl.glClearColor(0.980392157f, 0.980392157f, 0.980392157f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
+    /**
+     * Devuelve el SuperManager
+     */
     protected SuperManager getSuperManager() {
         return this.superManager;
     }
 
+    /**
+     * Devuelve el PrefsManager
+     */
     protected PrefsManager getPrefsManager() {
         return getSuperManager().getPrefsManager();
     }
 
+    /**
+     * Devuelve el AssetManager
+     */
     public AssetManager getAssetManager() {
         return getSuperManager().getAssetManager();
     }
 
+    /**
+     * Devuelve un asset determinado
+     *
+     * @param fileName Descriptor de fichero del asset
+     * @param type Tipo de asset
+     */
     public synchronized <T> T getAsset (String fileName, Class<T> type) {
         return getAssetManager().get(fileName, type);
     }
 
+    /**
+     * Devuelve el ScreenManager
+     */
     public ScreenManager getScreenManager() {
         return getSuperManager().getScreenManager();
     }
 
+    /**
+     * Fija la clave de la pantalla anterior
+     *
+     * @param key Clave de pantalla
+     */
     protected void setPreviousScreen(ScreenManager.Key key) {
         this.previousKey = key;
     }
 
+    /**
+     * Devuelve la clave de la pantalla anterior
+     */
     protected ScreenManager.Key getPreviousScreen() {
         return this.previousKey;
     }
 
+    /**
+     * Fija la jerarquía de la pantalla
+     *
+     * @param hierarchy Jerarquia
+     */
     public void setHierarchy(Hierarchy hierarchy) {
         this.hierarchy = hierarchy;
     }
 
+    /**
+     * Devuelve la jerarquia de la pantalla
+     */
     public Hierarchy getHierarchy() {
         return this.hierarchy;
     }
 
+    /**
+     * Configura esta pantalla como InputProcessor (solo puede haber un InputProcessor)
+     */
     public void setAsInputProcessor() {
         Gdx.input.setInputProcessor(this.mainStage);
     }
 
+    /**
+     * Desconfigura el InputProcessor
+     */
     public void unsetInputProcessor() {
         Gdx.input.setInputProcessor(null);
     }
 
+    /**
+     * Devuelve el multiplexor de procesadores de entradas (multiplexor)
+     */
     protected InputProcessor getProcessor () {
         return this.multiplexer;
     }
 
+    /**
+     * Añade al multiplexor un procesador de entrada
+     *
+     * @param processor Procesador de entrada
+     */
     protected void addProcessor (InputProcessor processor) {
         this.multiplexer.addProcessor(processor);
     }
 
     /**
      * Ejecuta la animacion de salida y cambia a otra pantalla
+     *
      * @param screen Name Nombre de la siguiente pantalla
      * @param hierarchy Hierarchy Jerarquía de la siguiente pantalla respecto de la actual
      */
@@ -240,6 +306,12 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         ));
     }
 
+    /**
+     * Señaliza un cambio de pantalla
+     *
+     * @param screen Pantalla destino
+     * @param hierarchy Jerarquia de la pantalla destino respecto de la actual
+     */
     protected void flagSwitch(ScreenManager.Key screen, Hierarchy hierarchy) {
         screenFlag.enable(screen, hierarchy);
     }
@@ -265,6 +337,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         ));
     }
 
+    /**
+     * Devuelve el ejecutable de salida de la aplicacion
+     */
     private Runnable getExitRunnable() {
         return new Runnable() {
             @Override
@@ -274,6 +349,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         };
     }
 
+    /**
+     * Devuelve el ejecutable de ir hacia atras
+     */
     private Runnable getBackRunnable() {
         return new Runnable() {
             @Override
@@ -283,6 +361,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         };
     }
 
+    /**
+     * Devuelve el ejecutable de configurar esta pantalla como InputProcessor
+     */
     protected Runnable getSetAsInputProcessorRunnable() {
         return new Runnable() {
             @Override
@@ -292,16 +373,24 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         };
     }
 
+    /**
+     * Limpia las acciones de la stage principal
+     */
     protected void clearRootActions() {
         mainStage.getRoot().clearActions();
     }
 
+    /**
+     * Añade una accion a la stage principal
+     *
+     * @param action Accion
+     */
     private void addMainAction(Action action) {
         mainStage.getRoot().addAction(action);
     }
 
     /**
-     * Ejecuta una animacion de transicion
+     * Devuelve una animacion de transicion
      *
      * @param flow Flow Flujo de la pantalla actual
      * @param hierarchy Hierarchy Jerarquía de la siguiente pantalla respecto de la actual
@@ -314,6 +403,11 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         }
     }
 
+    /**
+     * Devuelve una animacion de transicion de entrada
+     *
+     * @param hierarchy Jerarquia de la pantalla actual respecto de la anterior
+     */
     private Action transitionEntering(Hierarchy hierarchy) {
         switch (hierarchy) {
             case LOWER: return fromInsideAction();
@@ -322,6 +416,11 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         }
     }
 
+    /**
+     * Devuelve una animacion de transicion de salida
+     *
+     * @param hierarchy Jerarquia de la pantalla actual respecto de la siguiente
+     */
     private Action transitionLeaving(Hierarchy hierarchy) {
         switch (hierarchy) {
             case LOWER: return toOutsideAction();
@@ -330,6 +429,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         }
     }
 
+    /**
+     * Devuelve una accion de transicion hacia afuera
+     */
     private Action toOutsideAction() {
         return new SequenceAction(parallel(
                 fadeOut(TRANSITION_DURATION, INTERPOLATION_IN),
@@ -337,6 +439,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         ));
     }
 
+    /**
+     * Devuelve una accion de transicion hacia adentro
+     */
     private Action toInsideAction() {
         return new SequenceAction(parallel(
                 fadeOut(TRANSITION_DURATION, INTERPOLATION_IN),
@@ -344,6 +449,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         ));
     }
 
+    /**
+     * Devuelve una accion de transicion desde dentro
+     */
     private Action fromInsideAction() {
         return new SequenceAction(
                 alpha(0f),
@@ -355,6 +463,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         );
     }
 
+    /**
+     * Devuelve una accion de transicion desde fuera
+     */
     private Action fromOutsideAction() {
         return new SequenceAction(
                 alpha(0f),
@@ -366,6 +477,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         );
     }
 
+    /**
+     * Devuelve una accion de aparicion (por defecto)
+     */
     private Action appearAction() {
         return new SequenceAction(
                 alpha(0f),
@@ -374,6 +488,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         );
     }
 
+    /**
+     * Devuelve una accion de desaparicion (por defecto)
+     */
     private Action disappearAction() {
         return new SequenceAction(
                 alpha(1f),
@@ -382,6 +499,9 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         );
     }
 
+    /**
+     * Devuelve una accion de reseteo de escala y canal alpha
+     */
     private Action resetAction() {
         return new SequenceAction(
                 alpha(1f),
@@ -396,14 +516,23 @@ public class BaseScreen extends ScreenAdapter implements Backable {
         mainStage.addActor(actor);
     }
 
+    /**
+     * Devuelve la stage principal
+     */
     protected Stage getMainStage() {
         return mainStage;
     }
 
+    /**
+     * Devuelve la stage de fondo estatico
+     */
     protected Stage getBackgroundStage() {
         return backgroundStage;
     }
 
+    /**
+     * Devuelve el GameManager
+     */
     protected GameManager getGameManager() {
         return getSuperManager().getGameManager();
     }

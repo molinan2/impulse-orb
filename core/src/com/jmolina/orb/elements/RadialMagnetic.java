@@ -12,6 +12,18 @@ import com.jmolina.orb.widgets.game.RadialField;
  */
 public class RadialMagnetic extends Magnetic {
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param world Mundo fisico
+     * @param ppm Ratio de conversion pixeles/metros
+     * @param flavor Sabor
+     * @param x Coordenada X de la posicion en unidades del mundo
+     * @param y Coordenada Y de la posicion en unidades del mundo
+     * @param threshold Umbral en unidades del mundo
+     * @param polarity Polaridad
+     */
     public RadialMagnetic(AssetManager am, World world, float ppm, Flavor flavor, float diameter, float x, float y, float threshold, Polarity polarity) {
         super(
                 am, world, ppm,

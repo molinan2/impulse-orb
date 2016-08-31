@@ -9,11 +9,21 @@ import com.jmolina.orb.var.Utils;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
+/**
+ * Grupo de actores que sirve como base para la creacion de widgets.
+ */
 public class BaseGroup extends Group {
 
     private AssetManager assetManager;
+
+    /** Marco exterior opcional para el efecto de click */
     private Image frame;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     */
     public BaseGroup(AssetManager am) {
         assetManager = am;
         setTransform(true); // Transform=false improves drawing performance
@@ -21,14 +31,28 @@ public class BaseGroup extends Group {
         setOrigin(0f, 0f);
     }
 
+    /**
+     * Devuelve el AssetManager
+     */
     protected AssetManager getAssetManager() {
         return this.assetManager;
     }
 
+    /**
+     * Devuelve un asset determinado
+     *
+     * @param fileName Descriptor del asset
+     * @param type Tipo de asset
+     */
     protected synchronized <T> T getAsset (String fileName, Class<T> type) {
         return getAssetManager().get(fileName, type);
     }
 
+    /**
+     * Devuelve la region de textura solicitada
+     *
+     * @param name Descriptor de la region de textura
+     */
     protected TextureRegion findRegion(String name) {
         return getAssetManager().getGameAtlas().findRegion(name);
     }
@@ -54,6 +78,12 @@ public class BaseGroup extends Group {
         this.frame = frame;
     }
 
+    /**
+     * Fija la posicion del grupo en unidades del grid
+     *
+     * @param x Coordenada X de la posicion en unidades del grid
+     * @param y Coordenada Y de la posicion en unidades del grid
+     */
     public void setPositionGrid (float x, float y) {
         setPosition(Utils.cell(x), Utils.cell(y));
     }

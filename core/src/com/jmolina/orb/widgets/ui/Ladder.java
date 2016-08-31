@@ -23,9 +23,8 @@ import java.util.ArrayList;
 
 import static com.jmolina.orb.managers.PrefsManager.*;
 
-
 /**
- * Ranking Ladder. Por ahora, exactamente con 3 posiciones
+ * Clasificacion (Ranking ladder). Por ahora, exactamente con 3 posiciones
  */
 public class Ladder extends BaseGroup {
 
@@ -33,14 +32,33 @@ public class Ladder extends BaseGroup {
     private String LADDER_2;
     private String LADDER_3;
 
+    /** Titulo */
     private Label titleLabel;
+
+    /** Fondo */
     private Image background;
+
+    /** Filas de la clasificacion */
     private ArrayList<LadderRow> rows;
+
+    /** Tiempos correspondientes a cada fila */
     private ArrayList<Float> times;
+
+    /** Medallas (ratings) correspondientes a cada fila */
     private ArrayList<Integer> ratings;
+
     private Preferences prefs;
     private GameManager gameManager;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param pm PrefsManager
+     * @param gm GameManager
+     * @param level Nivel al que pertecene la clasificacion
+     * @param title Titulo de la clasificacion
+     */
     public Ladder(AssetManager am, PrefsManager pm, GameManager gm, ScreenManager.Key level, String title) {
         super(am);
 
@@ -75,6 +93,11 @@ public class Ladder extends BaseGroup {
         setHeight(Utils.cell(4));
     }
 
+    /**
+     * Añade las filas de la clasificacion
+     *
+     * @param rows Lista de filas
+     */
     private void addLadderRows(ArrayList<LadderRow> rows) {
         for (int i=0; i<rows.size(); i++) {
             rows.get(i).setPosition(Utils.cell(0.5f), Utils.cell(2f - i * 0.75f));
@@ -82,6 +105,11 @@ public class Ladder extends BaseGroup {
         }
     }
 
+    /**
+     * Devuelve los tiempos de la clasificacion
+     *
+     * @param key Nivel al que pertenecen
+     */
     private ArrayList<Float> getLevelTimes(ScreenManager.Key key) {
         detectLevel(key);
         ArrayList<Float> times = new ArrayList<Float>();
@@ -93,6 +121,11 @@ public class Ladder extends BaseGroup {
         return times;
     }
 
+    /**
+     * Devuelve los ratings (medallas) correspondientes a los tiempos de la clasificacion
+     *
+     * @param key Nivel al que pertecenen
+     */
     private ArrayList<Integer> getRatings(ScreenManager.Key key) {
         ArrayList<Integer> ratings = new ArrayList<Integer>();
 
@@ -103,6 +136,11 @@ public class Ladder extends BaseGroup {
         return ratings;
     }
 
+    /**
+     * Detecta los 3 primeros tiempos en base al nivel
+     *
+     * @param key Clave de nivel
+     */
     private void detectLevel(ScreenManager.Key key) {
         switch (key) {
             case LEVEL_1:
@@ -144,6 +182,12 @@ public class Ladder extends BaseGroup {
         }
     }
 
+    /**
+     * Obtiene el rating numerico de un tiempo
+     *
+     * @param level Nivel al que pertecene
+     * @param time Tiempo
+     */
     private int numericRating(ScreenManager.Key level, float time) {
         switch (level) {
             case LEVEL_1: return gameManager.getNumericRating(1, time);

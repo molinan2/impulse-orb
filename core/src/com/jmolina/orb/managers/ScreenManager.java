@@ -21,9 +21,12 @@ import com.jmolina.orb.screens.levels.LevelTest2;
 
 import static com.jmolina.orb.managers.ScreenManager.Key.*;
 
+/**
+ * Manager de pantallas de la aplicacion
+ */
 public class ScreenManager {
 
-    /** Todas las pantallas de menu */
+    /** Claves de todas las pantallas */
     public enum Key {
         LOAD, MAIN,
         OPTIONS, STATS, CREDITS, LEVEL_SELECT,
@@ -38,6 +41,8 @@ public class ScreenManager {
     }
 
     private SuperManager superManager;
+
+    /** Pantalla actual */
     private BaseScreen screen;
 
 
@@ -51,47 +56,88 @@ public class ScreenManager {
         switchToScreen(ScreenManager.Key.LOAD, BaseScreen.Hierarchy.LOWER);
     }
 
+    /**
+     * Devuelve el SuperManager
+     */
     private SuperManager getSuperManager() {
         return this.superManager;
     }
 
+    /**
+     * Devuelve la pantalla actual
+     */
     private BaseScreen getCurrent() {
         return this.screen;
     }
 
+    /**
+     * Fija la pantalla actual
+     *
+     * @param baseScreen Pantalla
+     */
     private void setScreen(BaseScreen baseScreen) {
         this.screen = baseScreen;
     }
 
+    /**
+     * Oculta la pantalla actual
+     */
     private void hideCurrent() {
         if (getCurrent() != null) getCurrent().hide();
     }
 
+    /**
+     * Muestra la pantalla actual
+     */
     private void showCurrent() {
         if (getCurrent() != null) getCurrent().show();
     }
 
+    /**
+     * Renderiza la pantalla actual
+     */
     public void render() {
         if (getCurrent() != null) getCurrent().render(Gdx.graphics.getDeltaTime());
     }
 
+    /**
+     * Cambia el tamaño de la pantalla actual. Esta llamada se hace desde el sistema operativo.
+     *
+     * @param width Ancho en pixeles
+     * @param height Alto en pixeles
+     */
     public void resize(int width, int height) {
         if (getCurrent() != null) getCurrent().resize(width, height);
     }
 
+    /**
+     * Reanuda la pantalla actual
+     */
     public void resume() {
         getCurrent().resume();
     }
 
+    /**
+     * Pausa la pantalla actual
+     */
     public void pause() {
         getCurrent().pause();
     }
 
+    /**
+     * Oculta la pantalla actual y libera sus recursos
+     */
     public void dispose() {
         if (getCurrent() != null) getCurrent().hide();
         getCurrent().dispose();
     }
 
+    /**
+     * Cambia a una nueva pantalla. La antigua se destruye y la nueva se instancia
+     *
+     * @param key Clave de la nueva pantalla
+     * @param hierarchy Jerarquia de la nueva pantalla respecto de la actual
+     */
     public void switchToScreen(Key key, BaseScreen.Hierarchy hierarchy) {
         if (getCurrent() != null) {
             hideCurrent();
@@ -109,7 +155,9 @@ public class ScreenManager {
     }
 
     /**
+     * Crea una pantalla en funcion de la clave
      *
+     * @param key Clave de pantalla
      */
     private BaseScreen createScreen(Key key) {
         switch (key) {
@@ -214,32 +262,25 @@ public class ScreenManager {
                 return levelTest2;
 
             case SUCCESS_1:
-                Success success1 = new Success(getSuperManager(), SUCCESS_1, "BASIC COMPLETED!");
-                return success1;
+                return new Success(getSuperManager(), SUCCESS_1, "BASIC COMPLETED!");
 
             case SUCCESS_2:
-                Success success2 = new Success(getSuperManager(), SUCCESS_2, "ADVANCE COMPLETED!");
-                return success2;
+                return new Success(getSuperManager(), SUCCESS_2, "ADVANCE COMPLETED!");
 
             case SUCCESS_3:
-                Success success3 = new Success(getSuperManager(), SUCCESS_3, "EXPERT COMPLETED!");
-                return success3;
+                return new Success(getSuperManager(), SUCCESS_3, "EXPERT COMPLETED!");
 
             case SUCCESS_4:
-                Success success4 = new Success(getSuperManager(), SUCCESS_4, "HERO COMPLETED!");
-                return success4;
+                return new Success(getSuperManager(), SUCCESS_4, "HERO COMPLETED!");
 
             case SUCCESS_5:
-                Success success5 = new Success(getSuperManager(), SUCCESS_5, "GOD COMPLETED!");
-                return success5;
+                return new Success(getSuperManager(), SUCCESS_5, "GOD COMPLETED!");
 
             case SUCCESS_T1:
-                Success successT1 = new Success(getSuperManager(), SUCCESS_T1, "TEST1 COMPLETED!");
-                return successT1;
+                return new Success(getSuperManager(), SUCCESS_T1, "TEST1 COMPLETED!");
 
             case SUCCESS_T2:
-                Success successT2 = new Success(getSuperManager(), SUCCESS_T1, "TEST2 COMPLETED!");
-                return successT2;
+                return new Success(getSuperManager(), SUCCESS_T1, "TEST2 COMPLETED!");
 
             default:
                 Main main2 = new Main(getSuperManager());

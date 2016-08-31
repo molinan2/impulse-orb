@@ -20,17 +20,42 @@ import com.jmolina.orb.widgets.ui.SuccessCover;
 import com.jmolina.orb.widgets.ui.SuccessTitle;
 import com.jmolina.orb.widgets.ui.MainButton;
 
+/**
+ * Pantalla de exito de un nivel
+ */
 public class Success extends BaseScreen {
 
+    /** Titulo de exito */
     private SuccessTitle title;
+
+    /** Portada de exito */
     private SuccessCover cover;
+
+    /** Encabezados */
     private Heading timeHeading, distanceHeading;
+
+    /** Tiempo y distancia conseguidos */
     private BigText time, distance;
+
+    /** Boton atras */
     private MainButton button;
+
+    /** Estrella de puesto en el podium */
     private Star podium;
+
+    /** Widget de medallas (rating) */
     private Rating rating;
+
+    /** Rating numerico */
     private int numericRating;
 
+    /**
+     * Constructor
+     *
+     * @param superManager SuperManager
+     * @param thisKey Clave de nivel
+     * @param label Etiqueta de titulo
+     */
     public Success(SuperManager superManager, ScreenManager.Key thisKey, String label) {
         super(superManager);
         setPreviousScreen(ScreenManager.Key.LEVEL_SELECT);
@@ -107,6 +132,11 @@ public class Success extends BaseScreen {
         }
     }
 
+    /**
+     * Devuelve la textura de la portada
+     *
+     * @param thisKey Clave de pantalla
+     */
     private Texture getCoverTexture(ScreenManager.Key thisKey) {
         switch (thisKey) {
             case SUCCESS_1: return getAsset(Asset.UI_SUCCESS_COVER_1, Texture.class);

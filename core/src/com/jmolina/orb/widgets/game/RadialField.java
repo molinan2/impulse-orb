@@ -63,6 +63,9 @@ public class RadialField extends Field {
         setScale(ppm / Var.GRID_CELL_SIZE);
     }
 
+    /**
+     * Aplica una accion para resetear la particula
+     */
     private void resetParticleAction() {
         particle.clearActions();
         particle.addAction(parallel(

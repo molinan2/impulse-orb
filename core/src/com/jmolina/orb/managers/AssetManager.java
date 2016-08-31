@@ -11,11 +11,17 @@ import com.badlogic.gdx.utils.reflect.Field;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.jmolina.orb.var.Asset;
 
+/**
+ * Manager de assets. Extiende del {@link com.badlogic.gdx.assets.AssetManager} de libGDX.
+ */
 public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
 
     private enum AssetType { FONT, MUSIC, SOUND, TEXTURE, TEXTURE_MIP, UNDEFINED }
 
+    /** Clase que almacena los assets para precarga */
     public static final Class ASSET_CLASS = Asset.class;
+
+    /** Fichero que almacena los assets del atlas */
     public static final String GAME_ATLAS = "atlas/game.atlas";
 
     /**
@@ -40,6 +46,9 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
         finishLoading();
     }
 
+    /**
+     * Devuelve el atlas
+     */
     public TextureAtlas getGameAtlas() {
         return get(GAME_ATLAS, TextureAtlas.class);
     }
@@ -96,6 +105,11 @@ public class AssetManager extends com.badlogic.gdx.assets.AssetManager {
         }
     }
 
+    /**
+     * Detecta el tipo de asset en funcion de su nombre de fichero
+     *
+     * @param name Nombre de fichero (descriptor)
+     */
     private AssetType detectAssetType(String name) {
         boolean font = name.endsWith(".fnt");
         boolean music = name.endsWith(".music.mp3") || name.endsWith(".music.ogg");

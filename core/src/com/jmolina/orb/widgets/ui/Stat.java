@@ -18,21 +18,43 @@ import com.jmolina.orb.widgets.BaseGroup;
 import java.text.DecimalFormat;
 
 /**
- *
+ * Estadistica generica
  */
 public class Stat extends BaseGroup {
 
+    /** Nombre de la estadistica, dato estadistico */
     private Label name, data;
     private Label.LabelStyle nameStyle, dataStyle;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param name Nombre
+     */
     public Stat (AssetManager am, String name) {
         this(am, name, 0);
     }
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param name Nombre
+     * @param value Valor del dato
+     */
     public Stat (AssetManager am, String name, float value) {
         this(am, name, value, "");
     }
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param name Nombre
+     * @param value Valor del dato
+     * @param unit Unidad del dato
+     */
     public Stat(AssetManager am, String name, float value, String unit) {
         super(am);
 
@@ -70,10 +92,23 @@ public class Stat extends BaseGroup {
         setHeight(Utils.cell(1));
     }
 
+    /**
+     * Devuelve el valor del dato formateado
+     *
+     * @param value Valor del dato
+     * @param unit Unidad
+     */
     private String formatStat(float value, String unit) {
         return formatStat(value, unit, true);
     }
 
+    /**
+     * Devuelve el valor del dato formateado
+     *
+     * @param value Valor del dato
+     * @param unit Unidad
+     * @param withDecimals Si contempla decimales o no
+     */
     private String formatStat(float value, String unit, boolean withDecimals) {
         DecimalFormat df;
 
@@ -92,30 +127,66 @@ public class Stat extends BaseGroup {
         return stat;
     }
 
+    /**
+     * Fija el valor del dato estadistico
+     *
+     * @param value Valor
+     */
     public void setValue(float value) {
         setValue(value, "");
     }
 
+    /**
+     * Fija el valor del dato estadistico y su unidad
+     *
+     * @param value Valor del dato
+     * @param unit Unidad
+     */
     public void setValue(float value, String unit) {
         setValue(value, unit, true);
     }
 
+    /**
+     * Fija el valor del dato estadistico, su unidad y si presenta decimales
+     *
+     * @param value Valor del dato
+     * @param unit Unidad
+     * @param decimals Si contempla decimales o no
+     */
     public void setValue(float value, String unit, boolean decimals) {
         this.data.setText(formatStat(value, unit, decimals));
     }
 
+    /**
+     * Fija un valor nulo para el dato estadistico
+     *
+     * @param unit Unidad
+     */
     public void setNullValue(String unit) {
         this.data.setText("-- " + unit);
     }
 
+    /**
+     * Fija el nombre de la estadistica
+     *
+     * @param name Nombre
+     */
     public void setName(String name) {
         this.name.setText(name);
     }
 
+    /**
+     * Devuelve el nombre de la estadistica
+     */
     public String getName() {
         return this.name.getText().toString();
     }
 
+    /**
+     * Modifica el color del texto
+     *
+     * @param color Color
+     */
     public void setLabelColor (int color) {
         nameStyle.fontColor = new Color(color);
         dataStyle.fontColor = new Color(color);

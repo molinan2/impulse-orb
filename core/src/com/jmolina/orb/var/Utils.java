@@ -6,6 +6,9 @@ import com.jmolina.orb.var.Var;
 import java.text.DecimalFormat;
 import java.util.Locale;
 
+/**
+ * Utilidades varias
+ */
 public class Utils {
 
     private final static float CELL_SIZE = Var.GRID_CELL_SIZE;
@@ -29,18 +32,30 @@ public class Utils {
         return formattedTime;
     }
 
+    /**
+     * Formatea la distancia con 2 decimales
+     *
+     * @param distance Distancia
+     * @return String Distancia formateada
+     */
     public static String formatDistance(float distance) {
         DecimalFormat df = new DecimalFormat("###.##");
         return df.format(distance) + " m";
     }
 
     /**
-     * Distancia entre 2 puntos
+     * Calcula la distancia entre 2 puntos
      */
     public static float distance(Vector2 pointA, Vector2 pointB) {
         return pointA.dst(pointB);
     }
 
+    /**
+     * Calcula la normal a un vector
+     *
+     * @param vector Vector
+     * @return Vector normal
+     */
     public static Vector2 normal(Vector2 vector) {
         Vector2 normal = new Vector2(vector.y, - vector.x);
         normal.nor();
@@ -78,4 +93,5 @@ public class Utils {
         int integerPart = (int) number;
         return number - integerPart;
     }
+
 }

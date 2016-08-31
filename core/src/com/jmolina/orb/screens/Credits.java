@@ -4,6 +4,9 @@ import com.jmolina.orb.interfaces.SuperManager;
 import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.widgets.ui.Credit;
 
+/**
+ * Pantalla de creditos. Contiene todos los creditos de la aplicacion.
+ */
 public class Credits extends Menu {
 
     private final String AUTHORS = "Game design, programming, interface design and sound effects design by Juan M. Molina [1].";
@@ -21,8 +24,14 @@ public class Credits extends Menu {
             "\n" +
             "To the Free Software community.";
 
+    /** Widgets de creditos */
     private Credit tools, authors, license, libraries, resources, thanks;
 
+    /**
+     * Constructor
+     *
+     * @param superManager SuperManager
+     */
     public Credits(SuperManager superManager) {
         super(superManager);
 

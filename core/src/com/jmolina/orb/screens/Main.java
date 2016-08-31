@@ -10,12 +10,25 @@ import com.jmolina.orb.widgets.ui.GameTitle;
 
 import static com.jmolina.orb.managers.ScreenManager.Key.*;
 
+/**
+ * Pantalla de menu principal de la aplicacion
+ */
 public class Main extends BaseScreen {
 
+    /** Titulo de la aplicacion */
     private GameTitle gameTitle;
+
+    /** Botones del menu */
     private MainButton play, options, stats, credits, exit;
+
+    /** Nota a pie de pantalla*/
     private Notice notice;
 
+    /**
+     * Constructor
+     *
+     * @param superManager SuperManager
+     */
     public Main(SuperManager superManager) {
         super(superManager);
 

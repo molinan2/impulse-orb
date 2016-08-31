@@ -22,6 +22,9 @@ import com.jmolina.orb.widgets.game.Timer;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
+/**
+ * Stage donde se dibuja el HUD y el menu de pausa.
+ */
 public class HUDStage extends Stage {
 
     private final float FADE_TIME = 0.2f;
@@ -32,18 +35,32 @@ public class HUDStage extends Stage {
     private final Interpolation FADE_INTERPOLATION = Interpolation.pow2;
     private final float HUD_BACKGROUND_X = -6f;
     private final float HUD_BACKGROUND_Y = 16f;
-
     private final float BACKGROUND_FADE_TIME = 0.5f;
+
     public static final float INTRO_SEQUENCE_TIME = 1f;
 
-    private LevelManager levelManager;
+    /** Cortina de fundido de inicio de nivel */
     private Curtain curtain;
+
+    /** Fondo del HUD */
     private HUDBackground background;
+
+    /** Medidor de calir */
     private Gauge gauge;
+
+    /** Cronometro */
     private Timer timer;
+
+    /** Boton de pausa */
     private PauseButton pauseButton;
+
+    /** Menu de pausa */
     private PauseMenu pauseMenu;
+
+    /** Callbacks ejecutables */
     private Runnable enableTouchables, toggleButton, enableMenuVisibility, disableMenuVisibility;
+
+    private LevelManager levelManager;
 
     /**
      * Constructor
@@ -66,6 +83,11 @@ public class HUDStage extends Stage {
         getRoot().setPosition(0f, 0f);
     }
 
+    /**
+     * Crea los actores del HUD
+     *
+     * @param am AssetManager
+     */
     private void createActors(AssetManager am) {
         background = new HUDBackground(am);
         timer = new Timer(am);
@@ -88,6 +110,9 @@ public class HUDStage extends Stage {
         pauseButton.addListener(getToggleListener());
     }
 
+    /**
+     * Añade los actores a la stage
+     */
     private void addActors() {
         addActor(curtain);
         addActor(background);
@@ -97,6 +122,9 @@ public class HUDStage extends Stage {
         addActor(pauseMenu);
     }
 
+    /**
+     * Crea los callbacks ejecutables
+     */
     private void createRunnables() {
         enableTouchables = new Runnable() {
             @Override
@@ -128,6 +156,9 @@ public class HUDStage extends Stage {
         };
     }
 
+    /**
+     * Devuelve un listener de activacion/desactivacion de la pausa al hacer click
+     */
     private ClickListener getToggleListener() {
         return new ClickListener(){
             @Override
@@ -143,6 +174,9 @@ public class HUDStage extends Stage {
         };
     }
 
+    /**
+     * Ejecuta la secuencia de pausa
+     */
     public void pause() {
         pauseButton.pause();
         pauseButton.setTouchable(Touchable.disabled);
@@ -159,6 +193,11 @@ public class HUDStage extends Stage {
         ));
     }
 
+    /**
+     * Ejecuta la secuencia de reanudacion
+     *
+     * @param unlock Callback de desbloqueo del nivel
+     */
     public void resume(final Runnable unlock) {
         pauseButton.pause();
         pauseButton.setTouchable(Touchable.disabled);
@@ -176,6 +215,13 @@ public class HUDStage extends Stage {
         ));
     }
 
+    /**
+     * Ejecuta la secuencia de reinicio del nivel
+     *
+     * @param reset Callback de reseteo de widgets
+     * @param intro Callback de secuencia de introduccion del orbe
+     * @param unlock Callback de desbloqueo del nivel
+     */
     public void restart (Runnable reset, Runnable intro, Runnable unlock) {
         pauseButton.pause();
         pauseButton.setTouchable(Touchable.disabled);
@@ -199,6 +245,14 @@ public class HUDStage extends Stage {
         ));
     }
 
+    /**
+     * Ejecuta la secuencia de destruccion
+     *
+     * @param destroy Callback de destruccion del orbe
+     * @param reset Callback de reseteo de widgets
+     * @param intro Callback de secuencia de introduccion del orbe
+     * @param unlock Callback de desbloqueo del nivel
+     */
     public void destroy(Runnable destroy, Runnable reset, Runnable intro, Runnable unlock) {
         pauseButton.setTouchable(Touchable.disabled);
         pauseMenu.setTouchable(Touchable.disabled);
@@ -218,6 +272,15 @@ public class HUDStage extends Stage {
         ));
     }
 
+    /**
+     * Ejecuta la secuencia de primer arranque del nivel
+     *
+     * @param transitionAction Accion de transicion entre pantallas
+     * @param backgroundStage Stage de fondo estatico
+     * @param orbIntro Callback de ejecucion de la secuencia de introduccion del orbe
+     * @param setAsProcessor Callback de activar la entrada
+     * @param unlock Callback de desbloqueo de nivel
+     */
     public void init(Action transitionAction, Stage backgroundStage, Runnable orbIntro, Runnable setAsProcessor, Runnable unlock) {
         this.addAction(sequence(
                 alpha(0),
@@ -232,43 +295,85 @@ public class HUDStage extends Stage {
         ));
     }
 
+    /**
+     * Actualiza el cronometro
+     */
     public void updateTimer() {
         timer.update();
     }
 
+    /**
+     * Fija el nivel del medidor de calor
+     *
+     * @param level Nivel [0,1]
+     */
     public void setGaugeLevel(float level) {
         gauge.setLevel(level);
     }
 
+    /**
+     * Fija el valor de la estadistica de distancia recorrida en el intento actual
+     *
+     * @param distance Distancia
+     */
     public void setDistanceValue(float distance) {
         pauseMenu.setDistanceValue(distance);
     }
 
+    /**
+     * Fija el valor de la estadistica de distancia recorrida total
+     *
+     * @param distance Distancia
+     */
     public void setFullDistanceValue(float distance) {
         pauseMenu.setFullDistanceValue(distance);
     }
 
+    /**
+     * Fija el valor de la estadistica de tiempo invertido total
+     *
+     * @param time Tiempo
+     */
     public void setFullTimeValue(float time) {
         pauseMenu.setFullTimeValue(time);
     }
 
+    /**
+     * Fija el valor del numero de destrucciones totales
+     *
+     * @param destroyed Numero de destrucciones
+     */
     public void setFullDestroyedValue(int destroyed) {
         pauseMenu.setFullDestroyedValue(destroyed);
     }
 
+    /**
+     * Activa o desactiva la sobrecarga del medidor de calor
+     *
+     * @param overloaded Sobrecarga
+     */
     public void setGaugeOverload(boolean overloaded) {
         gauge.setOverloaded(overloaded);
     }
 
+    /**
+     * Reinicia los widgets del HUD: cronometro y medidor de calor
+     */
     public void reset() {
         timer.reset();
         gauge.reset();
     }
 
+    /**
+     * Devuelve el LevelManager
+     */
     private LevelManager getLevelManager() {
         return levelManager;
     }
 
+    /**
+     * Devuelve el tiempo actual indicado por el cronometro
+     */
     public float getTime() {
         return timer.getTime();
     }

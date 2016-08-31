@@ -11,7 +11,6 @@ import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
 
-
 /**
  * Class for metering and displaying render time.
  */

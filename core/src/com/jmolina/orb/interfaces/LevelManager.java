@@ -2,6 +2,9 @@ package com.jmolina.orb.interfaces;
 
 import com.jmolina.orb.data.Tick;
 
+/**
+ * Interfaz de control de un nivel de juego
+ */
 public interface LevelManager {
 
     /**

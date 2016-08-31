@@ -13,13 +13,22 @@ import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.widgets.BaseGroup;
 
 /**
- * Background tilable ajustable
+ * Background tilable ajustable y estatico
  */
 public class StaticBackground extends BaseGroup {
 
+    /** Imagen del background */
     private Image image;
+
+    /** Imagen tilada */
     private TiledDrawable tiledDrawable;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param viewport Viewport
+     */
     public StaticBackground(AssetManager am, Viewport viewport) {
         super(am);
 

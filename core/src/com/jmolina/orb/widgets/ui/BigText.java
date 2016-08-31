@@ -13,10 +13,20 @@ import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Representa un texto de gran tamaño
+ */
 public class BigText extends BaseGroup {
 
+    /** Texto */
     private Label label;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param text Texto
+     */
     public BigText(AssetManager am, String text) {
         super(am);
 

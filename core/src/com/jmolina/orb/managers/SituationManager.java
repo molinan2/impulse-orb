@@ -13,22 +13,57 @@ import com.jmolina.orb.var.Utils;
 
 import java.util.ArrayList;
 
+/**
+ * Manager de situaciones de un nivel de juego. Este manager se encarga de instanciar las situaciones
+ * visibles y destruir las que ya no se ven.
+ */
 public class SituationManager {
 
+    /**
+     * Adyacencia.
+     *
+     * TOP: Si la situacion adyacente toca por la parte superior.
+     * BOTTOM: Si la situacion adyacente toca por la parte inferior.
+     */
     private enum Adjacency { TOP, BOTTOM }
+
+    /**
+     * Frontera
+     *
+     * BOUNDARY: Una de las 2 fronteras que distan del borde un 25% de la altura de la situacion.
+     * MIDDLE: Frontera central, al 50% de altura.
+     */
     private enum Frontier { BOUNDARY, MIDDLE }
 
     private final int Z_INDEX_BLACK = 10000;
     private final int Z_INDEX_ORB = 20000;
 
+    /** Lista de clases de situaciones ordenadas que componen el nivel */
     private ArrayList<Class> situations;
+
+    /** Factoria de situaciones */
     private SituationFactory situationFactory;
+
+    /** Situaciones visibles */
     private Situation currentSituation, adjacentSituation;
+
+    /** Adyacencias */
     private Adjacency adjacencyNow, adjacencyLast;
+
     private Orb orb;
     private Stage stage;
     private Viewport viewport;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param world Mundo fisico
+     * @param orb Orbe
+     * @param pixelsPerMeter Ratio de pixels/metros
+     * @param stage Stage donde se dibujan las situaciones
+     * @param viewport Viewport de la stage
+     */
     public SituationManager(AssetManager am, World world, Orb orb, float pixelsPerMeter, Stage stage, Viewport viewport) {
         currentSituation = null;
         adjacentSituation = null;
@@ -195,14 +230,26 @@ public class SituationManager {
         adjacentSituation = temporal;
     }
 
+    /**
+     * Devuelve la situacion actual
+     */
     private Situation getCurrentSituation() {
         return currentSituation;
     }
 
+    /**
+     * Devuelve la situacion adyacente
+     */
     private Situation getAdjacentSituation() {
         return adjacentSituation;
     }
 
+    /**
+     * Introduce una situacion en el nivel
+     *
+     * @param situation Situacion
+     * @param positionY Posicion ordinal Y
+     */
     private void placeSituation(Situation situation, int positionY) {
         situation.setPositionY(positionY);
 

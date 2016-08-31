@@ -5,13 +5,19 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.jmolina.orb.elements.Magnetic;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Clase base para dibujar el campo magnetico de los elementos magneticos
+ */
 public abstract class Field extends BaseGroup {
 
     protected final float PERIOD = 1f;
     protected final float MAX_ALPHA = 0.5f;
     protected final float SHORT_TIME = 0.1f;
 
+    /** Umbral */
     private float threshold;
+
+    /** Polaridad */
     private Magnetic.Polarity polarity;
 
     /**

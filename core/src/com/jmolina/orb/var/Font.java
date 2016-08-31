@@ -1,7 +1,5 @@
 package com.jmolina.orb.var;
 
-// Arroja una Exception al ejecutar la version GWT (HTML)
-
 import com.jmolina.orb.managers.AssetManager;
 
 /**

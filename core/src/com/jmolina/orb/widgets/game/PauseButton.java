@@ -9,11 +9,22 @@ import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
 
+/**
+ * Boton de pausa del HUD
+ */
 public class PauseButton extends BaseGroup {
 
+    /** Imagen del boton y marco */
     private Image image, frame;
+
+    /** Imagenes de pausa y reanudacion */
     private TextureRegionDrawable pauseDrawable, resumeDrawable;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     */
     public PauseButton(AssetManager am) {
         super(am);
 
@@ -37,10 +48,16 @@ public class PauseButton extends BaseGroup {
         setOrigin(image.getWidth() * 0.5f, image.getHeight() * 0.5f);
     }
 
+    /**
+     * Pausa el boton
+     */
     public void pause () {
         image.setDrawable(resumeDrawable);
     }
 
+    /**
+     * Reanuda el boton
+     */
     public void resume () {
         image.setDrawable(pauseDrawable);
     }

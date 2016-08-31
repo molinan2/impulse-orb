@@ -15,12 +15,25 @@ import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.ui.Title;
 
+/**
+ * Clase base para todas las pantallas de menu que utilizan scroll
+ */
 public class Menu extends BaseScreen {
 
+    /** Titulo de pantalla */
     private Title title;
+
+    /** Tabla de widgets dentro del scroll */
     private Table table;
+
+    /** Panel de scroll */
     private ScrollPane scrollPane;
 
+    /**
+     * Constructor
+     *
+     * @param superManager SuperManager
+     */
     public Menu(SuperManager superManager) {
         super(superManager);
 
@@ -44,18 +57,39 @@ public class Menu extends BaseScreen {
         addMainActor(scrollPane);
     }
 
+    /**
+     * Devuelve la tabla de widgets
+     */
     private Table getTable() {
         return table;
     }
 
+    /**
+     * Añade un actor a la tabla de widgets
+     *
+     * @param actor Actor
+     */
     public <T extends Actor> void add(T actor) {
         add(actor, 0.5f, 10f);
     }
 
+    /**
+     * Añade un actor a la tabla de widgets
+     *
+     * @param actor Actor
+     * @param bottomPadding Padding inferior en unidades del grid
+     */
     public <T extends Actor> void add(T actor, float bottomPadding) {
         add(actor, bottomPadding, 10f);
     }
 
+    /**
+     * Añade un actor a la tabla de widgets
+     *
+     * @param actor Actor
+     * @param bottomPadding Padding inferior en unidades del grid
+     * @param width Ancho del actor
+     */
     public <T extends Actor> void add(T actor, float bottomPadding, float width) {
         getTable().row();
         getTable()
@@ -63,6 +97,15 @@ public class Menu extends BaseScreen {
                 .width(width * Utils.cell(1))
                 .expandX()
                 .padBottom(bottomPadding * Utils.cell(1));
+    }
+
+    /**
+     * Fija el titulo de la pantalla
+     *
+     * @param name Titulo
+     */
+    public void setTitle (String name) {
+        title.setLabel(name);
     }
 
     @Override
@@ -77,10 +120,6 @@ public class Menu extends BaseScreen {
                 switchToScreen(key, Hierarchy.HIGHER);
             }
         });
-    }
-
-    public void setTitle (String name) {
-        title.setLabel(name);
     }
 
     @Override

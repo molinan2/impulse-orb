@@ -3,6 +3,9 @@ package com.jmolina.orb;
 import com.google.example.games.basegameutils.GameHelper;
 import com.jmolina.orb.managers.PrefsManager;
 
+/**
+ * Listener de Sign In
+ */
 public class PrefsGameHelperListener implements GameHelper.GameHelperListener {
 
     @Override

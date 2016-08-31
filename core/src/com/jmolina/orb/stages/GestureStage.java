@@ -18,14 +18,33 @@ import com.jmolina.orb.widgets.game.Pulse;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
+/**
+ * Stage donde se dibujan los feedback de los gestos
+ */
 public class GestureStage extends Stage {
 
+    /** Pulso del gesto de paralizacion */
     private Pulse pulse;
+
+    /** Flecha del gesto de impulso */
     private Arrow arrow;
+
+    /** Puntos de inicio y fin del gesto de impulso */
     private Vector2 start, end;
+
+    /** Buffer para mezclar transparencias del gesto de impulso */
     private FrameBuffer buffer;
+
+    /** Imagen solida del gesto de impulso generada en el buffer */
     private Image solidArrow;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param vp Viewport
+     * @param pixelsPerMeter Factor de conversion de pixeles a metros
+     */
     public GestureStage(AssetManager am, Viewport vp, float pixelsPerMeter) {
         super(vp);
 

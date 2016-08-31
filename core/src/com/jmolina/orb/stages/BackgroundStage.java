@@ -5,13 +5,24 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.widgets.ui.StaticBackground;
 
+/**
+ * Stage de fondo estatico, utilizada en las pantallas de menu y en el fundido de las pantallas de
+ * menu con las de nivel.
+ */
 public class BackgroundStage extends Stage {
 
+    /** Fondo estatico */
     private StaticBackground staticBackground;
 
-    public BackgroundStage(AssetManager am, Viewport vp) {
-        super(vp);
-        staticBackground = new StaticBackground(am, vp);
+    /**
+     * Constructor
+     *
+     * @param assetManager AssetManager
+     * @param viewport Viewport de pantalla
+     */
+    public BackgroundStage(AssetManager assetManager, Viewport viewport) {
+        super(viewport);
+        staticBackground = new StaticBackground(assetManager, viewport);
         addActor(staticBackground);
     }
 

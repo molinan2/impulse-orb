@@ -21,16 +21,32 @@ import com.jmolina.orb.widgets.BaseGroup;
 
 import java.util.ArrayList;
 
+/**
+ * Multicheckbox compuesta de 3 opciones (checkboxes)
+ */
 public class MultiOption extends BaseGroup {
 
     private final int DEFAULT_VALUE = 1;
     private final int OPTIONS = 3;
 
+    /** Texto de la opcion */
     private Label label;
+
+    /** Valor actual */
     private int value;
+
+    /** Lista de checkboxes */
     private ArrayList<Checkbox> checkboxes;
+
+    /** Imagen de un fader superpuesta a las checkboxes */
     private Image lever;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param name Nombre de la opcion
+     */
     public MultiOption(AssetManager am, String name) {
         super(am);
 
@@ -67,6 +83,11 @@ public class MultiOption extends BaseGroup {
         setValue(DEFAULT_VALUE);
     }
 
+    /**
+     * Fija el valor de la multiopcion
+     *
+     * @param value Valor
+     */
     public void setValue (int value) {
         value = MathUtils.clamp(value, 0, OPTIONS);
         setCheckboxes(value);
@@ -74,6 +95,11 @@ public class MultiOption extends BaseGroup {
         this.value = value;
     }
 
+    /**
+     * Activa la checkbox correspondiente al valor indicado
+     *
+     * @param value Valor
+     */
     private void setCheckboxes(int value) {
         for (Checkbox checkbox : checkboxes)
             checkbox.uncheck();
@@ -81,6 +107,11 @@ public class MultiOption extends BaseGroup {
         checkboxes.get(value).check();
     }
 
+    /**
+     * Carga la textura del fader correspondiente al valor indicado
+     *
+     * @param value Valor
+     */
     private void setLever(int value) {
         switch (value) {
             case 0: lever.setDrawable(new TextureRegionDrawable(new TextureRegion(getAsset(Asset.UI_MULTICHECK_0, Texture.class)))); break;

@@ -6,10 +6,19 @@ import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Fondo del HUD
+ */
 public class HUDBackground extends BaseGroup {
 
+    /** Borde y fondo semitransparente */
     private Image border, overlay;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     */
     public HUDBackground(AssetManager am) {
         super(am);
 

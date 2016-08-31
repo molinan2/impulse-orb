@@ -6,7 +6,8 @@ import com.jmolina.orb.managers.PrefsManager;
 import com.jmolina.orb.managers.ScreenManager;
 
 /**
- * El SuperManager controla el resto de managers de nivel de aplicación y permite acceder a ellos.
+ * Define la interfaz del SuperManager, que controla el resto de managers de nivel de aplicación
+ * y permite acceder a ellos.
  */
 public interface SuperManager {
 

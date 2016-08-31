@@ -7,10 +7,20 @@ import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Asset;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Estrella de puesto en el podio.
+ */
 public class Star extends BaseGroup {
 
+    /** Imagen de la estrella */
     private Image image;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param rank Rango
+     */
     public Star(AssetManager am, int rank) {
         super(am);
 
@@ -25,6 +35,11 @@ public class Star extends BaseGroup {
             image.setVisible(false);
     }
 
+    /**
+     * Devuelve la textura de la estrella correspondiente al rango indicado
+     *
+     * @param rank Rango
+     */
     private Texture getTexture(int rank) {
         switch (rank) {
             case 1: return getAsset(Asset.UI_STAR_1ST, Texture.class);

@@ -13,9 +13,8 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
-
 /**
- * Seria mas apropiado que heredase de BaseActor
+ * Pulso que se dibuja con el gesto de paralizacion
  */
 public class Pulse extends BaseGroup {
 
@@ -24,9 +23,18 @@ public class Pulse extends BaseGroup {
     private final float FADE_TIME = 0.35f;
     private final float SCALE_TIME = 0.25f;
 
+    /** Imagen del pulso */
     private BaseActor image;
+
+    /** Escala inicial */
     private float initialScale;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param pixelsPerMeter Ratio de pixels/metros
+     */
     public Pulse(AssetManager am, float pixelsPerMeter) {
         super(am);
 
@@ -42,6 +50,9 @@ public class Pulse extends BaseGroup {
         addActor(image);
     }
 
+    /**
+     * Inicia el pulso
+     */
     public void start() {
         reset();
         image.addAction(sequence(
@@ -56,6 +67,9 @@ public class Pulse extends BaseGroup {
         ));
     }
 
+    /**
+     * Restablece el puso
+     */
     public void reset() {
         image.clearActions();
         image.addAction(alpha(0));

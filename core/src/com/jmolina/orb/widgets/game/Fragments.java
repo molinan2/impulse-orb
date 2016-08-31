@@ -12,9 +12,8 @@ import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-
 /**
- * Fragments:
+ * Grupo de actores que dibuja el orbe a partir de 4 fragmentos:
  *
  * 1: Top left
  * 2: Top right
@@ -25,8 +24,14 @@ public class Fragments extends BaseGroup {
 
     private final float ANIMATION_TIME = 2.0f;
 
+    /** Los 4 fragmentos y una base de explosion */
     private Image explosion, fragment1, fragment2, fragment3, fragment4;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     */
     public Fragments(AssetManager am) {
         super(am);
 
@@ -53,14 +58,25 @@ public class Fragments extends BaseGroup {
         reset();
     }
 
+    /**
+     * Devuelve un numero aleatorio que representa una distancia que recorreran los fragmentos al
+     * destruirse el orbe.
+     */
     private float randomDistance() {
         return Utils.cell(4) * (float) (Math.random() - 0.5f);
     }
 
+    /**
+     * Devuelve un angulo aleatorio que representa el giro que daran los fragmentos al destruirse
+     * el orbe.
+     */
     private float randomAngle() {
         return 4 * 360 * (float) (2 * Math.random() - 1);
     }
 
+    /**
+     * Ejecuta la animacion de destruccion del orbe.
+     */
     public void destroy() {
         explosion.addAction(sequence(
                 alpha(0.4f),
@@ -80,6 +96,9 @@ public class Fragments extends BaseGroup {
         ));
     }
 
+    /**
+     * Resetea todos los fragmentos y la explosion a su estado inicial.
+     */
     public void reset() {
         clearActions();
         addAction(alpha(1));
@@ -117,6 +136,9 @@ public class Fragments extends BaseGroup {
         explosion.setScale(1.5f);
     };
 
+    /**
+     * Devuelve una animacion de destruccion para un fragmento
+     */
     private Action getDestructionAction() {
         return new ParallelAction(
                 Actions.rotateBy(randomAngle(), ANIMATION_TIME),

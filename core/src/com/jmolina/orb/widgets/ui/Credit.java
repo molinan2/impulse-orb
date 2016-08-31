@@ -17,11 +17,24 @@ import com.jmolina.orb.widgets.BaseGroup;
 
 import java.util.ArrayList;
 
+/**
+ * Credito, incluyendo encabezado, texto descriptivo e hiperenlaces
+ */
 public class Credit extends BaseGroup {
 
+    /** Encabezado, cuerpo descriptivo */
     private Label header, body;
+
+    /** Lista de hiperenlaces */
     private ArrayList<Label> links;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param header Encabezado
+     * @param body Texto descriptivo
+     */
     public Credit(AssetManager am, String header, String body) {
         super(am);
 
@@ -61,6 +74,12 @@ public class Credit extends BaseGroup {
         setHeight(this.header.getPrefHeight() + this.body.getPrefHeight());
     }
 
+    /**
+     * Añade un hiperenlace
+     *
+     * @param text Texto visible
+     * @param uri URI del enlace
+     */
     public void addLink(String text, final String uri) {
         Label.LabelStyle style = new Label.LabelStyle();
         style.fontColor = new Color(Var.COLOR_LILAC_MEDIUM);
@@ -96,6 +115,9 @@ public class Credit extends BaseGroup {
         setHeight(header.getPrefHeight() + body.getPrefHeight() + getLinksPrefHeight() + Utils.cell(1));
     }
 
+    /**
+     * Devuelve la altura combinada de todos los hiperenlaces, para calcular la altura del widget.
+     */
     private float getLinksPrefHeight() {
         float height = 0f;
 

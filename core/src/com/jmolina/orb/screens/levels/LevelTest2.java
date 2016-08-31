@@ -6,9 +6,16 @@ import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.situations.test.SituationT100;
 import com.jmolina.orb.situations.test.SituationT199;
 
-
+/**
+ * Nivel de Test 2
+ */
 public class LevelTest2 extends Level {
 
+    /**
+     * Consntructor
+     *
+     * @param sm SuperManager
+     */
     public LevelTest2(SuperManager sm) {
         super(sm);
 

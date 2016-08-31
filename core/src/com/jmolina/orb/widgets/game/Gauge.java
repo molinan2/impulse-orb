@@ -8,15 +8,28 @@ import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Medidor de calor del orbe
+ */
 public class Gauge extends BaseGroup {
 
     private final float LEVEL_MIN = 0f;
     private final float LEVEL_MAX = 1f;
 
+    /** Elementos del medidor: fondo, barra de nivel, barra de sobrecarga y marco */
     private Image background, bar, overload, frame;
+
+    /** Indicador de sobrecarga */
     private boolean overloaded = false;
+
+    /** Nivel de calor. Toma valores en [0,1] */
     private float level;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     */
     public Gauge(AssetManager am) {
         super(am);
 
@@ -44,6 +57,9 @@ public class Gauge extends BaseGroup {
         reset();
     }
 
+    /**
+     * Reinicia el nivel del medidor
+     */
     public void reset () {
         level = 0f;
         bar.setScaleY(level);
@@ -51,22 +67,39 @@ public class Gauge extends BaseGroup {
     }
 
     /**
-     * @param increment Nivel del Gauge, representado entre 0 y 1
+     * Incrementa el nivel de medidor
+     *
+     * @param increment Incremento (entre 0 y 1)
      */
     public void increase(float increment) {
         level = MathUtils.clamp(level + increment, LEVEL_MIN, LEVEL_MAX);
         bar.setScaleY(level);
     }
 
+    /**
+     * Decrementa el nivel del medidor
+     *
+     * @param decrement Decremento
+     */
     public void decrease (float decrement) {
         increase(-decrement);
     }
 
+    /**
+     * Fija el nivel de calor
+     *
+     * @param level Nivel
+     */
     public void setLevel (float level) {
         this.level = MathUtils.clamp(level, LEVEL_MIN, LEVEL_MAX);
         bar.setScaleY(level);
     }
 
+    /**
+     * Fija la sobrecarga activada o desactivada
+     *
+     * @param overloaded Si esta activada
+     */
     public void setOverloaded(boolean overloaded) {
         this.overloaded = overloaded;
         if (this.overloaded)

@@ -7,10 +7,19 @@ import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Cortina blanca usada en la transicion entre pantallas del menu y de juego
+ */
 public class Curtain extends BaseGroup {
 
+    /** Imagen de la cortina */
     private Image image;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     */
     public Curtain(AssetManager am) {
         super(am);
 

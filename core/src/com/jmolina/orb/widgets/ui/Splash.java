@@ -11,10 +11,19 @@ import com.jmolina.orb.widgets.BaseGroup;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
+/**
+ * Splash del logo, presentacion para la pantalla de carga
+ */
 public class Splash extends BaseGroup {
 
+    /** Logo y reflejos del lojo */
     private Image splashBody, splashReflections;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     */
     public Splash(AssetManager am) {
         super(am);
 

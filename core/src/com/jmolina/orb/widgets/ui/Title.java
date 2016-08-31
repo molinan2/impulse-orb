@@ -14,11 +14,23 @@ import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Titulo de una pantalla de menu
+ */
 public class Title extends BaseGroup {
 
-    private com.jmolina.orb.widgets.ui.Back button;
+    /** Boton atras */
+    private Back button;
+
+    /** Texto del titulo */
     private Label label;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param name Texto del titulo
+     */
     public Title(AssetManager am, String name) {
         super(am);
 
@@ -44,7 +56,8 @@ public class Title extends BaseGroup {
     }
 
     /**
-     * Set a new listener for back button. There can be only one
+     * Fija un nuevo listener para el boton "Atras". There can be only one!
+     *
      * @param listener EventListener
      */
     public void setListener(EventListener listener) {
@@ -52,6 +65,11 @@ public class Title extends BaseGroup {
         button.addListener(listener);
     }
 
+    /**
+     * Modifica el texto del titulo
+     *
+     * @param name Texto del titulo
+     */
     public void setLabel (String name) {
         label.setText(name);
     }

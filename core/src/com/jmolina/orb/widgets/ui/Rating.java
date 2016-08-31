@@ -15,6 +15,9 @@ import java.util.ArrayList;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
+/**
+ * Puntuacion (medallas) de un tiempo
+ */
 public class Rating extends BaseGroup {
 
     public final static int MIN = 0;
@@ -26,10 +29,21 @@ public class Rating extends BaseGroup {
     private final String GOLD = "Gold!";
     private final String DEVELOPER = "You have beaten the developer!";
 
+    /** Medallas */
     private ArrayList<Image> medals;
+
+    /** Conjunto de medallas (rating) */
     private Group rating;
+
+    /** Encabezado de texto */
     private Heading heading;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param numericRating Rating numerico
+     */
     public Rating(AssetManager am, int numericRating) {
         super(am);
 
@@ -62,6 +76,11 @@ public class Rating extends BaseGroup {
         setSize(Utils.cell(10), Utils.cell(2));
     }
 
+    /**
+     * Devuelve el texto correspondiente a un valor de rating numero
+     *
+     * @param rating Rating numero
+     */
     private String getText(int rating) {
         rating = MathUtils.clamp(rating, 0, 4);
 
@@ -73,6 +92,11 @@ public class Rating extends BaseGroup {
         else return "";
     }
 
+    /**
+     * Activa o desactiva la visibilidad del encabezado
+     *
+     * @param visibility Si esta activado
+     */
     public void setHeadingVisibility(boolean visibility) {
         heading.setVisible(visibility);
     }

@@ -9,9 +9,15 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.example.games.basegameutils.GameHelper;
 import com.jmolina.orb.managers.PrefsManager;
 
+/**
+ * Activity principal de la aplicacion de Android
+ */
 public class AndroidLauncher extends AndroidApplication {
 
+	/** GameHelper de Play Games */
 	private GameHelper gameHelper;
+
+	/** Manager de Play Services */
 	private PlayServicesManager playServicesManager;
 
 	@Override

@@ -12,13 +12,28 @@ import com.jmolina.orb.widgets.ui.Heading;
 import com.jmolina.orb.widgets.ui.MainButton;
 import com.jmolina.orb.widgets.ui.Stat;
 
+/**
+ * Menu de pausa
+ */
 public class PauseMenu extends BaseGroup {
 
     private LevelManager levelManager;
+
+    /** Botones del menu */
     private MainButton resumeButton, restartButton, leaveButton;
+
+    /** Encabezado de estadisticas */
     private Heading fullHeading;
+
+    /** Estadisticas */
     private Stat distanceStat, fullTimeStat, fullDistanceStat, fullDestroyedStat;
 
+    /**
+     * Constructor
+     *
+     * @param assetManager AssetManager
+     * @param levelManager LevelManager
+     */
     public PauseMenu(AssetManager assetManager, LevelManager levelManager) {
         super(assetManager);
 
@@ -27,10 +42,16 @@ public class PauseMenu extends BaseGroup {
         addActors();
     }
 
+    /**
+     * Devuelve el LevelManager
+     */
     private LevelManager getLevelManager() {
         return this.levelManager;
     }
 
+    /**
+     * Crea los actores del menu
+     */
     private void createActors() {
         resumeButton = new MainButton(getAssetManager(), "RESUME", MainButton.Type.SUCCESS);
         restartButton = new MainButton(getAssetManager(), "RESTART", MainButton.Type.WARNING);
@@ -60,6 +81,9 @@ public class PauseMenu extends BaseGroup {
         leaveButton.addListener(getLeaveListener());
     }
 
+    /**
+     * Añade los actores
+     */
     private void addActors() {
         addActor(resumeButton);
         addActor(restartButton);
@@ -71,6 +95,9 @@ public class PauseMenu extends BaseGroup {
         addActor(fullDestroyedStat);
     }
 
+    /**
+     * Devuelve un listener que lanza la accion del boton de reanudacion
+     */
     private ClickListener getResumeListener() {
         return new ClickListener(){
             @Override
@@ -84,6 +111,9 @@ public class PauseMenu extends BaseGroup {
         };
     }
 
+    /**
+     * Devuelve un listener que lanza la accion del boton de reinicio
+     */
     private ClickListener getRestartListener() {
         return new ClickListener(){
             @Override
@@ -95,6 +125,9 @@ public class PauseMenu extends BaseGroup {
         };
     }
 
+    /**
+     * Devuelve un listener que lanza la accion del boton de abandono
+     */
     private ClickListener getLeaveListener() {
         return new ClickListener(){
             @Override
@@ -106,18 +139,38 @@ public class PauseMenu extends BaseGroup {
         };
     }
 
+    /**
+     * Fija la distancia recorrida en el intento actual
+     *
+     * @param distance Distancia
+     */
     public void setDistanceValue(float distance) {
         distanceStat.setValue(distance, "m");
     }
 
+    /**
+     * Fija la distancia recorrida entre todos los intentos
+     *
+     * @param distance Distancia
+     */
     public void setFullDistanceValue(float distance) {
         fullDistanceStat.setValue(distance, "m");
     }
 
+    /**
+     * Fija el tiempo invertido entre todos los intentos
+     *
+     * @param time Tiempo
+     */
     public void setFullTimeValue(float time) {
         fullTimeStat.setValue(time, "s");
     }
 
+    /**
+     * Fija el numero de veces que el orbe ha sido destruido
+     *
+     * @param destroyed Numero de veces que el orbe ha sido destruido
+     */
     public void setFullDestroyedValue(int destroyed) {
         fullDestroyedStat.setValue(destroyed, "times");
     }

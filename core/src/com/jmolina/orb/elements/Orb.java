@@ -11,7 +11,7 @@ import com.jmolina.orb.widgets.game.Fragments;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
 /**
- *
+ * Orbe. Es el protagonista de cada nivel.
  */
 public class Orb extends Element {
 
@@ -31,11 +31,25 @@ public class Orb extends Element {
     private final float FREEZE_TIME = 1f;
     private final float SCALE_CORRECTION = 1.025f;
 
+    /** Indicadores de sobrecarga y paralizacion */
     private boolean frozen, overloaded;
+
+    /** Nivel de calor, escala natural (sin escalado por accion), tiempo de paralizacion, tiempo de sobrecarga */
     private float heat, naturalScale, freezeTime, overloadTime;
+
+    /** Posicion inicial */
     private Vector2 startPosition;
+
+    /** Fragmentos del orbe. Es el actor visible del orbe. */
     private Fragments fragments;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param world Mundo fisico
+     * @param pixelsPerMeter Ratio de conversion pixeles/metros
+     */
     public Orb(AssetManager am, World world, float pixelsPerMeter) {
         super(am, world, pixelsPerMeter, Geometry.CIRCLE, Flavor.GREEN, 1f, 1f, 6, 2, 0);
 
@@ -52,7 +66,7 @@ public class Orb extends Element {
     }
 
     /**
-     * Anula las fuerzas que afectan al Orb aplicando un amortiguamiento infinito
+     * Paraliza el orbe. Anula las fuerzas que afectan al orbe aplicando un amortiguamiento infinito.
      */
     public void freeze() {
         frozen = true;
@@ -62,6 +76,9 @@ public class Orb extends Element {
         getBody().setAngularDamping(INFINITE_DAMPING);
     }
 
+    /**
+     * Desparaliza el orbe.
+     */
     public void unfreeze() {
         frozen = false;
         freezeTime = 0f;
@@ -69,68 +86,121 @@ public class Orb extends Element {
         getBody().setAngularDamping(0);
     }
 
+    /**
+     * Resetea la velocidad del orbe (lineal y angular)
+     */
     private void resetVelocity() {
         getBody().setLinearVelocity(0, 0);
         getBody().setAngularVelocity(0);
     }
 
+    /**
+     * Indica si el orbe esta paralizado
+     */
     public boolean isFrozen() {
         return frozen;
     }
 
+    /**
+     * Aumenta el calor del orbe en la cantidad por defecto
+     */
     public void increaseHeat() {
         increaseHeat(HEAT_INCREMENT);
     }
 
+    /**
+     * Aumenta el calor del orbe en un incremento
+     *
+     * @param increment Incremento de calor
+     */
     public void increaseHeat(float increment) {
         if (!isOverloaded()) {
             heat = MathUtils.clamp(this.heat + increment, HEAT_MIN, HEAT_MAX);
         }
     }
 
+    /**
+     * Decrementa el calor del orbe en un decremento
+     *
+     * @param decrement Decremento de calor
+     */
     public void decreaseHeat (float decrement) {
         increaseHeat(-decrement);
     }
 
-    private void setHeat(float level) {
-        heat = level;
+    /**
+     * Fija el nivel de calor
+     *
+     * @param heat Nivel de calor
+     */
+    private void setHeat(float heat) {
+        this.heat = heat;
     }
 
+    /**
+     * Restablece el nivel de calor al minimo y desactiva la sobrecarga
+     */
     private void resetHeat () {
         setHeat(HEAT_MIN);
         setOverloaded(false);
     }
 
+    /**
+     * Devuelve el nivel de calor
+     */
     public float getHeat () {
         return heat;
     }
 
+    /**
+     * Indica si el calor esta al maximo nivel
+     */
     public boolean isHeatMaxed() {
         return getHeat() >= HEAT_MAX;
     }
 
+    /**
+     * Ejecuta la animacion de destruccion del orbe
+     */
     public void destroy() {
         fragments.destroy();
     }
 
+    /**
+     * Indica si el orbe esta sobrecargado
+     */
     public boolean isOverloaded() {
         return overloaded;
     }
 
+    /**
+     * Fija la sobrecarga
+     *
+     * @param overloaded Si esta sobrecargado
+     */
     public void setOverloaded(boolean overloaded) {
         this.overloaded = overloaded;
         overloadTime = 0f;
     }
 
+    /**
+     * Devuelve la escala natural
+     */
     public float getNaturalScale() {
         return naturalScale;
     }
 
+    /**
+     * Restablece el angulo del orbe
+     */
     private void resetAngle() {
         getActor().setRotation(0);
         getBody().setTransform(getBody().getPosition().x, getBody().getPosition().y, 0);
     }
 
+    /**
+     * Resetea los parametros del orbe y lo coloca en su posicion inicial
+     */
     public void reset() {
         setPosition(startPosition.x, startPosition.y);
         resetAngle();
@@ -140,6 +210,9 @@ public class Orb extends Element {
         unfreeze();
     }
 
+    /**
+     * Ejecuta la animacion de introduccion
+     */
     public void applyIntroAction() {
         getActor().addAction(sequence(
                 parallel(
@@ -155,6 +228,11 @@ public class Orb extends Element {
         ));
     }
 
+    /**
+     * Ejecuta la animacion de salida
+     *
+     * @param toSuccess Callback de cambio a la pantalla de exito
+     */
     public void applyOutroAction(Runnable toSuccess) {
         getActor().addAction(sequence(
                 parallel(
@@ -166,6 +244,9 @@ public class Orb extends Element {
         ));
     }
 
+    /**
+     * Actualiza eltiempo de paralizacion
+     */
     public void updateFreezeTime() {
         if (isFrozen()) {
             freezeTime += Gdx.graphics.getRawDeltaTime();
@@ -175,6 +256,9 @@ public class Orb extends Element {
         }
     }
 
+    /**
+     * Actualiza el nivel de calor
+     */
     public void updateHeat() {
         if (isOverloaded())
             overloadTime += Gdx.graphics.getRawDeltaTime();
@@ -185,10 +269,19 @@ public class Orb extends Element {
             setOverloaded(false);
     }
 
+    /**
+     * Fija el valor de la posicion inicial
+     *
+     * @param x Coordenada X de la posicion inicial
+     * @param y Coordenada Y de la posicion inicial
+     */
     public void setStartPosition(float x, float y) {
         startPosition.set(x, y);
     }
 
+    /**
+     * Devuelve la posicion inicial
+     */
     public Vector2 getStartPosition() {
         return startPosition;
     }

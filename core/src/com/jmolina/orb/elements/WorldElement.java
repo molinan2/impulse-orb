@@ -11,7 +11,9 @@ import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.jmolina.orb.data.UserData;
 
-
+/**
+ * Elemento del mundo fisico, sin visualizacion.
+ */
 public class WorldElement {
 
     /**
@@ -50,16 +52,28 @@ public class WorldElement {
     private final float RESTITUTION = 0.6f;
     private final float FRICTION = 0.8f; // FRICTION = 0 evita rotaciones al colisionar
 
+    /** Dimensiones */
     private float width, height;
+
+    /** Posicion y angulo iniciales */
     private float initialX, initialY, initialAngle;
+
+    /** Cuerpo fisico */
     private Body body;
+
+    /** Datos de usuario */
     private UserData userData;
+
+    /** Geometria */
     private Geometry geometry;
+
+    /** Sabor */
     private Flavor flavor;
 
     /**
      * Constructor
-     *  @param world World
+     *
+     * @param world World
      * @param w Width of the element (World units)
      * @param h Heigth of the element (World units)
      * @param x Position x coord (World units)
@@ -94,6 +108,11 @@ public class WorldElement {
         if (flavor == Flavor.AIR) setAsSensor(true);
     }
 
+    /**
+     * Devuevel el tipo de cuerpo fisico en funcion del sabor
+     *
+     * @param flavor Sabor
+     */
     private BodyDef.BodyType type(Flavor flavor) {
         switch (flavor) {
             case BLACK: return BodyDef.BodyType.StaticBody;
@@ -103,6 +122,11 @@ public class WorldElement {
         }
     }
 
+    /**
+     * Devuelve la forma del cuerpo fisico en funcion de la geometria
+     *
+     * @param geometry Geometria
+     */
     private Shape shape(Geometry geometry) {
         switch (geometry) {
             case SQUARE: return square();
@@ -149,6 +173,11 @@ public class WorldElement {
         return shape;
     }
 
+    /**
+     * Crea los datos de usuario
+     *
+     * @param flavor Sabor
+     */
     private void setUserData(Flavor flavor) {
         Effect effect;
 
@@ -161,28 +190,53 @@ public class WorldElement {
         userData.effect = effect;
     }
 
+    /**
+     * Fija el efecto en los datos de usuario
+     *
+     * @param effect Efecto
+     */
     protected void setEffect(Effect effect) {
         userData.effect = effect;
     }
 
+    /**
+     * Devuelve los datos de usuario
+     */
     protected UserData getUserData() {
         return userData;
     }
 
+    /**
+     * Configura el elemento como sensor (o no)
+     *
+     * @param sensor Si es sensor
+     */
     protected void setAsSensor(boolean sensor) {
         getBody().getFixtureList().first().setSensor(sensor);
     }
 
+    /**
+     * Devuelve el cuerpo fisico del elemento
+     */
     public Body getBody() {
         return body;
     }
 
+    /**
+     * Fija la posición del elemento
+     *
+     * @param x Coordenada X
+     * @param y Coordenada Y
+     */
     public void setPosition(float x, float y) {
         setInitialX(x);
         setInitialY(y);
         getBody().setTransform(x, y, getBody().getAngle());
     }
 
+    /**
+     * Devuelve la posicion actual del elemento
+     */
     public Vector2 getPosition() {
         return new Vector2(
                 getBody().getPosition().x,
@@ -190,52 +244,81 @@ public class WorldElement {
         );
     }
 
+    /**
+     * Devuelve la rotacion del elemento en grados
+     */
     public float getRotation() {
         return MathUtils.radiansToDegrees * getBody().getAngle();
     }
 
+    /**
+     * Devuelve el ancho del elemento
+     */
     public float getWidth() {
         return width;
     }
 
+    /**
+     * Devuelve el alto del elemento
+     */
     public float getHeight() {
         return height;
     }
 
+    /**
+     * Devuelve la geometria del elemento
+     */
     public Geometry getGeometry() {
         return this.geometry;
     }
 
+    /**
+     * Devuelve el sabor del elemento
+     */
     public Flavor getFlavor() {
         return flavor;
     }
 
     /**
-     * Valores iniciales. Éstos pueden variar cuando el elemento se añade a una situación, que tiene
-     * una altura base que se sumará a la del elemento. Los valores iniciales se deben restaurar al
-     * resetear el elemento (por ejemplo, si es variante).
+     * Fija la coordenada X del valor inicial de la posicion.
      *
-     * @param x
+     * Los valores iniciales pueden variar cuando el elemento se añade a una situación, que tiene
+     * una altura base que se sumará a la del elemento. Los valores iniciales se deben restaurar al
+     * resetear el elemento (por ejemplo, si es movil).
+     *
+     * @param x Coordenada X
      */
     public void setInitialX(float x) {
         initialX = x;
     }
 
+    /**
+     * Devuelve la coordenada X del valor inicial de la posicion
+     */
     public float getInitialX() {
         return initialX;
     }
 
+    /**
+     * Fija la coordenada Y del valor inicial de la posicion
+     *
+     * @param y Coordenada Y
+     */
     public void setInitialY(float y) {
         initialY = y;
     }
 
+    /**
+     * Devuelve la coordenada Y del valor inicial de la posicion
+     * @return
+     */
     public float getInitialY() {
         return initialY;
     }
 
     /**
-     * Angulo inicial en grados. Es importante si el objeto es variante, ya que debe resetearse y
-     * recuperar su angulo inicial. Si no es variante, nunca se resetea.
+     * Fija el angulo inicial en grados. Es importante si el elemento es movil, ya que debe resetearse
+     * y recuperar su angulo inicial. Si no es movil, nunca se resetea.
      *
      * @param angle Angulo en grados.
      */
@@ -243,6 +326,9 @@ public class WorldElement {
         initialAngle = angle;
     }
 
+    /**
+     * Devuelve el angulo inicial
+     */
     public float getInitialAngle() {
         return initialAngle;
     }

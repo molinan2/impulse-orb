@@ -9,13 +9,26 @@ import com.jmolina.orb.widgets.ui.Stat;
 
 import static com.jmolina.orb.managers.PrefsManager.*;
 
+/**
+ * Pantalla de estadisticas
+ */
 public class Stats extends Menu {
 
+    /** Widgets de estadisticas */
     private Stat played, distance, fails, successes, avgTimeAlive, avgDistanceAlive,
             minTimeAlive, minDistanceAlive, maxTimeAlive, maxDistanceAlive;
+
+    /** Widgets de encabezados */
     private Heading generalHeading, attemptsHeading, timeHeading, distanceHeading;
+
+    /** Preferencias */
     private Preferences prefs;
 
+    /**
+     * Constructor
+     *
+     * @param superManager SuperManager
+     */
     public Stats(SuperManager superManager) {
         super(superManager);
 
@@ -66,6 +79,9 @@ public class Stats extends Menu {
         super.show();
     }
 
+    /**
+     * Actualiza los widgets de estadisticas, cargando desde el almacenamiento externo
+     */
     private void updateStats() {
         played.setValue(prefs.getFloat(STAT_TIME), "s", false);
         distance.setValue(prefs.getFloat(STAT_DISTANCE), "m", false);

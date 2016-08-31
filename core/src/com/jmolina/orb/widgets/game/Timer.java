@@ -13,11 +13,22 @@ import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Cronometro
+ */
 public class Timer extends BaseGroup {
 
+    /** Texto del cronometro */
     private Label label;
+
+    /** Tiempo */
     private float time;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     */
     public Timer(AssetManager am) {
         super(am);
 
@@ -42,20 +53,32 @@ public class Timer extends BaseGroup {
         reset();
     }
 
+    /**
+     * Actualiza el cronometro
+     */
     public void update() {
         time += Gdx.graphics.getRawDeltaTime();
         updateLabel();
     }
 
+    /**
+     * Devuelve el tiempo contabilizado por el cronometro
+     */
     public float getTime () {
         return time;
     }
 
+    /**
+     * Reinicia el cronometro
+     */
     public void reset() {
         time = 0f;
         updateLabel();
     }
 
+    /**
+     * Actualiza el texto del cronometro
+     */
     private void updateLabel() {
         label.setText(Utils.formatTime(time));
     }

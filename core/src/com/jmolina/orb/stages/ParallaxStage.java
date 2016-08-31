@@ -11,13 +11,19 @@ import com.jmolina.orb.var.Atlas;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.game.TiledLayer;
 
+/**
+ * Stage donde se dibuja el fondo parallax. Se contemplan hasta 3 planos de scroll paralelos.
+ */
 public class ParallaxStage extends Stage {
 
+    /** Velocidad de la camara para cada capa del fondo parallax */
     private final float LAYER_1_SPEED = 1 / 4.0f;
     private final float LAYER_2_SPEED = 1 / 8.0f;
     private final float LAYER_3_SPEED = 1 / 64.0f;
 
     private float pixelsPerMeter;
+
+    /** Capas del fondo parallax */
     private TiledLayer layer1, layer2, layer3;
 
     /**
@@ -52,6 +58,11 @@ public class ParallaxStage extends Stage {
         getRoot().setTransform(false);
     }
 
+    /**
+     * Dibuja las 3 capas parallax
+     *
+     * @param camera Camara
+     */
     public void draw(Camera camera) {
         float x = camera.position.x;
         float y = camera.position.y;
@@ -64,12 +75,12 @@ public class ParallaxStage extends Stage {
     /**
      * Método de dibujo de {@link Stage#draw()} modificado para que varíe la cámara de cada capa.
      *
-     * @param layer
-     * @param speed
-     * @param x
-     * @param y
+     * @param layer Capa
+     * @param speed Velocidad de movimiento de la camara para la capa
+     * @param x Posicion actual X
+     * @param y Posicion actual Y
      */
-    private void drawLayer (TiledLayer layer, float speed, float x, float y) {
+    private void drawLayer(TiledLayer layer, float speed, float x, float y) {
         Camera camera = getViewport().getCamera();
         camera.position.x = x * pixelsPerMeter * speed;
         camera.position.y = y * pixelsPerMeter * speed;

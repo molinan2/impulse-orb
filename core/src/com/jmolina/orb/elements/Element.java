@@ -12,6 +12,8 @@ import com.jmolina.orb.var.Var;
 
 
 /**
+ * Elemento del mundo fisico con visualizacion.
+ *
  * Unión de WorldElement y SceneElement (hipotética, porque Java no admite herencia múltiple).
  *
  * Un Element incluye un cuerpo físico ({@link com.badlogic.gdx.physics.box2d.Body}) situado en el
@@ -23,8 +25,10 @@ public class Element extends WorldElement {
     private final float TRIANGLE_CORRECTION = 1.162790697674f; // 400f / 344f
 
     private AssetManager assetManager;
-    private Actor actor;
     private float pixelsPerMeter;
+
+    /** Actor visible del elemento */
+    private Actor actor;
 
     /**
      * Constructor simplificado. La textura se elige por defecto
@@ -81,6 +85,11 @@ public class Element extends WorldElement {
         this.actor = actor;
     }
 
+    /**
+     * Sincroniza la posicion y rotacion del cuerpo fisico con las del actor
+     *
+     * @param viewport Viewport, necesario para efectuar la conversion
+     */
     public void syncBody(Viewport viewport) {
         syncBody(viewport, true, true);
     }
@@ -99,6 +108,11 @@ public class Element extends WorldElement {
         if (angle) syncBodyAngle();
     }
 
+    /**
+     * Sincroniza solo la posicion del cuerpo con la del actor
+     *
+     * @param viewport Viewport
+     */
     private void syncBodyPosition(Viewport viewport) {
         float actorPositionX = actor.getX() + actor.getOriginX();
         float actorPositionY = actor.getY() + actor.getOriginY();
@@ -117,6 +131,9 @@ public class Element extends WorldElement {
         );
     }
 
+    /**
+     * Sincroniza solo la rotacion del cuerpo con la del actor
+     */
     private void syncBodyAngle() {
         float bodyAngle = MathUtils.degreesToRadians * actor.getRotation();
 
@@ -139,6 +156,11 @@ public class Element extends WorldElement {
         syncActorRotation();
     }
 
+    /**
+     * Sincroniza solo la posicion del actor con la del cuerpo
+     *
+     * @param viewport Viewport
+     */
     private void syncActorPosition(Viewport viewport) {
         float cameraX = viewport.getCamera().position.x;
         float cameraY = viewport.getCamera().position.y;
@@ -158,11 +180,20 @@ public class Element extends WorldElement {
         );
     }
 
+    /**
+     * Sincroniza solo la rotacion del actor con la del cuerpo
+     */
     private void syncActorRotation() {
         float actorRotation = MathUtils.radiansToDegrees * getBody().getAngle();
         actor.setRotation(actorRotation);
     }
 
+    /**
+     * Obtiene una region de textura por defecto segun la geometria y el sabor
+     *
+     * @param geometry Geometria
+     * @param flavor Sabor
+     */
     private TextureRegion defaultTexture(Geometry geometry, Flavor flavor) {
         switch (geometry) {
             case CIRCLE: return circleTexture(flavor);
@@ -172,6 +203,11 @@ public class Element extends WorldElement {
         }
     }
 
+    /**
+     * Obtiene una textura circular segun el sabor
+     *
+     * @param flavor Sabor
+     */
     private TextureRegion circleTexture(Flavor flavor) {
         switch (flavor) {
             case BLACK: return findRegion(Atlas.GAME_CIRCLE_BLACK);
@@ -183,6 +219,11 @@ public class Element extends WorldElement {
         }
     }
 
+    /**
+     * Obtiene una textura cuadrada segun el sabor
+     *
+     * @param flavor Sabor
+     */
     private TextureRegion squareTexture(Flavor flavor) {
         switch (flavor) {
             case BLACK: return findRegion(Atlas.GAME_SQUARE_BLACK);
@@ -192,6 +233,11 @@ public class Element extends WorldElement {
         }
     }
 
+    /**
+     * Obtiene una textura triangular segun el sabor
+     *
+     * @param flavor Sabor
+     */
     private TextureRegion triangleTexture(Flavor flavor) {
         switch (flavor) {
             case GREY: return findRegion(Atlas.GAME_TRIANGLE_GREY);
@@ -200,6 +246,11 @@ public class Element extends WorldElement {
         }
     }
 
+    /**
+     * Fija una nueva region de textura para el elemento
+     *
+     * @param region Region de textura
+     */
     private void setTextureRegion(TextureRegion region) {
         float scaleX = getPPM() * getWidth() / region.getRegionWidth();
         float scaleY = getPPM() * getHeight() / region.getRegionHeight();
@@ -217,10 +268,17 @@ public class Element extends WorldElement {
         }
     }
 
+    /**
+     * Devuelve el ratio pixeles/metros
+     */
     protected float getPPM() {
         return pixelsPerMeter;
     }
 
+    /**
+     * Libera los recursos del elemento. Elimina al actor de su stage y al cuerpo de su mundo.
+     * Anula las referencias.
+     */
     public void dispose() {
         World world = getBody().getWorld();
         world.destroyBody(getBody());
@@ -230,6 +288,11 @@ public class Element extends WorldElement {
         actor = null;
     }
 
+    /**
+     * Devuelve la region de textura correspondiente al descriptor
+     *
+     * @param name Descriptor del asset
+     */
     private TextureRegion findRegion(String name) {
         return getAssetManager().getGameAtlas().findRegion(name);
     }

@@ -16,6 +16,21 @@ public class LinearMagnetic extends Magnetic {
 
     private final float NEAR_ZERO = 0.0001f;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     * @param world Mundo fisico
+     * @param ppm Ratio de conversion pixeles/metros
+     * @param flavor Sabor
+     * @param w Anchura en unidades del mundo
+     * @param h Altura en unidades del mundo
+     * @param x Coordenada X de la posicion en unidades del mundo
+     * @param y Coordenada Y de la posicion en unidades del mundo
+     * @param angle Angulo
+     * @param threshold Umbral en unidades del mundo
+     * @param polarity Polaridad
+     */
     public LinearMagnetic(AssetManager am, World world, float ppm, Flavor flavor, float w, float h, float x, float y, float angle, float threshold, Polarity polarity) {
         super(
                 am, world, ppm,

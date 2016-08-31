@@ -15,11 +15,22 @@ import com.jmolina.orb.var.Font;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BaseGroup;
 
+/**
+ * Barra de progreso
+ */
 public class ProgressBar extends BaseGroup {
 
+    /** Imagen de base y de relleno */
     private Image base, fill;
+
+    /** Texto de porcentaje */
     private Label label;
 
+    /**
+     * Constructor
+     *
+     * @param am AssetManager
+     */
     public ProgressBar(AssetManager am) {
         super(am);
 
@@ -50,6 +61,11 @@ public class ProgressBar extends BaseGroup {
         setHeight(Utils.cell(1));
     }
 
+    /**
+     * Actualiza el progreso de la barra
+     *
+     * @param progress Progreso en el rango [0,1]
+     */
     public void updateProgress(float progress) {
         this.label.setText(Math.round(100 * progress) + "%");
         this.fill.setWidth(Utils.cell(7.75f) * progress);

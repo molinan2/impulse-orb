@@ -13,18 +13,26 @@ import com.jmolina.orb.widgets.ui.MainButton;
 
 import static com.jmolina.orb.managers.ScreenManager.Key.*;
 
+/**
+ * Pantalla de lanzamiento de un nivel de juego
+ */
 public class Launch extends Menu {
 
+    /** Portada */
     private LaunchCover cover;
+
+    /** Boton de accion */
     private MainButton button;
+
+    /** Ranking de tiempos locales */
     private Ladder ladder;
 
     /**
      * Constructor
      *
-     * @param superManager
-     * @param level
-     * @param title
+     * @param superManager SuperManager
+     * @param level Nivel al que corresponde la pantalla
+     * @param title Titulo de la pantalla
      */
     public Launch(SuperManager superManager, final ScreenManager.Key level, String title) {
         super(superManager);
@@ -50,6 +58,11 @@ public class Launch extends Menu {
         });
     }
 
+    /**
+     * Devuelve una textura de portada dependiendo del nivel
+     *
+     * @param level Nivel
+     */
     private Texture getTexture(ScreenManager.Key level) {
         switch (level) {
             case LEVEL_1: return getAsset(Asset.UI_LAUNCH_COVER_1, Texture.class);

@@ -1,10 +1,12 @@
 package com.jmolina.orb.interfaces;
 
+/**
+ * Define una interfaz que posibilita que un objeto se resetee
+ */
 public interface Reseteable {
 
     /**
-     * Resetea a su estado inicial las Actions de un Group y sus Actors
-     * Un Group debe saber como resetear sus Actors y resetearse a si mismo
+     * Resetea a su estado inicial un objeto
      */
     public void reset();
 

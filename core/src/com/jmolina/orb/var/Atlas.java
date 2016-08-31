@@ -1,9 +1,8 @@
 package com.jmolina.orb.var;
 
-
 /**
- * Assets ingame. Se cargan mediante {@link com.badlogic.gdx.graphics.g2d.TextureAtlas}. Los assets
- * de Atlas no llevan extension.
+ * Assets visualizados ingame. Se cargan mediante {@link com.badlogic.gdx.graphics.g2d.TextureAtlas}.
+ * Los assets de TextureAtlas no llevan extension.
  */
 public class Atlas {
 
