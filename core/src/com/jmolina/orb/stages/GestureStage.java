@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -23,6 +24,13 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
  */
 public class GestureStage extends Stage {
 
+    /**
+     * Workaround para encajar el framebuffer en distintas proporciones de pantalla.
+     * Se crea un framebuffer mayor, se calcula el offset segun las proporciones de pantalla y se
+     * recoloca la imagen correspondiente al buffer.
+     */
+    private final float OVERSIZE_RATIO = 0.8f;
+
     /** Pulso del gesto de paralizacion */
     private Pulse pulse;
 
@@ -36,7 +44,9 @@ public class GestureStage extends Stage {
     private FrameBuffer buffer;
 
     /** Imagen solida del gesto de impulso generada en el buffer */
-    private Image solidArrow;
+    private Image bufferedArrow;
+
+    private Viewport vp;
 
     /**
      * Constructor
@@ -48,8 +58,15 @@ public class GestureStage extends Stage {
     public GestureStage(AssetManager am, Viewport vp, float pixelsPerMeter) {
         super(vp);
 
-        solidArrow = new Image();
-        buffer = new FrameBuffer(Pixmap.Format.RGBA8888, (int) Var.SCREEN_WIDTH, (int) Var.SCREEN_HEIGHT, false);
+        this.vp = vp;
+        bufferedArrow = new Image();
+        buffer = new FrameBuffer(
+                Pixmap.Format.RGBA8888,
+                vp.getScreenWidth() + (int) (OVERSIZE_RATIO * vp.getScreenWidth()),
+                vp.getScreenHeight() + (int) (OVERSIZE_RATIO * vp.getScreenHeight()),
+                false
+        );
+
         start = new Vector2();
         end = new Vector2();
         arrow = new Arrow(am, pixelsPerMeter);
@@ -60,14 +77,23 @@ public class GestureStage extends Stage {
                 0.5f * vp.getWorldHeight() - 0.5f * pulse.getHeight()
         );
 
-        solidArrow.setSize(Var.SCREEN_WIDTH, Var.SCREEN_HEIGHT);
-        solidArrow.setPosition(0, 0);
+        bufferedArrow.setSize(
+                Var.SCREEN_WIDTH+ OVERSIZE_RATIO * Var.SCREEN_WIDTH,
+                Var.SCREEN_HEIGHT + OVERSIZE_RATIO * Var.SCREEN_HEIGHT
+        );
+
+        float ratioX = Var.SCREEN_WIDTH / vp.getScreenWidth();
+        float ratioY = Var.SCREEN_HEIGHT / vp.getScreenHeight();
+        float offsetX = 0.5f * ratioX * (Gdx.graphics.getWidth() - vp.getScreenWidth());
+        float offsetY = 0.5f * ratioY * (Gdx.graphics.getHeight() - vp.getScreenHeight());
+
+        bufferedArrow.setPosition(-offsetX, -offsetY);
         arrow.setVisible(false);
         pulse.reset();
 
         addActor(pulse);
         addActor(arrow);
-        addActor(solidArrow);
+        addActor(bufferedArrow);
     }
 
     /**
@@ -77,15 +103,15 @@ public class GestureStage extends Stage {
         pulse.reset();
         arrow.set(start, end);
         renderBuffer();
-        updateSolidArrow();
-        startSolidArrow();
+        updateBufferedArrow();
+        startBufferedArrowAction();
     }
 
     /**
      * Dibuja el pulso del gesto "tap".
      */
     public void drawTap() {
-        resetSolidArrow();
+        resetBufferedArrowAction();
         pulse.start();
     }
 
@@ -100,53 +126,55 @@ public class GestureStage extends Stage {
         Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         arrow.setVisible(true);
-        solidArrow.setVisible(false);
+        bufferedArrow.setVisible(false);
         draw();
         arrow.setVisible(false);
-        solidArrow.setVisible(true);
+        bufferedArrow.setVisible(true);
         FrameBuffer.unbind();
     }
 
     /**
      * Asigna la textura del buffer a la imagen de la flecha.
      */
-    private void updateSolidArrow() {
+    private void updateBufferedArrow() {
         TextureRegion arrowRegion = new TextureRegion(buffer.getColorBufferTexture());
         arrowRegion.flip(false, true);
-        solidArrow.setDrawable(new TextureRegionDrawable(arrowRegion));
+        bufferedArrow.setDrawable(new TextureRegionDrawable(arrowRegion));
     }
 
     /**
      * Inicia la animación de la flecha.
      */
-    private void startSolidArrow() {
-        solidArrow.clearActions();
-        solidArrow.addAction(sequence(alpha(1), fadeOut(0.75f)));
+    private void startBufferedArrowAction() {
+        bufferedArrow.clearActions();
+        bufferedArrow.addAction(sequence(alpha(1), fadeOut(0.75f)));
     }
 
     /**
      * Resetea la animación de la flecha y la oculta.
      */
-    private void resetSolidArrow() {
-        solidArrow.clearActions();
-        solidArrow.addAction(alpha(0));
+    private void resetBufferedArrowAction() {
+        bufferedArrow.clearActions();
+        bufferedArrow.addAction(alpha(0));
     }
 
+    /**
+     * Captura la posicion de inicio del gesto
+     */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 vector = new Vector3(screenX, screenY, 0);
-        getCamera().unproject(vector);
-        start.set(vector.x, vector.y);
-
+        Vector2 position = translate(screenX, screenY);
+        start.set(position.x, position.y);
         return false;
     }
 
+    /**
+     * Captura la posicion de fin del gesto
+     */
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Vector3 vector = new Vector3(screenX, screenY, 0);
-        getCamera().unproject(vector);
-        end.set(vector.x, vector.y);
-
+        Vector2 position = translate(screenX, screenY);
+        end.set(position.x, position.y);
         return false;
     }
 
@@ -154,6 +182,35 @@ public class GestureStage extends Stage {
     public void dispose() {
         buffer.dispose();
         super.dispose();
+    }
+
+    /**
+     * Convierte de unidades en pantalla a unidades en el viewport. Esto normalmente se hace
+     * mediante Camera#unproject(), pero no estaba funcionando correctamente por algun motivo.
+     *
+     * Si el punto recae dentro del area usable pero fuera del viewport (que es de proporcion
+     * fija), se considera que la posicion es limite.
+     *
+     * @param screenX Coordenada X de un punto en pantalla
+     * @param screenY Coordenada Y de un punto en pantalla
+     */
+    private Vector2 translate(int screenX, int screenY) {
+        float offsetX = 0.5f * ((float) Gdx.graphics.getWidth() - (float) vp.getScreenWidth());
+        float offsetY = 0.5f * ((float) Gdx.graphics.getHeight() - (float) vp.getScreenHeight());
+
+        int x = (int) (screenX - offsetX);
+        int y = (int) ((Gdx.graphics.getHeight() - screenY) - offsetY);
+
+        x = MathUtils.clamp(x, 0, vp.getScreenWidth());
+        y = MathUtils.clamp(y, 0, vp.getScreenHeight());
+
+        float ratioX = (vp.getWorldWidth() / (float) vp.getScreenWidth());
+        float ratioY = (vp.getWorldHeight() / (float) vp.getScreenHeight());
+
+        x = (int) (ratioX * x);
+        y = (int) (ratioY * y);
+
+        return new Vector2(x, y);
     }
 
 }
