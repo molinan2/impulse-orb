@@ -14,8 +14,12 @@ import com.jmolina.orb.var.Utils;
 import java.util.ArrayList;
 
 /**
- * Manager de situaciones de un nivel de juego. Este manager se encarga de instanciar las situaciones
+ * Manager de situaciones de un nivel de juego. Se encarga de instanciar las situaciones
  * visibles y destruir las que ya no se ven.
+ *
+ * Se supone que la velocidad del orbe nunca sera lo suficientemente alta como para cruzar varias
+ * fronteras en un solo fotograma. Es posible que el orbe supere esta velocidad en casos muy raros,
+ * en los que ocurriran "cosas raras".
  */
 public class SituationManager {
 
@@ -155,9 +159,13 @@ public class SituationManager {
      * @param adjacent Indice de la situacion adyacente
      */
     private void initializeVisibility(int current, int adjacent) {
-        Class currentClass = situations.get(current);
-        currentSituation = situationFactory.newSituation(currentClass);
-        placeSituation(currentSituation, current);
+        // Quickfix. In very rare cases, current is outside of the limits of situations[].
+        // This will avoid a crash, but weird things may still happen.
+        if (current >= 0 && current <= situations.size()-1) {
+            Class currentClass = situations.get(current);
+            currentSituation = situationFactory.newSituation(currentClass);
+            placeSituation(currentSituation, current);
+        }
 
         if (adjacent >= 0 && adjacent <= situations.size()-1) {
             Class adjacentClass = situations.get(adjacent);
@@ -275,6 +283,10 @@ public class SituationManager {
         }
 
         orb.getActor().setZIndex(Z_INDEX_ORB);
+    }
+
+    public void dispose() {
+        removeSituations();
     }
 
 }

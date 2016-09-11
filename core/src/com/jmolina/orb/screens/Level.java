@@ -224,7 +224,7 @@ public class Level extends BaseScreen implements LevelManager {
      */
     @Override
     public void dispose() {
-        situationManager.removeSituations();
+        situationManager.dispose();
         getHUDStage().dispose();
         getGestureStage().dispose();
         getParallaxStage().dispose();
