@@ -67,9 +67,9 @@ public class Options extends Menu {
                 vibration.toggle();
                 getGameManager().play(GameManager.Fx.Option);
                 prefsManager.putOptionVibration(vibration.isChecked());
-
-                if (vibration.isChecked())
-                    getGameManager().vibrate(GameManager.Length.Medium);
+                prefsManager.save();
+                getGameManager().fetchOptions();
+                getGameManager().vibrate(GameManager.Length.Medium);
             }
         });
 
