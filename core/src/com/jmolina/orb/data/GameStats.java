@@ -291,13 +291,11 @@ public class GameStats {
     }
 
     /**
-     * Devuelve el intento actual
+     * Devuelve el intento actual. Si no hay intentos registrados, devuelve uno vacio
      */
     public Attempt getCurrentAttempt() {
-        if (!isEmpty())
-            return attempts.get(attempts.size()-1);
-        else
-            return null;
+        if (!isEmpty()) return attempts.get(attempts.size()-1);
+        else return new Attempt();
     }
 
 }
