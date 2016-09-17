@@ -147,7 +147,7 @@ public class Level extends BaseScreen implements LevelManager {
                 getHUDStage().reset();
                 stats.newTry();
                 lastOrbPosition = getOrb().getStartPosition();
-                situationManager.removeSituations();
+                situationManager.removeAll();
             }
         };
 
@@ -183,15 +183,15 @@ public class Level extends BaseScreen implements LevelManager {
         if (DEBUG_TIME) debugTime.start();
 
         clear();
-        situationManager.updateSituations();
+        updateSituations();
         syncActors();
         act(delta);
         syncBodies();
-        preUpdate();
+        updateForces();
         stepPhysics(delta);
         followCamera();
         syncActors();
-        postUpdate();
+        updateWidgets();
         draw();
         checkAchievements();
         checkSwitching();
@@ -472,19 +472,28 @@ public class Level extends BaseScreen implements LevelManager {
 
     /**
      * Render update
+     * Actualiza las situaciones visibles. No se puede pausar la actualizacion de situaciones visibles
+     * cuando se bloquee el juego, ya que eso impide que se dibujen las situaciones iniciales al empezar.
+     */
+    private void updateSituations() {
+        situationManager.update();
+    }
+
+    /**
+     * Render update
      * Computa las fuerzas sobre el orbe, si el juego no está bloqueado
      */
-    private void preUpdate() {
+    private void updateForces() {
         if (isLocked()) return;
 
-        computeForces();
+        computeMagneticFoces();
     }
 
     /**
      * Render update
      * Comprueba y actualiza datos y estados, si el juego no está bloqueado
      */
-    private void postUpdate() {
+    private void updateWidgets() {
         if (isLocked()) return;
 
         updateHeat();
@@ -544,7 +553,7 @@ public class Level extends BaseScreen implements LevelManager {
     /**
      * Calcula las fuerzas de atracción y repulsión activas sobre el orbe y las aplica.
      */
-    private void computeForces() {
+    private void computeMagneticFoces() {
         Vector2 force = new Vector2(0, 0);
 
         for (Situation situation : situationManager.getVisibleSituations()) {

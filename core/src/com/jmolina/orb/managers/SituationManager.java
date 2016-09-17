@@ -2,7 +2,6 @@ package com.jmolina.orb.managers;
 
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.elements.Element;
 import com.jmolina.orb.elements.Orb;
@@ -26,33 +25,27 @@ public class SituationManager {
     /**
      * Adyacencia.
      *
-     * TOP: Si la situacion adyacente toca por la parte superior.
-     * BOTTOM: Si la situacion adyacente toca por la parte inferior.
+     * TOP: Si la situacion mas cercana a la actual es la superior.
+     * BOTTOM: Si la situacion mas cercana a la actual es la inferior.
      */
     private enum Adjacency { TOP, BOTTOM }
 
-    /**
-     * Frontera
-     *
-     * BOUNDARY: Una de las 2 fronteras que distan del borde un 25% de la altura de la situacion.
-     * MIDDLE: Frontera central, al 50% de altura.
-     */
-    private enum Frontier { BOUNDARY, MIDDLE }
-
     private final int Z_INDEX_BLACK = 10000;
     private final int Z_INDEX_ORB = 20000;
-
-    /** Lista de clases de situaciones ordenadas que componen el nivel */
-    private ArrayList<Class> situations;
+    private final int MIN_VISIBLE_SITUATIONS = 1;
+    private final int MAX_VISIBLE_SITUATIONS = 3;
 
     /** Factoria de situaciones */
     private SituationFactory situationFactory;
 
-    /** Situaciones visibles */
-    private Situation currentSituation, adjacentSituation;
+    /** Lista de clases de situaciones ordenadas que componen el nivel */
+    private ArrayList<Class> situations;
 
-    /** Adyacencias */
-    private Adjacency adjacencyNow, adjacencyLast;
+    /** Situaciones visibles que se renderizaran */
+    private ArrayList<Situation> visibleSituations;
+
+    /** Campo visible: lista de indices mas cercanos al actual, incluyendo el actual */
+    private ArrayList<Integer> indexes;
 
     private Orb orb;
     private Stage stage;
@@ -69,8 +62,7 @@ public class SituationManager {
      * @param viewport Viewport de la stage
      */
     public SituationManager(AssetManager am, World world, Orb orb, float pixelsPerMeter, Stage stage, Viewport viewport) {
-        currentSituation = null;
-        adjacentSituation = null;
+        visibleSituations = new ArrayList<Situation>();
         this.orb = orb;
         this.stage = stage;
         this.viewport = viewport;
@@ -81,44 +73,105 @@ public class SituationManager {
     /**
      * Destruye las situaciones y libera su memoria.
      */
-    public void removeSituations() {
-        if (currentSituation != null) currentSituation.dispose();
-        if (adjacentSituation != null) adjacentSituation.dispose();
-        currentSituation = null;
-        adjacentSituation = null;
+    public void removeAll() {
+        for (int i = 0; i< visibleSituations.size()-1; i++) {
+            if (visibleSituations.get(i) != null)
+                visibleSituations.get(i).dispose();
+
+            visibleSituations.remove(i);
+        }
     }
 
     /**
      * Actualiza las situaciones visibles.
      */
-    public void updateSituations() {
-        float altitude = orb.getPosition().y / Situation.HEIGHT;
-        int current = (int) altitude;
-        adjacencyLast = adjacencyNow;
-        adjacencyNow = findAdjacency(altitude);
+    public void update() {
+        updateIndexes();
+        removeOld();
+        addNew();
+    }
 
-        int adjacent = calculateAdjacent(current);
+    /**
+     * Actualiza la lista de los indices mas cercanos al actual (campo visible)
+     */
+    private void updateIndexes() {
+        ArrayList<Integer> indexes = new ArrayList<Integer>();
+        int current = getCurrentIndex();
+        Adjacency adjacency = findAdjacency(getAltitude());
 
-        if (noVisibility())
-            initializeVisibility(current, adjacent);
+        for (int i=MIN_VISIBLE_SITUATIONS-1; i<MAX_VISIBLE_SITUATIONS; i++) {
+            int index;
+            int offset = (i+1)/2;
 
-        if (crossedFrontier()) {
-            switch (findFrontier(altitude)) {
-                case MIDDLE: newAdjacent(adjacent); break;
-                case BOUNDARY: swapSituations(); break;
+            if (adjacency == Adjacency.BOTTOM)
+                offset = -offset;
+
+            if (i%2 != 0) index = current + offset;
+            else index = current - offset;
+
+            if (isWithinBounds(index))
+                indexes.add(index);
+        }
+
+        this.indexes = indexes;
+    }
+
+    /**
+     * Elimina las situaciones que ya no estan en el campo visible
+     */
+    private void removeOld() {
+        for (int i=0; i<visibleSituations.size(); i++) {
+            Situation situation = visibleSituations.get(i);
+
+            if (!indexes.contains(situation.getPositionY())) {
+                situation.dispose();
+                visibleSituations.remove(i);
             }
         }
     }
 
     /**
-     * Devuelve el array de situaciones del nivel actual
-     *
-     * @return SnapshotArray de {@link Situation}s
+     * Añade las situaciones que acaban de entrar en el campo visible
      */
-    public SnapshotArray<Situation> getVisibleSituations() {
-        SnapshotArray<Situation> situations = new SnapshotArray<Situation>();
-        situations.add(getCurrentSituation());
-        situations.add(getAdjacentSituation());
+    private void addNew() {
+        for (int i=0; i<indexes.size(); i++) {
+            boolean visible = false;
+
+            for (Situation visibleSituation : visibleSituations) {
+                if (visibleSituation.getPositionY() == indexes.get(i)) {
+                    visible = true;
+                    break;
+                }
+            }
+
+            if (!visible) {
+                int situationIndex = indexes.get(i);
+                Class situationClass = situations.get(situationIndex);
+                Situation situation = situationFactory.newSituation(situationClass);
+                placeSituation(situation, indexes.get(i));
+                visibleSituations.add(situation);
+            }
+        }
+    }
+
+    /**
+     * Comprueba si un indice esta entre los limites permitidos. El minimo es 0 (minimo ordinal de
+     * situacion) y el maximo es la cantidad de situaciones del nivel menos 1.
+     *
+     * @param index Indice
+     */
+    private boolean isWithinBounds(int index) {
+        return index >= 0 && index < situations.size();
+    }
+
+    /**
+     * Devuelve las situaciones visibles actualmente
+     */
+    public ArrayList<Situation> getVisibleSituations() {
+        ArrayList<Situation> situations = new ArrayList<Situation>();
+
+        for (Situation visibleSituation : visibleSituations)
+            situations.add(visibleSituation);
 
         return situations;
     }
@@ -128,63 +181,23 @@ public class SituationManager {
     }
 
     /**
-     * Calcula el índice adyacente en función del actual
+     * Obtiene la altitud de la camara/orbe (unidades relativas a la altura de una situacion)
+     */
+    private float getAltitude() {
+        return orb.getPosition().y / (float) Situation.HEIGHT;
+    }
+
+    /**
+     * Obtiene el indice ordinal de la situacion actual del orbe
+     */
+    private int getCurrentIndex() {
+        return (int) getAltitude();
+    }
+
+    /**
+     * Calcula la {@link Adjacency}, es decir, por donde toca la situacion mas cercana a la actual.
      *
-     * @param current Indice de la situacion actual
-     */
-    private int calculateAdjacent(int current) {
-        int adjacent;
-
-        if (adjacencyNow == Adjacency.TOP)
-            adjacent = current + 1;
-        else
-            adjacent = current - 1;
-
-        return adjacent;
-    }
-
-    /**
-     * Devuelve si no hay visibilidad. Esto ocurre si la situación actual no está inicializada, por
-     * ejemplo al iniciar el nivel.
-     */
-    private boolean noVisibility() {
-        return currentSituation == null;
-    }
-
-    /**
-     * Inicializa la visibilidad: crea la situación actual y la añade al nivel. Si procede, crea la
-     * situación adyacente y la añade al nivel.
-     *
-     * @param current Indice de la situacion actual
-     * @param adjacent Indice de la situacion adyacente
-     */
-    private void initializeVisibility(int current, int adjacent) {
-        // Quickfix. In very rare cases, current is outside of the limits of situations[].
-        // This will avoid a crash, but weird things may still happen.
-        if (current >= 0 && current <= situations.size()-1) {
-            Class currentClass = situations.get(current);
-            currentSituation = situationFactory.newSituation(currentClass);
-            placeSituation(currentSituation, current);
-        }
-
-        if (adjacent >= 0 && adjacent <= situations.size()-1) {
-            Class adjacentClass = situations.get(adjacent);
-            adjacentSituation = situationFactory.newSituation(adjacentClass);
-            placeSituation(adjacentSituation, adjacent);
-        }
-    }
-
-    /**
-     * Detecta el paso del Orb por una {@link Frontier}.
-     */
-    private boolean crossedFrontier() {
-        return adjacencyLast != adjacencyNow;
-    }
-
-    /**
-     * Calcula la {@link Adjacency}, es decir, si la situación adyacente se encuentra por arriba o por debajo.
-     *
-     * @param altitude Altitud de la cámara (en unidades del mundo)
+     * @param altitude Altitud de la cámara/orbe (unidades relativas a la altura de una situacion)
      */
     private Adjacency findAdjacency(float altitude) {
         float decimalPart = Utils.decimalPart(altitude);
@@ -193,63 +206,6 @@ public class SituationManager {
             return Adjacency.TOP;
         else
             return Adjacency.BOTTOM;
-    }
-
-    /**
-     * Calcula la {@link Frontier} más cercana. Se asume que la velocidad del Orb no va a ser tan
-     * alta como para, en un tiempo de frame, cruzar una frontera y colocarse más cerca de OTRA
-     * frontera.
-     *
-     * @param altitude Altitud del {@link Orb} (en unidades del mundo)
-     */
-    private Frontier findFrontier(float altitude) {
-        float decimalPart = Utils.decimalPart(altitude);
-
-        if (decimalPart > 0.25f && decimalPart < 0.75f)
-            return Frontier.MIDDLE;
-        else
-            return Frontier.BOUNDARY;
-    }
-
-    /**
-     * Se destruye la anterior adyacente, se instancia una nueva y se añade al nivel.
-     *
-     * @param adjacent Indice de la situacion adyacente
-     */
-    private void newAdjacent(int adjacent) {
-        if (adjacentSituation != null)
-            adjacentSituation.dispose();
-
-        adjacentSituation = null;
-
-        if (adjacent >= 0 && adjacent <= situations.size()-1) {
-            Class adjacentClass = situations.get(adjacent);
-            adjacentSituation = situationFactory.newSituation(adjacentClass);
-            placeSituation(adjacentSituation, adjacent);
-        }
-    }
-
-    /**
-     * Se intercambian las situaciones adyacente y actual.
-     */
-    private void swapSituations() {
-        Situation temporal = currentSituation;
-        currentSituation = adjacentSituation;
-        adjacentSituation = temporal;
-    }
-
-    /**
-     * Devuelve la situacion actual
-     */
-    private Situation getCurrentSituation() {
-        return currentSituation;
-    }
-
-    /**
-     * Devuelve la situacion adyacente
-     */
-    private Situation getAdjacentSituation() {
-        return adjacentSituation;
     }
 
     /**
@@ -285,8 +241,11 @@ public class SituationManager {
         orb.getActor().setZIndex(Z_INDEX_ORB);
     }
 
+    /**
+     * Destruye las situaciones visibles
+     */
     public void dispose() {
-        removeSituations();
+        removeAll();
     }
 
 }

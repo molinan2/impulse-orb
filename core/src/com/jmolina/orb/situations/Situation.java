@@ -17,7 +17,7 @@ public abstract class Situation {
     /** Elementos de la situacion */
     private SnapshotArray<Element> elements;
 
-    /** Ordinal de altura de la situacion */
+    /** Ordinal de altura de la situacion, empezando por 0 */
     private int positionY;
 
     private AssetManager assetManager;
