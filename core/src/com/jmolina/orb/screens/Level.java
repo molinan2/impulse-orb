@@ -409,8 +409,7 @@ public class Level extends BaseScreen implements LevelManager {
      * No es necesaria en el caso de elementos no móviles
      */
     private void syncBodies() {
-        for (Situation situation : situationManager.getVisibleSituations()) {
-            if (situation == null) continue;
+        for (Situation situation : situationManager.getVisible()) {
             for (Element element : situation.getElements()) {
                 if (element instanceof Movable)
                     element.syncBody(worldViewport);
@@ -425,8 +424,7 @@ public class Level extends BaseScreen implements LevelManager {
      * Es necesaria en todos los casos, para que los actores se correspondan con el scroll.
      */
     private void syncActors() {
-        for (Situation situation : situationManager.getVisibleSituations()) {
-            if (situation == null) continue;
+        for (Situation situation : situationManager.getVisible()) {
             for (Element element : situation.getElements()) {
                 element.syncActor(worldViewport);
             }
@@ -556,8 +554,7 @@ public class Level extends BaseScreen implements LevelManager {
     private void computeMagneticFoces() {
         Vector2 force = new Vector2(0, 0);
 
-        for (Situation situation : situationManager.getVisibleSituations()) {
-            if (situation == null) continue;
+        for (Situation situation : situationManager.getVisible()) {
             for (Element element : situation.getElements()) {
                 if (element instanceof Magnetic) {
                     Vector2 partial = ((Magnetic)element).getForce(getOrb().getPosition());

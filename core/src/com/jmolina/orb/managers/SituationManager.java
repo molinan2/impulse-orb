@@ -13,12 +13,8 @@ import com.jmolina.orb.var.Utils;
 import java.util.ArrayList;
 
 /**
- * Manager de situaciones de un nivel de juego. Se encarga de instanciar las situaciones
- * visibles y destruir las que ya no se ven.
- *
- * Se supone que la velocidad del orbe nunca sera lo suficientemente alta como para cruzar varias
- * fronteras en un solo fotograma. Es posible que el orbe supere esta velocidad en casos muy raros,
- * en los que ocurriran "cosas raras".
+ * Manager de situaciones de un nivel de juego. Se encarga de instanciar las situaciones que entran
+ * en el campo visible y destruir las que salen de el.
  */
 public class SituationManager {
 
@@ -38,13 +34,13 @@ public class SituationManager {
     /** Factoria de situaciones */
     private SituationFactory situationFactory;
 
-    /** Lista de clases de situaciones ordenadas que componen el nivel */
-    private ArrayList<Class> situations;
+    /** Mapa del nivel: lista de clases de situaciones ordenadas */
+    private ArrayList<Class> map;
 
-    /** Situaciones visibles que se renderizaran */
-    private ArrayList<Situation> visibleSituations;
+    /** Situaciones visibles que se dibujaran */
+    private ArrayList<Situation> visible;
 
-    /** Campo visible: lista de indices mas cercanos al actual, incluyendo el actual */
+    /** Indices de las situaciones visibles en el mapa del nivel */
     private ArrayList<Integer> indexes;
 
     private Orb orb;
@@ -62,28 +58,30 @@ public class SituationManager {
      * @param viewport Viewport de la stage
      */
     public SituationManager(AssetManager am, World world, Orb orb, float pixelsPerMeter, Stage stage, Viewport viewport) {
-        visibleSituations = new ArrayList<Situation>();
+        visible = new ArrayList<Situation>();
         this.orb = orb;
         this.stage = stage;
         this.viewport = viewport;
         situationFactory = new SituationFactory(am, world, pixelsPerMeter);
-        situations = new ArrayList<Class>();
+        map = new ArrayList<Class>();
     }
 
     /**
      * Destruye las situaciones y libera su memoria.
      */
     public void removeAll() {
-        for (int i = 0; i< visibleSituations.size()-1; i++) {
-            if (visibleSituations.get(i) != null)
-                visibleSituations.get(i).dispose();
+        for (Situation situation : visible)
+            situation.dispose();
 
-            visibleSituations.remove(i);
-        }
+        visible.clear();
+        indexes.clear();
     }
 
     /**
-     * Actualiza las situaciones visibles.
+     * Actualiza las situaciones visibles. Primero se calculan los indices visibles; despues, se
+     * eliminan las situaciones previamente visibles que no tengan ninguno de estosestos indices;
+     * finalmente, se añaden las situaciones que tengan alguno de estos indices y no fueran previamente
+     * visibles.
      */
     public void update() {
         updateIndexes();
@@ -99,7 +97,7 @@ public class SituationManager {
         int current = getCurrentIndex();
         Adjacency adjacency = findAdjacency(getAltitude());
 
-        for (int i=MIN_VISIBLE_SITUATIONS-1; i<MAX_VISIBLE_SITUATIONS; i++) {
+        for (int i = MIN_VISIBLE_SITUATIONS-1; i < MAX_VISIBLE_SITUATIONS; i++) {
             int index;
             int offset = (i+1)/2;
 
@@ -120,12 +118,12 @@ public class SituationManager {
      * Elimina las situaciones que ya no estan en el campo visible
      */
     private void removeOld() {
-        for (int i=0; i<visibleSituations.size(); i++) {
-            Situation situation = visibleSituations.get(i);
+        for (int i = 0; i < visible.size(); i++) {
+            Situation situation = visible.get(i);
 
             if (!indexes.contains(situation.getPositionY())) {
                 situation.dispose();
-                visibleSituations.remove(i);
+                visible.remove(i);
             }
         }
     }
@@ -134,10 +132,10 @@ public class SituationManager {
      * Añade las situaciones que acaban de entrar en el campo visible
      */
     private void addNew() {
-        for (int i=0; i<indexes.size(); i++) {
+        for (int i = 0; i < indexes.size(); i++) {
             boolean visible = false;
 
-            for (Situation visibleSituation : visibleSituations) {
+            for (Situation visibleSituation : this.visible) {
                 if (visibleSituation.getPositionY() == indexes.get(i)) {
                     visible = true;
                     break;
@@ -146,10 +144,10 @@ public class SituationManager {
 
             if (!visible) {
                 int situationIndex = indexes.get(i);
-                Class situationClass = situations.get(situationIndex);
+                Class situationClass = map.get(situationIndex);
                 Situation situation = situationFactory.newSituation(situationClass);
                 placeSituation(situation, indexes.get(i));
-                visibleSituations.add(situation);
+                this.visible.add(situation);
             }
         }
     }
@@ -161,23 +159,23 @@ public class SituationManager {
      * @param index Indice
      */
     private boolean isWithinBounds(int index) {
-        return index >= 0 && index < situations.size();
+        return index >= 0 && index < map.size();
     }
 
     /**
      * Devuelve las situaciones visibles actualmente
      */
-    public ArrayList<Situation> getVisibleSituations() {
+    public ArrayList<Situation> getVisible() {
         ArrayList<Situation> situations = new ArrayList<Situation>();
 
-        for (Situation visibleSituation : visibleSituations)
-            situations.add(visibleSituation);
+        for (Situation situation : visible)
+            situations.add(situation);
 
         return situations;
     }
 
     public void addSituation(Class clazz) {
-        situations.add(clazz);
+        map.add(clazz);
     }
 
     /**
@@ -230,8 +228,7 @@ public class SituationManager {
      * permanecer siempre por encima de los demás. El Orb debe permanecer por encima de todos.
      */
     private void correctZIndexes() {
-        for (Situation situation : getVisibleSituations()) {
-            if (situation == null) continue;
+        for (Situation situation : getVisible()) {
             for (Element element : situation.getElements()) {
                 if (element.getFlavor() == WorldElement.Flavor.BLACK)
                     element.getActor().setZIndex(Z_INDEX_BLACK);
