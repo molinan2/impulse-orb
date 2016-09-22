@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 Google Play game services IDs.
+
+App ID, achievements IDs and leaderboards IDs has been ***REMOVED***.
+In order to compile the APK with full online support, you must provide
+your own valid IDs. You can choose to leave this file intact; if you do,
+the app will show a Play Games error when trying to connect. Just disable
+the "online" option and everything else should work.
 -->
 <resources>
-    <string name="app_id">0</string>
+    <string name="app_id">***REMOVED***</string>
     <string name="package_name">com.jmolina.orb</string>
-    <string name="achievement_knowhow">YourString</string>
-    <string name="achievement_the_real_deal">YourString</string>
-    <string name="achievement_becoming_an_expert">YourString</string>
-    <string name="achievement_a_hero_was_born">YourString</string>
-    <string name="achievement_oneaboveall">YourString</string>
-    <string name="achievement_kenny">YourString</string>
-    <string name="achievement_robocop">YourString</string>
-    <string name="achievement_hyperdrive">YourString</string>
-    <string name="achievement_fast__furious_1">YourString</string>
-    <string name="achievement_fast__furious_2">YourString</string>
-    <string name="achievement_fast__furious_3">YourString</string>
-    <string name="achievement_fast__furious_4">YourString</string>
-    <string name="achievement_fast__furious_5">YourString</string>
-    <string name="achievement_its_over_9000">YourString</string>
-    <string name="achievement_easter_hunter">YourString</string>
-    <string name="leaderboard_level_1_basics">YourString</string>
-    <string name="leaderboard_level_2_advance">YourString</string>
-    <string name="leaderboard_level_3_expert">YourString</string>
-    <string name="leaderboard_level_4_hero">YourString</string>
-    <string name="leaderboard_level_5_god">YourString</string>
+    <string name="achievement_knowhow">***REMOVED***</string>
+    <string name="achievement_the_real_deal">***REMOVED***</string>
+    <string name="achievement_becoming_an_expert">***REMOVED***</string>
+    <string name="achievement_a_hero_was_born">***REMOVED***</string>
+    <string name="achievement_oneaboveall">***REMOVED***</string>
+    <string name="achievement_kenny">***REMOVED***</string>
+    <string name="achievement_robocop">***REMOVED***</string>
+    <string name="achievement_hyperdrive">***REMOVED***</string>
+    <string name="achievement_fast__furious_1">***REMOVED***</string>
+    <string name="achievement_fast__furious_2">***REMOVED***</string>
+    <string name="achievement_fast__furious_3">***REMOVED***</string>
+    <string name="achievement_fast__furious_4">***REMOVED***</string>
+    <string name="achievement_fast__furious_5">***REMOVED***</string>
+    <string name="achievement_its_over_9000">***REMOVED***</string>
+    <string name="achievement_easter_hunter">***REMOVED***</string>
+    <string name="leaderboard_level_1_basics">***REMOVED***</string>
+    <string name="leaderboard_level_2_advance">***REMOVED***</string>
+    <string name="leaderboard_level_3_expert">***REMOVED***</string>
+    <string name="leaderboard_level_4_hero">***REMOVED***</string>
+    <string name="leaderboard_level_5_god">***REMOVED***</string>
 </resources>
