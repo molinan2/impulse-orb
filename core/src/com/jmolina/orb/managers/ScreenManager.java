@@ -1,17 +1,37 @@
+/*
+ * IMPULSE ORB
+ * Copyright (C) 2016 Juan M. Molina
+ *
+ * This file is part of the IMPULSE ORB source code.
+ *
+ * IMPULSE ORB is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IMPULSE ORB is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.jmolina.orb.managers;
 
 import com.badlogic.gdx.Gdx;
 import com.jmolina.orb.interfaces.SuperManager;
+import com.jmolina.orb.screens.BaseScreen;
 import com.jmolina.orb.screens.Credits;
-import com.jmolina.orb.screens.levels.Level1;
 import com.jmolina.orb.screens.Launch;
-import com.jmolina.orb.screens.Select;
-import com.jmolina.orb.screens.Success;
 import com.jmolina.orb.screens.Load;
 import com.jmolina.orb.screens.Main;
 import com.jmolina.orb.screens.Options;
-import com.jmolina.orb.screens.BaseScreen;
+import com.jmolina.orb.screens.Select;
 import com.jmolina.orb.screens.Stats;
+import com.jmolina.orb.screens.Success;
+import com.jmolina.orb.screens.levels.Level1;
 import com.jmolina.orb.screens.levels.Level2;
 import com.jmolina.orb.screens.levels.Level3;
 import com.jmolina.orb.screens.levels.Level4;
@@ -19,7 +39,32 @@ import com.jmolina.orb.screens.levels.Level5;
 import com.jmolina.orb.screens.levels.LevelTest1;
 import com.jmolina.orb.screens.levels.LevelTest2;
 
-import static com.jmolina.orb.managers.ScreenManager.Key.*;
+import static com.jmolina.orb.managers.ScreenManager.Key.CREDITS;
+import static com.jmolina.orb.managers.ScreenManager.Key.LAUNCH_1;
+import static com.jmolina.orb.managers.ScreenManager.Key.LAUNCH_2;
+import static com.jmolina.orb.managers.ScreenManager.Key.LAUNCH_3;
+import static com.jmolina.orb.managers.ScreenManager.Key.LAUNCH_4;
+import static com.jmolina.orb.managers.ScreenManager.Key.LAUNCH_5;
+import static com.jmolina.orb.managers.ScreenManager.Key.LAUNCH_T1;
+import static com.jmolina.orb.managers.ScreenManager.Key.LAUNCH_T2;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_1;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_2;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_3;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_4;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_5;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_SELECT;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_T1;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_T2;
+import static com.jmolina.orb.managers.ScreenManager.Key.LOAD;
+import static com.jmolina.orb.managers.ScreenManager.Key.MAIN;
+import static com.jmolina.orb.managers.ScreenManager.Key.OPTIONS;
+import static com.jmolina.orb.managers.ScreenManager.Key.STATS;
+import static com.jmolina.orb.managers.ScreenManager.Key.SUCCESS_1;
+import static com.jmolina.orb.managers.ScreenManager.Key.SUCCESS_2;
+import static com.jmolina.orb.managers.ScreenManager.Key.SUCCESS_3;
+import static com.jmolina.orb.managers.ScreenManager.Key.SUCCESS_4;
+import static com.jmolina.orb.managers.ScreenManager.Key.SUCCESS_5;
+import static com.jmolina.orb.managers.ScreenManager.Key.SUCCESS_T1;
 
 /**
  * Manager de pantallas de la aplicacion

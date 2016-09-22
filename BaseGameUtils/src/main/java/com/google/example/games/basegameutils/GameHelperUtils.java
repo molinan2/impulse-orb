@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.games.GamesActivityResultCodes;
-import com.google.android.gms.games.Games;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

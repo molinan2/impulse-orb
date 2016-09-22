@@ -1,3 +1,23 @@
+/*
+ * IMPULSE ORB
+ * Copyright (C) 2016 Juan M. Molina
+ *
+ * This file is part of the IMPULSE ORB source code.
+ *
+ * IMPULSE ORB is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IMPULSE ORB is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.jmolina.orb.screens;
 
 import com.jmolina.orb.interfaces.SuperManager;
@@ -9,8 +29,8 @@ import com.jmolina.orb.widgets.ui.Credit;
  */
 public class Credits extends Menu {
 
-    private final String AUTHORS = "Game design, programming, interface design and sound effects design by Juan M. Molina [1].";
-    private final String LICENSE = "Source code licensed under GPLv3 [1]. Original content comprised of sound effects and graphic art, and licensed under CC BY-SA 4.0 [2].";
+    private final String AUTHORS = "Game design, programming, interface design and sound effects design by Juan M. Molina [1][2].";
+    private final String LICENSE = "This application is free software. Source code licensed under GPLv3 [1]. Original content comprised of sound effects and graphic art, and licensed under CC BY-SA 4.0 [2].";
     private final String RESOURCES = "All music themes composed by Benjamin Tissot [1] and licensed under CC BY-ND 3.0 [2]. Music themes are \"Funky element\" [3], \"The lounge\" [4] and \"Pop dance\" [5]. \"Padlock icon\" designed by Dave Gandy [6] for FLATICON [7] and licensed under CC BY 3.0 [8]. Roboto font designed by Christian Robertson for Google [9] and licensed under Apache License 2.0 [10].";
     private final String LIBRARIES = "This application makes extensive use of libGDX [1], a game-development framework created by Mario Zechner and Nathan Sweet and maintained by the community [2]. libGDX is licensed under the Apache License 2.0 [3].\n" +
             "\n" +
@@ -21,6 +41,8 @@ public class Credits extends Menu {
             "\n" +
             "Textures packed with GDX Texture Packer [4], an efficient image packing tool by Aurelien Ribon [5].";
     private final String THANKS = "To Manuel Jesús Marín Jiménez for his guidance and help with the planning.\n" +
+            "\n" +
+            "To the authors, maintainers and contributors of libGDX.\n" +
             "\n" +
             "To the Free Software community.";
 
@@ -40,6 +62,7 @@ public class Credits extends Menu {
 
         authors = new Credit(getAssetManager(), "AUTHORS", AUTHORS);
         authors.addLink("Juan M. Molina's blog", "https://drefactor.wordpress.com");
+        authors.addLink("Juan M. Molina's GitHub profile", "https://github.com/molinan2");
 
         license = new Credit(getAssetManager(), "LICENSE", LICENSE);
         license.addLink("GPLv3 license", "https://www.gnu.org/licenses/gpl-3.0.en.html");

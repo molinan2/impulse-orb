@@ -1,3 +1,23 @@
+/*
+ * IMPULSE ORB
+ * Copyright (C) 2016 Juan M. Molina
+ *
+ * This file is part of the IMPULSE ORB source code.
+ *
+ * IMPULSE ORB is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IMPULSE ORB is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.jmolina.orb.stages;
 
 import com.badlogic.gdx.math.Interpolation;
@@ -11,16 +31,22 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.jmolina.orb.interfaces.LevelManager;
 import com.jmolina.orb.managers.AssetManager;
 import com.jmolina.orb.screens.BaseScreen;
-import com.jmolina.orb.screens.Level;
 import com.jmolina.orb.var.Utils;
+import com.jmolina.orb.widgets.game.Curtain;
 import com.jmolina.orb.widgets.game.Gauge;
 import com.jmolina.orb.widgets.game.HUDBackground;
-import com.jmolina.orb.widgets.game.Curtain;
 import com.jmolina.orb.widgets.game.PauseButton;
 import com.jmolina.orb.widgets.game.PauseMenu;
 import com.jmolina.orb.widgets.game.Timer;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * Stage donde se dibuja el HUD y el menu de pausa.

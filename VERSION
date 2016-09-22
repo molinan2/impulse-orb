@@ -1,0 +1,45 @@
+0.8.10
+
+- Fixed a bug introduced in the last version that prevented moving elements to be restarted.
+
+0.8.9
+
+- Prevented display corruption due to very high speed.
+
+0.8.8
+
+- Prevented rare crash when the orb speed is very high.
+
+0.8.7
+
+- Fix: very short sounds not playing.
+- Fix: arrow position in devices with screen ratios other than 5:3.
+
+0.8.6
+
+- Fixed bug with distance calculation.
+- Fixed crash when exiting in Nexus 5X with Android 6.
+- Added Easter Egg achievement.
+- Tuned diffculty in Level 2.
+
+0.8.5
+
+- Fixed bug that prevented online option for becoming effective and disabling Google Play Games.
+- Fixed bug that prevented to achieve the Fast & Furious achievements.
+
+0.8.3
+
+- Fixed a occasional crash when exiting a game.
+- Updated some graphics.
+- Updated credits.
+
+0.8.2
+
+- Google Play Games integration:
+-- Achievements.
+-- Leaderboards.
+-- Option to enable/disable Google Play Games.
+
+0.8
+
+- Initial release.

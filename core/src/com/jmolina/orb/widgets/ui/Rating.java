@@ -1,3 +1,23 @@
+/*
+ * IMPULSE ORB
+ * Copyright (C) 2016 Juan M. Molina
+ *
+ * This file is part of the IMPULSE ORB source code.
+ *
+ * IMPULSE ORB is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IMPULSE ORB is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.jmolina.orb.widgets.ui;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -6,14 +26,17 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 import com.jmolina.orb.managers.AssetManager;
-import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Asset;
+import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.var.Var;
 import com.jmolina.orb.widgets.BaseGroup;
 
 import java.util.ArrayList;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.alpha;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.forever;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * Puntuacion (medallas) de un tiempo

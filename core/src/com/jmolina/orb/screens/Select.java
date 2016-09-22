@@ -1,3 +1,23 @@
+/*
+ * IMPULSE ORB
+ * Copyright (C) 2016 Juan M. Molina
+ *
+ * This file is part of the IMPULSE ORB source code.
+ *
+ * IMPULSE ORB is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * IMPULSE ORB is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.jmolina.orb.screens;
 
 import com.badlogic.gdx.Preferences;
@@ -9,8 +29,17 @@ import com.jmolina.orb.managers.ScreenManager;
 import com.jmolina.orb.var.Utils;
 import com.jmolina.orb.widgets.ui.Card;
 
-import static com.jmolina.orb.managers.ScreenManager.Key.*;
-import static com.jmolina.orb.screens.BaseScreen.Hierarchy.*;
+import static com.jmolina.orb.managers.ScreenManager.Key.LAUNCH_1;
+import static com.jmolina.orb.managers.ScreenManager.Key.LAUNCH_2;
+import static com.jmolina.orb.managers.ScreenManager.Key.LAUNCH_3;
+import static com.jmolina.orb.managers.ScreenManager.Key.LAUNCH_4;
+import static com.jmolina.orb.managers.ScreenManager.Key.LAUNCH_5;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_1;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_2;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_3;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_4;
+import static com.jmolina.orb.managers.ScreenManager.Key.LEVEL_5;
+import static com.jmolina.orb.screens.BaseScreen.Hierarchy.LOWER;
 
 /**
  * Pantalla de seleccion de nivel
