@@ -29,8 +29,8 @@ import com.jmolina.orb.widgets.ui.Credit;
  */
 public class Credits extends Menu {
 
-    private final String AUTHORS = "Game design, programming, interface design and sound effects design by Juan M. Molina [1][2].";
-    private final String LICENSE = "This application is free software. Source code licensed under GPLv3 [1]. Original content comprised of sound effects and graphic art, and licensed under CC BY-SA 4.0 [2].";
+    private final String AUTHORS = "Game design, programming, interface design and sound effects design by Juan M. Molina [1].";
+    private final String LICENSE = "This application is Free Software. Source code licensed under GPLv3 [1]. Original content comprised of sound effects and graphic art, and licensed under CC BY-SA 4.0 [2]. Source code available on GitHub [3].";
     private final String RESOURCES = "All music themes composed by Benjamin Tissot [1] and licensed under CC BY-ND 3.0 [2]. Music themes are \"Funky element\" [3], \"The lounge\" [4] and \"Pop dance\" [5]. \"Padlock icon\" designed by Dave Gandy [6] for FLATICON [7] and licensed under CC BY 3.0 [8]. Roboto font designed by Christian Robertson for Google [9] and licensed under Apache License 2.0 [10].";
     private final String LIBRARIES = "This application makes extensive use of libGDX [1], a game-development framework created by Mario Zechner and Nathan Sweet and maintained by the community [2]. libGDX is licensed under the Apache License 2.0 [3].\n" +
             "\n" +
@@ -62,11 +62,11 @@ public class Credits extends Menu {
 
         authors = new Credit(getAssetManager(), "AUTHORS", AUTHORS);
         authors.addLink("Juan M. Molina's blog", "https://drefactor.wordpress.com");
-        authors.addLink("Juan M. Molina's GitHub profile", "https://github.com/molinan2");
 
         license = new Credit(getAssetManager(), "LICENSE", LICENSE);
         license.addLink("GPLv3 license", "https://www.gnu.org/licenses/gpl-3.0.en.html");
         license.addLink("CC BY-SA 4.0 license", "https://creativecommons.org/licenses/by-sa/4.0/");
+        license.addLink("Impulse Orb on GitHub", "https://github.com/molinan2/impulse-orb");
 
         resources = new Credit(getAssetManager(), "3RD PARTY RESOURCES", RESOURCES);
         resources.addLink("Bensound.com", "http://www.bensound.com/");
